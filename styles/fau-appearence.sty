@@ -1,6 +1,12 @@
 \ProvidesPackage{styles/fau-appearence}[\filedate Package to be used in combination with
 										the]
-
+% ########################################################################################
+% Theorem and box appearence
+% Here we use the tcolorbox package to style theorems and boxes and add the 
+% cleveref packag for cross referencing
+% ----------------------------------------------------------------------------------------
+\usepackage[most]{tcolorbox}
+\usepackage[nameinlink, capitalise, german]{cleveref}
 % ########################################################################################
 % Options and bools
 % ----------------------------------------------------------------------------------------
@@ -93,6 +99,60 @@
 	  {\@hangfrom{##2}{##3}}%
 	}
 }
+% ----------------------------------------------------------------------------------------
+% styleC
+% ----------------------------------------------------------------------------------------
+\def\cheadstyle@styleC{
+	\setkomafont{chapter}{\Huge}
+	\setkomafont{chapterprefix}{\Huge}
+	\addtokomafont{disposition}{\rmfamily}
+	\addtokomafont{title}{\rmfamily}
+	\addtokomafont{author}{\rmfamily}
+	%-------------------------------------------------
+	\renewcommand*\chapterformat{%
+		\begin{tcolorbox}[
+			enhanced,
+			width=.4\textwidth,
+			frame hidden,
+			underlay={%
+			\draw[
+				draw=BaseColorD, 
+				fill=BaseColorA
+			] {[rounded corners=15pt](interior.south west)--(interior.north west)--(interior.north east)--(interior.south east)}--(interior.south west);
+			},
+			colback=white,
+		]
+		\textcolor{white}{\chapappifchapterprefix{\ }}
+		\textcolor{white}{\Huge\thechapter}%\\
+		\end{tcolorbox}
+		% \IfChapterUsesPrefixLine{
+		% 	\textcolor{BaseColorA}{\chapappifchapterprefix{\ }}
+		% 	\textcolor{BaseColorA}{\thechapter}}{%
+		% 	% else
+		% 	\textcolor{BaseColor}{\Huge\thechapter}}}%
+	}%
+	%
+	% \renewcommand*\chapterlinesformat[3]{%
+	% 	\raggedright\Huge##3%
+	% 	\makebox[0pt][l]{##2}}
+	% %
+	\renewcommand*{\chapterlineswithprefixformat}[3]{%
+		%\textcolor{BaseColorA}{\rule{\textwidth}{.4pt}}
+		\raggedchapter ##2 % chapter
+		\vspace{-20pt}%
+		\begin{tcolorbox}[
+			enhanced,
+			colback=white,
+			frame hidden,
+			underlay={%
+				\draw[thick,BaseColorA, rounded corners=15pt] (interior.south west)--(interior.south east)--(interior.north east);
+			},
+			]
+		\textcolor{BaseColorA}{##3}
+		\end{tcolorbox}
+		%\textcolor{BaseColorA}{\rule{\textwidth}{.4pt}}%
+	}%
+}
 \chapterheaderstyle % execute option
 % ########################################################################################
 %
@@ -139,13 +199,6 @@
 %
 %
 %
-% ########################################################################################
-% Theorem and box appearence
-% Here we use the tcolorbox package to style theorems and boxes and add the 
-% cleveref packag for cross referencing
-% ----------------------------------------------------------------------------------------
-\usepackage[most]{tcolorbox}
-\usepackage[nameinlink, capitalise, german]{cleveref}
 % ----------------------------------------------------------------------------------------	
 % default definition and theorem style
 % ----------------------------------------------------------------------------------------	
@@ -224,6 +277,43 @@
   size=minimal,
   borderline west ={2mm}{-2.5mm}{BaseColor},
   terminator sign={.}
+}}
+% ----------------------------------------------------------------------------------------
+% StyleC
+% ----------------------------------------------------------------------------------------
+\tcbset{
+styleC/.style={
+enhanced,
+breakable,
+attach boxed title to top left={
+  yshift=-3mm,
+  yshifttext=-1mm,
+  xshift=0mm,
+},
+coltitle=white,
+top=1.5ex,
+colback=white,
+%colframe=BaseColorA,
+frame hidden,
+underlay={%
+	\draw[thick,BaseColorA, rounded corners=10pt] (interior.south west)--(interior.south east)--(interior.north east);
+},
+fonttitle=\bfseries,
+boxed title style={
+	enhanced,
+	size=small,
+	colback=white,
+	frame hidden,
+	underlay={%
+	\draw[
+		draw=BaseColorD, 
+		fill=BaseColorA
+	] {[rounded corners=5pt](interior.south west)--(interior.north west)--(interior.north east)--(interior.south east)}--(interior.south west);
+	},
+},
+arc=10pt,
+terminator sign={.},
+label separator={}
 }}
 % ----------------------------------------------------------------------------------------
 % If the theroem custom flag is not set we provide the full theorem environement

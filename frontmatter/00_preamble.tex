@@ -6,12 +6,13 @@
 % ########################################################################################
 % The following specifies the titlepage and can not be deleted
 % ----------------------------------------------------------------------------------------
-\title{Title of your thesis}
-\author{Your name}
-\thesistype{Bachelor-Arbeit}
-\degree{Bachelor of Science (B.Sc.)}
+\title{SparRow}
+\subtitle{A Bird's Tale}
+\author{Tim Roith}
+\thesistype{}
+\degree{Dr. rer. nat.}
 \degprog{Mathematik}% specify the degree program
-\Referee{first=Prof. A, second=Dr. B}% Referees
+\Referee{first=Martin Burger}% Referees
 \Advisor{first=M.Sc. C}
 %\renewcommand{\supervisors}{Hello :)} % use this to specify the supervisor area yourself
 %\subdate{Today} % Use this if you want to specify the date on the titlepage
@@ -29,9 +30,9 @@
 \usepackage[NatClassic]{styles/fau-colors}
 
 % Appearence of boxes and page
-\usepackage[thmboxing=styleA,
-			boxingstyle=styleA,
-			chapterheader=styleA, 
+\usepackage[thmboxing=styleC,
+			boxingstyle=styleC,
+			chapterheader=styleC, 
 			footerheader=styleA,
 			%noabbrev % no abbreviations in cleveref
 			]{styles/fau-appearence}
@@ -47,3 +48,41 @@
 %
 \usepackage{kantlipsum}
 \usepackage[totoc]{idxlayout}
+
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{titlepage}
+\thispagestyle{empty}
+\textsf{
+\begin{center}
+\vspace*{1cm}
+\huge \textbf{\@title} \\
+\large \@subtitle\\[5mm]
+\vspace{2cm}
+\LARGE\textbf{\@thesistype}\\[5mm]
+\Large zur Erlangung des Doktorgrades\\[5mm]
+\textbf{\@degree \\[5mm]
+im Studiengang
+\@degprog\\[5mm]
+}
+am Department Mathematik der\\ Friedrich-Alexander-Universit\"at
+Erlangen-N\"urnberg\\[1cm]
+vorgelegt am \textbf{\@subdate} \\[3mm]
+von \textbf{\@author}
+\vfill
+\normalsize
+\supervisors
+\end{center}
+%
+% \begin{minipage}{0.5\textwidth}
+% %\vspace*{10mm}
+% \includegraphics[width=\textwidth]{\WordMark}
+% \end{minipage}
+% \hfill
+% \begin{minipage}{0.4\textwidth}
+% \includegraphics[width=\textwidth]{\ExtraLogo} \vspace{3mm}
+% \end{minipage}
+}
+\end{titlepage}
+}
+\makeatother
