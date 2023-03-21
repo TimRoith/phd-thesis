@@ -27,8 +27,16 @@
 %-------------------------------------------------
 \mainmatter
 %-------------------------------------------------
+\part{Intro}
 \input{mainmatter/01_introduction.tex}
-\input{mainmatter/02_example.tex}
+\input{mainmatter/02_SSL.tex}
+\input{mainmatter/03_SL.tex}
+%-------------------------------------------------
+\part{Prints}
+\renewcommand{\expprefix}{P}
+\setcounter{chapter}{0}
+\renewcommand{\chapapp}{Print}
+\paperchapter{bungert2022bregman}{}{}{1}{1}
 %-------------------------------------------------
 \backmatter
 \input{backmatter/thesis-printbib.tex}

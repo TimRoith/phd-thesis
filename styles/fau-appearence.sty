@@ -113,23 +113,13 @@
 		\begin{tcolorbox}[
 			enhanced,
 			width=.4\textwidth,
-			frame hidden,
-			underlay={%
-			\draw[
-				draw=BaseColorD, 
-				fill=BaseColorA
-			] {[rounded corners=15pt](interior.south west)--(interior.north west)--(interior.north east)--(interior.south east)}--(interior.south west);
-			},
 			colback=white,
-		]
-		\textcolor{white}{\chapappifchapterprefix{\ }}
-		\textcolor{white}{\Huge\thechapter}%\\
-		\end{tcolorbox}
-		% \IfChapterUsesPrefixLine{
-		% 	\textcolor{BaseColorA}{\chapappifchapterprefix{\ }}
-		% 	\textcolor{BaseColorA}{\thechapter}}{%
-		% 	% else
-		% 	\textcolor{BaseColor}{\Huge\thechapter}}}%
+			frame hidden,
+			borderline west={4pt}{0pt}{BaseColorA},
+		]%
+		\textcolor{BaseColorA}{\chapappifchapterprefix{\ }}%
+		\textcolor{BaseColorA}{\Huge\thechapter}%
+		\end{tcolorbox}%
 	}%
 	%
 	% \renewcommand*\chapterlinesformat[3]{%
@@ -138,15 +128,13 @@
 	% %
 	\renewcommand*{\chapterlineswithprefixformat}[3]{%
 		%\textcolor{BaseColorA}{\rule{\textwidth}{.4pt}}
-		\raggedchapter ##2 % chapter
-		\vspace{-20pt}%
+		##2\nobreak% chapter
+		\vspace{-25pt}%
 		\begin{tcolorbox}[
 			enhanced,
 			colback=white,
 			frame hidden,
-			underlay={%
-				\draw[thick,BaseColorA, rounded corners=15pt] (interior.south west)--(interior.south east)--(interior.north east);
-			},
+			borderline west={4pt}{0pt}{BaseColorA},
 			]
 		\textcolor{BaseColorA}{##3}
 		\end{tcolorbox}
@@ -285,33 +273,17 @@
 styleC/.style={
 enhanced,
 breakable,
-attach boxed title to top left={
-  yshift=-3mm,
-  yshifttext=-1mm,
-  xshift=0mm,
-},
-coltitle=white,
+theorem style = plain,
+coltitle=BaseColorA,
 top=1.5ex,
 colback=white,
 %colframe=BaseColorA,
 frame hidden,
-underlay={%
-	\draw[thick,BaseColorA, rounded corners=10pt] (interior.south west)--(interior.south east)--(interior.north east);
-},
+boxsep=0pt,
+%drop shadow=BaseColorD,
+borderline west={4pt}{0pt}{BaseColorA},
 fonttitle=\bfseries,
-boxed title style={
-	enhanced,
-	size=small,
-	colback=white,
-	frame hidden,
-	underlay={%
-	\draw[
-		draw=BaseColorD, 
-		fill=BaseColorA
-	] {[rounded corners=5pt](interior.south west)--(interior.north west)--(interior.north east)--(interior.south east)}--(interior.south west);
-	},
-},
-arc=10pt,
+arc=0pt,
 terminator sign={.},
 label separator={}
 }}

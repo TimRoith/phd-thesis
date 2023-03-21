@@ -48,6 +48,7 @@
 %
 \usepackage{kantlipsum}
 \usepackage[totoc]{idxlayout}
+\usepackage[final]{pdfpages}
 
 \makeatletter
 \renewcommand{\maketitle}{
@@ -86,3 +87,7 @@ von \textbf{\@author}
 \end{titlepage}
 }
 \makeatother
+
+\newcommand\expprefix{}
+\let\latexorigthechapter\thechapter
+\renewcommand{\thechapter}{\expprefix\latexorigthechapter}

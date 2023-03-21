@@ -428,3 +428,23 @@ gleicher oder ähnlicher Form noch keiner Prüfungsbehörde vorgelegt wurde.\\[1
 \strut\hfill\@author\hspace{1cm}	
 \end{declaration}}
 % ########################################################################################
+\newcommand\paperchapter[5]{%
+\setchapterpreamble[ul]{%
+\raggedleft%
+\AtNextCite{\defcounter{maxnames}{99}}\textbf{\citename{#1}{author}}\\
+\emph{%
+\ifnum#5>0
+	\citefield{#1}{journaltitle}
+\else
+		\citefield{#1}{booktitle}
+	\fi	
+} (\citefield{#1}{year})\\
+% \ifnum#4>0
+% 		DOI: \doicite{#1}\\
+% \else
+% 		\citefield{#1}{note}
+% \fi
+}
+\chapter{\texorpdfstring{\citefield{#1}{title}}{#1}}\label{paper:#1}
+\includepdf[pages=#2-#3]{prints/#1.pdf}
+}
