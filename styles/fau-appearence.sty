@@ -281,7 +281,7 @@ colback=white,
 frame hidden,
 boxsep=0pt,
 %drop shadow=BaseColorD,
-borderline west={4pt}{0pt}{BaseColorA},
+borderline west={2pt}{0pt}{BaseColorA},
 fonttitle=\bfseries,
 arc=0pt,
 terminator sign={.},
@@ -294,14 +294,14 @@ label separator={}
 % ----------------------------------------------------------------------------------------	
 \def\tstyle@styleA{
 \FAU@thmplainfalse
-\newtcbtheorem[number within=chapter]{theorem}{THEOREM}{\thmstyle, label type=theorem}{}
-\newtcbtheorem[use counter from=theorem]{definition}{DEFINITION}{\thmstyle, label type=definition}{}
-\newtcbtheorem[use counter from=theorem]{corollary}{KOROLLAR}{\thmstyle, label type=corollary}{}
-\newtcbtheorem[use counter from=theorem]{lemma}{LEMMA}{\thmstyle, label type=lemma}{}
-\newtcbtheorem[use counter from=theorem]{remark}{BEMERKUNG}{thmstyle_plain, 
+\newtcbtheorem[number within=chapter]{theorem}{Theorem}{\thmstyle, label type=theorem}{}
+\newtcbtheorem[use counter from=theorem]{definition}{Definition}{\thmstyle, label type=definition}{}
+\newtcbtheorem[use counter from=theorem]{corollary}{Corollary}{\thmstyle, label type=corollary}{}
+\newtcbtheorem[use counter from=theorem]{lemma}{Lemma}{\thmstyle, label type=lemma}{}
+\newtcbtheorem[use counter from=theorem]{remark}{Remark}{thmstyle_plain, 
 														 after upper={\hfill$\triangle$},
 														 label type=remark}{}
-\newtcbtheorem[use counter from=theorem]{example}{BEISPIEL}{\thmstyle, 
+\newtcbtheorem[use counter from=theorem]{example}{Example}{\thmstyle, 
 	fontupper=\upshape, label type=example}{}		
 }
 % ----------------------------------------------------------------------------------------	
