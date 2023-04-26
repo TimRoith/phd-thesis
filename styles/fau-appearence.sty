@@ -6,7 +6,7 @@
 % cleveref packag for cross referencing
 % ----------------------------------------------------------------------------------------
 \usepackage[most]{tcolorbox}
-\usepackage[nameinlink, capitalise, german]{cleveref}
+\usepackage[nameinlink, capitalise, english]{cleveref}
 % ########################################################################################
 % Options and bools
 % ----------------------------------------------------------------------------------------
@@ -280,6 +280,10 @@ colback=white,
 %colframe=BaseColorA,
 frame hidden,
 boxsep=0pt,
+left=.5em,
+top = .5em,
+right = .5em,
+bottom = .5em,
 %drop shadow=BaseColorD,
 borderline west={2pt}{0pt}{BaseColorA},
 fonttitle=\bfseries,
@@ -302,8 +306,12 @@ label separator={}
 														 after upper={\hfill$\triangle$},
 														 label type=remark}{}
 \newtcbtheorem[use counter from=theorem]{example}{Example}{\thmstyle, 
-	fontupper=\upshape, label type=example}{}		
+	fontupper=\upshape, label type=example}{}
+\newtcbtheorem[use counter from=theorem]{problem}{Problem}{\thmstyle, 
+	fontupper=\upshape, label type=problem}{}	
+\crefname{problem}{Problem}{Problems}
 }
+
 % ----------------------------------------------------------------------------------------	
 \def\tstyle@styleB{\tstyle@styleA}
 % ----------------------------------------------------------------------------------------	
