@@ -6,8 +6,8 @@
 % ########################################################################################
 % The following specifies the titlepage and can not be deleted
 % ----------------------------------------------------------------------------------------
-\title{SparRow}
-\subtitle{A Bird's Tale}
+\title{Consistency, Robustness and Sparsity for Learning Algorithms}
+\subtitle{Konsistenz, Robustheit und Dünnbesetztheit von Lern-Algorithmen}
 \author{Tim Roith}
 \thesistype{}
 \degree{Dr. rer. nat.}
@@ -49,6 +49,9 @@
 \usepackage{kantlipsum}
 \usepackage[totoc]{idxlayout}
 \usepackage[final]{pdfpages}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.multipart}
+\usepackage{wrapfig}
 
 \makeatletter
 \renewcommand{\maketitle}{
@@ -92,12 +95,25 @@ von \textbf{\@author}
 \let\latexorigthechapter\thechapter
 \renewcommand{\thechapter}{\expprefix\latexorigthechapter}
 
+
 \usepackage{todonotes}
+\usepackage{csquotes}
 
 %---------------
 % colors
 \definecolor{sky}{rgb}{0.51, 0.79, 0.99}
 \definecolor{apple}{rgb}{0.43, 0.8, 0.24}
 \definecolor{grape}{rgb}{0.99, 0.35, 0.34}
+\definecolor{orong}{rgb}{1.0, 0.55, 0.0}
 
 \newcommand{\bc}{\color{black}}
+
+%
+% ..............................................................................
+% Set colors for hypersetup
+% ------------------------------------------------------------------------------
+%
+\hypersetup{
+		urlcolor=BaseColor,
+		citecolor=grape,
+		linkcolor=BaseColor}

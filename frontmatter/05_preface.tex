@@ -1,0 +1,76 @@
+% ========================================================================================
+\chapter{Preface}\label{ch:preface}
+
+This work is structured into two main parts, \cref{part:Intro} the presentation and explanation of the topics and results presented in \cref{part:Prints}, the peer-reviewed articles. 
+%
+%
+\begin{center}%
+\begin{tikzpicture}
+\hypersetup{linkcolor=black}%
+\filldraw[fill=sky!20, draw=none] (0,11) rectangle (8.5,10); %
+\node[draw=none, align=center] at (4.25,10.5) {\cref{part:Intro}: \nameref{part:Intro}};
+%
+\filldraw[fill=sky!10, draw=none] (0,10) rectangle (8.5,9); %
+\node[draw=none, align=center] at (4.25,9.5) {%
+\cref{ch:para}: \nameref{ch:para}};
+%
+\draw[draw=sky!30, thick] (0,9) -- (8.5, 9); %
+%
+\filldraw[fill=sky!10, draw=none] (0,9) rectangle (8.5,8); %
+\node[draw=none, align=center] at (4.25,8.5) {%
+\parbox{.45\textwidth}{\cref{ch:SSL}: \nameref{ch:SSL}}};
+%
+\draw[draw=sky!30, thick] (0,8) -- (8.5, 8); %
+%
+\filldraw[fill=sky!10, draw=none] (0,8) rectangle (8.5,7); %
+\node[draw=none, align=center] at (4.25,7.5) {%
+\cref{ch:SL}: \nameref{ch:SL}};
+%
+%
+%
+\filldraw[fill=apple!20, draw=none] (9.5,11) rectangle (14.5,10);%
+\node[draw=none, align=center] at (12.,10.5) {\cref{part:Prints}: \nameref{part:Prints}};
+%
+\filldraw[fill=apple!10, draw=none] (9.5,10) rectangle (14.5,9); %
+\node[draw=none, align=center] at (12.,9.5) {% 
+};
+%
+\draw[draw=apple!30, thick] (9.5,9) -- (14.5, 9); %
+%
+\filldraw[fill=apple!10, draw=none] (9.5,9) rectangle (14.5,8); %
+\node[draw=none, align=center] at (12.,8.5) {%
+\cref{paper:roith2022continuum, paper:bungert2021uniform}};
+%
+\draw[draw=apple!30, thick] (9.5,8) -- (14.5, 8); %
+%
+\filldraw[fill=apple!10, draw=none] (9.5,8) rectangle (14.5,7); %
+\node[draw=none, align=center] at (12.,7.5) {%
+\cref{paper:roith2022continuum, paper:bungert2021uniform}};
+\end{tikzpicture}
+\end{center}
+%
+%
+\cref{part:Intro} consists of three chapters, of which the first explains the paradigms, \emph{unsupervised}, \emph{semi-supervised} and \emph{supervised} learning. The other chapters are the split up thematically, concerning the topics semi-supervised and supervised learning respectively. In each of these chapters a short introduction provides the necessary framework allowing us to explain the main contributions. The following publications are reprinted in \cref{part:Prints}:
+
+
+\printbibliography[keyword={papersA}, resetnumbers=true, heading=none]
+\printbibliography[keyword={papersB}, resetnumbers=true, heading=none]
+
+The following two works that are not part of this thesis but provide an additional insight.
+
+\printbibliography[keyword={papersC}, resetnumbers=true, heading=none]
+
+\subsection*{TR's Contribution}
+
+Here we list TR's contribution to the publications included in the thesis.
+
+\paragraph{\cite{roith2022continuum}:} This work builds upon the findings in TR's master thesis \cite{roith2022msc}. It is however important to note that the results constitute a significant extension and are conceptually stronger than the ones in \cite{roith2022msc}, see \cref{sec:Gconv}. TR adapted the continuum limit framework to the $L^\infty$ case, worked out most of the proofs and wrote a significant part of the paper. In collaboration with LB, he identified the crucial domain assumptions that allow to work on non-convex domains and proved convergence for approximate boundary conditions.
+
+\paragraph{\cite{bungert2021uniform}:} In collaboration with LB, TR worked on the convergence proofs building upon the ideas of JC. He contributed to both the numeric and the analysis conducted in the paper.
+
+\paragraph{\cite{bungert2021clip}:} TR worked out the main algorithm proposed in the paper together with LB, based on his idea. Together with LS and RR he conducted the numerical examples and also wrote most of the source code. Furthermore, he wrote large parts of the paper.
+
+\paragraph{\cite{bungert2022bregman}:} TR expanded LB's ideas of employing Bregman iteration for sparse training. Together with MB and LB he worked out the convergence analysis of stochastic Bregman iterations. Here, he also proposed a profound sparse initialization strategy. Furthermore, he conducted the numerical examples and wrote most of the source code.
+
+\paragraph{\cite{kabri2023resolution}:} This work is based on SK's masters thesis, employing the initial ideas of MB for resolution invariance with FNOs. In the paper TR worked out the proofs for well-definedness and Fréchet-differentiability, together with SK. He wrote large parts of the paper and the source code. Here, he conducted the numerical studies in collaboration with SK.
+

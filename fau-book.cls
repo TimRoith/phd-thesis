@@ -439,11 +439,6 @@ gleicher oder ähnlicher Form noch keiner Prüfungsbehörde vorgelegt wurde.\\[1
 		\citefield{#1}{booktitle}
 	\fi	
 } (\citefield{#1}{year})\\
-% \ifnum#4>0
-% 		DOI: \doicite{#1}\\
-% \else
-% 		\citefield{#1}{note}
-% \fi
 }
 \chapter{\texorpdfstring{\citefield{#1}{title}}{#1}}\label{paper:#1}
 \includepdf[pages=#2-#3]{prints/#1.pdf}
