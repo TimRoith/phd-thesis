@@ -1,16 +1,9 @@
 \chapter{Consistent Semi-Supervised Learning on Sparse Graphs}\label{ch:SSL}
 
-\begin{wrapfigure}{r}{.5\textwidth}
-\centering
-\includegraphics[width=.5\textwidth]{atelier/paradigms/GSSL.pdf}
-\end{wrapfigure}
-
-This chapter considers the consistency of graph-based semi-supervised learning methods. We contextualize the topics provided in the prints \cite{roith2022continuum, bungert2021uniform} together with additional input from the pre-print \cite{bungert2022ratio}. In \cref{sec:GSSL} we introduce the concrete setting and task. In \cref{sec:pLap} we consider the $p$ Laplacian both in the continuum and the graph setting. This is the cornerstone for topics connected to the $\infty$ Laplacian and Lipschitz extensions in \cref{sec:LipExt}, the main points of interest in this chapter. We then continue\ldots
-
-the field \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} contribute to. We then
+This chapter considers the consistency of graph-based semi-supervised learning methods. We contextualize the topics provided in the prints \cite{roith2022continuum, bungert2021uniform} together with additional input from the pre-print \cite{bungert2022ratio}. In \cref{sec:GSSL} we introduce the concrete setting and task. In \cref{sec:pLap} we consider the $p$ Laplacian both in the continuum and the graph setting. This is the cornerstone for topics connected to the $\infty$ Laplacian and Lipschitz extensions in \cref{sec:LipExt}, the main points of interest in this chapter. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit. In \cref{sec:GConv} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart in \cite{roith2022continuum}. After that we explain the main results of \cite{bungert2021uniform} in \cref{sec:RatConv}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. Finally, we shortly explore possible extension of the results in \cref{sec:RatConv} to the non-deterministic percolation setting of  \cite{bungert2022ratio}.
 %
 %
-
+%
 \begin{center}%
 \begin{tikzpicture}
 %
@@ -41,73 +34,113 @@ node[midway] {\cref{sec:GLipExt}: Graph Setting}; %
 \filldraw[fill=sky!20, draw=none] (0,6) rectangle (14.5, 5) node[midway] {%
 \cref{sec:RatConv}: Uniform Convergence and Convergence of Distance Functions \cite{bungert2021uniform}};
 \end{tikzpicture}
-\end{center}
+\end{center}\todo{link to non nameref dings}
+%
+%
+%
+%
+%
+%
 %
 \section{Graph-based SSL and Consistency}\label{sec:GSSL}
 \todo{$p$-Lplacian bad for $p$ too small: Numerics and theory}
 \todo{Regularity results $p$-Laplace}
 
+
+\begin{wrapfigure}{r}{.5\textwidth}
+\centering
+\includegraphics[width=.5\textwidth]{atelier/paradigms/GSSL.pdf}
+\end{wrapfigure}
+
 In the semi-supervised learning setting of \cref{sec:PSSL}, we are given a finite set $\domain_n\subset \tilde{\domain}$ consisting of $n$ points, where $\tilde{\domain}$ 
 denotes the input space. We assume that a non-empty subset $\conset_n \subset \domain_n$ is labeled, i.e., we are given a labeling function
-$g:\conset_n\to\R$. The semi-supervised learning problem consists in finding an extension of $g$ to the whole set $\domain_n$,
-i.e.
+$\vec g:\conset_n\to\R$. From now on we denote functions acting on a discrete set $\domain_n$ using bold symbols to distinguish them from functions acting onn the continuum $\tilde\domain$. In particular, the space of functions on $\domain_n$ can simply be identified with $\R^n$, since 
+ %
+\begin{align*}
+\{\vec u_n:\domain\to\R\} \sim \R^n.
+\end{align*}
+%
+\noindent%
+The semi-supervised learning problem consists in finding an extension of $\vec g$ from $\conset_n$ to the whole set $\domain_n$, i.e.
 %
 \begin{gather}\label{eq:SSL}
 \begin{gathered}\tag{SSL}
-\text{find } u:\domain_n\to\R,\\
-\text{such that } u(x) = g(x) \text{ for all } x\in\conset_n.
+\text{find } \vec u:\domain_n\to\R,\\
+\text{such that } \vec u(x) = \vec g(x) \text{ for all } x\in\conset_n.
 \end{gathered}
 \end{gather}
 %
 %
 %
 %
-In order to obtain meaningful solutions, one usually incorporates the \emph{smoothness assumption} \cite{} which can be informally stated as follows:
+In order to obtain meaningful solutions, one usually incorporates the \emph{smoothness assumption} \cite{subramanya2014graph} which can be informally stated as follows:
 %
 \begin{center}
 \enquote{\textit{Points that are close together are more likely to share a similar label.}}
 \end{center}
 %
 %
-Using the previous insights, we now develop the framework for semi-supervised 
-learning on graphs. The key starting point is to introduce weighted graphs, that allow 
-us to measure the closeness of points. This concept yields a practical way to 
-enforce the smoothness assumption \cref{??}.
+\paragraph{Weighted Graphs}
+In order to employ this assumption we need a notion of \enquote{closeness} on the set $\domain_n$, for which we introduce weighted graphs. Namely we define a weighting function $w$ that allows to compare points in $\domain_n$ and therefore induces the desired notion. 
 %
 \begin{definition}{Weighted Graphs}{}
-For a finite set $V$ and a weight function $w:V\times V\to\R$, the tuple $(V,w)$ is called a \emph{weighted graph}.
+For a finite set $\domain_n$ and a weight function $w:V\times V\to\R$, the tuple $(V,w)$ is called a \emph{weighted graph}.
 \end{definition}
 %
 \begin{remark}{}{}
-Typically, a graph is defined as a pair $(V,E)$ where $V$ is a finite set and $E$ denotes the set of edges. Here, 
-one has two cases:\\
-\emph{Undirected graph:} $E=\{ \{x,y\}: \text{there is an edge between } x\in V \text{ and } y\in V\}$, i.e., 
-$E\subset 2^V$ and each edge is undirected,\\
+Typically, a graph is defined as a pair $(\domain_n,E)$ where $E$ denotes the set of edges. Here, 
+one has two cases:
+\begin{itemize}
+\item \emph{Undirected graph:} $E=\{ \{x,y\}: \text{there is an edge between } x\in \domain_n \text{ and } y\in \domain_n\}$, i.e., 
+$E\subset 2^\domain_n$ and each edge is undirected.
 %
-\emph{Directed graph:} $E=\{ (x,y): \text{there is an edge from } x \text{ to } y\}$, i.e.,
-$E\subset V\times V$ and each edge is directed.
+\item \emph{Directed graph:} $E=\{ (x,y): \text{there is an edge from } x \text{ to } y\}$, i.e.,
+$E\subset \domain_n\times \domain_n$ and each edge is directed.
 %
+\end{itemize}
 Additionally, one then considers a weight function $W:E\to\R$ assigning a weight to each edge, and then defines 
-the triple $(V,E,W)$ as a weighted graph. However, we note that this information can be represented by a 
-weight function $w:V\times V\to\R$. A directed edge set $E\subset V\times V$ can be equivalently expressed by 
-a weight function $w:V\times V\to\R$ where $w(x,y)>0$ if and only if $(x,y)\in E$, a weighting $W:E\to\R$ 
+the triple $(\domain_n,E,W)$ as a weighted graph. However, we note that all this information can be represented much more elegantly by a weight function $w:\domain_n\times \domain_n\to\R$. A directed edge set $E\subset \domain_n\times \domain_n$ can be equivalently expressed by 
+a weight function $w:\domain_n\times \domain_n\to\R$ where $w(x,y)>0$ if and only if $(x,y)\in E$, a weighting $W:E\to\R$ 
 naturally transfers to $w$. In the case of an undirected graph, one simply requires the weight function to be symmetric, i.e., 
-$w(x,y)=w(y,x)$ for all $x,y\in V$.
+$w(x,y)=w(y,x)$ for all $x,y\in \domain_n$.
 %
-Furthermore, in the above definition the set $V$ does not enter the definition other than there as a bijection 
-$V\to \{1,\ldots,n\}$ for some $n\in \N$. Therefore, a graph could be entirely represented by a weight function 
-$w:\{1,\ldots,n\}\times\{1,\ldots,n\}\to\R$. However, since the definition of $w$ will incorporate information
-about points $\domain_n\subset\R^d$ we use the notation $(\domain_n, w_n)$ for graphs in the following.
+Furthermore, in the above definition the set $\domain_n$ does not enter the definition up to ordering of its $n\in \N$  elements. Therefore, a graph could be entirely represented by a weight function $w:\{1,\ldots,n\}\times\{1,\ldots,n\}\to\R$. However, since the definition of $w$ will incorporate information about points $\domain_n\subset\R^d$ we use the notation $(\domain_n, w_n)$ for graphs in the following.
 \end{remark}
 %
 %
-In the following we consider functions defined on graphs $\vec{u}:\domain_n\to\R$ for which we employ bold symbols to 
-distinguish them from functions in the continuum $u:\domain\to\R$. In particular, the space of graph functions on $\domain_n$ can 
-simply be identified with $\R^n$, since 
+%
+\paragraph{The Graph Scale} In most of our applications the data $\domain_n$ is given as a subset of $\R^n$ and in fact we are interested in the limit $n\to\infty$, where $\domain_n$ fills out a domain $\tilde\domain\subset\R^d$. Furthermore, in the continuum we are interested in \emph{local} operators incorporating changes of functions $u:\tilde\domain\to\R$ at an infinitesimal small scale. Since interactions on a graph are inherently non-local in the Euclidean sense, we need to localize the interaction on the graph in the limit $n\to\infty$. A popular choice that guarantees this behavior is to set
 %
 \begin{align*}
-\{\vec u:\domain\to\R\} \sim \R^n.
+w(x,y) = \eta_{\gscale}(\abs{x-y})
 \end{align*}
+%
+where $\eta_\gscale:[0,\infty)\to [0,\infty]$ is a kernel function depending on a scaling parameter $\gscale\in\R^+$. The parameter $\gscale$ is also referred to as the \emph{graph scale} and informally speaking determines the scale of the graph interactions. I.e., the smaller $\gscale$ the smaller the interaction radius of points in $\domain_n$ should be. In our specific setting of $L^\infty$ problems it is typical to choose
+%
+%\begin{align*}
+%\eta_\gscale(\cdot) = \frac{1}{\c_\eta\ \gscale} \eta\left(\frac{\cdot}{\gscale}\right)
+%\end{align*}
+%
+where $\eta$ is a non-increasing kernel and $c_\eta$ is a constant depending on the kernel.
+%
+\begin{remark}{}{}
+%In the continuum limit one needs to consider the value 
+%%
+%\begin{align*}
+%\sigma_\eta = \sup_{t\in\R^+} t\, \eta(t),
+%\end{align*}
+%%
+%which is assumed to be finite. Considering graph problems in $L^p$ for $p<\infty$
+%the corresponding value is given as
+%%
+%\begin{align*}
+%\sigma_\eta^{(p)} = \int_{\R^+} \eta(t)\, t^{d+p} dt
+%\end{align*}
+%%
+%which was first employed in \cite{GarcSlep15} for $p=1$ and then in \cite{slepcev2019analysis} for general $p<\infty$. We see that $\sigma_\eta^{(p)}$ degenerates to $\sigma_\eta$ in the limit $p\to\infty$.
+%
+%In \cite{roith2022continuum} we choose $c_\eta=1$ and therfore $\sigma_\eta$ then appears in the limit functional. In \cite{bungert2021uniform} we rescale the kernel, i.e., $c_\eta = \sigma_\eta$ which allows to work with unrescaled operators in the limit. 
+\end{remark}
 %
 \section{The $p$-Laplacian: continuum and graph}\label{sec:pLap}
 %
