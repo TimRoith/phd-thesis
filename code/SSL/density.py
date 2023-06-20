@@ -26,27 +26,32 @@ rc('axes', prop_cycle=default_cycler)
 
 #%%
 np.random.seed(422)
-num_pts = 10000
-X = np.random.uniform(0.,1., size=(num_pts,2))
+num_pts = 100
+X = np.random.normal(loc=0.2,scale=.2, size=(num_pts,1))
+XX = np.random.normal(loc=.8,scale=.2, size=(num_pts,1))
+X = np.concatenate((X, XX))
 
-XXX = np.array([[0.2,0.5], [0.8,0.5]])
+XXX = np.array([[0.2], [0.8]])
 X = np.concatenate((XXX, X,))
 #W = gl.weightmatrix.knn(X,10)
 
 #%%
-epsilon = 1.2*(np.log(num_pts)/num_pts)**(0.5)
+num_e = 15
+U = np.zeros((X.shape[0], num_e))
+UU = np.zeros((X.shape[0], num_e))
+E = np.linspace(0.1,2.,num_e)
 
-W = gl.weightmatrix.epsilon_ball(X,epsilon=epsilon)
-#W = gl.weightmatrix.knn(X, 15)
-
-train_ind = [0,1]
-train_labels = np.array([[-1],[1]])
-
-#%%
-G = gl.graph(W)
-
-p = 'inf'
-if p==2:
+for i,e in enumerate(E):
+    W = gl.weightmatrix.epsilon_ball(X,epsilon=e)
+    
+    train_ind = [0,1]
+    train_labels = np.array([[-1],[1]])
+    
+    #%%
+    model = gl.ssl.laplace(W)
+    
+    #%%
+    G = gl.graph(W)
     L = G.laplacian()
     n = G.num_nodes
     idx = np.full((n,), True, dtype=bool)
@@ -73,29 +78,43 @@ if p==2:
     u = np.zeros((n,1))
     u[idx,:] = v
     u[train_ind,:] = train_labels
-    u = u[:,0]
-else:
-    u = G.amle(train_ind, train_labels, tol=1e-10)
+    uu = G.amle(train_ind, train_labels, tol=1e-10)
     
-
-#%%
-print('Finished calc!')
+    U[:,i] = u[:,0]
+    UU[:,i] = uu
 #%%
 plt.close('all')
-fig, ax = plt.subplots(1,1, squeeze=False,subplot_kw={'projection': '3d'})
+idx = np.argsort(X[:,0])
+XX = X[idx,0]
+US = U[idx, :]
+UUS = UU[idx, :]
+EE, XM = np.meshgrid(E, XX)
+fig, ax = plt.subplots(1,2, subplot_kw={'projection': '3d'})
 
-for i in range(1):
-    ax[i,0].view_init(elev=20., azim=-120)
+for i in range(2):
+    ax[i].set_box_aspect((np.ptp(XX), 3*np.ptp(E), np.ptp(US)))
+    ax[i].view_init(elev=20., azim=230.)
+    ax[i].set_ylabel('$h$')
+    ax[i].set_xlabel('$x$')
+    
+ax[0].set_title('Laplacian Learning $p=2$')
+ax[1].set_title('Lipschitz Learning $p=\infty$')
+    
+for i in range(num_e):
+    ax[0].plot(XX, US[:,i], color='xkcd:grapefruit', alpha=1-0.05*i, zs=E[i], zdir='y')
+    ax[1].plot(XX, UUS[:,i], color='xkcd:apple', alpha=1-0.05*i, zs=E[i], zdir='y')
 
-ax[0,0].set_title('$n=$' + str(num_pts))
-#ax[1].set_title('Lipschitz Learning $p=\infty$')
-
-ax[0,0].plot_trisurf(X[:,0], X[:,1], u, cmap='coolwarm')
-#ax[1].plot_trisurf(X[:,0], X[:,1], uu, cmap='coolwarm')
+save = False
+if save:
+    plt.tight_layout(pad=0.2)
+    fig.set_size_inches(8.5, 6.5)
+    plt.savefig('scaling.pdf')
 
 #%%
-save = True
-plt.tight_layout(pad=0.1)
-fig.set_size_inches(8.5, 6.5)
-if save:
-    plt.savefig('2Dex_'+str(num_pts)+ '-p='+str(p)+ '.png')
+plt.figure()
+plt.contourf(XM, EE, U)
+
+
+#%%
+plt.scatter(X,u)
+plt.scatter(X,uu, color='g')
