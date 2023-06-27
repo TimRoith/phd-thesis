@@ -6,21 +6,21 @@ In this chapter we now focus on supervised learning as described in \cref{sec:PS
 %
 \section{Setting}
 %
-We are given a finite training set $\tset\subset\domain\times\OutSpace$. For a family of functions $f_\theta:\domain\to\OutSpace$ parameterized by $\theta\in \Theta$ we consider the empirical  minimization
+We are given a finite training set $\tset\subset\domain\times\OutSpace$. For a family of functions $f_\param:\domain\to\OutSpace$ parameterized by $\param\in \param$ we consider the empirical  minimization
 %
 \begin{align*}
-\min_{\theta\in\Theta} \empLoss(\theta) 
+\min_{\param\in\param} \empLoss(\param) 
 \end{align*} 
 %
 where for a function $\ell:\OutSpace\times\OutSpace\to\R$ we define
 \begin{align*}
-\empLoss(\theta)  := \sum_{(x,y)\in \tset} \ell(f_\theta(x), y).
+\empLoss(\param)  := \frac{1}{\abs{\tset}}\sum_{(x,y)\in \tset} \ell(f_\param(x), y).
 \end{align*}
 %
 Assuming that $\tset$ is sampled from a joint distribution $\pi$ on $\domain\times\OutSpace$ this approximates the infeasible population risk minimization
 %
 \begin{align*}
-\int_{\domain\times\OutSpace} \ell(f_\theta(x), y) d\pi(x,y).
+\int_{\domain\times\OutSpace} \ell(f_\param(x), y) d\pi(x,y).
 \end{align*}
 %
 In this thesis we focus on feed-forward neural networks, i.e., we consider layers of the form
@@ -32,18 +32,45 @@ In this thesis we focus on feed-forward neural networks, i.e., we consider layer
 where $w\in\R$ models a residual connection, $W\in\R^{n\times n}$ is a weight matrix, $b\in\R^n$ a bias vector and $z\in\R^{m}$. We consider a concatenation of $L\in\N$ such layers, which then forms a neural network
 %
 \begin{align*}
-f_\theta = \Phi^L\circ\ldots\circ\Phi^1
+f_\param = \Phi^L\circ\ldots\circ\Phi^1
 \end{align*} 
 %
-with parameters $\theta =(w_1,\ldots, w_L, W_1,\ldots, W_L, b_1,\ldots, b_L)\in\Theta$ and layers $\Phi^i := \Phi(w_i, W_i, b_i)$.
+with parameters $\param =(w_1,\ldots, w_L, W_1,\ldots, W_L, b_1,\ldots, b_L)\in\param$ and layers $\Phi^i := \Phi(w_i, W_i, b_i)$.
 %
 \paragraph{MLP}
 
 \paragraph{Convolutions}
 
 \paragraph{ResNets}
-
 %
+\subsection{Gradient Computation and Stochastic Gradient Descent}\label{sec:SGD}
+%
+%
+Training a neural network requires to solve a optimization problem w.r.t. to the parameters $\param\in\Param$. In this work we only focus on first order methods, however both zero \cite{Riedl} and second order methods \cite{Hessian} have been successfully applied in this context. Employing first order methods, requires to evaluate the gradient $\nabla_\theta \empLoss$, however in this scenario it is not common to compute the full gradient but rather to have a gradient estimator. This estimator is usually obtained by randomly dividing the train set $\trSet$ into disjoint minibatches $B_1\cup\ldots\cup B_b = \trSet$ and then successively computing the gradient of the minibatch loss
+%
+\begin{align*}
+\frac{1}{\abs{B_i}}\sum_{(x,y)\in B_i} \ell(f_\param(x), y).
+\end{align*}
+%
+Iterating over all batches $i=1,\ldots,b$ is referred to as one epoch. From a mathematical point of view this yields stochastic optimization methods, since in each step the true gradient is replaced by an estimator. In the abstract setting we let $(\Omega,F,\P)$ be a probability space and consider a function $g:\Param\times \Omega\to \Param$ as an unbiased estimator of $\nabla\empLoss$, i.e.
+%
+\begin{align*}
+\Exp{g(\param;\omega)} = \nabla\empLoss(\param)\text{ for all } \param\in\Param.
+\end{align*}
+%
+Most notably this method transforms the standard gradient descent update \cite{cauchy1847methode}
+%
+\begin{align*}
+\param^{(k+1)} = \param^{(k)} - \tau^{(k)} \nabla \empLoss(\theta^{(k)})
+\end{align*}
+%
+to \emph{stochastic} gradient descent \cite{robbins1951stochastic}
+%
+\begin{align*}
+\text{draw }&\omega^{(k)}\text{ from }\Omega\text{ using the law of }\P,\\
+g^{(k)} &:= {g(\param^{(k)};\omega^{(k)})},\\
+\param^{(k+1)} &:= \param^{(k)} - \tau^{(k)} g^{(k)}.
+\end{align*}
 \section{Adversarial Stability}
 
 %
@@ -99,7 +126,7 @@ The main algorithm in this section are so-called Bregman iterations, for which w
 Let $\func:\Param\to(-\infty,\infty]$ be a proper, convex functional. Then we define for $\param\in\dom(\partial\func),\overline{\param}\in\Param$
 % ---------------------------------------------------------
 \begin{align}\label{eq:bregman_distance}
-    D^\sg_\func(\overline{\param},\param) := \func(\overline \param)-\func({\param})-\langle\sg,\overline\param-{\param}\rangle,\quad\sg\in\partial\func(\param).
+D^\sg_\func(\overline{\param},\param) := \func(\overline \param)-\func({\param})-\langle\sg,\overline\param-{\param}\rangle,\quad\sg\in\partial\func(\param).
 \end{align}
 %
 For $\sg\in\partial\func({\param})$ and $\overline\sg\in\partial\func(\overline{\param})$ we define the \emph{symmetric} Bregman distance as
@@ -108,7 +135,11 @@ D^\mathrm{sym}_\func(\overline{\param},\param) := D^\sg_\func(\overline{\param},
 \end{align}
 \end{definition}
 % ---------------------------------------------------------
-Intuitively, the Bregman distance $D^\sg_\func(\overline{\param},\param)$, measures the distance of $\func$ to its linearization around $\param$, see \cref{fig:Bregdist}.
+Intuitively, the Bregman distance $D^\sg_\func(\overline{\param},\param)$, measures the distance of $\func$ to its linearization around $\param$, see \cref{fig:Bregdist}. If $J$ is differentiable, then the subdifferential is single valued---we can suppress the sup script $\sg$---and we have
+%
+\begin{align*}
+D_J(\overline\param,\param) = \func(\overline \param)-\func({\param})-\langle\,\nabla \func(\param), \overline\param-{\param}\rangle.
+\end{align*}
 %
 \begin{figure}
 \centering
@@ -145,10 +176,24 @@ The last concept that is crucial in \cite{bungert2022bregman} is the so-called p
 %
 \begin{definition}{}{}
 Let $\func:\Param\to(-\infty,\infty]$  be convex, proper and lower semicontinuous functional, then we define the \emph{proximal operator} as
-\begin{align}
+\begin{align*}
     \prox{\func}(\overline{\param}) := \argmin_{\param\in\Param} \frac{1}{2}\norm{\param-\overline{\param}}^2 + \func(\param).
-\end{align}
+\end{align*}
 \end{definition}
+%
+The the optimality conditions yield for $\param=\prox{J}(\overline\param)$ 
+%
+\begin{align*}
+\param - \overline\param \in \partial \func(\param).
+\end{align*}
+%
+If $J$ is differentiable, we then have
+%
+\begin{align*}
+\param - \nabla J(\param) = \overline\param\Leftrightarrow
+\theta = (I + \nabla J)^{-1}(\overline\theta).
+\end{align*}\todo{check this!}
+
 %
 %
 \subsection{Bregman Iterations}
@@ -156,23 +201,275 @@ Let $\func:\Param\to(-\infty,\infty]$  be convex, proper and lower semicontinuou
 We first consider the following implicit Euler scheme, for a step size $\tau>0$
 \begin{subequations}\label{eq:bregman_iteration}
 \begin{align}
-    \param^{(k+1)} &= \argmin_{\param\in\Param} D^{\sg^{(k)}}_\func(\param,\param^{(k)}) + \tau^{}\empLoss(\param), \\
+    \param^{(k+1)} &= \argmin_{\param\in\Param} D^{\sg^{(k)}}_\func\left(\param,\param^{(k)}\right) + \tau^{}\empLoss(\param), \\
     \sg^{(k+1)} &= \sg^{(k)} - \tau^{}\nabla\empLoss(\param^{(k+1)}) \in \partial \func(\param^{(k+1)})
 \end{align}
 \end{subequations}
 %
-which is known as the \emph{Bregman iteration} \cite{osher2005iterative}. The intuitive interpretation here is, that in each step we want to minimize $\empLoss$ while also being close to the previous iterate in terms of the Bregman distance induced by $J$. If $J=\frac{1}{2}\norm{\cdot}_2^2$ as in \cref{ex:BregNorm}
-
-
-The time continuous flow for $\tau\to 0$ is known as the \emph{inverse scale space} flow \cite{burger2006nonlinear,burger2007inverse},
+which is known as the \emph{Bregman iteration} \cite{osher2005iterative}. The intuitive interpretation here is, that in each step we want to minimize $\empLoss$ while also being close to the previous iterate in terms of the Bregman distance induced by $J$. Therefore, the very nature of Bregman iterations means starting with a iterate $\param^{(0)}$ that has a low value in $J$---preferably $J(\param^{(0)}) = 0$---and only increase $J(\param^{(k)})$ gradually as $k$ increases.
+%
+\begin{remark}{}{}
+Originally, the iterations were employed for solving inverse problems. Here, we are given a forward operator $A:\Param\to\tilde{\Param}$ and a noisy measurement $f= A\param +\delta$ where $\delta\in \tilde{\Param}$ is additive noise. The loss function is then of the form
 %
 \begin{align*}
-    \begin{cases}
-        \dot{\sg}_t = - \nabla\empLoss(\param_t), \\
-        \sg_t \in \partial \func(\param_t),
-    \end{cases}
+\empLoss = \frac{1}{2}\norm{A\cdot - f}^2_2
 \end{align*}
 %
+for which one can show that the Bregman iterations converge to 
+%
+\begin{align}\label{eq:Bregexact}
+\argmin_{\param:\empLoss(\param)=0} J(\param),
+\end{align}
+%
+see e.g. \cite{??}.
+%
+In comparison the concept of adding a regularizing term with parameter $\lambda>0$, i.e. considering the problem
+%
+\begin{align*}
+\min_\param \empLoss(\param) + \lambda J(\param) 
+\end{align*}
+%
+actually modifies the minimizers. In this sense Bregman iterations do not introduce a bias.
+\end{remark}
+%
+%
+\begin{example}{}{ex:BregCat}
+In order to get an intuition about the behavior of Bregman iterations, we consider an image denoising task. I.e. we are given a noisy image $\R^{n\times m}\ni f = u + \delta$ where $\delta\in\R^{n\times m}$ is additive noise. In order to obtain $u\in\R^{n\times n}$ from $f$ we employ the TV functional 
+%
+\begin{align*}
+J(u) = TV(u) := MISSING,
+\end{align*}
+%
+together with the loss function $\empLoss(u):= \frac{1}{2}\norm{u-f}^2_2$.
+%
+We start with an image $u^{(0)}$ such that $TV(u^{(0)})=0$, i.e. a constant image. In \cref{fig:BregCat} we visualize the iteration. At lower iterations $u^{(k)}$ only displays features on a larger scale, while at the end, the iteration converges back to smallest possible scale, the noisy data. In order to obtain an appropriate denoising, one needs to employ a early stopping here. This fits well to the insight from \cref{eq:Bregexact} since here the forward operator is the identity. I.e.
+%
+\begin{align*}
+\{ u: \frac{1}{2}\norm{u-f}^2=0\} = \{f\}. 
+\end{align*}
+%
+It should also be noted that this example only serves a explanatory purpose. In practice directly applying \cref{eq:bregman_iteration} for $J=TV$ can become infeasible since the first minimization problem is expensive.
+\end{example}
+%
+%
+%
+%
+\begin{figure}
+\begin{minipage}{\textwidth}%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/cat-0.png}
+\subcaption{Iteration $k=0$}
+\end{subfigure}\hfill%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/cat-10.png}
+\subcaption{Iteration $k=10$}
+\end{subfigure}\hfill%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/cat-20.png}
+\subcaption{Iteration $k=20$}%
+\end{subfigure}
+\end{minipage}\\%
+
+\begin{minipage}{\textwidth}%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/cat-50.png}%
+\subcaption{Iteration $k=50$}%
+\end{subfigure}\hfill%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/cat-95.png}%
+\subcaption{Iteration $k=100$}%
+\end{subfigure}\hfill%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/data.png}
+\subcaption{Iteration $k=500$}
+\end{subfigure}%
+\end{minipage}%
+%
+\caption{Bregman iterations for image denoising in \cref{ex:BregCat}}\label{fig:BregCat}
+\end{figure}
+
+
+If $J=\frac{1}{2}\norm{\cdot}_2^2$ as in \cref{ex:BregNorm} then this amounts to the step
+%
+\begin{align*}
+\param^{(k+1)} &= \argmin_{\param\in\Param} \frac{1}{2}\norm{\param - \param^{(k)}}^2_2 + \tau^{}\empLoss(\param),
+\end{align*}
+%
+where the optimality conditions then yield
+%
+\begin{align*}
+\param^{(k+1)} - \param^{(k)} + \tau \nabla \empLoss(\param^{(k+1)}) = 0
+\Leftrightarrow \param^{(k+1)}= \param^{(k)} - \tau \nabla \empLoss(\param^{(k+1)})
+\end{align*}
+%
+which is a standard implicit Euler iteration. The time continuous flow for $\tau\to 0$ is known as the \emph{inverse scale space} flow \cite{burger2006nonlinear,burger2007inverse},
+%
+\begin{align*}
+\begin{cases}
+    \dot{\sg}_t = - \nabla\empLoss(\param_t), \\
+    \sg_t \in \partial \func(\param_t),
+\end{cases}
+\end{align*}
+%
+where again for $J=\frac{1}{2}\norm{\cdot}_2^2$ we obtain that $\partial J(\param_t) = \param_t$ and therefore obtain the standard gradient flow. Hence we see, that the inverse scale space flow is a generalization of the standard gradient flow. 
+%
+%
+%
+\subsection{Linearized Bregman Iterations}
+%
+The minimization step in \cref{eq:bregman_iteration} is infeasible for large scale applications, especially in our setting of neural networks. Therefore, we employ the idea introduced in \cite{yin2008bregman, cai2009convergence}. Here, we first linearize the loss function around the previous iterate,
+%
+\begin{align*}
+\empLoss(\param) \approx \empLoss(\param^{(k)}) + 
+\left\langle \nabla\empLoss(\param^{(k)}), \param - \param^{(k)}
+\right\rangle.
+\end{align*} 
+%
+The next step is to replace $\func$ with the strongly convex elastic net regularization $\func_\delta:= \func + \frac{1}{2\delta}\norm{\cdot}^2_2$. The minimization step then transforms to
+%
+\begin{align}\label{eq:LinBregDer}
+\argmin_{\param\in\Param} &D^{\sg^{(k)}}_{\func_\delta} \left(\param,\param^{(k)}\right) + \tau^{}\left\langle \nabla\empLoss(\param^{(k)}), \param
+\right\rangle\\&= 
+\argmin_{\param\in\Param}
+J(\param) + \frac{1}{2\delta} \norm{\param}^{2}_2 - 
+\langle \sg^{k}, \param\rangle +
+\tau^{}\left\langle \nabla\empLoss(\param^{(k)}), \param
+\right\rangle\nonumber\\
+&=
+\argmin_{\param\in\Param}
+J(\param) + \frac{1}{2\delta} \norm{\param - \delta(\sg^{(k)} -\tau \nabla\empLoss(\param^{(k)})}^2_2 - \underbrace{\norm{\sg^{(k)} -\tau \nabla\empLoss(\param^{(k)})}^2_2}_{\text{constant in } \param}\nonumber\\
+&=
+\prox{\delta \func}\left(\delta\left(\sg^{(k)} -\tau \nabla\empLoss(\param^{(k)}\right)\right).\nonumber%
+\end{align}
+%
+Note that here $\sg^{(k)}$ is a subgradient of $J_\delta$ at $\param$ therefore we derive the subgradient update rule
+%
+\begin{align*}
+\sg^{(k+1)} := \sg^{(k)} - \tau \empLoss(\param^{(k)}).
+\end{align*}
+%
+This finally yields the linearized Bregman iterations
+%
+\begin{subequations}\label{eq:lin_bregman_iteration}
+\begin{align}
+\sg^{(k+1)} = \sg^{(k)} - \tau \nabla\empLoss(\param^{(k)}),\\
+\param^{(k+1)} = \prox{\delta J}(\delta \sg^{(k+1)}).
+\end{align}
+\end{subequations}
+%
+%
+The last line is equivalent to $\sg^{(k+1)}\in\partial J_\delta(\param^{(k+1)})$ for which we obtain the continuous linearized flow
+%
+\begin{align*}
+\dot{\sg}_t &= -\nabla \empLoss(\param_t),\\
+\sg_t &\in \partial J_\delta(\param_t).
+\end{align*}\todo{A lot of citations missing here}
+%
+%
+\subsection{Connection to Mirror Descent}
+As already noticed by \cite{??} linearized Bregman iteration are equivalent to mirror descent in some situations. We show the equivalence in the following, where we employ similar arguments as in \cite{Duchi}.
+%
+One assumes to be given a differentiable and strongly convex function $h:\Param\to\R$, i.e.,
+%
+\begin{align*}
+h(\overline\param) - h(\param) - \langle\nabla h(\param), \overline\param - \param \rangle \geq  
+\frac{1}{2} \norm{\overline\param - \param}^2_2
+\end{align*}
+%
+for all $\param,\overline\param\in\Param$. The mirror descent update then reads (\cite{nemirovskij1983problem, beck2003mirror})
+%
+\begin{align}\label{eq:mirror}
+\theta^{(k+1)} = \nabla h^\ast\left(\nabla h\left(\theta^{(k)}\right) - \tau \empLoss(\param^{(k)})\right)
+\end{align}
+%
+where $h^\ast$ denotes the Fenchel conjugate
+%
+\begin{align*}
+h^\ast(\sg) = \sup_{\param} \langle \sg, \param\rangle - h(\param)
+\end{align*}
+%
+with the gradient
+%
+\begin{align*}
+\nabla h^\ast(\sg) = \argmax_{\param} \left\{ \langle\sg, \param\rangle - h(\param)\rangle\right\}.
+\end{align*}
+%
+Therefore, we see that \cref{eq:mirror} can be written as
+%
+\begin{align*}
+\param^{(k+1)} &= \argmax_\param
+\left\{\left\langle\nabla h\left(\theta^{(k)}\right) - \tau \empLoss(\param^{(k)}), \param \right\rangle - h(\param)\right\}\\
+&=
+\argmax_\param \left\{-D_h(\param, \param^{(k)})-\tau\left\langle \empLoss(\param^{(k)}), \param \right\rangle\right\}\\
+&=
+\argmin_\param \left\{D_h(\param, \param^{(k)})+\tau\left\langle \empLoss(\param^{(k)}), \param \right\rangle\right\}
+\end{align*}
+%
+which was our starting point to derive linearized Bregman iterations for $h=\func_{\delta}$ in \cref{eq:LinBregDer}. In fact, we can always find a convex functional $\func:\Theta\to\R$ such that $h = J + \frac{1}{2}\norm{\cdot}_2^2$ for which we see, that \cref{eq:lin_bregman_iteration} is a more general formulation of \cref{eq:mirror}.
+%
+%
+\subsection{Convergence of Stochastic Bregman Iterations}
+%
+%
+We want to employ linearized Bregman iterations to train a neural network. As mentioned in \cref{sec:SGD} we therefore do not compute the full gradient of $\empLoss$ but rather a minibatched variant. This yields stochastic Bregman Iterations
+%
+\begin{subequations}\label{eq:stochlinbreg}
+\begin{align}
+    \text{draw }&\omega^{(k)}\text{ from }\Omega\text{ using the law of }\P,\\
+    g^{(k)} &:= {g(\param^{(k)};\omega^{(k)})},\\
+    v^{(k+1)} &:= v^{(k)} - \tau^{(k)} g^{(k)},\\
+    \param^{(k+1)} &:= \prox{\delta J}(\delta v^{(k+1)}).
+\end{align}
+\end{subequations}
+%
+%
+While various previous works proof convergence of linearized Bregman iterations (see e.g. \cite{osher2005iterative, cai2009convergence}), the stochastic setting requires special treatment. In \cite{bungert2022bregman} the first guarantees for the algorithm in \cref{eq:stochlinbreg} were proven. Other work on convergence of stochastic Bregman iterations \cite{dragomir2021fast, hanzely2021fastest, zhang2018convergence, d2021stochastic} requires a differentiable functional $\func$. However, since our main motivation is to a functional in the flavor of the $\ell^1$ norm this is not applicable. Therefore, we present the novel convergence analysis of \cite{bungert2022bregman}.
+%
+\paragraph{Assumptions}
+%
+We first state some basic assumptions on the loss function $\empLoss$. We require it to be bounded from below and differentiable, which are both standard assumptions. Additionally, we require Lipschitz continuity of the gradient, which also commonly employed in optimization literature.
+%
+\begin{assumption}{Loss function}{ass:loss}
+We assume the following conditions on the loss function:
+\begin{itemize}
+    \item The loss function $\empLoss$ is bounded from below and without loss of generality we assume $\empLoss\geq 0$.
+    \item The function $\empLoss$ is continuously differentiable.
+    \item The gradient of the loss function $\param\mapsto\nabla\empLoss(\param)$ is $L$-Lipschitz for $L\in(0,\infty)$:
+    \begin{align}\label{ineq:gradLip}
+        \norm{\nabla\empLoss(\tilde\param)-\nabla\empLoss(\param)}\leq L \norm{\tilde\param-\param},\quad \forall \param,\tilde\param\in\Param.
+    \end{align}
+\end{itemize}
+\end{assumption}
+%
+%
+If the loss function $\empLoss$ fulfills the previous assumptions we are able to prove loss decay of the iterates in \cref{thm:decreasingloss}. However, in order to show convergence of the iterates we additionally need a convexity assumption.
+%
+%
+\begin{assumption}{Strong convexity}{ass:muconvex} 
+For a proper convex function $H:\Param\to\R$ and $\nu\in(0,\infty)$, we say that the loss function $\param\mapsto\empLoss(\param)$ is $\nu$-strongly convex w.r.t. $H$, if
+\begin{align}
+\empLoss(\pparam) \geq \empLoss(\param) + \langle\nabla\empLoss(\param)\pparam - \param\rangle + \nu D_\func^\sg(\pparam,\param),\quad\forall\param,\pparam\in\Param, \sg\in\partial H(\param).
+\end{align}
+\end{assumption}
+%
+%
+\begin{remark}{}{}
+We have two relevant cases for the choice of $H$. For $H=\frac{1}{2}\norm{\cdot}^2$ \cref{ass:muconvex} reduces to standard strong $\nu$-convexity. The other relevant case, is $H=J_\delta$, i.e. we consider convexity w.r.t. to the functional $J_\delta$.
+\end{remark}
+
+\paragraph{Main Convergence Results}
+
+\begin{theorem}{Loss decay}{thm:decreasingloss}
+Assume that \cref{ass:loss,ass:variance,ass:regularizer} hold true, let $\delta>0$, and let the step sizes satisfy $\tau^{(k)} \leq \frac{2}{\delta L}$.
+Then there exist constants $c,C>0$ such that for every $k\in\N$ the iterates of \labelcref{eq:stochlinbreg} satisfy 
+\begin{align}\label{ineq:loss_decay}
+    \begin{split}
+    \E\left[\empLoss(\param^{(k+1)})\right] + \frac{1}{\tau^{(k)}}\E\left[ D^\mathrm{sym}_\func(\param^{(k+1)},\param^{(k)})\right] + \frac{C}{2\delta\tau^{(k)}}\E\left[\norm{\param^{(k+1)}-\param^{(k)}}^2\right] \\
+    \leq \E\left[\empLoss(\param^{(k)})\right] + \tau^{(k)}\delta\frac{\sigma^2}{2c},
+    \end{split}
+\end{align}
+\end{theorem}
+
 \section{Resolution Stability}
 %
 
