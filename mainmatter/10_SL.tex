@@ -4,23 +4,24 @@
 In this chapter we now focus on supervised learning as described in \cref{sec:PSL}. 
 \cite{bungert2021clip, bungert2021neural, kabri2023resolution, bungert2022bregman}
 %
+\paragraph{Remark on Notation} In the following we deviate from the notation of the previous part. Most notably the input space is now denoted by $\Inp$ instead of $\domain$. Furthermore, we employ $\OutSpace$ to denote an abstract output space.
 \section{Setting}
 %
-We are given a finite training set $\tset\subset\domain\times\OutSpace$. For a family of functions $f_\param:\domain\to\OutSpace$ parameterized by $\param\in \param$ we consider the empirical  minimization
+We are given a finite training set $\tset\subset\Inp\times\OutSpace$. For a family of functions $f_\param:\Inp\to\OutSpace$ parameterized by $\param\in \param$ we consider the empirical  minimization
 %
 \begin{align*}
 \min_{\param\in\param} \empLoss(\param) 
 \end{align*} 
 %
 where for a function $\ell:\OutSpace\times\OutSpace\to\R$ we define
-\begin{align*}
+\begin{align}\label{eq:empLoss}
 \empLoss(\param)  := \frac{1}{\abs{\tset}}\sum_{(x,y)\in \tset} \ell(f_\param(x), y).
-\end{align*}
+\end{align}
 %
-Assuming that $\tset$ is sampled from a joint distribution $\pi$ on $\domain\times\OutSpace$ this approximates the infeasible population risk minimization
+Assuming that $\tset$ is sampled from a joint distribution $\pi$ on $\Inp\times\OutSpace$ this approximates the infeasible population risk minimization
 %
 \begin{align*}
-\int_{\domain\times\OutSpace} \ell(f_\param(x), y) d\pi(x,y).
+\int_{\Inp\times\OutSpace} \ell(f_\param(x), y) d\pi(x,y).
 \end{align*}
 %
 In this thesis we focus on feed-forward neural networks, i.e., we consider layers of the form
@@ -39,7 +40,7 @@ with parameters $\param =(w_1,\ldots, w_L, W_1,\ldots, W_L, b_1,\ldots, b_L)\in\
 %
 \paragraph{MLP}
 
-\paragraph{Convolutions}
+\paragraph{Convolutions}\label{sec:convlayer}
 
 \paragraph{ResNets}
 %
@@ -84,7 +85,7 @@ Intro sparsity blah blah
 \item generalization
 \end{enumerate}
 %
-\subsection{Preliminaries on Convex Analysis}
+\subsection{Preliminaries on Convex Analysis and Bregman Iterations}
 
 We first review some necessary concepts from convex analysis that allow us to introduce the framework in \cite{bungert2022bregman}. We refer to \cite{benning2018modern, rockafellar1997convex, bauschke2011convex} for a more exhaustive introduction to the topics.
 %
@@ -193,12 +194,10 @@ If $J$ is differentiable, we then have
 \param - \nabla J(\param) = \overline\param\Leftrightarrow
 \theta = (I + \nabla J)^{-1}(\overline\theta).
 \end{align*}\todo{check this!}
-
 %
 %
-\subsection{Bregman Iterations}
 %
-We first consider the following implicit Euler scheme, for a step size $\tau>0$
+We first consider the following implicit Euler scheme\todo{Minimizing Movment proximal point}, for a step size $\tau>0$
 \begin{subequations}\label{eq:bregman_iteration}
 \begin{align}
     \param^{(k+1)} &= \argmin_{\param\in\Param} D^{\sg^{(k)}}_\func\left(\param,\param^{(k)}\right) + \tau^{}\empLoss(\param), \\
@@ -315,7 +314,7 @@ where again for $J=\frac{1}{2}\norm{\cdot}_2^2$ we obtain that $\partial J(\para
 %
 %
 %
-\subsection{Linearized Bregman Iterations}
+\subsection{Linearized Bregman Iterations and Mirror Descent}
 %
 The minimization step in \cref{eq:bregman_iteration} is infeasible for large scale applications, especially in our setting of neural networks. Therefore, we employ the idea introduced in \cite{yin2008bregman, cai2009convergence}. Here, we first linearize the loss function around the previous iterate,
 %
@@ -325,7 +324,12 @@ The minimization step in \cref{eq:bregman_iteration} is infeasible for large sca
 \right\rangle.
 \end{align*} 
 %
-The next step is to replace $\func$ with the strongly convex elastic net regularization $\func_\delta:= \func + \frac{1}{2\delta}\norm{\cdot}^2_2$. The minimization step then transforms to
+The next step is to replace $\func$ with the strongly convex elastic net regularization%
+\begin{align}\label{eq:elastic_net}
+\func_\delta:= \func + \frac{1}{2\delta}\norm{\cdot}^2_2.
+\end{align}
+%
+The minimization step then transforms to
 %
 \begin{align}\label{eq:LinBregDer}
 \argmin_{\param\in\Param} &D^{\sg^{(k)}}_{\func_\delta} \left(\param,\param^{(k)}\right) + \tau^{}\left\langle \nabla\empLoss(\param^{(k)}), \param
@@ -366,7 +370,6 @@ The last line is equivalent to $\sg^{(k+1)}\in\partial J_\delta(\param^{(k+1)})$
 \end{align*}\todo{A lot of citations missing here}
 %
 %
-\subsection{Connection to Mirror Descent}
 As already noticed by \cite{??} linearized Bregman iteration are equivalent to mirror descent in some situations. We show the equivalence in the following, where we employ similar arguments as in \cite{Duchi}.
 %
 One assumes to be given a differentiable and strongly convex function $h:\Param\to\R$, i.e.,
@@ -408,26 +411,90 @@ Therefore, we see that \cref{eq:mirror} can be written as
 which was our starting point to derive linearized Bregman iterations for $h=\func_{\delta}$ in \cref{eq:LinBregDer}. In fact, we can always find a convex functional $\func:\Theta\to\R$ such that $h = J + \frac{1}{2}\norm{\cdot}_2^2$ for which we see, that \cref{eq:lin_bregman_iteration} is a more general formulation of \cref{eq:mirror}.
 %
 %
-\subsection{Convergence of Stochastic Bregman Iterations}
+\subsection{Stochastic and Momentum Variants}
 %
 %
 We want to employ linearized Bregman iterations to train a neural network. As mentioned in \cref{sec:SGD} we therefore do not compute the full gradient of $\empLoss$ but rather a minibatched variant. This yields stochastic Bregman Iterations
 %
-\begin{subequations}\label{eq:stochlinbreg}
-\begin{align}
-    \text{draw }&\omega^{(k)}\text{ from }\Omega\text{ using the law of }\P,\\
-    g^{(k)} &:= {g(\param^{(k)};\omega^{(k)})},\\
-    v^{(k+1)} &:= v^{(k)} - \tau^{(k)} g^{(k)},\\
-    \param^{(k+1)} &:= \prox{\delta J}(\delta v^{(k+1)}).
+
+\begin{align}\label{eq:stochlinbreg}
+\begin{split}
+\text{draw }&\omega^{(k)}\text{ from }\Omega\text{ using the law of }\P,\\
+g^{(k)} &:= {g(\param^{(k)};\omega^{(k)})},\\
+v^{(k+1)} &:= v^{(k)} - \tau^{(k)} g^{(k)},\\
+\param^{(k+1)} &:= \prox{\delta J}(\delta v^{(k+1)}).
+\end{split}
 \end{align}
-\end{subequations}
+%
+The basic update scheme is given as the linearized Bregman iterations from\cite{osher2005iterative}, however the presence of a stochastic gradient estimator significantly complicates the convergence analysis, as observed in \cref{sec:ConvAna}. However, this algorithm can now be efficiently employed to train a neural network. For the analogous stochastic mirror descent algorithm we refer to \cite{nemirovski2009robust}.
+%
+\paragraph{Momentum Variant} Typically, the learning process of a neural network can be improved by introducing a momentum term (see e.g. \cite{nesterov1983method, qian1999momentum}) in the optimizer. In our case this can be achieved, by replacing the gradient update on the subgradient variable. In \cite{bungert2022bregman} we first consider the inertia version of the gradient flow as
+%
+\begin{align*}
+\begin{cases}
+    \gamma \ddot{v}_t + \dot{v}_t = -\nabla\empLoss(\param_t), \\
+    v_t \in \partial \func_\delta(\param_t).
+\end{cases}
+\end{align*}
+%
+for which the discretization then reads
+%
+\begin{align}\label{eq:momBreg}
+\begin{split}
+m^{(k+1)} &= \beta^{(k)} m^{(k)} + (1-\beta^{(k)})\tau^{(k)} g^{(k)},\\
+v^{(k+1)} &= v^{(k)} - m^{(k+1)},\\
+\param^{(k+1)} &= \prox{\delta\func}(\delta v^{(k+1)}).
+\end{split}
+\end{align}
+%
+%
+\paragraph{Adamized Bregman Iteration} We shortly remark that one can replace the momentum update in \cref{eq:momBreg} with a Adam update \cite{kingma2014adam}. This then yields an Adamized version of linearized Bregman iterations as employed in \cite{bungert2022bregman}.
+
+
+\subsection{Convergence of Stochastic Bregman Iterations}\label{sec:ConvAna}
 %
 %
 While various previous works proof convergence of linearized Bregman iterations (see e.g. \cite{osher2005iterative, cai2009convergence}), the stochastic setting requires special treatment. In \cite{bungert2022bregman} the first guarantees for the algorithm in \cref{eq:stochlinbreg} were proven. Other work on convergence of stochastic Bregman iterations \cite{dragomir2021fast, hanzely2021fastest, zhang2018convergence, d2021stochastic} requires a differentiable functional $\func$. However, since our main motivation is to a functional in the flavor of the $\ell^1$ norm this is not applicable. Therefore, we present the novel convergence analysis of \cite{bungert2022bregman}.
 %
-\paragraph{Assumptions}
 %
-We first state some basic assumptions on the loss function $\empLoss$. We require it to be bounded from below and differentiable, which are both standard assumptions. Additionally, we require Lipschitz continuity of the gradient, which also commonly employed in optimization literature.
+\paragraph{Assumptions on the Gradient Estimator}
+%
+In order to obtain convergence guarantees, we need to assume mainly two properties on the gradient estimator $g(\cdot,\cdot)$. First we assume unbiasedness, which means
+%
+\begin{align*}
+\Exp{g(\param;\omega)} = \nabla\empLoss(\param)\text{ for all }\param\in\Param.
+\end{align*}
+%
+The second assumption we need in the following is referred to as \emph{bounded variance} of the estimator.
+%
+\begin{assumption}{Bounded variance}{ass:variance}
+There exists a constant $\sigma>0$ such that for any $\param\in\Param$ it holds
+\begin{align}
+    \E\left[\norm{g(\param;\omega)-\nabla\empLoss(\param)}^2\right] \leq \sigma^2.
+\end{align}
+\end{assumption}
+%
+%
+\begin{remark}{}{}
+We want to remark, that this property is weaker than the bounded gradient assumption
+%
+\begin{align*}
+\E\left[\norm{g(\param;\omega)}^2\right] \leq C
+\end{align*}
+%
+for some constant $C>0$. In fact this condition can not be enforced together with a strong convexity assumption---which we employ in \cref{thm:??}---as shown in \cite{pmlr-v80-nguyen18c}.
+\end{remark}
+\paragraph{Assumptions on the Regularizer and on the Loss Function}
+%
+The assumptions on the regularization functional $\func$ are mild and merely ensure the well-definedness of the proximal mapping,
+%
+%
+\begin{assumption}{Regularizer}{ass:regularizer}
+We assume that $\func:\Param\to(-\infty,\infty]$ is a convex, proper, and lower semicontinuous functional on the Hilbert space $\Param$.
+\end{assumption}
+%
+%
+Our assumptions on the loss function $\empLoss$ are more restrictive. We require it to be bounded from below and differentiable, which are both standard assumptions. Additionally, we require Lipschitz continuity of the gradient, which also commonly employed in optimization literature.
 %
 \begin{assumption}{Loss function}{ass:loss}
 We assume the following conditions on the loss function:
@@ -442,13 +509,32 @@ We assume the following conditions on the loss function:
 \end{assumption}
 %
 %
-If the loss function $\empLoss$ fulfills the previous assumptions we are able to prove loss decay of the iterates in \cref{thm:decreasingloss}. However, in order to show convergence of the iterates we additionally need a convexity assumption.
+If the loss function $\empLoss$ fulfills the previous assumptions we are able to prove loss decay of the iterates in \cref{thm:decreasingloss}. However, in order to show convergence of the iterates we additionally need a convexity assumption. For a differentiable functional $J$, the authors in \cite{dragomir2021fast} assumed
+%
+\begin{align*}
+\nu\ D_J(\pparam,\param) \leq D_\empLoss(\pparam,\param)
+\end{align*}
+%
+which for twice differentiable $\func,\empLoss$ transfers to
+%
+\begin{align*}
+\nu\ \nabla^2 \func \lesssim \nabla^2 \empLoss,\qquad\forall\pparam,\param\in\Param.
+\end{align*}
+%
+Plugging in the definition of the Bregman dist $D_\empLoss$ we obtain
+%
+\begin{align*}
+\nu\ D_J(\pparam,\param) \leq \empLoss(\pparam) - \empLoss(\param) - 
+\langle \nabla\empLoss(\param), \pparam-\param\rangle.
+\end{align*}
+%
+In this form one observes that this is in fact a convexity assumption on $\empLoss$ in a $\func$ dependent distance, as employed in \cite{bungert2022bregman}.
 %
 %
 \begin{assumption}{Strong convexity}{ass:muconvex} 
 For a proper convex function $H:\Param\to\R$ and $\nu\in(0,\infty)$, we say that the loss function $\param\mapsto\empLoss(\param)$ is $\nu$-strongly convex w.r.t. $H$, if
 \begin{align}
-\empLoss(\pparam) \geq \empLoss(\param) + \langle\nabla\empLoss(\param)\pparam - \param\rangle + \nu D_\func^\sg(\pparam,\param),\quad\forall\param,\pparam\in\Param, \sg\in\partial H(\param).
+\empLoss(\pparam) \geq \empLoss(\param) + \langle\nabla\empLoss(\param), \pparam - \param\rangle + \nu D_\func^\sg(\pparam,\param),\quad\forall\param,\pparam\in\Param, \sg\in\partial H(\param).
 \end{align}
 \end{assumption}
 %
@@ -456,10 +542,27 @@ For a proper convex function $H:\Param\to\R$ and $\nu\in(0,\infty)$, we say that
 \begin{remark}{}{}
 We have two relevant cases for the choice of $H$. For $H=\frac{1}{2}\norm{\cdot}^2$ \cref{ass:muconvex} reduces to standard strong $\nu$-convexity. The other relevant case, is $H=J_\delta$, i.e. we consider convexity w.r.t. to the functional $J_\delta$.
 \end{remark}
+%
+%
+\begin{remark}{}{}
+In the setting of training a neural network, where we employ the empirical loss \cref{eq:empLoss}, this convexity assumption usually fails. While it is possible to enforce this conditions only locally around the minimum, this does not significantly improve the applicability. For future work, it would be desirable to enforce a  Kurdyka--\L ojasiewicz inequality, as in \cite{benning2018choose} for the deterministic case. 
+\end{remark}
 
-\paragraph{Main Convergence Results}
-
-\begin{theorem}{Loss decay}{thm:decreasingloss}
+\paragraph{Loss Decay}
+The first convergence result considers the loss decay of the iterates. Here, we do not assume convexity of the loss function. Under this assumptions \cite{benning2018choose, benning2018modern} were able to show the inequality
+%
+\begin{align*}
+\begin{split}
+\E\left[\empLoss(\param^{(k+1)})\right] + \frac{1}{\tau^{(k)}}\E\left[ D^\mathrm{sym}_\func(\param^{(k+1)},\param^{(k)})\right] + \frac{C}{2\delta\tau^{(k)}}\E\left[\norm{\param^{(k+1)}-\param^{(k)}}^2\right] \\
+\leq \E\left[\empLoss(\param^{(k)})\right].
+\end{split}
+\end{align*}
+%
+%
+In our setting, employing a stochastic gradient estimator, we are able to prove a similar estimate. Here, we obtain an additional term scaled $\sigma$ which controls the expected squared difference between the gradient estimator and the actual gradient. It should however be noted, that the proof is not only a trivial extension.
+%
+%
+\begin{theorem}{\cite[Th. 2]{bungert2022bregman}: Loss decay}{thm:decreasingloss}
 Assume that \cref{ass:loss,ass:variance,ass:regularizer} hold true, let $\delta>0$, and let the step sizes satisfy $\tau^{(k)} \leq \frac{2}{\delta L}$.
 Then there exist constants $c,C>0$ such that for every $k\in\N$ the iterates of \labelcref{eq:stochlinbreg} satisfy 
 \begin{align}\label{ineq:loss_decay}
@@ -469,6 +572,132 @@ Then there exist constants $c,C>0$ such that for every $k\in\N$ the iterates of 
     \end{split}
 \end{align}
 \end{theorem}
+
+\paragraph{Convergence of the Iterates}
+Here, we have two cases respectively proving convergence w.r.t. the $L^2$ distance and the Bregman distance of $J_delta$. The first assumes strong convexity with $H=\frac{1}{2}\norm{\cdot}^2$ in \cref{ass:muconvex}.
+%
+%
+\begin{theorem}{\cite[Th. 6]{bungert2022bregman}: Convergence in norm}{thm:cvgc_norm}
+Assume that \cref{ass:loss,ass:variance,ass:regularizer} and \cref{ass:muconvex} for $H=\frac{1}{2}\norm{\cdot}^2$ hold true and let $\delta>0$.
+Furthermore, assume that the step sizes $\tau^{(k)}$ are such that for all $k\in\N$:
+\begin{align*}
+    {\tau^{(k)}\leq \frac{\mu}{2\delta L^2}},\qquad
+    \tau^{(k+1)} \leq \tau^{(k)}, \qquad
+    \sum_{k=0}^\infty (\tau^{(k)})^2 < \infty, \qquad
+    \sum_{k=0}^\infty \tau^{(k)} = \infty.
+\end{align*}
+The function $\mathcal{L}$ has a unique minimizer $\param^*$ and if $J(\param^*)<\infty$ the stochastic linearized Bregman iterations \labelcref{eq:stochlinbreg} satisfy the following:
+\begin{itemize}
+    \item Letting $d_k:=\E\left[D_{\func_\delta}^{v^{(k)}}(\param^*,\param^{(k)})\right]$ it holds
+    \begin{align}\label{ineq:decay_bregman_distance}
+        d_{k+1} - d_k + \frac{\mu}{4}\tau^{(k)}\E\left[\norm{\param^*-\param^{(k+1)}}^2\right]
+        \leq  \frac{\sigma}{2}\left((\tau^{(k)})^2 +\Exp{\norm{\param^{(k)} - \param^{(k+1)}}^2}\right).
+    \end{align}
+    \item The iterates possess a subsequence converging in the $L^2$-sense of random variables: 
+    \begin{align}
+        \lim_{j\to\infty}\E\left[\norm{\param^*-\param^{(k_j)}}^2\right] = 0.
+    \end{align}
+\end{itemize}
+{Here, $\func_\delta$ is defined as in \labelcref{eq:elastic_net}.}
+\end{theorem}
+%
+%
+For the second result we assume 
+%
+%
+\begin{theorem}{\cite[Th. 11]{bungert2022bregman}: Convergence in the Bregman distance}{thm:cvgc_breg_dist}
+Assume that \cref{ass:loss,ass:variance,ass:regularizer} and \cref{ass:muconvex} for $H=J_\delta$ hold true and let $\delta>0$.
+The function $\mathcal{L}$ has a unique {minimizer} $\param^*$ and if $\func(\param^*)<\infty$ the stochastic linearized Bregman iterations \labelcref{eq:stochlinbreg} satisfy the following:
+\begin{itemize}
+    \item {Letting $d_k :=\E\left[D_{J_\delta}^{v^{(k)}}(\param^*,\param^{(k)})\right]$ it holds
+    \begin{align}\label{eq:estimate_expects}
+        % d_{k+1} \leq \left(1 - \tau^{(k)}\nu\right)d_k + (\tau^{(k)})^2\delta B.
+        d_{k+1} \leq \left[1 - \tau^{(k)}\nu\left(1-\tau^{(k)}\frac{2\delta^2 L^2}{\nu}\right)\right]d_k + \delta(\tau^{(k)})^2\sigma^2.
+    \end{align}}
+    \item For any $\eps>0$ there exists $\tau>0$ such that if $\tau^{(k)}=\tau$ for all $k\in\N$ then
+    \begin{align}
+        \limsup_{k\to\infty} d_k \leq \eps.
+    \end{align}
+    \item If $\tau^{(k)}$ is such that
+    \begin{align}\label{eq:cond_step_size}
+        \lim_{k\to\infty} \tau^{(k)} = 0 \quad \text{and}\quad \sum_{k=0}^\infty \tau^{(k)} = \infty
+    \end{align}
+    then it holds
+    \begin{align}
+        \lim_{k\to\infty} d_k = 0.
+    \end{align}
+\end{itemize}
+{Here, $\func_\delta$ is defined as in \labelcref{eq:elastic_net}.}
+\end{theorem}
+%
+%
+%
+\subsection{Numerical Results and Practical Considerations}
+%
+%
+Before briefly reviewing the numerical results in \cite[Sec. 4]{bungert2022bregman}, we remark on some practical considerations. In particular we comment on the parameter initialization strategy.
+%
+\paragraph{Parameter Initialization} As already noticed in \cite{bengio10} parameter initialization has a significant impact on the training of the neural network. Here, in contrast to standard Bregman methods, we are not able to initialize the parameters of the neural network as $\param=0$. This is due to that fact, that a zero initialization induces symmetries in the network weights, for which one cannot utilize the full expressivity of the architecture \cite[Ch. 6]{Goodfellow16}. Therefore, we rather employ the approach from \cite{liu2021,dettmers2019sparse,martens2010deep} of sparsifying weight matrices $\tilde W^l\in\R^{n_{l+1}\times n_l}$ up to a certain level, by a pointwise multiplication with a binary mask $M^l\in{0,1}^{n_{l+1}\times n_l}$
+%
+\begin{align*}
+W^l := \tilde W^{l} \odot M^l.
+\end{align*}
+%
+%
+Each entry in $M^l$ is i.i.d. sampled from a Bernoulli distribution
+%
+\begin{align*}
+M^l_{i,j}\sim \mathcal{B}(r).
+\end{align*}
+%
+where the parameter $r$ determines the sparsity
+%
+\begin{align*}
+\mathrm{N}(W^l):=\frac{\norm{W^l}_0}{n_l \cdot n_{l-1}}=
+1 - \mathrm{S}(W^l).
+\end{align*}
+%
+%
+In \cite{bengio10} the authors advise to especially control to the variance of the parameter initialization distribution, for which in \cite{bungert2022bregman} we derive
+%
+\begin{align}\label{eq:initcond2}
+\Var{\tilde W^l} = \frac{1}{r}~\Var{\tilde W^l \odot M^l}
+\end{align}
+%
+and therefore scale the weights with the sparsity parameter $r$ at initialization.
+%
+%
+\paragraph{Choice of Regularizers}
+%
+In all our experiments we choose a $L^1$ type sparsity promoting regularization function functional $\func$. We do not employ any coupling between weight matrices of different layers, and therefore for $\param=((W^1,b^1),\ldots, (W^L,b^L))$ we have
+%
+\begin{align*}
+\func(\param) = \sum_{l=1}^L \func^l(W^l)
+\end{align*}
+%
+%
+where $\func_l$ is choosen according to the layer type. In the easiest case of a fully connected layer $\Psi^l$, we can choose
+%
+\begin{align*}
+\func^l(W^l) := \norm{W^l}_1.
+\end{align*}
+%
+In the case of a convolutional layer we have that $W^l$ is determined by convolutional kernels $K_{i,j}\in\R^{k\times k}$, see \cref{sec:convlayer}. Here, we typically employ a group sparsity term in the form
+%
+\begin{align*}
+\func^l(W^l) = \norm{W^l}_{2,1} = \sum_{i,j} \norm{K_{i,j}}_2.
+\end{align*}
+%
+The outer sum acts as a $L^1$ regularizer on the instances $\norm{K_{i,j}}$. Sparsity in this sense, then amounts to having indices $(i,j)$ for which $\norm{K_{i,j}}=0 \Leftrightarrow K_{i,j}=0$, i.e., we prune away whole convolutional filters.
+%
+We can also employ group sparsity on fully connected layers, by considering row sparsity
+%
+\begin{align*}
+\func^l(W^l)
+\end{align*}
+\paragraph{Comments on the Numerical Results}
+
+\subsection{Neural Architecture Search}
 
 \section{Resolution Stability}
 %
