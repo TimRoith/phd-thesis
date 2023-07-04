@@ -326,7 +326,7 @@ von \textbf{\@author}
 		doi=true,%
 		isbn=false,%
 		url=false,%
-		backend=biber %
+		backend=biber%
 		]{biblatex}	
 }
 \bibstyle
