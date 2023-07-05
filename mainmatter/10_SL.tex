@@ -188,7 +188,30 @@ If $\func$ is additionally a closed function, i.e., its sublevel sets
 N_\alpha = \{\param\in\dom \func: \func(\param)\leq \param\}
 \end{align*} 
 %
-are closed for every $\alpha\in\R$ then we have that the function $\tilde J = \frac{1}{2}\norm{\param -\cdot}^2 + \func(\param)$ is closed, proper and \emph{strongly} convex and therefore has a unique minimizer, see \cite[Thm. 27.1]{rockafellar1997convex}.
+are closed for every $\alpha\in\R$ then we have that the function $\tilde J = \frac{1}{2}\norm{\param -\cdot}^2 + \func(\param)$ is closed, proper and \emph{strongly} convex and therefore has a unique minimizer, see \cite[Thm. 27.1]{rockafellar1997convex}. Additionally, one often considers a regularization parameter $\lambda>0$ and is then interested in $\prox{\lambda \func}$.
+%
+\begin{remark}{}{}
+The the optimality conditions for $\param=\prox{\lambda J}(\overline\param)$ yield 
+%
+\begin{align*}
+\pparam - \param \in \lambda \partial \func(\param).%
+\end{align*}
+%
+For a proper, closed and convex function we obtain
+%
+\begin{align*}
+\param = (I + \lambda\partial\func)^{-1}(\pparam)
+\end{align*}
+%
+where $(I + \lambda\partial\func)^{-1}$ is called the \emph{resolvent} and is a one-to-one mapping (see \cite[Ch. 3.2]{parikh2014proximal})  which justifies the equality in the above equation. If $\func$ is differentiable, then we have $\partial \func = \{\nabla \func\}$ and therefore,
+%
+\begin{align*}
+\prox{\lambda\func} = (I + \lambda\nabla\func)^{-1}.
+\end{align*}
+\end{remark}
+%
+%
+In the following we list two relevant examples for the application in \cite{bungert2022bregman, bungert2021neural}.
 %
 \begin{example}{}{}
 If $\func=\norm\cdot$ is a norm and $\lambda>0$ then we have that (see e.g. \cite{parikh2014proximal})
@@ -281,31 +304,59 @@ In this case the proximal operator is given as
 %\end{align*}
 %\end{example}
 %
-The the optimality conditions yield for $\param=\prox{J}(\overline\param)$ 
+%
+%
+%
+\paragraph{Bregman Iterations} Our goal is to minimize a function $\empLoss$ while simultaneously obtaining a low value w.r.t. the functional $J$. One popular approach considers the regularized problem
 %
 \begin{align*}
-\param - \overline\param \in \partial \func(\param).
-%
+\min_\param \empLoss(\param) + \lambda \func(\param)\qquad \lambda>0,
 \end{align*}
 %
-If $J$ is differentiable, we then have
+see e.g. \cite{tikhonov1943stability, combettes2008proximal,daubechies2004iterative,fadili2006sparse,figueiredo2007gradient,chambolle2004algorithm,chambolle2011first}, which however influences the minimizers of the original problem $\min_\param \empLoss(\param)$. In the derivation of the Bregman iterations one can take a different viewpoint. Assume that we want to employ an iterative scheme, where in each step we want minimize $\empLoss$ while penalizing the distance to the previous iterate. For a stepping parameter $\tau$ and starting from some $\param^\k0\in\Param$ this yields the update
+%
+\begin{align}\label{eq:minmom}
+\param^\k{k+1} = \argmin_\param \tau\empLoss(\param) + \frac{1}{2}\norm{\param -\param^\k{k}}^2 
+= \prox{\tau\empLoss}(\param^\k{k}).
+\end{align}
+%
+At first sight this is either known as the proximal point algorithm \cite{bregman1967relaxation} or a minimizing movement scheme \cite{de1993new}. If $\empLoss$ is differentiable, this update can be rewritten as 
 %
 \begin{align*}
-\param - \nabla J(\param) = \overline\param\Leftrightarrow
-\theta = (I + \nabla J)^{-1}(\overline\theta).
-\end{align*}\todo{check this!}
+\param^\k{k+1} = (I+\tau\nabla\empLoss)^{-1}\param^\k{k}
+%
+\Leftrightarrow
+%
+\frac{1}{\tau}\left(\param^\k{k+1} - \param^\k{k}\right)
+= -\nabla\empLoss(\param^\k{k+1})
+\end{align*}
+%
+which is a implicit Euler discretization (\cite{euler1824institutionum}) of the time-continuos gradient flow
+%
+\begin{align*}
+\partial_t \param_t = -\nabla\empLoss(\param_t).
+\end{align*}
 %
 %
+We see that the penalization term in \cref{eq:minmom} is in fact the Bregman distance of the functional $\frac{1}{2}\norm{\cdot}^2$. In order to incorporate an arbitrary convex functional $\func$---and therefore allow each iterate to only slightly deviate w.r.t. the Bregman distance of $\func$ to the previous iterate---we employ $D_\func^{\sg^\k{k}}(\cdot, \param^\k{k})$ as a penalization term. In order to obtain a update scheme for the subgradients, we observe
 %
-We first consider the following implicit Euler scheme\todo{Minimizing Movment proximal point}, for a step size $\tau>0$
+\begin{align*}
+\param &= \argmin_{\param\in\Param} D^{\sg^{(k)}}_\func\left(\param,\param^{(k)}\right) + \tau^{}\empLoss(\param)
+\\\Leftrightarrow
+\sg^\k{k} + \tau\nabla\empLoss(\param)&\in \partial\func(\param). 
+\end{align*}
+%
+This finally yields \emph{Bregman iteration} of \cite{osher2005iterative}
+%
+%
 \begin{subequations}\label{eq:bregman_iteration}
 \begin{align}
-    \param^{(k+1)} &= \argmin_{\param\in\Param} D^{\sg^{(k)}}_\func\left(\param,\param^{(k)}\right) + \tau^{}\empLoss(\param), \\
-    \sg^{(k+1)} &= \sg^{(k)} - \tau^{}\nabla\empLoss(\param^{(k+1)}) \in \partial \func(\param^{(k+1)})
+\param^{(k+1)} &= \argmin_{\param\in\Param} D^{\sg^{(k)}}_\func\left(\param,\param^{(k)}\right) + \tau^{}\empLoss(\param), \\
+\sg^{(k+1)} &= \sg^{(k)} - \tau^{}\nabla\empLoss(\param^{(k+1)}) \in \partial \func(\param^{(k+1)}).
 \end{align}
 \end{subequations}
 %
-which is known as the \emph{Bregman iteration} \cite{osher2005iterative}. The intuitive interpretation here is, that in each step we want to minimize $\empLoss$ while also being close to the previous iterate in terms of the Bregman distance induced by $J$. Therefore, the very nature of Bregman iterations means starting with a iterate $\param^{(0)}$ that has a low value in $J$---preferably $J(\param^{(0)}) = 0$---and only increase $J(\param^{(k)})$ gradually as $k$ increases.
+The very nature of Bregman iterations means starting with a iterate $\param^{(0)}$ that has a low value in $J$---preferably $J(\param^{(0)}) = 0$---and only increase $J(\param^{(k)})$ gradually as $k$ increases.
 %
 \begin{remark}{}{}
 Originally, the iterations were employed for solving inverse problems. Here, we are given a forward operator $A:\Param\to\tilde{\Param}$ and a noisy measurement $f= A\param +\delta$ where $\delta\in \tilde{\Param}$ is additive noise. The loss function is then of the form
@@ -346,7 +397,7 @@ We start with an image $u^{(0)}$ such that $TV(u^{(0)})=0$, i.e. a constant imag
 \end{align*}
 %
 It should also be noted that this example only serves a explanatory purpose. In practice directly applying \cref{eq:bregman_iteration} for $J=TV$ can become infeasible since the first minimization problem is expensive.
-\end{example}
+\end{example}\todo{insert}
 %
 %
 %
