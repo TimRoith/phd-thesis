@@ -4,10 +4,11 @@
 In this chapter we now focus on supervised learning as described in \cref{sec:PSL}. 
 \cite{bungert2021clip, bungert2021neural, kabri2023resolution, bungert2022bregman}
 %
-\paragraph{Remark on Notation} In the following we deviate from the notation of the previous part. Most notably the input space is now denoted by $\Inp$ instead of $\domain$. Furthermore, we employ $\OutSpace$ to denote an abstract output space.
+
+
 \section{Setting}
 %
-We are given a finite training set $\tset\subset\Inp\times\OutSpace$. For a family of functions $f_\param:\Inp\to\OutSpace$ parameterized by $\param\in \param$ we consider the empirical  minimization
+We are given a finite training set $\tset\subset\Inp\times\OutSpace$. For a family of functions $f_\param:\Inp\to\OutSpace$ parameterized by $\param\in \Param$. We consider the empirical  minimization
 %
 \begin{align*}
 \min_{\param\in\param} \empLoss(\param) 
@@ -17,6 +18,15 @@ where for a function $\ell:\OutSpace\times\OutSpace\to\R$ we define
 \begin{align}\label{eq:empLoss}
 \empLoss(\param)  := \frac{1}{\abs{\tset}}\sum_{(x,y)\in \tset} \ell(f_\param(x), y).
 \end{align}
+%
+%
+\begin{example}{MLE}{}
+	
+\end{example}
+%
+\begin{example}{Cross-Entropy}{}
+	
+\end{example}
 %
 Assuming that $\tset$ is sampled from a joint distribution $\pi$ on $\Inp\times\OutSpace$ this approximates the infeasible population risk minimization
 %
@@ -36,7 +46,7 @@ where $w\in\R$ models a residual connection, $W\in\R^{n\times n}$ is a weight ma
 f_\param = \Phi^L\circ\ldots\circ\Phi^1
 \end{align*} 
 %
-with parameters $\param =(w_1,\ldots, w_L, W_1,\ldots, W_L, b_1,\ldots, b_L)\in\param$ and layers $\Phi^i := \Phi(w_i, W_i, b_i)$.
+with parameters $\param =((W_1,b_1,w_1)\ldots,(W_L,b_L,w_L))\in\Param$ and layers $\Phi^i := \Phi(w_i, W_i, b_i)$.
 %
 \paragraph{MLP}
 
@@ -72,9 +82,65 @@ to \emph{stochastic} gradient descent \cite{robbins1951stochastic}
 g^{(k)} &:= {g(\param^{(k)};\omega^{(k)})},\\
 \param^{(k+1)} &:= \param^{(k)} - \tau^{(k)} g^{(k)}.
 \end{align*}
-\section{Adversarial Stability}
+%
+%
+%
+%
+%
+\clearpage%
+\section{Adversarial Stability cia Lipschitz Training: \cite{bungert2021clip}}
+%
+\begin{wrapfigure}{r}{.5\textwidth}
+	\centering
+	\includegraphics[width=.5\textwidth]{atelier/CLIP/CLIP.png}
+\end{wrapfigure}
+%
+%
+The capabilities of neural networks to perform classification tasks on unseen data---i.e. inputs $x\in\Inp$ that are not part of the training data---are impressive and the reason for their popularity. However, it has been noticed in \cite{goodfellow2014explaining} that is relatively easy to \enquote{fool} classification networks in the following sense:
+%
+\begin{center}
+\textit{
+Given a classification network and a human classifier $f_\param, h:\Inp\to\Delta^C$, and an input $\inp\in\Inp$ such that $f_\param(\inp) = h(\inp)$. An adversarial example is an input $\inpp\in \Inp$ that is close to $\inp$ and
+%
+\begin{align*}
+f_\param(\inpp)\neq h(\inpp) = h(\inp).
+\end{align*}
+}
+\end{center}
+%
+%
+\paragraph{What are Adversarial Examples Formally} In order to formalize this idea we omit any influence of a human classifier $h$ and instead consider $\inpp$ adversarial if $\net_\param(\inp)\neq\net_\param(\inpp)$, i.e. we assume $\net_\param(\inp)$ to be \enquote{correct}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
+%
+\begin{remark}{}{}
+In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparison---is usually an unfavorable choice. Images that appear very different visually, (i.e. for a human classifier) can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy tp evaluate, which is crucial for most applications. In the absence of a better criterion, having a small $L^p$ norm, is commonly the only way to decide if $\inpp$ is an admissible adversarial example. 
+\end{remark}
+%
+%
+Employing these simplifications we then say that $\inpp\in\Inp$ is adversarial, if
+%
+\begin{align*}
+d(\inp,\inpp) \leq \budget \qquad \text{ and } \qquad \net_\param(\inp)\neq \net_\param(\inpp),
+\end{align*}
+%
+where $\budget$ is called the \emph{adversarial budget}. This parameter
+%
+This interpretation only makes sense, if we assume that $\net_\param(\inp)$ is \emph{correct}, which can only be easily checked on the training data \cite{bungert2023begins}.
+%
+%
+\paragraph{Types of Adversarial Examples} Typically, adversarial examples are created from the clean image $\inp$ via some distortion $\delta\in\R^n$. Together with an application map $T:\Inp\times\R^s\to\Inp$ one then obtains $\inpp=T(x,\delta)$ as the adversarial example. We list some common configurations below.
+\begin{itemize}
+\item\textbf{Additive}: the most well-known examples are created by $\inpp = \inp + \delta$. Here, it is important to note that mostly images are assumed to have values between $0$ and $1$, i.e. $\Inp=[0,1]^{K\times N\times M}$ for which it is important to ensure that $\inpp\in\Inp$.
+
+\paragraph{Finding Adversarial Examples} Employing a loss function $\ell:\Oup\times\Oup\to\R$ the task of finding an adversarial example $\inpp\in\Inp$ can be relaxed via solving the problem
+%
+\begin{align*}
+\max_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(\net_\param(\inp), \net_\param(\inpp))
+\end{align*}
+
+
 
 %
+\clearpage%
 \section{Sparsity via Bregman Iterations: \cite{bungert2022bregman}}
 %
 \begin{wrapfigure}{r}{.5\textwidth}
