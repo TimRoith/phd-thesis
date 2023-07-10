@@ -350,11 +350,11 @@ which yields the algorithm presented in \cite[Alg. 2]{bungert2021clip}. Similar 
 %
 \subsection{Analysis of Lipschitz Regularization}\label{sec:CLIPAna}
 %
-In \cite{bungert2021clip} we analyse some basic properties of the original regularization problem in \cref{eq:LipReg}. We repeat the assumption in order to refer to them in the following:
+In \cite{bungert2021clip} we analyse some basic properties of the original regularization problem in \cref{eq:LipReg}. We repeat the assumptions we made therein, in order to refer to them in the following.
 
 \begin{enumerate}[label= \textbf{Assumption \arabic*.}, ref={\arabic*}, align=left]
 	\setlength{\itemsep}{9pt}
-	\item\label[ass]{ass:loss} We assume that the loss function 
+	\item\label[assumption]{ass:closs} We assume that the loss function 
 	$\loss:\Oup\times\Oup\to\R\cup\{\infty\}$ satisfies:\\[-0.2cm]
 	\begin{enumerate}
 		\setlength{\itemsep}{6pt}
@@ -362,10 +362,10 @@ In \cite{bungert2021clip} we analyse some basic properties of the original regul
 		\item $\oup\mapsto\loss(\oup,\oupp)$ is lower semi-continuous for all $\oupp\in\Oup$.
 	\end{enumerate}
 	% ###
-	\item\label[ass]{ass:net} We assume that the map $\param\mapsto\net_\param(\inp)$ 
+	\item\label[assumption]{ass:net} We assume that the map $\param\mapsto\net_\param(\inp)$ 
 	is continuous for all $\inp\in\Inp$.
 	% ###
-	\item\label[ass]{ass:exist} We assume that there exists $\param\in\Param$ such that 
+	\item\label[assumption]{ass:exist} We assume that there exists $\param\in\Param$ such that 
 	\begin{align*}
 		\frac{1}{\abs{\trSet}}
 		\sum_{(\inp,\oup)\in\trSet}\loss(\net_\param(\inp),\oup)+
@@ -374,8 +374,90 @@ In \cite{bungert2021clip} we analyse some basic properties of the original regul
 \end{enumerate}
 %
 %
-Employing only \cref{ass:net} one can show that that the map $\param\mapsto \Lip(\net_\param)$ is lower semi-continuos, \cite[Lem. 1]{bungert2021clip}. In order to ensure the existence of solutions.
+Employing only \cref{ass:net} one can show that that the map $\param\mapsto \Lip(\net_\param)$ is lower semi-continuous, \cite[Lem. 1]{bungert2021clip}. 
+%
+\paragraph{Existence} If $\Param$ is compact or finite, one can show that there exist solutions of \labelcref{eq:LipReg}. In the general case one needs to add a norm term, that ensures boundedness of a minimizing sequence. The following is the main existence result, which can be proven by the direct method in the calculus of variations \cite{dacorogna2007direct}.
+%
+\begin{proposition}{\cite[Prop. 1]{bungert2021clip}}{}
+Under \cref{ass:closs,ass:net,ass:exist} the problem
+\begin{align*}
+\min_{\param\in\Param}
+\frac{1}{\abs{\trSet}}
+\sum_{(\inp,\oup)\in\trSet}
+\loss(\net_\param(\inp),\oup) + 
+\lambda\lip(\net_\param) + \mu\norm{\param}_\Param
+\end{align*}
+has a solution for all values $\lambda,\mu>0$.
+Here, $\norm{\cdot}_\Param$ denotes a norm on $\Param$.
+\end{proposition}
+%
+%
+\paragraph{Dependency on the Regularization Parameter} Assuming that for every $\lambda>0$ we have a solution $\param_\lambda\in\Param$ of \cref{eq:LipReg} one can show that
+%
+\begin{alignat*}{2}
+\lambda&\longmapsto
+\frac{1}{\abs{\trSet}}
+\sum_{(\inp,\oup)\in\trSet}\loss(\net_{\param_\lambda}(\inp),\oup) \quad&&\text{is non-decreasing,}
+\\
+\lambda&\longmapsto\lip(\net_{\param_{\lambda}}) 
+\quad&&\text{is non-increasing.}
+\end{alignat*}
+%
+%
+This statement is the content of \cite[Prop. 2]{bungert2021clip}, however, the argument is exactly the same as in \cite{burger2013guide}. The intuition behind this result is that with increasing parameter $\lambda$ solutions of \cref{eq:LipReg}---more precisely the corresponding networks---have smaller Lipschitz constants, i.e. tend to be more constant, which however also diminishes their expressivity. We formalize the limit cases in the following.
+
+Assuming the realizability condition of \cite{shalev2014understanding} we know that there exists parameters $\param\in\Param$ such that $\empLoss(\theta)=0$. This means there are parameters that fit the data perfectly. Considering the limit $\lambda\to 0$ we obtain convergence to a solution of the unregularized problem with the smallest Lipschitz constant.
+%
+\begin{proposition}{\cite[Prop. 3]{bungert2021clip}}{}
+Let \cref{ass:closs,ass:net,ass:exist} and the realizability assumption~\cite{shalev2014understanding} be satisfied. If $\param_\lambda \to \param^\dagger\in\Param$ as $\lambda\searrow 0$, 
+then
+%
+\begin{align*}
+\param^\dagger\in\argmin\left\lbrace \lip(\net_\param) \st \param\in\Param,\, \frac{1}{\abs{\trSet}}
+\sum_{(\inp,\oup)\in\trSet}\loss(\net_{\param}(\inp),\oup)
+=0\right\rbrace
+\end{align*}
+%
+if this problem admits a solution with $\lip(\net_\param)<\infty$.
+\end{proposition}
+%
+%
+\noindent%
+Furthermore, we study the effect of sending $\lambda\to\infty$, where we see that the network $\net_{\param_\lambda}$ indeed tends to be constant as expected. We can explicitly characterize this constant as the closest point to barycenter of the output data, that is realizable by a neural network. 
+%
+\begin{proposition}{\cite[Prop. 4]{bungert2021clip}}{}
+Let \cref{ass:closs,ass:net,ass:exist} be satisfied and assume that 
+\begin{align*}
+\mathcal{M}:=
+\left\{\oup\in\Oup \st \exists\param\in\Param,\,
+\net_\param(\inp)=y,\,\forall\inp\in\Inp\right\}\neq\emptyset.
+\end{align*}
+%
+If $\param_\lambda \to \param_\infty \in\Param$ as $\lambda\to \infty$, then $\net_{\param_\infty}(\inp)=\hat{\oup}$ for all $\inp\in\Inp$ where 
+\begin{align*}
+\hat{\oup}\in\argmin_{\oup'\in\mathcal{M}}
+\frac{1}{\abs{\trSet}}
+\sum_{\oup\in\trSetY}\loss(\oup',\oup).
+\end{align*}
+\end{proposition} 
+%
+%
+\clearpage%
 \subsection{Numerical Results}\label{sec:CLIPNum}
+%
+ 
+\begin{wrapfigure}{r}{.4\textwidth}
+\begin{center}
+\includegraphics[width=.4\textwidth]{atelier/CLIP/CLIPQR.png}
+\end{center}
+The code for all the experiments is available at \href{https://github.com/TimRoith/CLIP}{github.com/TimRoith/}\\
+\href{https://github.com/TimRoith/CLIP}{CLIP}.
+\end{wrapfigure}
+We briefly comment on the numerical results \cite{bungert2021clip}. All the experiments were implemented in \texttt{Python} \cite{van1995python} employing---among others---the \texttt{PyTorch} \cite{paszke2019pytorch} package. We conduct experiments on the MNIST \cite{leCun10} and FashionMNIST \cite{Han17} datasets.
+
+\paragraph{Qualitative Example} We first apply the CLIP scheme to regularize a one-dimensional regression problem. In Fig.2 therein, one observes can observe qualitatively the effect of the regularization. Namely, we are given noisy data from a ground truth function for which the unregularized problem tend to overfit the data. The resulting network has fluctuations and therefore a large Lipschitz constant in certain regions, where the ground truth function has a small Lipschitz constant. With increasing parameter $\lambda$ we observe that the networks $f_{\param_\lambda}$ are smoothed out and better approximate the ground truth function.
+%
+\paragraph{Quantitative Evaluation of Adversarial Robustness} We additionally evaluate how robust a CLIP trained network is against adversarial attacks. Next to a standard learning rate scheduler, we also update the regularization parameter $\lambda$ throughout the training process. Namely, we choose a target accuracy be and evaluate the loss on a validation set after the epoch. If this accuracy is less then the target we decrease $\lambda$ and increase it if the accuracy is higher. In Table 1 of \cite{bungert2021clip} we compare ourselves against a weight regularization scheme that is based on the estimate in \cref{ineq:lip_weights}. We see that CLIP outperforms this method in most cases.
 %
 %
 %
