@@ -4,9 +4,27 @@
 In this chapter we now focus on supervised learning as described in \cref{sec:PSL}. 
 \cite{bungert2021clip, bungert2021neural, kabri2023resolution, bungert2022bregman}
 %
+%
+\begin{center}%
+\begin{tikzpicture}
+%
+\hypersetup{linkcolor=black}%
+\filldraw[fill=orong!20, draw=none] (0,12.5) rectangle (14.5,11.5) node[midway] {%
+\cref{sec:SLSet}: \nameref{sec:SLSet}};
+\filldraw[fill=grape!20, draw=none] (0,11) rectangle (4.5,10) node[midway] {\cref{sec:CLIP}: \cite{bungert2021clip}}; %
+%
+\filldraw[fill=apple!20, draw=none] (5,11) rectangle (9.5,10) 
+node[midway] {\cref{sec:BREG}: \cite{bungert2022bregman}}; %
+%
+%
+\filldraw[fill=sky!20, draw=none] (10,11) rectangle (14.5, 10) node[midway] {%
+\cref{sec:FNO}: \cite{kabri2023resolution}};
+%
+\end{tikzpicture}
+\end{center}
 
 
-\section{Setting}
+\section{Setting}\label{sec:SLSet}
 %
 We are given a finite training set $\tset\subset\Inp\times\OutSpace$. For a family of functions $f_\param:\Inp\to\OutSpace$ parameterized by $\param\in \Param$. We consider the empirical  minimization
 %
@@ -88,7 +106,7 @@ g^{(k)} &:= {g(\param^{(k)};\omega^{(k)})},\\
 %
 %
 \clearpage%
-\section{Adversarial Stability cia Lipschitz Training: \cite{bungert2021clip}}
+\section{Adversarial Stability via Lipschitz Training: \cite{bungert2021clip}}\label{sec:CLIP}
 %
 \begin{wrapfigure}{r}{.5\textwidth}
 	\centering
@@ -109,13 +127,17 @@ f_\param(\inpp)\neq h(\inpp) = h(\inp).
 \end{center}
 %
 %
+While we mostly focus on neural networks, some authors argue that these instabilities are inherent to certain classification problems \cite{shafahi2018adversarial, fawzi2018adversarial}. From this point of view, trying to defend against these instabilities is not necessarily desirable.
+%
+%
 \paragraph{What are Adversarial Examples Formally} In order to formalize this idea we omit any influence of a human classifier $h$ and instead consider $\inpp$ adversarial if $\net_\param(\inp)\neq\net_\param(\inpp)$, i.e. we assume $\net_\param(\inp)$ to be \enquote{correct}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
 %
 \begin{remark}{}{}
-In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparison---is usually an unfavorable choice. Images that appear very different visually, (i.e. for a human classifier) can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy tp evaluate, which is crucial for most applications. In the absence of a better criterion, having a small $L^p$ norm, is commonly the only way to decide if $\inpp$ is an admissible adversarial example. 
+In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparison---can be an unfavorable choice. Images that appear very different visually, (i.e. for a human classifier) can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy tp evaluate, which is crucial for most applications. In the absence of a better criterion, having a small $L^p$ norm, is commonly the only way to decide if $\inpp$ is an admissible adversarial example. 
 \end{remark}
 %
 %
+\noindent%
 Employing these simplifications we then say that $\inpp\in\Inp$ is adversarial, if
 %
 \begin{align*}
@@ -127,21 +149,60 @@ where $\budget$ is called the \emph{adversarial budget}. This parameter
 This interpretation only makes sense, if we assume that $\net_\param(\inp)$ is \emph{correct}, which can only be easily checked on the training data \cite{bungert2023begins}.
 %
 %
-\paragraph{Types of Adversarial Examples} Typically, adversarial examples are created from the clean image $\inp$ via some distortion $\delta\in\R^n$. Together with an application map $T:\Inp\times\R^s\to\Inp$ one then obtains $\inpp=T(x,\delta)$ as the adversarial example. We list some common configurations below.
+\paragraph{Types of Adversarial Examples} Typically, adversarial examples are created from the clean image $\inp$ via some distortion $\delta\in\R^n$. Together with an application map $T:\Inp\times\R^s\to\Inp$ one then obtains $\inpp=T(x,\delta)$ as the adversarial example. In this formulation one can the alternatively employ the criterion $\norm{\delta}\leq \budget$ to decide, whether $T(\inp,\delta)$ is an adversarial example. We only list some of the approaches below:
+%
 \begin{itemize}
-\item\textbf{Additive}: the most well-known examples are created by $\inpp = \inp + \delta$. Here, it is important to note that mostly images are assumed to have values between $0$ and $1$, i.e. $\Inp=[0,1]^{K\times N\times M}$ for which it is important to ensure that $\inpp\in\Inp$.
-
-\paragraph{Finding Adversarial Examples} Employing a loss function $\ell:\Oup\times\Oup\to\R$ the task of finding an adversarial example $\inpp\in\Inp$ can be relaxed via solving the problem
+\item\textbf{Addition}: the most well-known examples are created by $T(x,\delta):=\inp+\delta$, i.e. $\inpp = \inp + \delta$. Here, it is important to note that typically images are assumed to have values between $0$ and $1$, i.e. $\Inp=[0,1]^{K\times N\times M}$ for which it is important to ensure that $\inpp\in\Inp$.
+%
+\item\textbf{Translation and Rotation}: Simple geometric transformations---that would be unnoticeable for a human classifier---are quite effective to fool neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$ one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case $\delta\in[-\pi,\pi]$ models the angle of the rotation and would yield an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some experessivity:
+%
+\begin{itemize}
+\item On the MNIST classification task, we see that only $\budget<\pi/2$ makes sense. Otherwise the number \enquote{6} could be always transformed to the number \enquote{9} and vice versa.
+\item Considering the number \enquote{0} rotations above the angle $\pi/2$ can definitely yield proper adversarial examples $\inpp$.
+\end{itemize}
+%
+We refer to \cite{engstrom2018rotation} for a study on these types of adversarial examples.
+%
+\item\textbf{Change of Basis}: As explored in \cite{guo2017countering} one can consider a different orthonormal basis of the image space $\R^{K\times N\times M}$ and then perform the attack w.r.t. this basis. 
+The transform $T:\Inp\times\R^{K\times N\times M}\to\Inp$ first obtains the different representation of $\inp$, then adds the coefficients of $\delta$ and then maps back to the original basis. This is only meaningful, if one restricts certain coefficients of $\delta$ to be zero in the alternative basis. For example, the discrete cosine transform (\cite{ahmed1974discrete}) has been applied successfully in this context \cite{guo2017countering}.
+\end{itemize}
+%
+%
+In the following we restrict ourselves to the additive case and only consider examples $\inpp = \inp + \delta$.
+%
+%
+\paragraph{Finding Adversarial Examples} Employing a loss function $\ell:\Oup\times\Oup\to\R$ the task of finding an adversarial examples $\inpp=\inp+\delta\in\Inp$ can be relaxed via solving the problem
 %
 \begin{align*}
 \max_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(\net_\param(\inp), \net_\param(\inpp))
+=
+\max_{\delta:\norm{\delta}_d\leq\delta, \inp+\delta\in\Inp}
+\ell(\net_\param(\inp), \net_\param(\inp+\delta).
 \end{align*}
+%
+%
+Solving this problem is referred to as \emph{attacking} the network $\net$. A method that has gained a lot of popularity is the fast gradient sign method \cite{goodfellow2014explaining}, where one performs only one step of a projected gradient ascent type iteration,
+%
+\begin{align*}
+\inpp^\k{k+1} = \operatorname{Proj}_d(\inpp^\k{k} + \tau \sign(\nabla_{\inpp}
+\ell(\net_\param(\inp), \net_\param(\inpp^\k{k})))).
+\end{align*}
+%
+%
+%
+\paragraph{Defending Against Adversarial Examples}
 
+\subsection{Lipschitz Training of Neural Networks}
 
 
 %
+%
+%
+%
+%
+%
 \clearpage%
-\section{Sparsity via Bregman Iterations: \cite{bungert2022bregman}}
+\section{Sparsity via Bregman Iterations: \cite{bungert2022bregman}}\label{sec:BREG}
 %
 \begin{wrapfigure}{r}{.5\textwidth}
 \centering
@@ -988,7 +1049,11 @@ W^l_{ij} = 0 \nRightarrow \partial_{W^l_{ij}} \empLoss(\theta) = 0.
 In \cite{bungert2022bregman, bungert2021neural} there are no evaluation on the training time and memory consumption of the Bregman algorithm. Since the complexity does not increase in comparison to the standard SGD, one hopes to obtain a faster training time here. This is an interesting open question for future work. It should however be remarked that the computational complexity of the LinBreg algorithm does not increase significantly, compared to SGD, since the evaluation of the proximal operator is very efficient for $L^1$ type functionals.
 
 \paragraph{Neural Architecture Search} An interesting aspect hinted in \cite{bungert2022bregman} is optimizing the architecture of a neural network via sparsity. In the example provided in \cite[Fig. 4]{bungert2022bregman} one defines a super-architecture as multi-layer perceptron with an equal number of neurons in each layer. Training this task with the LinBreg algorithm reveals the well-known autoencoder structure \cite{hinton1993autoencoders}. This idea was developed further in \cite{bungert2021neural}, where also skip connection of a residual architecture were learned. Here, the super-architecture was given by a dense net \cite{huang2017densely}, where a each skip connection was scaled by a parameter, which was penalized with a sparsity term. The driving question here, if it is possible also learn an architecture similar to the U-Net as proposed in \cite{ronneberger2015u}.
-
-\section{Resolution Stability}
+%
+%
+%
+%
+%
+\section{Resolution Stability}\label{sec:FNO}
 %
 
