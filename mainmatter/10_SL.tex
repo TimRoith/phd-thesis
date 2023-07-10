@@ -46,6 +46,8 @@ where for a function $\ell:\OutSpace\times\OutSpace\to\R$ we define
 	
 \end{example}
 %
+%
+%
 Assuming that $\tset$ is sampled from a joint distribution $\pi$ on $\Inp\times\OutSpace$ this approximates the infeasible population risk minimization
 %
 \begin{align*}
@@ -78,8 +80,9 @@ with parameters $\param =((W_1,b_1,w_1)\ldots,(W_L,b_L,w_L))\in\Param$ and layer
 Training a neural network requires to solve a optimization problem w.r.t. to the parameters $\param\in\Param$. In this work we only focus on first order methods, however both zero \cite{Riedl} and second order methods \cite{Hessian} have been successfully applied in this context. Employing first order methods, requires to evaluate the gradient $\nabla_\theta \empLoss$, however in this scenario it is not common to compute the full gradient but rather to have a gradient estimator. This estimator is usually obtained by randomly dividing the train set $\trSet$ into disjoint minibatches $B_1\cup\ldots\cup B_b = \trSet$ and then successively computing the gradient of the minibatch loss
 %
 \begin{align*}
-\frac{1}{\abs{B_i}}\sum_{(x,y)\in B_i} \ell(f_\param(x), y).
+\empLoss(\param;B):=\frac{1}{\abs{B_i}}\sum_{(x,y)\in B_i} \ell(f_\param(x), y).
 \end{align*}
+%
 %
 Iterating over all batches $i=1,\ldots,b$ is referred to as one epoch. From a mathematical point of view this yields stochastic optimization methods, since in each step the true gradient is replaced by an estimator. In the abstract setting we let $(\Omega,F,\P)$ be a probability space and consider a function $g:\Param\times \Omega\to \Param$ as an unbiased estimator of $\nabla\empLoss$, i.e.
 %
@@ -114,11 +117,16 @@ g^{(k)} &:= {g(\param^{(k)};\omega^{(k)})},\\
 \end{wrapfigure}
 %
 %
-The capabilities of neural networks to perform classification tasks on unseen data---i.e. inputs $x\in\Inp$ that are not part of the training data---are impressive and the reason for their popularity. However, it has been noticed in \cite{goodfellow2014explaining} that is relatively easy to \enquote{fool} classification networks in the following sense:
+In the following we consider classification problems with $C\in\N$ different classes and functions $\net:\Inp\to\Delta^C$ for which we denote by 
+\begin{align*}
+\net^\MAP(\inp):=\argmax_c \net(\inp)_c
+\end{align*}%
+%
+the maximum a posteriori estimation for input $\inp\in\Inp$. The capabilities of neural networks to perform classification tasks on unseen data---i.e. inputs $x\in\Inp$ that are not part of the training data---are impressive and the reason for their popularity. However, it has been noticed in \cite{goodfellow2014explaining} that is relatively easy to \enquote{fool} classification networks in the following sense:
 %
 \begin{center}
 \textit{
-Given a classification network and a human classifier $f_\param, h:\Inp\to\Delta^C$, and an input $\inp\in\Inp$ such that $f_\param(\inp) = h(\inp)$. An adversarial example is an input $\inpp\in \Inp$ that is close to $\inp$ and
+Given a classification network and a human classifier $f_\param, h:\Inp\to\Delta^C$, and an input $\inp\in\Inp$ such that $f_\param^\MAP(\inp) = h^\MAP(\inp)$. An adversarial example is an input $\inpp\in \Inp$ that is close to $\inp$ and
 %
 \begin{align*}
 f_\param(\inpp)\neq h(\inpp) = h(\inp).
@@ -127,10 +135,25 @@ f_\param(\inpp)\neq h(\inpp) = h(\inp).
 \end{center}
 %
 %
+The vague concept of a \emph{human classifier}, bears the intuition of the classification problem as a human would solve it. Assuming that we are given data $\tset\subset \Inp\times\Oup$ that is samples i.i.d. from a joint distribution $P_{\Inp,\Oup}$ this function could also be chosen as $h(x)_c:=P_{\Inp,\Oup}(c|\inp)$.
+
+
+\begin{remark}{}{}
 While we mostly focus on neural networks, some authors argue that these instabilities are inherent to certain classification problems \cite{shafahi2018adversarial, fawzi2018adversarial}. From this point of view, trying to defend against these instabilities is not necessarily desirable.
+\end{remark}
 %
 %
-\paragraph{What are Adversarial Examples Formally} In order to formalize this idea we omit any influence of a human classifier $h$ and instead consider $\inpp$ adversarial if $\net_\param(\inp)\neq\net_\param(\inpp)$, i.e. we assume $\net_\param(\inp)$ to be \enquote{correct}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
+\begin{remark}{Notational Remark}{}
+Since we consider a classification problem, the output data is given as a label $c\in\{1,\ldots,C\}$. In order to transform this into a corresponding vector $\oup\in\Delta^C$ we employ so-called one-hot vectors $\oh:\{1,\ldots,C\}\to\Delta^C$,
+%
+\begin{align*}
+\oh(c)_i:= \begin{cases} 1 &\text{ if } i=c,\\ 0&\text{ else }.\end{cases}
+\end{align*}
+%
+We also write $\oh(c):= c_{\oh}$ in order to simplify notation.
+\end{remark}
+%
+\paragraph{What are Adversarial Examples Formally} In order to formalize this idea we omit any influence of the typically unavailable function $h$ and instead consider $\inpp$ adversarial if $\net_\param(\inp)\neq\net_\param(\inpp)$, i.e. we assume $\net_\param(\inp)$ to be \enquote{correct}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
 %
 \begin{remark}{}{}
 In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparison---can be an unfavorable choice. Images that appear very different visually, (i.e. for a human classifier) can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy tp evaluate, which is crucial for most applications. In the absence of a better criterion, having a small $L^p$ norm, is commonly the only way to decide if $\inpp$ is an admissible adversarial example. 
@@ -154,7 +177,7 @@ This interpretation only makes sense, if we assume that $\net_\param(\inp)$ is \
 \begin{itemize}
 \item\textbf{Addition}: the most well-known examples are created by $T(x,\delta):=\inp+\delta$, i.e. $\inpp = \inp + \delta$. Here, it is important to note that typically images are assumed to have values between $0$ and $1$, i.e. $\Inp=[0,1]^{K\times N\times M}$ for which it is important to ensure that $\inpp\in\Inp$.
 %
-\item\textbf{Translation and Rotation}: Simple geometric transformations---that would be unnoticeable for a human classifier---are quite effective to fool neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$ one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case $\delta\in[-\pi,\pi]$ models the angle of the rotation and would yield an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some experessivity:
+\item\textbf{Translation and Rotation}: Simple geometric transformations---that would be unnoticeable for a human classifier---are quite effective to fool neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$ one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case $\delta\in[-\pi,\pi]$ models the angle of the rotation and would yield an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some expressivity:
 %
 \begin{itemize}
 \item On the MNIST classification task, we see that only $\budget<\pi/2$ makes sense. Otherwise the number \enquote{6} could be always transformed to the number \enquote{9} and vice versa.
@@ -173,15 +196,23 @@ In the following we restrict ourselves to the additive case and only consider ex
 %
 \paragraph{Finding Adversarial Examples} Employing a loss function $\ell:\Oup\times\Oup\to\R$ the task of finding an adversarial examples $\inpp=\inp+\delta\in\Inp$ can be relaxed via solving the problem
 %
-\begin{align*}
-\max_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(\net_\param(\inp), \net_\param(\inpp))
+\begin{align}\label{eq:advprob}
+\max_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(\oup, \net_\param(\inpp))
 =
 \max_{\delta:\norm{\delta}_d\leq\delta, \inp+\delta\in\Inp}
-\ell(\net_\param(\inp), \net_\param(\inp+\delta).
+\ell(\oup, \net_\param(\inp+\delta),
+\end{align}
+%
+where $\oup=\net_\param(\inp)$. Solving this problem is referred to as \emph{attacking} the network $\net$. More precisely, this is a so-called \emph{untargeted} attacks, since we do not prescribe $\inpp$ to realize any special output as long as it confuses the network. Opposed to this, there are so called \emph{targeted} attacks. Here we pick $c^\adv \neq \net^\MAP_\param(\inp)$ and then want to find $\inpp$ such that $\net^\MAP_\param(\inpp) = c^\adv$. Here, we then consider the problem
+%
+\begin{align*}
+\min_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(c^\adv_{\oh}, \net_\param(\inpp)).
 \end{align*}
 %
 %
-Solving this problem is referred to as \emph{attacking} the network $\net$. A method that has gained a lot of popularity is the fast gradient sign method \cite{goodfellow2014explaining}, where one performs only one step of a projected gradient ascent type iteration,
+However, we see that conceptually this problem is similar to \cref{eq:advprob} and differs only by a change of sign and a different reference label.
+%
+A popular method to solve \cref{eq:advprob} is the projected sign gradient ascent iteration \cite{kurakin2016adversarial},
 %
 \begin{align*}
 \inpp^\k{k+1} = \operatorname{Proj}_d(\inpp^\k{k} + \tau \sign(\nabla_{\inpp}
@@ -190,11 +221,163 @@ Solving this problem is referred to as \emph{attacking} the network $\net$. A me
 %
 %
 %
+Here, $\operatorname{Proj}_d$ denotes the projection onto the set $\Inp\cap B_{d,\budget}(\inp)$, where $B_{d,\budget}(\inp)$ is the ball with radius $\budget$ around $\inp$, w.r.t. to the distance $d$. Performing only one step of this iteration yields the fast gradient sign method \cite{goodfellow2014explaining}. There is a wide variety of these so-called gradient-based white-box attacks \cite{yuan2019adversarial}, i.e. methods that assume that the gradient of the model is available. In more realistic scenarios, this might not be the case. Attacks that do not employ the actual gradient of the model to attack are called \emph{black box} attacks \cite{ilyas2018black}, which however not part of this thesis.
+%
+%
 \paragraph{Defending Against Adversarial Examples}
+%
+%
+We consider the question of finding parameters $\param\in\Param$ such that corresponding model $\net_\param$ is \emph{adversarially robust}, i.e. is less vulnerable to attacks. Therefore, we want the attack problem in \cref{eq:advprob} to be hard to solve. This intuition leads to the optimization problem
+%
+\begin{align*}
+\min_{\param\in\Param} \sum_{(\inp,\oup)\in \tset} \max_{\inpp\in B_{d,\budget}(\inp)} \ell(\net_\param(\inpp), \oup)
+\end{align*}
+%
+which is known as the \emph{adversarial training} formulation \cite{kurakin2016adversarial2, madry2017towards}. From a distributionally robust optimization point of view, this problem relates to 
+%
+\begin{align*}
+\min_{\param\in\Param} \max_{\tilde P: D(P_{\Inp,\Oup}, \tilde P)\leq\budget} \int_{\Inp\times\Oup} \ell(\net_\param(\inp), \oup)\ d\tilde{P}(\inp,\oup)
+\end{align*}
+%
+where $D$ denotes some distance on probability distributions, see \cite{bungert2023geometry}. Employing a batched gradient descent type iteration, one then has to solve a problem of the form \Cref{eq:advprob} in every step, which can be interpreted as a form of data augmentation \cite{lecun1995learning}. 
+%
+%
+%
+\paragraph{Lipschitz Training of Neural Networks}
+%
+Adversarial robustness is closely related to the Lipschitzness of a network $\net_\param$. Namely, for inputs $\inp,\inpp\in\Inp$ that are close, we also want the outputs of $\net_\param$ to be close. In other words we want to find a small constant $L>0$ such that
+%
+\begin{align*}
+\norm{\net_\param(\inp) - \net_\param(\inpp)}_\Oup \leq L\ \norm{\inp-\inpp}_\Inp,
+\end{align*}
+%
+where we typically employ an $L^p$ norm both $\norm{\cdot}_\Inp$ and $\norm{\cdot}_\Oup$.
+%
+The smallest constant fulfilling this inequality is the Lipschitz constant $\Lip(\net_\param)$. Having some control over this constant can therefore relate to being adversarially robust.
+%
+\begin{remark}{}{}
+Apart from adversarial robustness, having an upper bound on the Lipschitz constant of a neural network is also important for other applications, see e.g. \cite{hasannasab2020parseval, arjovsky2017wasserstein}.
+\end{remark}
+%
+%
+We employ the Lipschitz constant as a regularizer and consider the problem
+%
+\begin{align}\label{eq:LipReg}
+\min_\param \empLoss(\param) +\lambda\ \Lip(\net_\param)
+\end{align}
+%
+for a parameter $\lambda$. Unfortunately, computing the Lipschitz constant of neural networks is a NP-hard problem \cite{scaman2018lipschitz} for which many works employ the estimate
+%
+\begin{align}\label{ineq:lip_weights}
+\lip(\net_\param) \ \leq \ \prod_{l=1}^L  \lip(\Phi_l) \leq 
+C_\sigma \prod_{l=1}^L \norm{W_l},
+\end{align}
+%
+where here $\norm{W_l}$ denotes some matrix norm and $C_\sigma$ depends on the Lipschitz constants of the activation functions, see \cite{Anil2019,gouk2020regularisation, Krishnan2020, Roth2020}.
+%
+This inequality is not sharp and usually overestimates the Lipschitz constant, as we see in the following example taken from \cite{bungert2021clip}.
+%
+\begin{example}{}{}
+We consider a feed-forward neural network $\net_\param:\R\to\R$ with one hidden layer,
+%
+\begin{align*}
+\Phi_1(z) &:= \relu(W_1 z) :=\left(\max\{z, 0\}, \max\{-z, 0\}\right)^T,\qquad 
+W_1:= (1,-1),\\
+\Phi_2(z) &:= W_2 z := z_1 + z_2,\qquad W_2:=(1,1)^T,\\
+\net_\param&:= \Phi_2\circ\Phi_1.
+\end{align*}
+%
+For $\inp\in\R$ we have that 
+%
+\begin{align*}
+\inp&\geq 0 \qquad\Rightarrow\Phi_1(\inp) = (\inp, 0)^T \qquad\Rightarrow \net_\param(\inp)=\inp,\\
+\inp&\leq 0 \qquad\Rightarrow\Phi_1(\inp) = (0, -\inp)^T \qquad\Rightarrow \net_\param(\inp)=-\inp,
+\end{align*}
+%
+and therefore $\net_\param = \abs{\cdot}$, for which we know that $\Lip(\net_\param)=1$. However employing the spectral for $W_1$ and $W_2$, we see that
+%
+\begin{align*}
+\norm{W_1}\cdot\norm{W_2} = \sqrt{2}\ \sqrt{2} = 2.	
+\end{align*}
+%
+\end{example}
+%
+Plugging the estimate of \cref{ineq:lip_weights} into \cref{eq:LipReg} therefore potentially over regularizes the problem.
+%
+\paragraph{Contribution in \cite{bungert2021clip}} In \cite{bungert2021clip} we propose a strategy to solve \cref{eq:LipReg} approximately, without the estimate in \cref{ineq:lip_weights}. The basic idea consists of approximating the Lipschitz constant on a finite set and using this approximation as a regularizer. Furthermore, we analyse the original model in \cref{eq:LipReg} where we study existence of solutions, the influence of the parameter $\lambda$ and the limits $\lambda\to 0, \lambda\to \infty$, see \cref{sec:CLIPAna}. Finally, we demonstrate the efficiency of the methods by applying to some simple toy problems, see \cref{sec:CLIPNum}.
 
-\subsection{Lipschitz Training of Neural Networks}
 
+\subsection{Cheap Lipschitz Training}
+As mentioned before, we approximate the Lipschitz constant on a finite set $\Inp_{\lip{}}\subset\Inp\times\Inp$ via
+%
+\begin{align*}
+\Lip(\net_\param; \Inp_{\lip{}}) := 
+\max_{(\inp,\inpp)\in\Inp_{\lip{}}} \frac{\norm{\net_\param(\inp)-\net_\param(\inpp)}_\Oup}{\norm{\inp-\inpp}_\Inp}
+\approx
+\Lip(\net_\param).
+\end{align*}
+%
+%
+Disregarding the non-differentiable points of $\param\mapsto \Lip(\net_\param; \Inp_{\lip{}})$ allows us to make the above approximation in \cref{eq:LipReg} and the solve then problem via a gradient descent variant.
+%
+\begin{remark}{}{}
+Let $f,g:\Inp\to\Oup$ be two differentiable functions. If $f(\inpp)>g(\inpp)$ for some $\inpp\in\Inp$ then we know that there exists some $\epsilon>0$ such that $f(\inp)>g(\inp)\forall \inp\in B_\epsilon(\inpp)$. We have that $f\vee g = \max\{f,g\} = f$ in $B_\epsilon(\inpp)$ and therefore $\inp\mapsto f(\inp)\vee g(\inp)$ is differentiable in $\inpp$. If $f(\inpp)=g(\inpp)$ then $f\vee g$ could be non-differentiable at $\inpp$. However, in practice we employ automatic differentiation, where in this case one of the functions is chosen, say $f$, and the \emph{gradient} at $\inpp$ is computed as $\nabla f$. 
+\end{remark}
+%
+%
+\noindent%
+The strength of this approach of course is dependent on the quality of the set $\Inp_{\lip}$. In \cite{bungert2021clip} we propose to iteratively update the set via a gradient ascent type scheme. Namely, we initialize $\Inp_{\lip}$ as a random perturbation of a subset of the given data. In each step we then update the points as follows:
+\begin{itemize}
+\item Consider $L(\inp,\inpp) := {\norm{\net_\param(\inp)-\net_\param(\inpp)}}\,/\,{\norm{\inp-\inpp}},\quad\inp,\inpp\in\Inp$.
+\item For each $(\inp,\inpp)\in\Inp_{\lip}$ perform the update 
+%
+\begin{align*}
+\inp\phantom{'} &\gets \inp\phantom{'} + \tau\,L(\inp,\inpp) \nabla_{\inp} L(\inp,\inpp),\\
+\inpp &\gets \inpp + \tau\,L(\inp,\inpp) \nabla_{\inpp} L(\inp,\inpp),
+\end{align*}
+%
+for a parameter $\tau>0$.
+\end{itemize}
+%
+This scheme performs a gradient ascent on the Lipschitz constant, see \cite[Alg. 1]{bungert2021clip}. For each mini batch $B\subset\tset$ we first update the set $\Inp_{\lip}$ and then update the parameters via
+%
+\begin{align*}
+\param \gets \param - \eta\ \nabla_\param\left(\empLoss(\param; B) + 
+\lambda~\Lip(\net_\param,\Inp_{\lip})\right)
+\end{align*}
+%
+which yields the algorithm presented in \cite[Alg. 2]{bungert2021clip}. Similar to \cite{shafahi2019adversarial} one can reuse the gradients computed for $\nabla_\inp$ for the computation of $\nabla_\param$. This fact yields the attribute \emph{cheap} in the Lipschitz training algorithm.
+%
+\subsection{Analysis of Lipschitz Regularization}\label{sec:CLIPAna}
+%
+In \cite{bungert2021clip} we analyse some basic properties of the original regularization problem in \cref{eq:LipReg}. We repeat the assumption in order to refer to them in the following:
 
+\begin{enumerate}[label= \textbf{Assumption \arabic*.}, ref={\arabic*}, align=left]
+	\setlength{\itemsep}{9pt}
+	\item\label[ass]{ass:loss} We assume that the loss function 
+	$\loss:\Oup\times\Oup\to\R\cup\{\infty\}$ satisfies:\\[-0.2cm]
+	\begin{enumerate}
+		\setlength{\itemsep}{6pt}
+		\item $\loss(\oup,\oupp)\geq 0$ for all $\oup,\oupp\in\Oup$,
+		\item $\oup\mapsto\loss(\oup,\oupp)$ is lower semi-continuous for all $\oupp\in\Oup$.
+	\end{enumerate}
+	% ###
+	\item\label[ass]{ass:net} We assume that the map $\param\mapsto\net_\param(\inp)$ 
+	is continuous for all $\inp\in\Inp$.
+	% ###
+	\item\label[ass]{ass:exist} We assume that there exists $\param\in\Param$ such that 
+	\begin{align*}
+		\frac{1}{\abs{\trSet}}
+		\sum_{(\inp,\oup)\in\trSet}\loss(\net_\param(\inp),\oup)+
+		\lambda \lip(\net_\param) < \infty.
+	\end{align*}
+\end{enumerate}
+%
+%
+Employing only \cref{ass:net} one can show that that the map $\param\mapsto \Lip(\net_\param)$ is lower semi-continuos, \cite[Lem. 1]{bungert2021clip}. In order to ensure the existence of solutions.
+\subsection{Numerical Results}\label{sec:CLIPNum}
+%
+%
 %
 %
 %
