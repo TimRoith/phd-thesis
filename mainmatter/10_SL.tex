@@ -1318,7 +1318,256 @@ In \cite{bungert2022bregman, bungert2021neural} there are no evaluation on the t
 %
 %
 %
+\clearpage%
 %
 \section{Resolution Stability}\label{sec:FNO}
 %
+\setlength\intextsep{0pt}
+\begin{wrapfigure}{r}{.5\textwidth}
+\centering
+\includegraphics[width=.4\textwidth]{atelier/FNO/trigo.pdf}
+\end{wrapfigure}
+%
+We frequently employ the $\Inp=[0,1]^{K\times N\times M}$ to represent images. However, from a modeling point of view it is more natural to assume that images are functions $\img:\domain\to[0,1]^K$ where $\domain\subset\R^2$ is some domain. In this sense, the space $\Inp$ only constitutes a discretization of the space of all functions from $\domain$ to $[0,1]^K$. The number of pixels, i.e. $N\cdot M$, relates to the \emph{resolution} of the image, where a higher number of pixels yields a higher resolution. When dealing with classification problems, one intuitively thinks of images as functions, especially in the sense that the resolution is merely an artifact of the restriction to finite dimensions in computer vision. Therefore, one wants to obtain a resolution-independent classifier.
+%
+\paragraph{Images, Resolution and Scale}
+%
+%
+For the continuum domain we consider the $d$-dimensional torus $\domain = \mathbb{R}^d / \mathbb{Z}^d$. An image is a function 
+%
+\begin{align*}
+\img:\domain\to[0,1]^K
+\end{align*}
+%
+where $K\in\N$ denotes the number of color channels, see \cite{gonzales1987digital}. In order to represent images on a computer we discretize the domain $\domain$, via a regular grid $\domain_N = \{x_0,\ldots,x_N\}$ indexed by the set
+%
+\begin{align*}
+\mathcal{J}_N := \{0,\ldots, N-1\}^d
+\end{align*}
+%
+with grid points $x_j = j/(N-1)$, see e.g. \cite{kabri2022FNO, kovachki2021universal}. For simplicity we assume an equal number of discretization points in each dimension. Therefore, $N^d$ is the resolution of an image discretized w.r.t. $\mathcal{J}_N$. 
 
+It is important to notice the differences to the concept of \emph{scale}. A change in scale would be a change in the original image domain, for example by zooming in on a certain area. For our image classification examples, we usually assume that the image $\img$ contain a certain entity to be classified. The scale roughly describes how \enquote{big} the entity is, or what percentage of the image it fills. We assume that the scale is fixed. Therefore, changing $N$ directly influences the resolution of discretization.
+
+\paragraph{How do Neural Networks react to Resolution Changes?} In many machine learning application one assumes a fixed input size and therefore a fixed resolution, assuming the same scale throughout the data. Formally, networks are defined as mappings $\net_\param:\R^{K\times N\times N}\to\Delta^C$, i.e. they only accept inputs for the fixed resolution $N$. In order to understand how this constrained can be weakened, we need to consider the concrete structure of our networks, which was similarly done in \cite{kovachki2021universal, kabri2022FNO}. The architectures we consider are feed-forward networks of the form
+%
+\begin{align*}
+\net_\param = \Phi^{\text{class}} \circ \mathcal{S}\circ \Phi^{\text{feature}}
+\end{align*}
+%
+where 
+%
+\begin{itemize}
+\item $\Phi^{\text{feature}}$ is the so-called feature extractor, which should be applicable independently from the input dimension,
+\item $\mathcal{S}$ is a function that maps inputs of any size to a fixed output dimension $\R^s$,
+\item $\Phi^{\text{class}}:\R^s\to\Delta^C$ denotes the classification layer.
+\end{itemize}
+%
+%
+%
+The feature extractor usually consists of convolutional layers. As in \cite[Ch. 2]{kabri2022FNO} we consider the discrete convolution of two discretized images $\img_N, \imgg_N$ defined as 
+%
+\begin{align*}
+(\img_N\ast \imgg_N)(x_j) := \sum_{k\in \mathcal{J}_N} \img_N(x_k)\cdot \imgg_N(x_{j-k})
+\end{align*}
+%
+where for negative indices $j-k$ we set $x_{j-k} := x_{j-k+N}$. This assumes that both $\img_N, \imgg_N$ live on the same discretization $\mathcal{J}_N$. Taking inspiration from the visual cortex of cats \cite{hubel1962receptive}, the kernel size $M$ is usually much smaller than the resolution, which models a restricted support. In order to account for this dimension mismatch we consider so-called \emph{spatial zero-padding} for kernels $W\in\R^{\mathcal{J}_M}$
+%
+\begin{align*}
+W^{M \rightarrow N}_k = 
+\begin{cases}
+W_k & \text{for } k \in \mathcal{J}_N \cap \mathcal{J}_M,\\
+0 & \text{for } k \in \mathcal{J}_N \backslash \mathcal{J}_M.
+\end{cases}
+\end{align*}
+%
+Using this method, one can define the convolution for inputs $u_N$ of arbitrary input resolution $N$ via
+%
+\begin{align*}
+C(W)(u_N)= W^{M \rightarrow N} \ast u_N.
+\end{align*}
+%
+In \cite{kabri2023resolution} we refer to this as the \emph{spatial implementation} of convolution. Up to the behavior on the boundary this in fact the standard implementation in most libraries, especially in \texttt{PyTorch}. Therefore, a feature extractor consisting of convolutional layers can take inputs of variable resolution. In fact, ignoring possible resolution changes within the extractor---i.e. via pooling or strided convolutions---we have that $\Phi^{\text{feature}}(\img_N)\in \R^{\mathcal{J}}_N$ for any $N\in\N$.
+
+The mapping $\mathcal{S}$ can be realized as an adaptive pooling layer, see \cite{paszke2019pytorch}, which ensures a fixed output size. This methodology yields an \emph{discretization invariant architecture}, see \cite{kabri2022FNO, kovachki2021universal, li2020fourier}, which means that from a technical point of view the network is able to produce outputs for inputs with arbitrary discretization. However, we are actually interested in \emph{discretization invariant functionality} (see \cite{kabri2022FNO, kovachki2021universal, li2020fourier}), which also requires that the output is the same over different resolutions.
+%
+\paragraph{Input Interpolation}
+%
+%
+\paragraph{Contribution}
+%
+%
+
+%
+%
+\subsection{Fourier Neural Operators}
+%
+%
+We want to obtain neural networks whose output do not depend on the discretization of an image $\img:\domain\to\R^K$. This raises the question whether it is possible to find a formulation that allows us to work in the infinite dimensional setting. In \cite{kovachki2021neural} this issue was addressed in the setting of parametric PDEs for which the authors introduced the concept of \emph{neural operators}. One layer of a neural operator is given as a mapping $\mathcal{G}:  L^p(\domain) \rightarrow L^q(\domain)$
+%
+\begin{align}\label{eq:layerdef}
+\mathcal{G}(u)(x) = \sigma\left(\Psi(u)(x)\right) \qquad \text{for a.e. } x \in \domain,
+\end{align}
+%
+with the affine linear part given by
+%
+\begin{align}\label{eq:linearpart}
+\Psi(u) = W u + \mathcal{K}u + b,
+\end{align}
+%
+where
+%
+\begin{itemize}
+\item $\mathcal{K}: u \mapsto \int_{\domain} \kappa(\cdot, y)\, u(y)\,dy$ is a kernel integral operator with kernel $\kappa: \domain \times \domain \rightarrow \R$,
+\item $W \in \R$ models a residual component,
+\item and $b: \domain \rightarrow \R$ models a bias.
+\end{itemize}
+
+
+
+
+
+\begin{figure}[t]
+\begin{minipage}[t]{\textwidth}
+%\fbox{%
+\begin{minipage}{\textwidth}
+\begin{minipage}{0.01\textwidth}%
+\rotatebox{90}{%
+	\scriptsize%
+	higher resolution \phantom{--------} 
+	original \phantom{-----------} 
+	lower resolution\phantom{--}}
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.95\textwidth}
+\includegraphics[width=\textwidth, trim= 0cm 1cm 0cm 1cm, clip]{atelier/FNO/res-conv-sobel.pdf}%
+\end{minipage}%
+\hfill%
+\begin{minipage}{0.01\textwidth}
+\phantom{-}
+\end{minipage}
+\end{minipage}
+%}%
+\hfill%
+%
+%
+\begin{minipage}[t]{.5\textwidth}%
+\begin{tikzpicture}[]
+\node [
+draw=none,
+single arrow,
+right color=white,
+left color=fourierblue,
+text=black,
+single arrow head extend=0.2cm,
+minimum height=\textwidth-5pt,
+minimum width=.5cm,
+single arrow tip angle=70,
+shape border rotate=180
+]{\scriptsize Convolution with 
+\textbf{spectral} zero-padding};
+\end{tikzpicture}\hfill%
+%
+\end{minipage}%
+%
+\begin{minipage}[t]{.5\textwidth}%
+\hfill%
+\begin{tikzpicture}[]
+\node [
+draw=none,
+single arrow,
+right color=fourierblue,
+left color=white,
+text=black,
+single arrow head extend=0.2cm,
+minimum height=\textwidth-5pt,
+minimum width=.5cm,
+single arrow tip angle=70,
+shape border rotate=0
+]{\scriptsize \phantom{-}Convolution with 
+\textbf{spatial} zero-padding};
+\end{tikzpicture}%
+\end{minipage}%
+\end{minipage}%
+\caption[Effects of applying convolutional filters with different resolutions]{%
+Taken from \cite[Fig. 1]{kabri2022FNO}.}
+\label{fig:bulbul}
+\end{figure}
+
+\subsection{Analysis}
+
+\begin{proposition}{\cite[Prop. 1]{kabri2023resolution}}{}
+	For $1 \leq p, q \leq \infty$ let $\mathcal{L}$ be an operator layer given by \eqref{eq:layerdef} with an activation function $\sigma: \R \rightarrow \R$.
+	If there exists $r \geq 1$ such that
+	\begin{enumerate}[label=(\roman*)]
+		\item the affine part defines a mapping $\Psi: L^p(\domain) \rightarrow L^r(\domain)$,
+		\item the activation function $\sigma$ generates a Nemytskii operator $\sigma: L^r(\domain) \rightarrow L^q(\domain)$,
+	\end{enumerate}
+	%
+	then it holds that
+	%\begin{align*}
+	$
+	\mathcal{L}: L^p(\domain) \rightarrow L^q(\domain).
+	$
+	%\end{align*}
+	If additionally $\Psi$ is a continuous operator on the specified spaces and the function $\sigma$ is continuous, or uniformly continuous in the case $q=\infty$, the operator $\mathcal{L}: L^p(\domain) \rightarrow L^q(\domain)$ is also continuous.
+\end{proposition}
+
+\paragraph{Differentiability}
+
+\begin{proposition}{\cite[Prop. 2]{kabri2023resolution}}{}
+	For $1 \leq p, q \leq \infty$, let $\mathcal{L}$ be an operator layer given by \eqref{eq:layerdef} with affine part $\Psi$ as in \eqref{eq:linearpart}. If there exists $r>q$, or $r = q = \infty$ such that
+	\begin{enumerate}[label=(\roman*)]
+		\item the affine part is a continuous operator $\Psi: L^p(\domain) \rightarrow L^r(\domain)$,
+		\item the activation function $\sigma: \R \rightarrow \R$ is continuously differentiable
+		\item and the derivative of the activation function generates a Nemytskii operator $\sigma': L^r(\domain) \rightarrow \left[L^r(\domain) \rightarrow L^{s}(\Omega) \right]$ with $s = {rq}/{(r-q)}$,
+	\end{enumerate}
+	then it holds that $\mathcal{L}:  L^p(\domain) \rightarrow L^q(\domain)$ is Fréchet-differentiable in any $v \in L^p(\domain)$ with Fréchet-derivative $D\mathcal{L}(v): L^p(\domain) \rightarrow L^q(\Omega)$
+	\begin{align*}
+		D\mathcal{L}(v)(h) = \sigma'(\Psi(v))\cdot\Tilde{\Psi}(h),
+	\end{align*}
+	where $\Tilde{\Psi}$ denotes the linear part of $\Psi$, i.e., $\Tilde{\Psi} = \Psi - b$.
+\end{proposition}
+%
+%
+\paragraph{Convertibility}
+\begin{lemma}{\cite[Lem. 3]{kabri2023resolution}}{}
+	Let $M \leq N$ both be odd and let $T: \R^{J_N} \rightarrow \mathbb{C}^{I_N}$ be defined for $\theta \in \R^{J_N}$ as
+	$T(\theta) = \lambda \, F(\theta)$.
+	For any $\theta \in \R^{J_M}$ and $v \in \R^{J_N}$ it holds true that
+	\begin{align*}
+		C(\theta)(v) = K(T(\theta^{M\rightarrow N}))(v)
+	\end{align*}
+	and for any $\hat{\theta} \in \mathbb{C}^{I_M}_{\text{sym}}$ and $v \in \R^{J_N}$ it holds true that
+	\begin{align*}
+		K(\hat{\theta})(v) = C(T^{-1}(\hat{\theta}^{M\rightarrow N}))(v).
+	\end{align*}
+\end{lemma}
+
+\begin{lemma}{\cite[Lem. 4]{kabri2023resolution}}{}
+For odd $N \in \mathbb{N}$ and $v, \theta \in \R^{J_N}$ and $\hat{\theta} = T(\theta)$ it holds true that
+\begin{align*}
+	\nabla_{\hat{\theta}} K(\hat{\theta})(v) = \frac{1}{|J_N|}\; T \left( \vphantom{\hat{\theta}} \nabla_{\theta}C(\theta)(v) \right). 
+\end{align*}
+\end{lemma}
+%
+%
+\paragraph{Interpolation Equivariance}
+\begin{corollary}
+	For $\hat{\theta} \in \mathbb{C}^{I_M}_{\text{sym}}$, $v \in \R^{J_N}, M \leq N$ it holds true for any $L \geq M$ that
+	\begin{align*}
+		K(\hat{\theta})(v^{N \xrightarrow{\Delta} L}) = \left( K(\hat{\theta})(v) \right)^{N \xrightarrow{\Delta} L}.
+	\end{align*}
+\end{corollary}
+
+
+\subsection{Numerical Results}
+%
+%
+%\begin{wrapfigure}{r}{.4\textwidth}
+%\begin{center}
+%	\includegraphics[width=.4\textwidth]{}
+%\end{center}
+%The code for all the experiments is available at \href{https://github.com/TimRoith/BregmanLearning}{github.com/TimRoith/}\\
+%\href{https://github.com/TimRoith/BregmanLearning}{BregmanLearning}.
+%\end{wrapfigure}
