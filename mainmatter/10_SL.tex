@@ -1371,12 +1371,12 @@ The feature extractor usually consists of convolutional layers. As in \cite[Ch. 
 (\img_N\ast \imgg_N)(x_j) := \sum_{k\in \mathcal{J}_N} \img_N(x_k)\cdot \imgg_N(x_{j-k})
 \end{align*}
 %
-where for negative indices $j-k$ we set $x_{j-k} := x_{j-k+N}$. This assumes that both $\img_N, \imgg_N$ live on the same discretization $\mathcal{J}_N$. Taking inspiration from the visual cortex of cats \cite{hubel1962receptive}, the kernel size $M$ is usually much smaller than the resolution, which models a restricted support. In order to account for this dimension mismatch we consider so-called \emph{spatial zero-padding} for kernels $W\in\R^{\mathcal{J}_M}$
+where for negative indices $j-k$ we set $x_{j-k} := x_{j-k+N}$. This assumes that both $\img_N, \imgg_N$ live on the same discretization $\mathcal{J}_N$. Taking inspiration from the visual cortex of cats \cite{hubel1962receptive}, the kernel size $M$ is usually much smaller than the resolution, which models a restricted support. In order to account for this dimension mismatch we consider so-called \emph{spatial zero-padding} for kernels $\param\in\R^{\mathcal{J}_M}$
 %
 \begin{align*}
-W^{M \rightarrow N}_k = 
+\param^{M \rightarrow N}_k = 
 \begin{cases}
-W_k & \text{for } k \in \mathcal{J}_N \cap \mathcal{J}_M,\\
+\param_k & \text{for } k \in \mathcal{J}_N \cap \mathcal{J}_M,\\
 0 & \text{for } k \in \mathcal{J}_N \backslash \mathcal{J}_M.
 \end{cases}
 \end{align*}
@@ -1384,7 +1384,7 @@ W_k & \text{for } k \in \mathcal{J}_N \cap \mathcal{J}_M,\\
 Using this method, one can define the convolution for inputs $u_N$ of arbitrary input resolution $N$ via
 %
 \begin{align*}
-C(W)(u_N)= W^{M \rightarrow N} \ast u_N.
+C(\param)(u_N)= \param^{M \rightarrow N} \ast u_N.
 \end{align*}
 %
 In \cite{kabri2023resolution} we refer to this as the \emph{spatial implementation} of convolution. Up to the behavior on the boundary this in fact the standard implementation in most libraries, especially in \texttt{PyTorch}. Therefore, a feature extractor consisting of convolutional layers can take inputs of variable resolution. In fact, ignoring possible resolution changes within the extractor---i.e. via pooling or strided convolutions---we have that $\Phi^{\text{feature}}(\img_N)\in \R^{\mathcal{J}}_N$ for any $N\in\N$.
@@ -1403,7 +1403,7 @@ The mapping $\mathcal{S}$ can be realized as an adaptive pooling layer, see \cit
 \subsection{Fourier Neural Operators}
 %
 %
-We want to obtain neural networks whose output do not depend on the discretization of an image $\img:\domain\to\R^K$. This raises the question whether it is possible to find a formulation that allows us to work in the infinite dimensional setting. In \cite{kovachki2021neural} this issue was addressed in the setting of parametric PDEs for which the authors introduced the concept of \emph{neural operators}. One layer of a neural operator is given as a mapping $\mathcal{G}:  L^p(\domain) \rightarrow L^q(\domain)$
+We want to obtain neural networks whose output does not depend on the discretization of an image $\img:\domain\to\R^K$. This raises the question whether it is possible to find a formulation that allows us to work in the infinite dimensional setting. In \cite{kovachki2021neural} this issue was addressed in the setting of parametric PDEs for which the authors introduced the concept of \emph{neural operators}. One layer of a neural operator is given as a mapping $\mathcal{G}:  L^p(\domain) \rightarrow L^q(\domain)$
 %
 \begin{align}\label{eq:layerdef}
 \mathcal{G}(u)(x) = \sigma\left(\Psi(u)(x)\right) \qquad \text{for a.e. } x \in \domain,
@@ -1422,11 +1422,72 @@ where
 \item $W \in \R$ models a residual component,
 \item and $b: \domain \rightarrow \R$ models a bias.
 \end{itemize}
+%
+%
+By a slight abuse of notation, the activation function $\sigma:\R\to\R$ acts as a \Nem operator
+%
+\begin{align}\label{eq:nemytskii}%
+\sigma: v \mapsto \sigma(v(\cdot)),
+\end{align}
+%
+see e.g. \cite{tröltzsch}.
 
-
-
-
-
+In \cref{sec:FNOAna} we analyze continuity and differentiablility of a layer in this abstract form. However, the most relevant case for us, is when $\mathcal{K}$ is a convolution operator, i.e. $\kappa(x,y)=\kappa(x-y)$ is a translation invariant kernel. In this special case $\mathcal{G}$ is then known as layer of a \emph{Fourier Neural Operator} (FNO) as introduced in \cite{li2020fourier}, by parameterizing the kernel via its Fourier coefficients $\hat{\param}_k\in\C$
+%
+\begin{align}\label{eq:fnokernel}
+\kappa_{\hat{\theta}}(x) = \sum_{k \in \mathcal{I}} \hat{\theta}_k\, b_k(x),
+\end{align}
+%
+where $b_k(x) = \exp{(2\pi i\, kx)}$ denote the Fourier basis functions. In practice we assume that $\kappa_{\hat\param}$ only has a finite amount of non-zero Fourier coefficients, in fact we choose the set $\mathcal{I}_N := \lbrace -\lceil (N-1)/2\rceil, \,\hdots\,,0,\, \hdots\,, \lfloor (N-1)/2 \rfloor\rbrace^d$ as the index set, as done in \cite{li2020fourier}. Employing this set, we can easily enforce Hermitian symmetry $\hat{\theta}_k = \overline{\hat{\theta}_{-k}}$, which ensures that $\mathcal{K}_{\hat\param}$ outputs real-valued functions. We note that assuming a finite number $N$ of Fourier coefficients is completely independent from the input discretization, which is the main advantage of FNOs.
+%
+%
+\paragraph{How to Perform Convolutions with FNOs?}
+%
+%
+In \cite{kabri2023resolution} we consider the discrete Fourier transform and its inverse
+%
+\begin{align*}
+\left(Fv\right)_k &= \frac{1}{\lambda} \sum_{j \in \mathcal{J}_N} v_j\, e^{-2\pi i \, \left\langle k, \frac{j}{N}\right\rangle},  k \in \mathcal{I}_N,\\
+%
+\left(F^{-1}\hat{v}\right)_j &= \frac{\lambda}{|\mathcal{J}_N|}\sum_{k \in \mathcal{I}_N} \hat{v}_k\, e^{2\pi i \, \left\langle k, \frac{j}{N}\right\rangle} j \in \mathcal{J}_N,
+\end{align*}
+%
+with a normalization constant $\lambda \in \{1, \sqrt{|\mathcal{J}_N|}, |\mathcal{J}_N|\}$. We only consider parameters $\hat\param\in \Csym^{\mathcal{I}_N} := F(\R^{\mathcal{J}_N})$ for which can employ the convolution theorem (see e.g. \cite{grafakos}) to define
+%
+\begin{align}\label{eq:discfno}
+K(\hat{\theta})(v) = F^{-1}\left(\hat{\theta} \cdot Fv\right) \qquad \text{for }v \in \R^{\mathcal{J}_N}
+\end{align}
+%
+which is referred to as the FNO- or spectral-implementation of convolution.
+%
+%
+\paragraph{How do FNOs React to Resolution Changes?}
+%
+We already mentioned that the number of Fourier coefficients of $\hat\param\in\Csym^{\mathcal{I}_M}$ is independent of the input resolution. Nevertheless, the point-wise multiplication in \cref{eq:discfno} is only defined for inputs $\imgg\in\R^{\mathcal{J}_M}$, for which the question arises how FNOs can be adapted to dimension mismatch. Here, we apply a conceptually similar idea, by employing zero-padding. However, the important and major difference is that this zero-padding is performed in the spectral domain. Assuming that $N>M$ is odd and that $\imgg_N\in\R^{\mathcal{J}_N}$ we define
+%
+%
+\begin{align*}
+\hat{\theta}^{M \rightarrow N}_k = \begin{cases}
+\hat{\theta}_k & \text{for } k \in \mathcal{I}_N \cap \mathcal{I}_M,\\
+0 & \text{for } k \in \mathcal{I}_N \backslash \mathcal{I}_M,
+\end{cases}
+\end{align*}
+%
+%
+and the spectral implementation of convolution as
+%
+%
+\begin{equation*}
+   K(\hat{\theta})(v) := K(\hat{\theta}^{M \rightarrow N})(v).
+\end{equation*}
+%
+%
+\paragraph{What Is The Difference Between Standard and FNO Implementation?}
+%
+%
+The difference between the spectral and spatial implementation is best explained with \cite[Fig. 1]{kabri2023resolution}, which we repeat in \cref{fig:bulbul} for convenience.
+%
+%
 \begin{figure}[t]
 \begin{minipage}[t]{\textwidth}
 %\fbox{%
@@ -1490,11 +1551,19 @@ shape border rotate=0
 \end{minipage}%
 \end{minipage}%
 \caption[Effects of applying convolutional filters with different resolutions]{%
-Taken from \cite[Fig. 1]{kabri2022FNO}.}
+Taken from \cite[Fig. 1]{kabri2022FNO}, depicting a red whiskered bulbul taken from the Birds500 dataset \cite{pio450}.}
 \label{fig:bulbul}
 \end{figure}
+%
+%
+%
+%
+%
+%
 
-\subsection{Analysis}
+
+
+\subsection{Analysis}\label{sec:FNOAna}
 
 \begin{proposition}{\cite[Prop. 1]{kabri2023resolution}}{}
 	For $1 \leq p, q \leq \infty$ let $\mathcal{L}$ be an operator layer given by \eqref{eq:layerdef} with an activation function $\sigma: \R \rightarrow \R$.
