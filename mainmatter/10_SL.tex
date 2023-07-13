@@ -1438,7 +1438,7 @@ In \cref{sec:FNOAna} we analyze continuity and differentiablility of a layer in 
 \kappa_{\hat{\theta}}(x) = \sum_{k \in \mathcal{I}} \hat{\theta}_k\, b_k(x),
 \end{align}
 %
-where $b_k(x) = \exp{(2\pi i\, kx)}$ denote the Fourier basis functions. In practice we assume that $\kappa_{\hat\param}$ only has a finite amount of non-zero Fourier coefficients, in fact we choose the set $\mathcal{I}_N := \lbrace -\lceil (N-1)/2\rceil, \,\hdots\,,0,\, \hdots\,, \lfloor (N-1)/2 \rfloor\rbrace^d$ as the index set, as done in \cite{li2020fourier}. Employing this set, we can easily enforce Hermitian symmetry $\hat{\theta}_k = \overline{\hat{\theta}_{-k}}$, which ensures that $\mathcal{K}_{\hat\param}$ outputs real-valued functions. We note that assuming a finite number $N$ of Fourier coefficients is completely independent from the input discretization, which is the main advantage of FNOs.
+where $b_k(x) = \exp{(2\pi i\, kx)}$ denote the Fourier basis functions. In practice we assume that $\kappa_{\hat\param}$ only has a finite amount of non-zero Fourier coefficients, in fact we choose the set $\mathcal{I}_N := \lbrace -\lceil (N-1)/2\rceil, \,\hdots\,,0,\, \hdots\,, \lfloor (N-1)/2 \rfloor\rbrace^d$ as the index set, as done in \cite{li2020fourier}. Employing this set with odd $N\in\N$, we can easily enforce Hermitian symmetry $\hat{\theta}_k = \overline{\hat{\theta}_{-k}}$, which ensures that $\mathcal{K}_{\hat\param}$ outputs real-valued functions. For now we assume an odd number here and deal with the even case later. We note that assuming a finite number $N$ of Fourier coefficients is completely independent from the input discretization, which is the main advantage of FNOs.
 %
 %
 \paragraph{How to Perform Convolutions with FNOs?}
@@ -1478,7 +1478,7 @@ and the spectral implementation of convolution as
 %
 %
 \begin{equation*}
-   K(\hat{\theta})(v) := K(\hat{\theta}^{M \rightarrow N})(v).
+   K(\hat{\theta})(\imgg_N) := K(\hat{\theta}^{M \rightarrow N})(\imgg_N).
 \end{equation*}
 %
 %
