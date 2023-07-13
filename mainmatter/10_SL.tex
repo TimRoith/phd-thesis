@@ -1551,11 +1551,14 @@ shape border rotate=0
 \end{minipage}%
 \end{minipage}%
 \caption[Effects of applying convolutional filters with different resolutions]{%
-Taken from \cite[Fig. 1]{kabri2022FNO}, depicting a red whiskered bulbul taken from the Birds500 dataset \cite{pio450}.}
+The image is taken from \cite[Fig. 1]{kabri2022FNO}---depicting a red whiskered bulbul taken from the Birds500 dataset \cite{pio450}---and visualize the different effects of spectral and spatial zero-padding.}
 \label{fig:bulbul}
 \end{figure}
 %
 %
+We are given a kernel $\param\in\R^{\mathcal{J}_M}$, its unnormalized Fourier transform $\hat\param = \lambda F(\param)$ and an input $\imgg_N\in \R^{\mathcal{J}_N}$. If $M=N$, i.e. all dimension match, we observe that spectral and spatial implementation are equivalent, see the middle row of \cref{fig:bulbul}. However, if $N>M$ spatial zero-padding results in the kernel being localized in space and therefore the effect of convolving it with $\imgg_N$ changes. On the other hand for the spectral implementation we observe an equivariant behavior. 
+
+
 %
 %
 %
