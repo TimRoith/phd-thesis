@@ -1394,6 +1394,17 @@ The mapping $\mathcal{S}$ can be realized as an adaptive pooling layer, see \cit
 \paragraph{Input Interpolation}
 %
 %
+The technical possibility to handle different input sizes as described above, usually does not perform well in practice. This is due to the fact that in the standard spatial implementation of convolution the support of the kernel changes with varying input dimension, for which it output differs, see \cref{fig:bulbul}. If a network is trained on a fixed input size, the filters are adapted to this size and therefore only create meaningful responses on this size.
+
+A simple attempt to create a network, where not only the architecture, but also the functionality is discretization independent---at least up to a certain degree---is input interpolation. In this case our architecture is modified to
+%
+\begin{align*}
+\tilde \net_\param = I \circ \net_\param
+\end{align*}
+%
+where $I:\bigcup_{M\in\N} \R^{\mathcal{I}_M} \to \R^{\mathcal{I}_N}$ is an interpolation function, that maps inputs of arbitrary sizes to a fixed out discretization $\mathcal{I}_N$. Typical choices here include nearest neighbor 
+%
+%
 \paragraph{Contribution}
 %
 %
@@ -1438,7 +1449,7 @@ In \cref{sec:FNOAna} we analyze continuity and differentiablility of a layer in 
 \kappa_{\hat{\theta}}(x) = \sum_{k \in \mathcal{I}} \hat{\theta}_k\, b_k(x),
 \end{align}
 %
-where $b_k(x) = \exp{(2\pi i\, kx)}$ denote the Fourier basis functions. In practice we assume that $\kappa_{\hat\param}$ only has a finite amount of non-zero Fourier coefficients, in fact we choose the set $\mathcal{I}_N := \lbrace -\lceil (N-1)/2\rceil, \,\hdots\,,0,\, \hdots\,, \lfloor (N-1)/2 \rfloor\rbrace^d$ as the index set, as done in \cite{li2020fourier}. Employing this set with odd $N\in\N$, we can easily enforce Hermitian symmetry $\hat{\theta}_k = \overline{\hat{\theta}_{-k}}$, which ensures that $\mathcal{K}_{\hat\param}$ outputs real-valued functions. For now we assume an odd number here and deal with the even case later. We note that assuming a finite number $N$ of Fourier coefficients is completely independent from the input discretization, which is the main advantage of FNOs.
+where $b_k(x) = \exp{(2\pi i\, kx)}$ denote the Fourier basis functions. In practice we assume that $\kappa_{\hat\param}$ only has a finite amount of non-zero Fourier coefficients, in fact we choose the set $\mathcal{I}_N := \lbrace -\lceil (N-1)/2\rceil, \ldots,0, \ldots\,, \lfloor (N-1)/2 \rfloor\rbrace^d$ as the index set, as done in \cite{li2020fourier}. Employing this set with odd $N\in\N$, we can easily enforce Hermitian symmetry $\hat{\theta}_k = \overline{\hat{\theta}_{-k}}$, which ensures that $\mathcal{K}_{\hat\param}$ outputs real-valued functions. For now we assume an odd number here and deal with the even case later. We note that assuming a finite number $N$ of Fourier coefficients is completely independent from the input discretization, which is the main advantage of FNOs.
 %
 %
 \paragraph{How to Perform Convolutions with FNOs?}
@@ -1551,11 +1562,17 @@ shape border rotate=0
 \end{minipage}%
 \end{minipage}%
 \caption[Effects of applying convolutional filters with different resolutions]{%
-Taken from \cite[Fig. 1]{kabri2022FNO}, depicting a red whiskered bulbul taken from the Birds500 dataset \cite{pio450}.}
+The image is taken from \cite[Fig. 1]{kabri2022FNO}---depicting a red whiskered bulbul taken from the Birds500 dataset \cite{pio450}---and visualize the different effects of spectral and spatial zero-padding.}
 \label{fig:bulbul}
 \end{figure}
 %
 %
+We are given a kernel $\param\in\R^{\mathcal{J}_M}$, its unnormalized Fourier transform $\hat\param = \lambda F(\param)$ and an input $\imgg_N\in \R^{\mathcal{J}_N}$. If $M=N$, i.e. all dimension match, we observe that spectral and spatial implementation are equivalent, see the middle row of \cref{fig:bulbul}. However, if we consider higher resolution variant of the image with $N>M$, spatial zero-padding results in the kernel being localized in space and therefore the effect of convolving it with $\imgg_N$ changes. On the other hand for the spectral implementation we observe an equivariant behaviour. The resolution of the output changes but qualitatively the effect of the filter stay the same.
+%
+%
+\paragraph{Connection to Interpolation}
+
+
 %
 %
 %
