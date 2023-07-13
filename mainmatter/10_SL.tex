@@ -1328,7 +1328,7 @@ In \cite{bungert2022bregman, bungert2021neural} there are no evaluation on the t
 \includegraphics[width=.4\textwidth]{atelier/FNO/trigo.pdf}
 \end{wrapfigure}
 %
-We frequently employ the $\Inp=[0,1]^{K\times N\times M}$ to represent images. However, from a modeling point of view it is more natural to assume that images are functions $\img:\domain\to[0,1]^K$ where $\domain\subset\R^2$ is some domain. In this sense, the space $\Inp$ only constitutes a discretization of the space of all functions from $\domain$ to $[0,1]^K$. The number of pixels, i.e. $N\cdot M$, relates to the \emph{resolution} of the image, where a higher number of pixels yields a higher resolution. When dealing with classification problems, one intuitively thinks of images as functions, especially in the sense that the resolution is merely an artifact of the restriction to finite dimensions in computer vision. Therefore, one wants to obtain a resolution-independent classifier.
+We frequently employ the $\Inp=[0,1]^{K\times N\times M}$ to represent images. However, from a modeling point of view it is more natural to assume that images are functions $\img:\domain\to[0,1]^K$ where $\domain\subset\R^2$ is some domain. In this sense, the space $\Inp$ only constitutes a discretization of the space of all functions from $\domain$ to $[0,1]^K$. The number of pixels, i.e. $N\cdot M$, relates to the \emph{resolution} of the image, where a higher number of pixels yields a higher resolution.In this sense the resolution is merely an artifact of the restriction to finite dimensions in computer vision and not relevant for the classification. Therefore, one wants to obtain a resolution-independent classifier.\todo{This intro needs work}
 %
 \paragraph{Images, Resolution and Scale}
 %
@@ -1349,7 +1349,7 @@ with grid points $x_j = j/(N-1)$, see e.g. \cite{kabri2022FNO, kovachki2021unive
 
 It is important to notice the differences to the concept of \emph{scale}. A change in scale would be a change in the original image domain, for example by zooming in on a certain area. For our image classification examples, we usually assume that the image $\img$ contain a certain entity to be classified. The scale roughly describes how \enquote{big} the entity is, or what percentage of the image it fills. We assume that the scale is fixed. Therefore, changing $N$ directly influences the resolution of discretization.
 
-\paragraph{How do Neural Networks react to Resolution Changes?} In many machine learning application one assumes a fixed input size and therefore a fixed resolution, assuming the same scale throughout the data. Formally, networks are defined as mappings $\net_\param:\R^{K\times N\times N}\to\Delta^C$, i.e. they only accept inputs for the fixed resolution $N$. In order to understand how this constrained can be weakened, we need to consider the concrete structure of our networks, which was similarly done in \cite{kovachki2021universal, kabri2022FNO}. The architectures we consider are feed-forward networks of the form
+\paragraph{How do Neural Networks react to Resolution Changes?} In many machine learning application one assumes a fixed input size and therefore a fixed resolution, assuming the same scale throughout the data. Formally, networks are defined as mappings $\net_\param:\R^{K\times N\times N}\to\Delta^C$, i.e. they only accept inputs for the fixed resolution $N$. In order to understand how this constraint can be weakened, we need to consider the concrete structure of our networks, which was similarly done in \cite{kovachki2021universal, kabri2022FNO}. The architectures we consider are feed-forward networks of the form
 %
 \begin{align*}
 \net_\param = \Phi^{\text{class}} \circ \mathcal{S}\circ \Phi^{\text{feature}}
@@ -1371,7 +1371,7 @@ The feature extractor usually consists of convolutional layers. As in \cite[Ch. 
 (\img_N\ast \imgg_N)(x_j) := \sum_{k\in \mathcal{J}_N} \img_N(x_k)\cdot \imgg_N(x_{j-k})
 \end{align*}
 %
-where for negative indices $j-k$ we set $x_{j-k} := x_{j-k+N}$. This assumes that both $\img_N, \imgg_N$ live on the same discretization $\mathcal{J}_N$. Taking inspiration from the visual cortex of cats \cite{hubel1962receptive}, the kernel size $M$ is usually much smaller than the resolution, which models a restricted support. In order to account for this dimension mismatch we consider so-called \emph{spatial zero-padding} for kernels $\param\in\R^{\mathcal{J}_M}$
+where for negative indices $j-k$ we set $x_{j-k} := x_{j-k+N}$. This assumes that both $\img_N, \imgg_N$ live on the same discretization $\mathcal{J}_N$. Modeling spatial locality---and therefore a small support of the kernel---one usually chooses $M$ much smaller than the resolution. See e.g. the study in \cite{hubel1962receptive} which explores a similar methodology for the visual cortex of cats. In order to account for this dimension mismatch we consider so-called \emph{spatial zero-padding} for kernels $\param\in\R^{\mathcal{J}_M}$
 %
 \begin{align*}
 \param^{M \rightarrow N}_k = 
@@ -1387,7 +1387,7 @@ Using this method, one can define the convolution for inputs $u_N$ of arbitrary 
 C(\param)(u_N)= \param^{M \rightarrow N} \ast u_N.
 \end{align*}
 %
-In \cite{kabri2023resolution} we refer to this as the \emph{spatial implementation} of convolution. Up to the behavior on the boundary this in fact the standard implementation in most libraries, especially in \texttt{PyTorch}. Therefore, a feature extractor consisting of convolutional layers can take inputs of variable resolution. In fact, ignoring possible resolution changes within the extractor---i.e. via pooling or strided convolutions---we have that $\Phi^{\text{feature}}(\img_N)\in \R^{\mathcal{J}}_N$ for any $N\in\N$.
+In \cite{kabri2023resolution} we refer to this as the \emph{spatial implementation} of convolution. Up to the behavior on the boundary this is in fact the standard implementation in most libraries, especially in \texttt{PyTorch}. Therefore, a feature extractor consisting of convolutional layers can take inputs of variable resolution. In fact, ignoring possible resolution changes within the extractor---i.e. via pooling or strided convolutions---we have that $\Phi^{\text{feature}}(\img_N)\in \R^{\mathcal{J}}_N$ for any $N\in\N$.
 
 The mapping $\mathcal{S}$ can be realized as an adaptive pooling layer, see \cite{paszke2019pytorch}, which ensures a fixed output size. This methodology yields an \emph{discretization invariant architecture}, see \cite{kabri2022FNO, kovachki2021universal, li2020fourier}, which means that from a technical point of view the network is able to produce outputs for inputs with arbitrary discretization. However, we are actually interested in \emph{discretization invariant functionality} (see \cite{kabri2022FNO, kovachki2021universal, li2020fourier}), which also requires that the output is the same over different resolutions.
 %
@@ -1399,13 +1399,18 @@ The technical possibility to handle different input sizes as described above, us
 A simple attempt to create a network, where not only the architecture, but also the functionality is discretization independent---at least up to a certain degree---is input interpolation. In this case our architecture is modified to
 %
 \begin{align*}
-\tilde \net_\param = I \circ \net_\param
+\tilde \net_\param = \net_\param \circ I
 \end{align*}
 %
-where $I:\bigcup_{M\in\N} \R^{\mathcal{I}_M} \to \R^{\mathcal{I}_N}$ is an interpolation function, that maps inputs of arbitrary sizes to a fixed out discretization $\mathcal{I}_N$. Typical choices here include nearest neighbor 
+where $I:\bigcup_{M\in\N} \R^{\mathcal{J}_M} \to \R^{\mathcal{J}_N}$ is an interpolation function, that maps inputs of arbitrary sizes to a fixed out discretization $\mathcal{I}_N$. Typical choices here include nearest neighbor, bilinear or bicubic interpolation, see e.g. \cite{gonzales1987digital}. Especially relevant in our case, is so-called \emph{trigonometric interpolation}, where for $\imgg_M\in\R^{\mathcal{J}}$ we define
 %
 %
-\paragraph{Contribution}
+\begin{align*}
+I^{\text{trigo}}(\imgg_M) := \imgg_M^{M \xrightarrow{\Delta} N} := F^{-1} \left( (Fv)^{M \rightarrow N}\right).
+\end{align*}
+%
+%
+\paragraph{Contribution} In \cite{kabri2023resolution} we study the connection between FNOs and CNNs for classification problems. We identify under which assumption the architectures are equivalent (see \cref{lem:FNOconv}), but also where they are not, see \cref{fig:bulbul}. Here, we are especially interested in the multi-resolution case, we show that one layer of an FNO is equivariant with respect to trigonometric interpolation, \cref{cor:FNOequi}. This is also underlined by numerical experiments, where we compare the FNO implementation to interpolation methods and a naive CNN implementation. Furthermore, we show that training equivalent CNN and FNO layers lead to different results, i.e., while they have the same forward pass, the gradients w.r.t. their parameters might differ, \cref{lem:FNOGrad}. Furthermore, we show continuity and Fréchet-differentiability of abstract neural layers as operators between $L^p$ spaces, see \cref{sec:FNOAna}. Finally we conduct numerical experiments supporting our theoretical findings \cref{sec:FNONum}.
 %
 %
 
@@ -1506,8 +1511,8 @@ The difference between the spectral and spatial implementation is best explained
 \begin{minipage}{0.01\textwidth}%
 \rotatebox{90}{%
 	\scriptsize%
-	higher resolution \phantom{--------} 
-	original \phantom{-----------} 
+	higher resolution \phantom{------------} 
+	original \phantom{-------------} 
 	lower resolution\phantom{--}}
 \end{minipage}%
 \hfill%
@@ -1571,17 +1576,49 @@ We are given a kernel $\param\in\R^{\mathcal{J}_M}$, its unnormalized Fourier tr
 %
 %
 \paragraph{Connection to Interpolation}
-
-
+%
+As hinted in \cref{fig:bulbul}, when changing the resolution, the spectral implementation of convolution can be interpreted as a standard convolution with an interpolated kernel. In fact we observe that for $\param\in\R^{\mathcal{J}_M}, \hat\param=\lambda\, F(\param)$ and $\imgg_N\in\R^{\mathcal{J}_N}$ we have that
+%
+\begin{align*}
+\CF(\hat\param)(\imgg_N) &= 
+K(\hat{\param}^{M \rightarrow N})(\imgg_N) = 
+F^{-1}\left(\hat{\theta}^{M \rightarrow N} \cdot Fv_N\right)\\ 
+&= 
+%
+F^{-1}\left(F\, F^{-1}\hat{\theta}^{M \rightarrow N} \cdot Fv_N\right)\\
+%
+&=
+F^{-1}\left(F \param^{M \xrightarrow{\Delta} N}  \cdot Fv_N \right)
+%
+=
+%
+\param^{M \xrightarrow{\Delta} N} \ast \imgg_N\\
+%
+&= 
+C(\param^{M \xrightarrow{\Delta} N})(\imgg_N).
+\end{align*}
+%
+%
+Therefore, applying one FNO layer is equivalent to trigonometric interpolation of the kernel.
 %
 %
 %
 %
-
-
-
 \subsection{Analysis}\label{sec:FNOAna}
+%
+%
+In this section, we comment on the theoretical findings in \cite{kabri2023resolution}. We first consider the abstract neural layer as in \cref{eq:layerdef} for which we show continuity and Fréchet-differentiability.
+%
+%
+\paragraph{Continuity of Neural Layers} The results for neural layers in \cite{kabri2023resolution} mostly fall back to the theory of \Nem{} operators, see e.g. \cite{tröltzsch, ambrosetti}. In order to show that the layer $\mathcal{G}$ is a well defined mapping from $L^p$ to $L^q$ one first needs to identify an exponent $r\in [1,\infty]$ such that the affine part is a mapping $\Psi:L^p\to L^r$. For example if $\kappa\in L^s$ with $1/r + 1 = 1/p + 1/s$ it follows from Young's convolution inequality that $\mathcal{K}$ maps to $L^r$, see \cite[Th. 1.2.12]{grafakos}. If then $W=0$ and $b\in L^r$ we know that $\Psi$ maps to $L^r$.
 
+To ensure that the \Nem{} operator defines a mapping $\sigma:L^r\to L^q$ one needs to assume a growth condition on $\sigma:\R\to\R$, see \cite[Eq. 4]{kabri2023resolution} and originally \cite{tröltzsch}. Under these assumptions, we have the following result. The prove is trivial and the main content is buried in the assumptions, however it still summarizes the situation in a convenient way. Concrete examples fulfilling these assumptions are given in \cite{kabri2023resolution} borrowing concepts from \cite{ambrosetti, tröltzsch}. The most important activation function that is valid in this setting is the ReLU function
+%
+\begin{align*}
+\relu(x) = \max\{x, 0\}.
+\end{align*}
+%
+%
 \begin{proposition}{\cite[Prop. 1]{kabri2023resolution}}{}
 	For $1 \leq p, q \leq \infty$ let $\mathcal{L}$ be an operator layer given by \eqref{eq:layerdef} with an activation function $\sigma: \R \rightarrow \R$.
 	If there exists $r \geq 1$ such that
@@ -1598,9 +1635,20 @@ We are given a kernel $\param\in\R^{\mathcal{J}_M}$, its unnormalized Fourier tr
 	%\end{align*}
 	If additionally $\Psi$ is a continuous operator on the specified spaces and the function $\sigma$ is continuous, or uniformly continuous in the case $q=\infty$, the operator $\mathcal{L}: L^p(\domain) \rightarrow L^q(\domain)$ is also continuous.
 \end{proposition}
-
-\paragraph{Differentiability}
-
+%
+%
+\paragraph{Differentiability of Neural Layers}
+%
+%
+We furthermore consider Fréchet differentiability of a neural layer w.r.t. to the input variable. This can also be transferred to differentiability w.r.t. the parameters as we provide in \cite[Ex. 4]{kabri2023resolution}. Conceptually the main result we repeat here is similar to the one on continuity of the last paragraph. Namely, we put certain assumptions on the affine part and the activation function $\sigma:\R\to\R$ that allow us to employ the classical theory on \Nem{} operators. The major difference is that we also need to assume differentiability of the activation function, were we also assume a growth condition on the derivative. The ReLU function can therefore not be chosen in this setting, however the smooth approximation called GELU (\cite{hen16})
+%
+\begin{align*}
+\operatorname{GELU}(x) := x\, \Phi(x)
+\end{align*}
+%
+where $\Phi$ is the CDF of the standard normal distribution, can be employed.
+%
+%
 \begin{proposition}{\cite[Prop. 2]{kabri2023resolution}}{}
 	For $1 \leq p, q \leq \infty$, let $\mathcal{L}$ be an operator layer given by \eqref{eq:layerdef} with affine part $\Psi$ as in \eqref{eq:linearpart}. If there exists $r>q$, or $r = q = \infty$ such that
 	\begin{enumerate}[label=(\roman*)]
@@ -1616,8 +1664,13 @@ We are given a kernel $\param\in\R^{\mathcal{J}_M}$, its unnormalized Fourier tr
 \end{proposition}
 %
 %
-\paragraph{Convertibility}
-\begin{lemma}{\cite[Lem. 3]{kabri2023resolution}}{}
+\paragraph{Convertibility Between FNOs and CNNs}
+%
+%
+The following lemma formalizes the intuition that FNOs and CNNs are equivalent in certain settings. Given inputs of a fixed discretization $\mathcal{J}_N$ and parameters $\param\in\R^{\mathcal{J}_M}$ the standard convolution implementation is equivalent to the spectral one w.r.t. the parameters $\hat\param = \lambda\, F(\param^{M\to N})$. The subtle but important point here, is that the number of spectral parameters needs to be equal to the input size in order to achieve equivalence. In \cite[Fig.3]{kabri2023resolution} we observe numerically that the number of used spectral coefficients actually needs to match the input size in order to achieve equivalence.
+%
+%
+\begin{lemma}{\cite[Lem. 3]{kabri2023resolution}}{lem:FNOconv}
 	Let $M \leq N$ both be odd and let $T: \R^{J_N} \rightarrow \mathbb{C}^{I_N}$ be defined for $\theta \in \R^{J_N}$ as
 	$T(\theta) = \lambda \, F(\theta)$.
 	For any $\theta \in \R^{J_M}$ and $v \in \R^{J_N}$ it holds true that
@@ -1629,8 +1682,13 @@ We are given a kernel $\param\in\R^{\mathcal{J}_M}$, its unnormalized Fourier tr
 		K(\hat{\theta})(v) = C(T^{-1}(\hat{\theta}^{M\rightarrow N}))(v).
 	\end{align*}
 \end{lemma}
-
-\begin{lemma}{\cite[Lem. 4]{kabri2023resolution}}{}
+%
+%
+\noindent%
+From this and from \cite[Fig. 3]{kabri2023resolution} we obtain the negative result that in order to convert a CNN to a FNO we need a large number of spectral parameters. This also connected to the fact that spatial locality can usually only expressed using more spectral coefficients. Therefore, one might think that FNOs are infeasible due to memory requirements. However, it turns out that directly optimizing over the spectral parameters leads to a comparable performance, already for a low number of Fourier coefficients. This is reported in the blue curve in \cite[Fig. 3]{kabri2023resolution}. This hints, that while the forward pass can be equivalent, computing the gradient w.r.t. their parameters is not. This is formalized in the following lemma.
+%
+%
+\begin{lemma}{\cite[Lem. 4]{kabri2023resolution}}{lem:FNOGrad}
 For odd $N \in \mathbb{N}$ and $v, \theta \in \R^{J_N}$ and $\hat{\theta} = T(\theta)$ it holds true that
 \begin{align*}
 	\nabla_{\hat{\theta}} K(\hat{\theta})(v) = \frac{1}{|J_N|}\; T \left( \vphantom{\hat{\theta}} \nabla_{\theta}C(\theta)(v) \right). 
@@ -1639,7 +1697,12 @@ For odd $N \in \mathbb{N}$ and $v, \theta \in \R^{J_N}$ and $\hat{\theta} = T(\t
 %
 %
 \paragraph{Interpolation Equivariance}
-\begin{corollary}
+%
+%
+The last result considers the main motivation for the topic. Namely, the resolution in-variance of an FNO layer. However, here we can not allow an arbitrary resizing operation. Since it is most natural to our approach, we can show equivariance w.r.t. trigonometric interpolation of the input.
+%
+%
+\begin{corollary}{}{cor:FNOequi}
 	For $\hat{\theta} \in \mathbb{C}^{I_M}_{\text{sym}}$, $v \in \R^{J_N}, M \leq N$ it holds true for any $L \geq M$ that
 	\begin{align*}
 		K(\hat{\theta})(v^{N \xrightarrow{\Delta} L}) = \left( K(\hat{\theta})(v) \right)^{N \xrightarrow{\Delta} L}.
