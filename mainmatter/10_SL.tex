@@ -1602,6 +1602,10 @@ C(\param^{M \xrightarrow{\Delta} N})(\imgg_N).
 Therefore, applying one FNO layer is equivalent to trigonometric interpolation of the kernel.
 %
 %
+\paragraph{Adaption to Even Dimensions}
+%
+%
+Zero-padding of the spectral coefficients only fulfills Hermitian symmetry in the case where $M,N$ are odd. In order ot adapt this to the even case, we employ so-called Nyquist splitting, see \cite{trigo19}. In all our experiments the implementation carefully employs this method, which ensures that the output of the spectral convolution is real valued.
 %
 %
 \subsection{Analysis}\label{sec:FNOAna}
@@ -1710,13 +1714,28 @@ The last result considers the main motivation for the topic. Namely, the resolut
 \end{corollary}
 
 
-\subsection{Numerical Results}
+\subsection{Numerical Results}\label{sec:FNONum}
 %
 %
-%\begin{wrapfigure}{r}{.4\textwidth}
-%\begin{center}
-%	\includegraphics[width=.4\textwidth]{}
-%\end{center}
-%The code for all the experiments is available at \href{https://github.com/TimRoith/BregmanLearning}{github.com/TimRoith/}\\
-%\href{https://github.com/TimRoith/BregmanLearning}{BregmanLearning}.
-%\end{wrapfigure}
+\begin{wrapfigure}{r}{.4\textwidth}
+\begin{center}
+	\includegraphics[width=.4\textwidth]{atelier/FNO/FNOQR.png}
+\end{center}
+The code for all the experiments is available at \href{https://github.com/samirak98/FourierImaging}{https://github.com/samirak98/}\\
+\href{https://github.com/samirak98/FourierImaging}{FourierImaging}.
+\end{wrapfigure}
+%
+%
+In the numerical section of \cite{kabri2023resolution} we study the convertibility of CNNs to FNOs as discussed in \cref{sec:FNOAna} and the resolution invariance of the different proposed approaches. Again we employ---among others---the \texttt{PyTorch} package \cite{paszke2019pytorch}. The experiments are conducted on the FashionMNIST \cite{Han17} and a former version of the BIRDS500 \cite{pio450} dataset. We remark that our implementation carefully treats the case of even kernel or input sizes, via Nyquist splitting. This allows us to apply all the derived results for the odd and also the even case.
+%
+%
+\paragraph{Convertibility and Training Differences} As already described in \cref{sec:FNOAna} the first experiment, displayed in \cite[Fig. 3]{kabri2023resolution}, studies how CNNs can be converted to FNOs. Here, we employ a network with two convolutional layers for feature extraction and a linear classification layer. We train this network---in the spatial implementation---on the FashionMNIST dataset employing varying spatial kernel sizes. Here, we see that for $M=5$ the spatial implementation already has the best performance and adding more parameters does not increase the performance. We then convert a set of spatial parameters to the Fourier formulation, employing again a varying number of spectral coefficients. It turns out that the requirement of \cite[Lem. 3]{kabri2023resolution}, that the number of coefficients must match the input dimension is indeed relevant. We only obtain the full performance of the CNN if we use all spectral parameters. However, the example also visualizes \cite[Lem. 4]{kabri2023resolution}, namely that training a FNO conceptually leads to a different set of parameters. Optimizing over the spectral parameters yields a comparable performance already for a smaller number of coefficients.
+%
+%
+\paragraph{Resolution Invariance}
+%
+In the second experiment we study the resolution invariance of the three discretization independent architectures we considered, namely the naive CNN adaptation, input interpolation and the FNO implementation. We first train the convolutional architecture as in the previous paragraph on the FashionMNIST dataset, that has an input size of $28\times 28$. We resize the input data via trigonometric and bilienear interpolation---referred to as data sizing---to simulate multi-resolution data. One expects that the classification performance drops when the data is resized to a smaller size, since this step looses information. However, resizing the images to higher resolutions should yield the same performance.
+
+In \cite[Fig. 4]{kabri2023resolution} see that the simple adaption does not perform well both in the lower and the higher resolution setting. Employing input interpolation improves the performance in the lower resolution setting. In the higher resolution regime, we obtain a constant performance which is expected. Finally we see that the FNO---which was converted from the CNN---performs as well as input interpolation, which justifies the resolution independence of this architecture.
+
+In the second experiments we trained a ResNet18 \cite{he2016deep} on a former version of the BIRDS500 dataset, which has an input size of $224\times 224$. Concerning the naive adaption and the input interpolation we observe the same behavior as in the previous example. However, the FNO variant performs slightly worse, which is surprising, especially in the higher resolution regime. In \cite{kabri2023resolution} we conclude that this is due the dimension changes within the ResNet architectures. These changes occur due to strided convolutions or pooling operations between the layers. In fact in order to achieve the performance as displayed in \cite[Fig. 4 (b)]{kabri2023resolution} we replaced every striding by a trigonometric interpolation, which fits better into the FNO framework and vastly improves the performance. Therefore, we summarize that architecture intern dimension changes---which are very common in practice---can potentially hinder resolution invariance.
