@@ -63,14 +63,24 @@ In this thesis we focus on feed-forward neural networks, i.e., we consider layer
 where $w\in\R$ models a residual connection, $W\in\R^{n\times n}$ is a weight matrix, $b\in\R^n$ a bias vector and $z\in\R^{m}$. We consider a concatenation of $L\in\N$ such layers, which then forms a neural network
 %
 \begin{align*}
-f_\param = \Phi^L\circ\ldots\circ\Phi^1
+f_\param = \Phi_L\circ\ldots\circ\Phi_1
 \end{align*} 
 %
 with parameters $\param =((W_1,b_1,w_1)\ldots,(W_L,b_L,w_L))\in\Param$ and layers $\Phi^i := \Phi(w_i, W_i, b_i)$.
 %
-\paragraph{MLP}
+\paragraph{MLP} In the easiest case we consider a perceptron \cite{rosenblatt1958perceptron}, which models a fully connected layer, i.e. every entry $W_{ij}$ of th weight matrix is an parameter that is optimized in the training process.
 
-\paragraph{Convolutions}\label{sec:convlayer}
+\paragraph{Convolutions}\label{sec:convlayer} Especially important for visual tasks are convolutional layers. Here, we take a kernel $k\in \R^{M\times M}$ and define the application of $W=W(k)$ as
+%
+\begin{align*}
+Wz = k\ast z
+\end{align*}
+%
+where we refer to \cref{sec:FNO} for the concrete definition of the convolution. Typically the input is of the form $z\in\R^{K:{\text{in}}\times N \times M}$, where $K_{\text{in}}$ denotes the number of input channels. The layer is then a mapping $\Phi:\R^{K:{\text{in}}\times N \times M}\to\R^{K:{\text{out}}\times N \times M}$, where $K_{\text{out}}$ denotes the number of output channels, which can be realized by different kernels $k_{ij}$ and
+%
+\begin{align*}
+(Wz)_{j,:,:} := \sum_{i=1}^{K_{\text{in}}} k_{ij}\ast z.
+\end{align*}
 
 \paragraph{ResNets}
 %
@@ -1738,4 +1748,4 @@ In the second experiment we study the resolution invariance of the three discret
 
 In \cite[Fig. 4]{kabri2023resolution} see that the simple adaption does not perform well both in the lower and the higher resolution setting. Employing input interpolation improves the performance in the lower resolution setting. In the higher resolution regime, we obtain a constant performance which is expected. Finally we see that the FNO---which was converted from the CNN---performs as well as input interpolation, which justifies the resolution independence of this architecture.
 
-In the second experiments we trained a ResNet18 \cite{he2016deep} on a former version of the BIRDS500 dataset, which has an input size of $224\times 224$. Concerning the naive adaption and the input interpolation we observe the same behavior as in the previous example. However, the FNO variant performs slightly worse, which is surprising, especially in the higher resolution regime. In \cite{kabri2023resolution} we conclude that this is due the dimension changes within the ResNet architectures. These changes occur due to strided convolutions or pooling operations between the layers. In fact in order to achieve the performance as displayed in \cite[Fig. 4 (b)]{kabri2023resolution} we replaced every striding by a trigonometric interpolation, which fits better into the FNO framework and vastly improves the performance. Therefore, we summarize that architecture intern dimension changes---which are very common in practice---can potentially hinder resolution invariance.
+In the second experiments we trained a ResNet18 \cite{he2016deep} on a former version of the BIRDS500 dataset, with an input size of $112\times 112$. Concerning the naive adaption and the input interpolation we observe the same behavior as in the previous example. However, the FNO variant performs slightly worse, which is surprising, especially in the higher resolution regime. In \cite{kabri2023resolution} we conclude that this is due the dimension changes within the ResNet architectures. These changes occur due to strided convolutions or pooling operations between the layers. In fact in order to achieve the performance as displayed in \cite[Fig. 4 (b)]{kabri2023resolution} we replaced every striding by a trigonometric interpolation, which fits better into the FNO framework and vastly improves the performance. Therefore, we summarize that architecture intern dimension changes---which are very common in practice---can potentially hinder resolution invariance.
