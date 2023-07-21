@@ -1,6 +1,20 @@
 \chapter{Consistent Semi-Supervised Learning on Sparse Graphs}\label{ch:SSL}
 
-This chapter considers the consistency of graph-based semi-supervised learning methods. We contextualize the topics provided in the prints \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. In \cref{sec:GSSL} we introduce the concrete setting and task. In \cref{sec:pLap} we consider the $p$ Laplacian both in the continuum and the graph setting. This is the cornerstone for topics connected to the $\infty$ Laplacian and Lipschitz extensions in \cref{sec:LipExt}, the main points of interest in this chapter. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit. In \cref{sec:GConv} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart in \cite{roith2022continuum}. After that we explain the main results of \cite{bungert2021uniform} in \cref{sec:RatConv}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. Finally, we shortly explore extension of the results in \cref{sec:RatConv} to the non-deterministic percolation setting of  \cite{bungert2022ratio}.
+This chapter considers the consistency of graph-based semi-supervised learning methods. We contextualize the topics provided in the prints \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. Considering learning algorithms on graphs, we are interested in the following aspects
+%
+\begin{itemize}
+\item \textbf{Consistency:} what is the behavior in the infinite data limit?
+\item \textbf{Sparsity:} how does sparsity of the graph weights affect this behavior?
+\end{itemize}
+%
+%
+In \cref{sec:GConv} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart in \cite{roith2022continuum}. This allows to then show convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not allow for unique solutions.
+
+This issue is addressed in \cite{bungert2021uniform}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. These functions are in fact special solutions of the extension task  in \cite{roith2022continuum}, namely so-called absolutely minimizing Lipschitz extension. Here, again we are able to work with a very mild scaling assumption that allows for sparse graphs. Furthermore, we are able to prove convergence rates, were we provide the key insight, that a rate for graph distance functions transfers to a rate for infinity harmonic functions. The main contributions are presented from \cref{sec:RatConv}.
+
+To allow even sparser graphs, directly at the connectivity threshold, we consider first passage percolation in \cite{bungert2022ratio}. Here, we prove a ratio convergence of a graph distance function on a Poisson point cloud. The results here can ultimately be employed to show convergence rates for Lipschitz learning. Details are provided in \cref{sec:Perc}.
+
+Before we present these works in detail we first introduce the setting of consistency for graph-based SSL in \cref{sec:GSSL}. We then discuss the $p$-Laplacian in \cref{sec:pLap} both in the continuum and the graph setting. Similarly, we then introduce the problem we are actually concerned namely the $\infty$-Laplacian and Lipschitz extensions in \cref{sec:LipExt}. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit.
 %
 %
 %
@@ -77,8 +91,8 @@ In order to obtain meaningful solutions, one usually incorporates the \emph{smoo
 %
 %
 
-\begin{remark}{Notational Reamrk}{}
-In \cref{ch:para} we used the symbol $\Inp$ to denote the input set, which is now replaced $\domain$. This due to the fact, that this notation is more common in this context and especially the prints \cite{bungert2021uniform, bungert2022ratio, roith2022continuum} employ this notation for which we choose to use it here.
+\begin{remark}{Notational Remark}{}
+In \cref{ch:para} we employ the symbol $\Inp$ to denote the input set, which is now replaced by $\domain$. This due to the fact, that the prints \cite{bungert2021uniform, bungert2022ratio, roith2022continuum} employ this notation for which we choose to use it here.
 \end{remark}
 %
 %
@@ -94,11 +108,11 @@ For a finite set $\domain_n$ and a weight function $w_n:\domain_n\times \domain_
 Typically, a graph is defined as a pair $(\domain_n,E)$ where $E$ denotes the set of edges. Here, 
 one has two cases:
 \begin{itemize}
-\item \emph{Undirected graph:} $E=\{ \{x,y\}: \text{there is an edge between } x\in \domain_n \text{ and } y\in \domain_n\}$, i.e., 
-$E\subset 2^\domain_n$ and each edge is undirected.
+\item \emph{Undirected graph:} $E=\{ \{x,y\}: \text{there is an edge between } x\in \domain_n \text{ and } y\in \domain_n\}$, i.e., s
+$E\subset 2^{\domain_n}$ and each edge is undirected, since $\{x,y\}=\{y,x\}$.
 %
 \item \emph{Directed graph:} $E=\{ (x,y): \text{there is an edge from } x \text{ to } y\}$, i.e.,
-$E\subset \domain_n\times \domain_n$ and each edge is directed.
+$E\subset \domain_n\times \domain_n$ and each edge is directed and $(x,y)\neq(y,x)$.
 %
 \end{itemize}
 Additionally, one then considers a weight function $W:E\to\R$ assigning a weight to each edge, and then defines 
@@ -111,8 +125,8 @@ Furthermore, in the above definition the set $\domain_n$ does not enter the defi
 %
 %
 %
-\paragraph{Kernels and The Graph Scale} 
-In most of our applications the data $\domain_n$ is given as a subset of $\R^n$ and in fact we are interested in the limit $n\to\infty$, where $\domain_n$ fills out a domain $\tilde\domain\subset\R^d$. Furthermore, in the continuum we are interested in \emph{local} operators incorporating changes of functions $u:\tilde\domain\to\R$ at an infinitesimal small scale. Since interactions on a graph are inherently non-local in the Euclidean sense, we need to localize the interaction on the graph in the limit $n\to\infty$. A popular choice that guarantees this behavior is to set
+\paragraph{Kernels and the Graph Scale} 
+In most of our applications the data $\domain_n$ is given as a subset of $\R^n$ and in fact we are interested in the limit $n\to\infty$, where $\domain_n$ fills out a domain $\tilde\domain\subset\R^d$. In the continuum we are interested in \emph{local} operators incorporating changes of functions $u:\tilde\domain\to\R$ at an infinitesimal small scale. Since interactions on a graph are inherently non-local in the Euclidean sense, we need to localize the interaction on the graph in the limit $n\to\infty$. A popular choice that guarantees this behavior is to set
 %
 \begin{align*}
 w(x,y) = \eta_{\gscale}(\abs{x-y})
@@ -200,7 +214,7 @@ The archetype of the methods we consider in the following is so-called \emph{Lap
 %
 %
 %
-The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce some a certain kind of \enquote{smoothness} of the solution $\vec u$. While there are many examples where this simple concept does in fact yield good solutions \cite{zhu2003semi, zhou2005regularization}, it has been observed that solutions tend to degenerate for large amounts of data, whenever $d\geq 2$ \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}. We illustrate this phenomenon in \cref{ex:pLapBad}.
+The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. While there are many examples where this simple concept does in fact yield good solutions \cite{zhu2003semi, zhou2005regularization}, it has been observed that solutions tend to degenerate for large amounts of data, whenever $d\geq 2$ \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}. We illustrate this phenomenon in \cref{ex:pLapBad}.
 %
 \begin{figure}
 \includegraphics[width=.28\textwidth, trim={3.1cm 1cm 3.5cm 0cm},clip]{code/SSL/2Dex_100.png}%
@@ -214,7 +228,7 @@ The intuitive idea behind this method is that it minimizes a discrete approximat
 %
 %
 \begin{example}{}{ex:pLapBad}
-We visualize this behavior in \cref{fig:pdeg}, where we sample different number of points $n$ in $(0,1)^2$ and keep a fixed constraint on $\conset_n=\{o_1, o_2\}=\{(0.2,0.5), (0.8, 0.5)\}$ with $\vec g(o_1) = -1, \vec g(o_2)=1$. We observe that for increasing $n$ the solution $\vec u$ of \cref{eq:SSL_Laplacian} tends to be a constant equal to the average of the given constraints and spike at the given constraints.
+We sample different number of points $n\in\{100,1000,10000\}$ in $(0,1)^2$ and keep a fixed constraint on $\conset_n=\{o_1, o_2\}=\{(0.2,0.5), (0.8, 0.5)\}$ with $\vec g(o_1) = -1, \vec g(o_2)=1$. In \cref{fig:pdeg} we observe that for increasing $n$ the solution $\vec u$ of \cref{eq:SSL_Laplacian} tends to be a constant equal to the average of the given constraints and spike at the given constraints.
 \end{example}
 %
 %
@@ -226,13 +240,13 @@ This observation motivates the driving question of this chapter.
 Are Semi-Supervised Learning algorithms consistent in the infinite data limit?}
 \end{center}
 %
-In our case \enquote{consistency} roughly ask the discrete solutions to converge to the continuum counterparts they are motivated by, in the data limit $n\to\infty$.
+In our case \enquote{consistency} roughly ask the discrete solutions to converge to the continuum counterparts they are motivated by, in the data limit $n\to\infty$. Here, we distinguish between point-wise consistency as in \cite{von2008consistency, gine2006empirical, hein2005graphs}, consistency on a function space level \cite{slepcev2019analysis, GarcSlep15,calder2019consistency, roith2022continuum, bungert2021uniform} and consistency of a discretized operator \cite{calder2019consistency, bungert2022ratio}. We detail the notion of consistency in the following.  
 %
 %
 \paragraph{Consistency for the $p$-Laplacian} 
-In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum analogous. See \cref{sec:GpLap} for a formal problem setup. As observed in \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic} the question of consistency is now connected to relation between $p$ and $d$, where one has the regimes whether $p<d$ or  $p=d$ and probably the most relevant case $p>d$.
+In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum counterpart, see \cref{sec:GpLap}. As observed in \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic} the question of consistency is now connected to relation between $p$ and $d$, where divides into the three regimes $p<d$, $p=d$ and probably the most relevant case $p>d$.
 
-The $p$-Dirichlet problem in the continuum can be formulated as a variational problem in $W^{1,p}$. However, it is important to remember that in our setting we most likely consider pointwise constraints on a discrete set $\conset$ even in the continuum. In order to impose pointwise constraints, one requires that functions in $W^{1,p}$ exhibit some continuity properties. By the Sobolev embedding theorem, this is the case when $p>d$, \cite{adams2003sobolev}. This leads to a first qualitative intuition that consistency can only be achieved in the case $p>d$. The situation it is in fact more subtle, which is reviewed in \cref{sec:GConv}. 
+The $p$-Dirichlet problem in the continuum can be formulated as a variational problem in $W^{1,p}$. However, it is important to remember that in our setting we most likely consider pointwise constraints on a discrete set $\conset$ even in the continuum. In order to impose pointwise constraints, one requires that functions in $W^{1,p}$ exhibit some continuity properties. By the Sobolev embedding theorem, this is the case when $p>d$, \cite{adams2003sobolev}. This leads to a first qualitative intuition that consistency can only be achieved in the case $p>d$. The situation is in fact more subtle, which is reviewed in \cref{sec:GConv}. 
 
 It is important to note that $p$-harmonic functions are actually more regular also in the case $p\leq d$, beyond the implication of the Sobolev embedding theorem. However, this regularity does not help for the continuum limits \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}.
 
@@ -247,20 +261,10 @@ Since the assumption that $p>d$ is crucial for asymptotic consistency, a natural
 \hfill%
 \includegraphics[width=.28\textwidth,trim={3.1cm 1cm 3.5cm 0cm},clip]{code/SSL/2Dex_10000-p=inf.png}%
 %
-\caption{Solution to the Laplacian Learning problem ($p=\infty$) for different number of data points $n\in\{100,1000,10000\}$. The setup is otherwise copied from \cref{ex:fig:pdeg}}\label{fig:pinf}
+\caption{Solution to the Laplacian Learning problem ($p=\infty$) for different number of data points $n\in\{100,1000,10000\}$. The setup is otherwise copied from \cref{ex:fig:pLapBad}}\label{fig:pinf}
 \end{figure}
 %
-However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ problem, Lipschitz learning does not respect the density of data in any way. Namely, the method is exclusively distance based. This behavior is a drawback in many machine learning application. However, by carefully rescaling the graph weights one obtains a data sensitive problem, see \cite{calder2019consistency} and \cref{sec:GConv}.
-
-\begin{figure}
-
-\end{figure}
-%
-%
-%
-\paragraph{The scaling parameter}
-
-
+However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ problem, Lipschitz learning does not respect the density of data in any way. Namely, the method is exclusively distance based. This behavior is a drawback in many machine learning applications. However, by carefully rescaling the graph weights one obtains a data sensitive problem, see \cite{calder2019consistency} and \cref{sec:GConv}.
 %
 %
 %
@@ -271,7 +275,7 @@ However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ p
 \section{The $p$-Laplacian: Continuum and Graph}\label{sec:pLap}
 %
 %
-While $p$.
+The contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$. However, the case $p<\infty$ is the main motivation for the whole discussion and therefore we quickly review it in the following. Here, we first introduce the continuum setting and then discuss the situation on the graph.
 %
 %
 %

@@ -1,7 +1,7 @@
 \chapter{Robust and Sparse Supervised Learning}\label{ch:SL}
 %
 %
-In this chapter we present the topics discussed in the works \cite{bungert2021clip, kabri2023resolution, bungert2022bregman} which are reprinted in \cref{part:Prints}. Compared to the previous chapter we are now in the setting of supervised learning as described in \cref{sec:PSL}. As already mentioned above, we focus on neural networks $\net_\param:\Inp\Oup$ parameterized by $\param\in\Param$. Here, our two main question arise, namely:
+In this chapter we present the topics discussed in the works \cite{bungert2021clip, kabri2023resolution, bungert2022bregman} which are reprinted in \cref{part:Prints}. Compared to the previous chapter we are now in the setting of supervised learning as described in \cref{sec:PSL}. As already mentioned above, we focus on neural networks $\net_\param:\Inp\to\Oup$ parameterized by $\param\in\Param$. Here, our two main question arise, namely:
 \begin{itemize}
 \item \textbf{Input robustness}: how robust is $x\mapsto \net_\param(x)$ w.r.t. input perturbation? 
 \item \textbf{Parameter sparsity}: how can we obtain sparse parameters $\param\in\Param$?
@@ -27,12 +27,13 @@ node[midway] {\cref{sec:BREG}: \cite{bungert2022bregman}}; %
 \end{center}
 %
 %
-Therefore, conceptually we again highlight the two keywords \textbf{sparsity} and \textbf{robustness}. In \cite{bungert2021clip} we consider input robustness under adversarial perturbations. Here, the input is typically \emph{attacked} on purpose to confuse a neural network and therefore worsen its performance. In order to obtain a neural network that is less vulnerable against such attacks we propose an optimization strategy that selects parameters that yield a more robust network. In \cref{sec:CLIP} we comment on the topic and the contribution in more detail. 
+Therefore, conceptually we again highlight the keyword \textbf{sparsity} and additionally \textbf{robustness}. In \cite{bungert2021clip} we consider input robustness under adversarial perturbations. Here, the input is typically \emph{attacked} on purpose to confuse a neural network and therefore worsen its performance. In order to obtain a neural network that is less vulnerable against such attacks we propose an optimization strategy that selects parameters that yield a more robust network. In \cref{sec:CLIP} we comment on the topic and the contribution in more detail. 
 
 A different kind of input robustness is considered in \cite{kabri2023resolution}. In the setting of image classification, images are modeled as functions on a continuum domain that need to be discretized in order to represent the on a machine. This discretization however, is usually arbitrary and not inherent to the object of interest. Therefore, it is natural to assume that the output of the network should be independent of this discretization, also referred to as resolution, for which we consider robustness w.r.t. resolution changes. We remark on this and the publication in \cref{sec:FNO}.
 
-Concerning computational performance and memory storage of the neural network we focus on sparsity of the parameters $\param\in\Param$. Here, we 
+Concerning computational performance and memory storage of the neural network we focus on sparsity of the parameters $\param\in\Param$. In \cite{bungert2022bregman} we propose a sparse optimization strategy based on Bregman iterations, which employs $L^1$ type penalities to promote sparsity. The conceptual difference between the existing algorithm and our proposal is the stochastic computation of the gradient. Our theoretical results prove decay in loss and convergence of the iterates. Finally we also conduct numerical experiments that demonstrate the efficiency of the method. We refer to \cref{sec:BREG} for a detailed explanation.
 
+Before, we start with the exposition on the mentioned works, we briefly review the common supervised learning framework. Building upon the basic observations in \cref{ch:SL} we give a slightly more detailed introduction in \cref{sec:SLSet}.
 
 
 
