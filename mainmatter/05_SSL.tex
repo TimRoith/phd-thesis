@@ -275,25 +275,25 @@ However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ p
 \section{The $p$-Laplacian: Continuum and Graph}\label{sec:pLap}
 %
 %
-The contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$. However, the case $p<\infty$ is the main motivation for the whole discussion and therefore we quickly review it in the following. Here, we first introduce the continuum setting and then discuss the situation on the graph.
+The contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$. However, the case $p<\infty$ serves as a  motivation for the whole discussion, for which we quickly review it in the following. Here, we first introduce the continuum setting and then discuss the situation on the graph.
 %
 %
 %
 \subsection{The $p$-Laplacian: Continuum Setting}\label{sec:pLapcont}
-We follow the exposition in \cite{lindqvist2017notes}. Let $\domain\subset\R^d$ be a bounded domain, then 
-we consider the $p$-Dirichlet energy for functions $u\in W^{1,p}(\domain)$,
+We follow the exposition in \cite{lindqvist2017notes}. Let $\domain\subset\R^d$ be a bounded domain, then we consider the $p$-Dirichlet energy for functions $u\in W^{1,p}(\domain)$,
 %
 \begin{align}\label{eq:DirichletEnergy}
-\pDir{}_p(u) := \int_\domain \abs{\Delta_p u}^p \, dx,
+\pDir{}_{p,\rho}(u) := \int_\domain \abs{\nabla u}^p \rho(x)^2 \, dx,
 \end{align}
 %
-and the associated variational problem.
+%
+where $\rho:\domain\to\R$ is some given function. When working with data, one usually assumes a distribution $\mu$ w.r.t. which the data is distributed. This is the setting of \cite{GarcSlep15, slepcev2019analysis} where $\rho$ then denotes the density of $\mu$. The associated variational problem is given in the following.
 %
 \begin{problem}{Variational Formulation}{}
 For $p\in (1,\infty)$ and $V\subset W^{1,p}(\domain)$ find $u\in W^{1,p}(\domain)$ such that
 %
 \begin{align*}
-\pDir{}_p(u) \leq \pDir{}_p(v)
+\pDir{}_{p,\rho}(u) \leq \pDir{}_p(v)
 \end{align*}
 %
 for all $v$, such that $(u-v)\in W^{1,p}_0$.
