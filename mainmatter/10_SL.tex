@@ -1,8 +1,11 @@
 \chapter{Robust and Sparse Supervised Learning}\label{ch:SL}
 %
 %
-In this chapter we now focus on supervised learning as described in \cref{sec:PSL}. 
-\cite{bungert2021clip, bungert2021neural, kabri2023resolution, bungert2022bregman}
+In this chapter we present the topics discussed in the works \cite{bungert2021clip, kabri2023resolution, bungert2022bregman} which are reprinted in \cref{part:Prints}. Compared to the previous chapter we are now in the setting of supervised learning as described in \cref{sec:PSL}. As already mentioned above, we focus on neural networks $\net_\param:\Inp\Oup$ parameterized by $\param\in\Param$. Here, our two main question arise, namely:
+\begin{itemize}
+\item \textbf{Input robustness}: how robust is $x\mapsto \net_\param(x)$ w.r.t. input perturbation? 
+\item \textbf{Parameter sparsity}: how can we obtain sparse parameters $\param\in\Param$?
+\end{itemize}
 %
 %
 \begin{center}%
@@ -22,6 +25,18 @@ node[midway] {\cref{sec:BREG}: \cite{bungert2022bregman}}; %
 %
 \end{tikzpicture}
 \end{center}
+%
+%
+Therefore, conceptually we again highlight the two keywords \textbf{sparsity} and \textbf{robustness}. In \cite{bungert2021clip} we consider input robustness under adversarial perturbations. Here, the input is typically \emph{attacked} on purpose to confuse a neural network and therefore worsen its performance. In order to obtain a neural network that is less vulnerable against such attacks we propose an optimization strategy that selects parameters that yield a more robust network. In \cref{sec:CLIP} we comment on the topic and the contribution in more detail. 
+
+A different kind of input robustness is considered in \cite{kabri2023resolution}. In the setting of image classification, images are modeled as functions on a continuum domain that need to be discretized in order to represent the on a machine. This discretization however, is usually arbitrary and not inherent to the object of interest. Therefore, it is natural to assume that the output of the network should be independent of this discretization, also referred to as resolution, for which we consider robustness w.r.t. resolution changes. We remark on this and the publication in \cref{sec:FNO}.
+
+Concerning computational performance and memory storage of the neural network we focus on sparsity of the parameters $\param\in\Param$. Here, we 
+
+
+
+
+
 
 
 \section{Setting}\label{sec:SLSet}
@@ -38,27 +53,67 @@ where for a function $\ell:\OutSpace\times\OutSpace\to\R$ we define
 \end{align}
 %
 %
-\begin{example}{MLE}{}
-	
-\end{example}
+\begin{remark}{}{}
 %
-\begin{example}{Cross-Entropy}{}
-	
-\end{example}
-%
-%
-%
-Assuming that $\tset$ is sampled from a joint distribution $\pi$ on $\Inp\times\OutSpace$ this approximates the infeasible population risk minimization
+Assuming that $\tset$ is sampled from a joint distribution $P_{\Inp,\Oup}$ on $\Inp\times\Oup$ this approximates the computational infeasible population risk minimization
 %
 \begin{align*}
 \int_{\Inp\times\OutSpace} \ell(f_\param(x), y) d\pi(x,y).
 \end{align*}
+\end{remark}
+%
+%
+\noindent%
+In the following we provide two important choices for the function $\ell:\Oup\times\Oup\to\R$.
+%
+%
+\begin{example}{MLE}{}
+For image denoising problems, we often choose $\Inp=\Oup=[0,1]^{N\times M}$ assuming only one color channel for simplicity. In this context the Mean squared $L^2$ Error (MLE), defined as
+%
+\begin{align*}
+\ell(\oupp,\oup) := \frac{1}{N\cdot M} \norm{\oupp-\oup}^2
+\end{align*}
+%
+is commonly employed. This loss function could however also be employed for classification problems.
+\end{example}
+%
+%
+\begin{example}{Cross-Entropy}{}
+For classification problems the function $\ell:\Oup\times\Oup\to\R$ is often chosen as the \emph{cross-entropy} or \emph{negative log-likelihood} loss, \cite{good1952rational}. For two discrete probability distributions, $p,q:\{1,\ldots,C\}\to\R$ one defines
+%
+\begin{align*}
+H(p,q) := -\sum_{c=1}^C p_c\cdot \log(q_c)
+\end{align*}
+%
+see e.g. \cite{cybenko1998mathematics}. Assuming that $\Oup=\Delta^C$ this allows to choose $\ell(\oupp,\oup):=H(\oup, \oupp)$. If the network only maps to $\R^C$ one often additionally inserts a soft-max function $Q(\oup)_c:= \exp(\oup_c)/\sum_c \exp(\oup_c)$ (see \cite{boltzmann1868studien}) and then sets
+%
+\begin{align*}
+\ell(\oupp, \oup) := H(\oup, Q(\oupp)).
+\end{align*}
+%
+In the case, where the output is given as labels $\oup\in\{1,\ldots,C\}$ on sets
+%
+\begin{align*}
+\ell(\oupp, \oup) := H(\oup_{\oh}, Q(\oupp)) = -\log(Q(\oupp))
+\end{align*}
+%
+employing the one-hot notation. Namely, we define $\oh:\{1,\ldots,C\}\to\Delta^C$,
+%
+\begin{align*}
+(\oup_{\oh})_i := \oh(\oup)_c:= \begin{cases} 1 &\text{ if } c=\oup,\\ 0&\text{ else }.\end{cases}
+\end{align*}
+%
+\end{example}
+%
+%
+\subsection{Network Architectures}
+%
 %
 In this thesis we focus on feed-forward neural networks, i.e., we consider layers of the form
 %
-\begin{align*}
+\begin{align}\label{eq:layer}
 \Phi(w, W, b)(z):= wz + \sigma(Wz + b)
-\end{align*}
+\end{align}
 %
 where $w\in\R$ models a residual connection, $W\in\R^{n\times n}$ is a weight matrix, $b\in\R^n$ a bias vector and $z\in\R^{m}$. We consider a concatenation of $L\in\N$ such layers, which then forms a neural network
 %
@@ -82,12 +137,12 @@ where we refer to \cref{sec:FNO} for the concrete definition of the convolution.
 (Wz)_{j,:,:} := \sum_{i=1}^{K_{\text{in}}} k_{ij}\ast z.
 \end{align*}
 
-\paragraph{ResNets}
+\paragraph{ResNets} Often we also consider a residual component as displayed in \cref{eq:layer} with the term $wx$. The idea of adding this component was first introduced in \cite{srivastava2015highway} with a learnable parameter $w\in\R$ and later popularized in \cite{he2016deep} by fixing $w=1$, see also \cite{he2016identity}, which then yields the celebrated ResNet architecture. In the following applications we both consider the case where $w=1$ is fixed, but also the possibility of learning the parameter $w\in\R$ in \cite{bungert2021neural}.
 %
 \subsection{Gradient Computation and Stochastic Gradient Descent}\label{sec:SGD}
 %
 %
-Training a neural network requires to solve a optimization problem w.r.t. to the parameters $\param\in\Param$. In this work we only focus on first order methods, however both zero \cite{Riedl} and second order methods \cite{Hessian} have been successfully applied in this context. Employing first order methods, requires to evaluate the gradient $\nabla_\theta \empLoss$, however in this scenario it is not common to compute the full gradient but rather to have a gradient estimator. This estimator is usually obtained by randomly dividing the train set $\trSet$ into disjoint minibatches $B_1\cup\ldots\cup B_b = \trSet$ and then successively computing the gradient of the minibatch loss
+Training a neural network requires to solve a optimization problem w.r.t. to the parameters $\param\in\Param$. In this work we only focus on first order methods, however both zero \cite{riedl2022leveraging, pinnau2017consensus, carrillo2021consensus, martens2010deep} and second order methods \cite{martens2010deep} have been successfully applied in this context. Employing first order methods, requires to evaluate the gradient $\nabla_\theta \empLoss$, however in this scenario it is not common to compute the full gradient but rather to have a gradient estimator. This estimator is usually obtained by randomly dividing the train set $\trSet$ into disjoint minibatches $B_1\cup\ldots\cup B_b = \trSet$ and then successively computing the gradient of the minibatch loss
 %
 \begin{align*}
 \empLoss(\param;B):=\frac{1}{\abs{B_i}}\sum_{(x,y)\in B_i} \ell(f_\param(x), y).
@@ -153,15 +208,6 @@ While we mostly focus on neural networks, some authors argue that these instabil
 \end{remark}
 %
 %
-\begin{remark}{Notational Remark}{}
-Since we consider a classification problem, the output data is given as a label $c\in\{1,\ldots,C\}$. In order to transform this into a corresponding vector $\oup\in\Delta^C$ we employ so-called one-hot vectors $\oh:\{1,\ldots,C\}\to\Delta^C$,
-%
-\begin{align*}
-\oh(c)_i:= \begin{cases} 1 &\text{ if } i=c,\\ 0&\text{ else }.\end{cases}
-\end{align*}
-%
-We also write $\oh(c):= c_{\oh}$ in order to simplify notation.
-\end{remark}
 %
 \paragraph{What are Adversarial Examples Formally} In order to formalize this idea we omit any influence of the typically unavailable function $h$ and instead consider $\inpp$ adversarial if $\net_\param(\inp)\neq\net_\param(\inpp)$, i.e. we assume $\net_\param(\inp)$ to be \enquote{correct}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
 %
@@ -1338,7 +1384,7 @@ In \cite{bungert2022bregman, bungert2021neural} there are no evaluation on the t
 \includegraphics[width=.4\textwidth]{atelier/FNO/trigo.pdf}
 \end{wrapfigure}
 %
-We frequently employ the $\Inp=[0,1]^{K\times N\times M}$ to represent images. However, from a modeling point of view it is more natural to assume that images are functions $\img:\domain\to[0,1]^K$ where $\domain\subset\R^2$ is some domain. In this sense, the space $\Inp$ only constitutes a discretization of the space of all functions from $\domain$ to $[0,1]^K$. The number of pixels, i.e. $N\cdot M$, relates to the \emph{resolution} of the image, where a higher number of pixels yields a higher resolution.In this sense the resolution is merely an artifact of the restriction to finite dimensions in computer vision and not relevant for the classification. Therefore, one wants to obtain a resolution-independent classifier.\todo{This intro needs work}
+We frequently employ the set $\Inp=[0,1]^{K\times N\times M}$ to represent images. However, from a modeling point of view it is more natural to assume that images are functions $\img:\domain\to[0,1]^K$ where $\domain\subset\R^2$ is some domain. In this sense, the space $\Inp$ only constitutes a discretization of the space of all functions from $\domain$ to $[0,1]^K$. The number of pixels, i.e. $N\cdot M$, relates to the \emph{resolution} of the image, where a higher number of pixels yields a higher resolution. In this sense the resolution is merely an artifact of the restriction to finite dimensions in computer vision and not relevant for the classification. Therefore, one wants to obtain a resolution-independent classifier, which we study in the following.
 %
 \paragraph{Images, Resolution and Scale}
 %
@@ -1618,7 +1664,7 @@ Therefore, applying one FNO layer is equivalent to trigonometric interpolation o
 Zero-padding of the spectral coefficients only fulfills Hermitian symmetry in the case where $M,N$ are odd. In order ot adapt this to the even case, we employ so-called Nyquist splitting, see \cite{trigo19}. In all our experiments the implementation carefully employs this method, which ensures that the output of the spectral convolution is real valued.
 %
 %
-\subsection{Analysis}\label{sec:FNOAna}
+\subsection{Analytical Results for FNOs}\label{sec:FNOAna}
 %
 %
 In this section, we comment on the theoretical findings in \cite{kabri2023resolution}. We first consider the abstract neural layer as in \cref{eq:layerdef} for which we show continuity and Fréchet-differentiability.
