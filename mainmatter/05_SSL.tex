@@ -1,6 +1,6 @@
 \chapter{Consistent Semi-Supervised Learning on Sparse Graphs}\label{ch:SSL}
 
-This chapter considers the consistency of graph-based semi-supervised learning methods. We contextualize the topics provided in the prints \cite{roith2022continuum, bungert2021uniform} together with additional input from the pre-print \cite{bungert2022ratio}. In \cref{sec:GSSL} we introduce the concrete setting and task. In \cref{sec:pLap} we consider the $p$ Laplacian both in the continuum and the graph setting. This is the cornerstone for topics connected to the $\infty$ Laplacian and Lipschitz extensions in \cref{sec:LipExt}, the main points of interest in this chapter. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit. In \cref{sec:GConv} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart in \cite{roith2022continuum}. After that we explain the main results of \cite{bungert2021uniform} in \cref{sec:RatConv}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. Finally, we shortly explore possible extension of the results in \cref{sec:RatConv} to the non-deterministic percolation setting of  \cite{bungert2022ratio}.
+This chapter considers the consistency of graph-based semi-supervised learning methods. We contextualize the topics provided in the prints \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. In \cref{sec:GSSL} we introduce the concrete setting and task. In \cref{sec:pLap} we consider the $p$ Laplacian both in the continuum and the graph setting. This is the cornerstone for topics connected to the $\infty$ Laplacian and Lipschitz extensions in \cref{sec:LipExt}, the main points of interest in this chapter. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit. In \cref{sec:GConv} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart in \cite{roith2022continuum}. After that we explain the main results of \cite{bungert2021uniform} in \cref{sec:RatConv}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. Finally, we shortly explore extension of the results in \cref{sec:RatConv} to the non-deterministic percolation setting of  \cite{bungert2022ratio}.
 %
 %
 %
@@ -28,15 +28,16 @@ node[midway] {\cref{sec:GLipExt}: Graph Setting}; %
 %
 %
 %
-\filldraw[fill=sky!20, draw=none] (0,7.5) rectangle (14.5, 6.5) node[midway] {%
-\cref{sec:ContLim}: \nameref{sec:ContLim}};
+\filldraw[fill=sky!20, draw=none] (0,7.5) rectangle (4.5, 6.5) node[midway] {%
+\cref{sec:GConv}:  \cite{roith2022continuum}};
 %
-\filldraw[fill=sky!10, draw=none] (0,6.5) rectangle (6.5, 5.5) node[midway] {%
-\cref{sec:GConv}: \cite{roith2022continuum}};
-\filldraw[fill=sky!10, draw=none] (8,6.5) rectangle (14.5, 5.5) node[midway] {%
-\cref{sec:RatConv}: \cite{bungert2021uniform}};
+\filldraw[fill=sky!20, draw=none] (5,7.5) rectangle (9.5, 6.5) node[midway] {%
+\cref{sec:UnifConv}:  \cite{bungert2021uniform}};
+%
+\filldraw[fill=sky!20, draw=none] (10,7.5) rectangle (14.5, 6.5) node[midway] {%
+\cref{sec:RatConv}:  \cite{bungert2022ratio}};
 \end{tikzpicture}
-\end{center}\todo{link to non nameref dings}
+\end{center}
 %
 %
 %
@@ -75,14 +76,21 @@ In order to obtain meaningful solutions, one usually incorporates the \emph{smoo
 \end{center}
 %
 %
+
+\begin{remark}{Notational Reamrk}{}
+In \cref{ch:para} we used the symbol $\Inp$ to denote the input set, which is now replaced $\domain$. This due to the fact, that this notation is more common in this context and especially the prints \cite{bungert2021uniform, bungert2022ratio, roith2022continuum} employ this notation for which we choose to use it here.
+\end{remark}
+%
+%
 \subsection{Weighted Graphs}
-In order to employ this assumption we need a notion of \enquote{closeness} on the set $\domain_n$, for which we introduce weighted graphs. Namely we define a weighting function $w$ that allows to compare points in $\domain_n$ and therefore induces the desired notion. 
+In order to employ the smoothness assumption we need a notion of \enquote{closeness} on the set $\domain_n$, for which we introduce weighted graphs. Namely we define a weighting function $w$ that allows to compare points in $\domain_n$ and therefore induces the desired notion. 
 %
 \begin{definition}{Weighted Graphs}{}
-For a finite set $\domain_n$ and a weight function $w:V\times V\to\R$, the tuple $(V,w)$ is called a \emph{weighted graph}.
+For a finite set $\domain_n$ and a weight function $w_n:\domain_n\times \domain_n\to\R$, the tuple $(\domain_n,w_n)$ is called a \emph{weighted graph}.
 \end{definition}
 %
-\begin{remark}{}{}
+%
+\paragraph{Other Notions of Graphs}
 Typically, a graph is defined as a pair $(\domain_n,E)$ where $E$ denotes the set of edges. Here, 
 one has two cases:
 \begin{itemize}
@@ -100,11 +108,10 @@ naturally transfers to $w$. In the case of an undirected graph, one simply requi
 $w(x,y)=w(y,x)$ for all $x,y\in \domain_n$.
 %
 Furthermore, in the above definition the set $\domain_n$ does not enter the definition up to ordering of its $n\in \N$  elements. Therefore, a graph could be entirely represented by a weight function $w:\{1,\ldots,n\}\times\{1,\ldots,n\}\to\R$. However, since the definition of $w$ will incorporate information about points $\domain_n\subset\R^d$ we use the notation $(\domain_n, w_n)$ for graphs in the following.
-\end{remark}
 %
 %
 %
-\subsection{The Graph Scale} 
+\paragraph{Kernels and The Graph Scale} 
 In most of our applications the data $\domain_n$ is given as a subset of $\R^n$ and in fact we are interested in the limit $n\to\infty$, where $\domain_n$ fills out a domain $\tilde\domain\subset\R^d$. Furthermore, in the continuum we are interested in \emph{local} operators incorporating changes of functions $u:\tilde\domain\to\R$ at an infinitesimal small scale. Since interactions on a graph are inherently non-local in the Euclidean sense, we need to localize the interaction on the graph in the limit $n\to\infty$. A popular choice that guarantees this behavior is to set
 %
 \begin{align*}
@@ -146,24 +153,26 @@ In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ th
 \end{remark}
 %
 %
+%
 \begin{remark}{}{}
 In order to obtain continuum limits in the case $p<\infty$ on usually employs a factor of $1/\gscale^{p+d}$ in front of the graph weights \cite{GarcSlep15, slepcev2019analysis}. In \cref{sec:GLipExt} we see that this factor degenerates to $1/\gscale$ in the case $p\to\infty$. The intuition here, is that problems in $L^\infty$ do not respect mass in a quantitative but rather a qualitative manner. Therefore, factors like $\gscale^d$ which appear because of integrals in $\R^d$ do not contribute for $p=\infty$.
 \end{remark}
 %
 %
+\paragraph{Sparse Graphs}
 An important practical aspect connected to the graph scale is the sparsity of the graph, which is given by the numbers of non-zero elements in the weight matrix $W\in\R^{n\times n}$
 %
 \begin{align*}
 W_{ij}:= w(x_i,x_j) \quad x_i,x_j\in\domain_n
 \end{align*}
 %
-where we assume an ordering $\domain_n=\{x_1,\ldots, x_n\}$. In order to have a computationally feasible problem this matrix should have very few non-zero elements. Assuming that the kernel $\eta$ has compact support, w.l.o.g. $\supp(\eta)\subset [0,1]$ we observe that the sparsity is directly influenced by the graph scale $\gscale$. Namely, $\abs{x_i-x_j} > \gscale \Rightarrow W_{ij}=0$.
+where we assume an ordering $\domain_n=\{x_1,\ldots, x_n\}$. In order to have a computationally feasible problem this matrix should have very few non-zero elements. Assuming that the kernel $\eta$ has compact support, w.l.o.g. $\supp(\eta)\subset [0,1]$ we observe that the sparsity is directly influenced by the graph scale $\gscale$. Namely, $\abs{x_i-x_j} > \gscale \Rightarrow W_{ij}=0$, see \cref{fig:graphscale}.
 %
 %
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{code/SSL/NNZ.pdf}
-\caption{This that, Gecko hat}
+\caption{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n\in\N$ points uniformly in the cube $[0,1]^d$ and only connect connect vertices $x_i,x_j\in\domain_n$ if $\norm{x_i-x_j}_2 < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
 \end{figure} 
 %
 %
@@ -191,7 +200,7 @@ The archetype of the methods we consider in the following is so-called \emph{Lap
 %
 %
 %
-The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce some a certain kind of \enquote{smoothness} of the solution $\vec u$. While there are many examples where this simple concept does in fact yield good solutions \cite{}, it has been observed that solutions tend to degenerate for large amounts of data, whenever $d\geq 2$ \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}. We illustrate this phenomenon in \cref{ex:pLapBad}.
+The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce some a certain kind of \enquote{smoothness} of the solution $\vec u$. While there are many examples where this simple concept does in fact yield good solutions \cite{zhu2003semi, zhou2005regularization}, it has been observed that solutions tend to degenerate for large amounts of data, whenever $d\geq 2$ \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}. We illustrate this phenomenon in \cref{ex:pLapBad}.
 %
 \begin{figure}
 \includegraphics[width=.28\textwidth, trim={3.1cm 1cm 3.5cm 0cm},clip]{code/SSL/2Dex_100.png}%
@@ -209,6 +218,7 @@ We visualize this behavior in \cref{fig:pdeg}, where we sample different number 
 \end{example}
 %
 %
+\noindent%
 This observation motivates the driving question of this chapter.
 %
 \begin{center}
@@ -226,7 +236,7 @@ The $p$-Dirichlet problem in the continuum can be formulated as a variational pr
 
 It is important to note that $p$-harmonic functions are actually more regular also in the case $p\leq d$, beyond the implication of the Sobolev embedding theorem. However, this regularity does not help for the continuum limits \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}.
 
-\paragraph{Sending $p$ to infinity} 
+\paragraph{Sending $p$ to Infinity} 
 
 Since the assumption that $p>d$ is crucial for asymptotic consistency, a natural idea is to send $p$ to $\infty$ and analyze the corresponding limit problem. This yields the so-called \emph{Lipschitz learning} task \cite{von2004distance, kyng2015algorithms}, which is the main point of interest in this chapter. We formalize this problem in \cref{sec:LipExt}. In \cref{fig:pinf} we observe that for $p=\infty$ we indeed obtain smoother solutions, compared to \cref{fig:pdeg}. In this regard Lipschitz learning seems promising to overcome the consistency issue.
 
@@ -258,15 +268,14 @@ However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ p
 %
 %
 %
-\section{The $p$-Laplacian: continuum and graph}\label{sec:pLap}
-%
-In \cref{sec:SSL_Graphs} we explore concepts that borrow ideas from the theory of partial differential equations, and
-in particular the $p$-Laplace equation. In this section we briefly review important ideas and results and provide 
-necessary preliminaries for the following sections.
+\section{The $p$-Laplacian: Continuum and Graph}\label{sec:pLap}
 %
 %
+While $p$.
 %
-\subsection{The $p$-Laplacian: continuum setting}\label{sec:pLapcont}
+%
+%
+\subsection{The $p$-Laplacian: Continuum Setting}\label{sec:pLapcont}
 We follow the exposition in \cite{lindqvist2017notes}. Let $\domain\subset\R^d$ be a bounded domain, then 
 we consider the $p$-Dirichlet energy for functions $u\in W^{1,p}(\domain)$,
 %
@@ -1089,8 +1098,11 @@ Both of the stament are proven in \cite{bungert2021uniform}. From \cite[Prop. 3.
 %
 %
 %
-\section{Main Contribution: Continuum Limits}\label{sec:ContLim}
 %
+%
+%
+%
+\section{Gamma Convergence: \cite{roith2022continuum}}\label{sec:GConv}
 We are now in the situation to present the main results of \cite{roith2022continuum, bungert2022ratio}. 
 %
 %
@@ -1106,7 +1118,6 @@ We are now in the situation to present the main results of \cite{roith2022contin
 %
 %
 %
-\subsection{Gamma Convergence: \cite{roith2022continuum}}\label{sec:GConv}
 %
 %
 Originally, the concept of $\Gamma$-convergence dates back to De Giorgi \cite{de1975tipo} as a type of variational convergence. We refer to \cite{Brad02, dal2012introduction} for a detailed overview on this notion and related topics. While $\Gamma$-convergence was successfully employed in a pure continuum setting for a longer time (see e.g. \cite{modica1977esempio}), it was more recently used to prove convergence form a discrete to a continuum functional \cite{chambolle2010continuous, braides2012quantitative, van2012gamma}. The most relevant reference for this thesis was disruptive work presented by Garc\'ia Trillos and Slep\v{c}ev in \cite{GarcSlep15}. Here, the considered object was a graph total variation or generalized parameter, where the functional corresponds to $\GE^{w_n}_p$ for $p=1$ from \cref{prob:vargraph}. Among other important ideas and notions, we want to highlight two ingredients that directly influenced \cite{roith2022continuum}:
@@ -1301,10 +1312,15 @@ then it is relatively compact.
 \paragraph{Application to ground states}
 %
 Ground states, no rates.
-
 %
 %
 %
-\subsection{Ratio Convergence}\label{sec:RatConv}
+%
+\section{Uniform Convergence}\label{sec:UnifConv}
+%
+%
+%
+%
+\section{Ratio Convergence}\label{sec:RatConv}
 %
 
