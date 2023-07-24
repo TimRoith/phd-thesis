@@ -1,6 +1,6 @@
 \chapter{Consistent Semi-Supervised Learning on Sparse Graphs}\label{ch:SSL}
 
-This chapter considers the consistency of graph-based semi-supervised learning methods. We contextualize the topics provided in the prints \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. Considering learning algorithms on graphs, we are interested in the following aspects
+This chapter considers the consistency of graph-based semi-supervised learning methods and contextualizes the topics provided in the prints \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. We are given partially labeled data, where the task is to obtain a labeling on the  whole graph. Here, we consider learning algorithms on graphs and are especially interested in the following aspects:
 %
 \begin{itemize}
 \item \textbf{Consistency:} what is the behavior in the infinite data limit?
@@ -8,13 +8,13 @@ This chapter considers the consistency of graph-based semi-supervised learning m
 \end{itemize}
 %
 %
-In \cref{sec:GConv} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart in \cite{roith2022continuum}. This allows to then show convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not allow for unique solutions.
+In \cite{roith2022continuum} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart. This allows to then show convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not allow for unique solutions. We refer to \cref{sec:GConv} for more details.
 
-This issue is addressed in \cite{bungert2021uniform}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. These functions are in fact special solutions of the extension task  in \cite{roith2022continuum}, namely so-called absolutely minimizing Lipschitz extension. Here, again we are able to work with a very mild scaling assumption that allows for sparse graphs. Furthermore, we are able to prove convergence rates, were we provide the key insight, that a rate for graph distance functions transfers to a rate for infinity harmonic functions. The main contributions are presented from \cref{sec:RatConv}.
+The issue of non-uniqueness is addressed in \cite{bungert2021uniform}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. These functions are in fact special solutions of the extension task  in \cite{roith2022continuum}, namely so-called absolutely minimizing Lipschitz extensions, which are---under certain assumptions---unique. Again, we are able to work with a very mild scaling assumption that allows for sparse graphs. Furthermore, we are able to prove the first quantitative convergence rates, where we provide the key insight, that a rate for graph distance functions transfers to a rate for infinity harmonic functions. The main contributions are presented in \cref{sec:RatConv}.
 
-To allow even sparser graphs, directly at the connectivity threshold, we consider first passage percolation in \cite{bungert2022ratio}. Here, we prove a ratio convergence of a graph distance function on a Poisson point cloud. The results here can ultimately be employed to show convergence rates for Lipschitz learning. Details are provided in \cref{sec:Perc}.
+To allow even sparser graphs, directly at the connectivity threshold, we consider first passage percolation in \cite{bungert2022ratio}. Here, we prove a ratio convergence of a graph distance function on a Poisson point cloud. The results can ultimately be employed to show convergence rates for Lipschitz learning. Details are provided in \cref{sec:Perc}.
 
-Before we present these works in detail we first introduce the setting of consistency for graph-based SSL in \cref{sec:GSSL}. We then discuss the $p$-Laplacian in \cref{sec:pLap} both in the continuum and the graph setting. Similarly, we then introduce the problem we are actually concerned namely the $\infty$-Laplacian and Lipschitz extensions in \cref{sec:LipExt}. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit.
+Before we present these works we first introduce the setting of consistency for graph-based SSL in \cref{sec:GSSL}. We then discuss the $p$-Laplacian in \cref{sec:pLap} both in the continuum and the graph setting. Similarly, we then introduce the problem we are actually concerned namely the $\infty$-Laplacian and Lipschitz extensions in \cref{sec:LipExt}. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit.
 %
 %
 %
@@ -68,7 +68,7 @@ node[midway] {\cref{sec:GLipExt}: Graph Setting}; %
 
 In the semi-supervised learning setting of \cref{sec:PSSL}, we are given a finite set $\domain_n\subset \tilde{\domain}$ consisting of $n$ points, where $\tilde{\domain}$ 
 denotes the input space. We assume that a non-empty subset $\conset_n \subset \domain_n$ is labeled, i.e., we are given a labeling function
-$\vec g:\conset_n\to\R$. From now on we denote functions acting on a discrete set $\domain_n$ using bold symbols to distinguish them from functions acting onn the continuum $\tilde\domain$. In particular, the space of functions on $\domain_n$ can simply be identified with $\R^n$, since $\{\vec u_n:\domain\to\R\} \sim \R^n.$
+$\vec g:\conset_n\to\R$. From now on we denote functions acting on a discrete set $\domain_n$ using bold symbols to distinguish them from functions acting on the continuum $\tilde\domain$. In particular, the space of functions on $\domain_n$ can simply be identified with $\R^n$, since $\{\vec u:\domain_n\to\R\} \sim \R^n.$
 %
 \noindent%
 The semi-supervised learning problem consists in finding an extension of $\vec g$ from $\conset_n$ to the whole set $\domain_n$, i.e.
@@ -94,6 +94,9 @@ In order to obtain meaningful solutions, one usually incorporates the \emph{smoo
 \begin{remark}{Notational Remark}{}
 In \cref{ch:para} we employ the symbol $\Inp$ to denote the input set, which is now replaced by $\domain$. This due to the fact, that the prints \cite{bungert2021uniform, bungert2022ratio, roith2022continuum} employ this notation for which we choose to use it here.
 \end{remark}
+%
+%
+Often one assumes that the points $x\in\domain_n$ are i.i.d. w.r.t. a distribution $\mu$ with density $\rho:\domain\to\R$. However, as observed in \cite{roith2022msc}, the data distribution is not directly relevant for the works in \cite{roith2022continuum, bungert2021uniform}. Therefore, we can usually work with more general sets $\domain_n$.
 %
 %
 \subsection{Weighted Graphs}
@@ -199,22 +202,250 @@ In many practical applications graph weights connecting all points within $\gsca
 \end{remark}
 %
 %
-\subsection{Consistency for Graph-based SSL}\label{sec:CSSL}
 %
-The archetype of the methods we consider in the following is so-called \emph{Laplacian learning}, which had one of its first appearances in 
+%
+\subsection{The $p$-Laplacian: Continuum and Graph}\label{sec:pLap}
+%
+%
+The archetype of learning methods we consider in the following is so-called \emph{Laplacian learning}, which had one of its first appearances in 
 \cite{zhu2003semi}. The associated problem was given as
 %
 \begin{gather}\label{eq:SSL_Laplacian}
-\begin{gathered}
-\min_{\vec u:\domain_n\to\R} \sum_{x,y\in\domain_n} w_n(x,y)^2 
-\left(\vec u(y) - \vec u(x) \right)^2\\
-\text{subject to } \vec u(x) = \vec g(x) \text{ for all } x\in\conset_n.
-\end{gathered}
+	\begin{gathered}
+		\min_{\vec u:\domain_n\to\R} \sum_{x,y\in\domain_n} w_n(x,y)^2 
+		\left(\vec u(y) - \vec u(x) \right)^2\\
+		\text{subject to } \vec u(x) = \vec g(x) \text{ for all } x\in\conset_n.
+	\end{gathered}
 \end{gather}
 %
 %
 %
-The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. While there are many examples where this simple concept does in fact yield good solutions \cite{zhu2003semi, zhou2005regularization}, it has been observed that solutions tend to degenerate for large amounts of data, whenever $d\geq 2$ \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}. We illustrate this phenomenon in \cref{ex:pLapBad}.
+Here, we always assume non-negative weights $w_n:\domain_n\times\domain_n\to[0,\infty)$. The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum counterpart. While The contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$, the case $p<\infty$ serves as a  motivation for the whole discussion. Therefore, we briefly review the situation in the following. Here, we first introduce the continuum setting and then discuss the situation on the graph.
+%
+%
+%
+%
+\paragraph{Continuum Setting}
+We follow the exposition in \cite{lindqvist2017notes}. Let $\domain\subset\R^d$ be a bounded domain, then we consider the $p$-Dirichlet energy for functions $u\in W^{1,p}(\domain)$,
+%
+\begin{align}\label{eq:DirichletEnergy}
+	\pDir{}_{p,\rho}(u) := \int_\domain \abs{\nabla u}^p \rho(x)^2 \, dx,
+\end{align}
+%
+%
+where $\rho:\domain\to\R$ is some given function. In the setting of \cite{GarcSlep15, slepcev2019analysis} $\rho$ denotes the density of data distribution as in \cref{sec:GSSL}. For $\rho\equiv1$ we simply write $\pDir{}_{p,1}=\pDir{}_{p}$. The associated variational problem is given in the following.
+%
+\begin{problem}{Variational Formulation}{prob:VarForm}
+	For $p\in (1,\infty)$ and $V\subset W^{1,p}(\domain)$ find $u\in W^{1,p}(\domain)$ such that
+	%
+	\begin{align*}
+		\pDir{}_{p,\rho}(u) \leq \pDir{}_{p,\rho}(v)
+	\end{align*}
+	%
+	for all $v$, such that $(u-v)\in W^{1,p}_0$.
+\end{problem}
+%
+Assume for simplicity that $\rho\equiv 1$ and that $u\in V$ is a minimizer of the above problem, then its first variation must vanish, i.e., for all $\phi\in C^\infty_0(\domain)$ one has
+%
+\begin{align}\label{eq:weakLap}
+	\int_\domain \langle \abs{\Delta_p u}^p \nabla u, \nabla \phi \rangle \, dx = 0.
+\end{align}
+%
+A function $u\in V$ satisfying \cref{eq:weakLap} is called a \emph{weak solution} of the $p$-Laplace equation. In fact, if $u$ 
+is smooth enough one has that
+%
+\begin{align}\label{eq:strongLap}
+	\Delta_p u := \div(\abs{\Delta_p u}^{p-2} \nabla u) = 0
+\end{align}
+%
+where $\Delta_p$ is called the $p$-Laplacian. Boundary conditions on $\partial \domain$ given by a function $g\in W^{1,p}(\domain)$  can be incorporated by considering the set
+$V_g := \{u\in W^{1,p}(\domain): u-g \in W^{1,p}_0(\domain)\}$. 
+We state the following classical result, which can for example be found in \cite{lindqvist2017notes}.
+%
+\begin{theorem}{Existence and Uniqueness}{}
+	For $p\in (1,\infty)$ and $g\in W^{1,p}(\domain)$ there exists a unique minimizer $u\in V_g$ of the $p$-Dirichlet energy, i.e.,
+	%
+	\begin{align*}
+		\argmin_{u\in V_g} \pDir{}_p(u) = u.
+	\end{align*}
+	%
+	Moreover, $u$ is a weak solution of the $p$-Laplace equation and there exists a function $\tilde{u}\in C(\domain)$ such that
+	$u = \tilde{u}$ a.e. in $\domain$. If $g\in C(\domain)$ and $\domain$ is sufficiently smooth, then 
+	$\tilde{u}\vert_{\partial \domain} = g\vert_{\partial \domain}$.
+\end{theorem}
+%
+%
+\begin{proof}
+	The proof can be found in \cite[Thm. 2.16]{lindqvist2017notes}.
+\end{proof}
+%
+%
+\paragraph*{Local Minimization Property} Let $u$ solve \cref{prob:VarForm} for given boundary values $g\in W^{1,p}(\domain)$ and let $V\subset\subset\domain$ be a sufficiently regular subset. Then we have that
+%
+\begin{align*}
+\pDir_p(u) = \int_{V} \abs{\nabla u}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx.
+\end{align*}
+%
+Now consider \cref{prob:VarForm} on $V$ with boundary values given by $u$ and denote by $v$ the solution of the problem. Since $u=v$ on $\partial V$ we can extend $v$ onto $\domain$ by setting $v=u$ in $\domain\setminus V$, which gives $v\in W^{1,p}(\domain)$. Therefore, we obtain
+%
+\begin{align*}
+\pDir_p(v) = \int_{V} \abs{\nabla v}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx \leq 
+\int_{V} \abs{\nabla u}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx = \pDir_p(u).
+\end{align*}
+%
+Since $u$ was unique this yields $u|_V = v|_V$, for which know that any solution on $\domain$ solves \cref{prob:VarForm} also on any nice subset, with the boundary values given by itself. In \cref{sec:LipExt} we see that this \textit{local minimization property} does not hold automatically and has to enforced additionally. The underlying reason here is, that integrals are set-additive, but suprema are not, which is similarly explained in \cite{aronsson2004tour}.
+
+%
+%
+\paragraph{Laplacian Learning} A natural extension of the problem given in \cref{eq:DirichletEnergy} is obtained by considering the target functional
+%
+\begin{align*}
+	\GE^{w_n}_p(\vec u):= \sum_{x,y\in\domain_n} w_n(x,y)^p \abs{\vec u(y) - \vec u(x)}^p,
+\end{align*}
+%
+which we refer to as the graph $p$-Dirichlet energy. Indeed, we notice structural 
+similarities to the $p$-Dirichlet energy $\pDir_p$ in \cref{eq:DirichletEnergy}, replacing the integral by a finite 
+sum and derivatives by weighted finite differences
+%
+\begin{align*}
+	w_n(x,y)^p \abs{\vec u(y) - \vec u(x)}^p.
+\end{align*}
+%
+This naturally leads to the following minimization problem.
+%
+\begin{problem}{Graph Energy Minimization}{prob:vargraph}
+Given a weighted graph $(\domain_n, w_n)$ and a labeling function $\vec g:\conset_n\to\R$, for $\conset_n\subset\domain_n$ we consider 
+the problem
+%
+\begin{align*}
+	\min_{\vec u:\domain_n\to\R} \GE^{w_n}_p(\vec u) \text{ subject to } \vec u(x) = \vec g(x) \text{ for all } x\in\conset_n.
+\end{align*}
+\end{problem}
+%
+\noindent%
+Since every function $\vec u:\domain_n\to\R$ can be identified with a vector $\vec u\in\R^n$, the above problem 
+is in fact an optimization problem in $\R^n$. However, one can prove existence with techniques very similar to the continuum case in \cite{lindqvist2017notes}. We give the adapted prove below for completeness. The important property to establish uniqueness is that the graph is connected to the boundary, i.e., for every $x\in\domain_n$ there exists a path $x=\gamma_1,\ldots,\gamma_m\in\domain_n=o$ with $w(\gamma_{i+1}, \gamma_i)>0$ connecting $x$ to a point $o\in\conset_n$ in the boundary. This is very intuitive, since on any connected component that does not communicate with the boundary, an arbitrary constant minimizes the \enquote{graph gradient}.
+
+%
+\begin{theorem}{Existence and Uniqueness}{} Let $(\domain_n,w_n)$ be a graph with non-negative weights, that is connected to its boundary $\conset_n\subset\domain_n$. Then \cref{prob:vargraph} admits a unique solution $\vec u:\domain_n\to\R$.
+\end{theorem}
+%
+\begin{proof}
+The	proof is an adaption from the continuum case in \cite[Thm. 2.16]{lindqvist2017notes}. We start by proving uniqueness, 	
+Let $E = \{(x,y): w_n(x,y)>0\}$ be the set of all active edges and denote by $\nabla^{w_n} \vec u \in \R^{\abs{E}}$
+%
+\begin{align*}
+(\nabla^{w_n} \vec u)_{(x,y)} := w_n(x,y) \abs{\vec u(y) - \vec u(x)}
+\end{align*}
+%
+the \emph{graph gradient} on $E$. We have that $\GE^{w_n}_p (\vec u) = \norm{\nabla^{w_n}\vec u}$. Let $\vec u_1, \vec u_2$ be two  solutions of \cref{prob:vargraph}, i.e. $\GE^{w_n}_p (\vec u_1)= \GE^{w_n}_p (\vec u_2)$. Assume that there exists $(\bar x,\bar y)\in E$ such that $\nabla^{w_n} \vec u_1(\bar x,\bar y)\neq \nabla^{w_n}\vec u_2(\bar x,\bar y)$, then we have that
+%
+\begin{align*}
+\GE^{w_n}_p (\vec u_1) &\leq \GE^{w_n}_p \left(\frac{\vec u_1 + \vec u_2}{2}\right) =
+\norm{\frac{\nabla^{w_n} \vec u_1(x,y) + \nabla^{w_n} \vec u_2(x,y)}{2}}^p_p\\
+&<
+\frac{1}{2} \sum_{(x,y)\in E\setminus\{(\bar x,\bar y)\}} \abs{\nabla^{w_n} \vec u_1(x,y)}^p + \abs{\nabla^{w_n} \vec u_2(x,y)}^p
+\\ 
+&\qquad+\frac{1}{2} \abs{\nabla^{w_n} \vec u_1(\bar x, \bar y)}^p + \abs{\nabla^{w_n} \vec u_2(\bar x, \bar y)}^p\\
+&= 
+\frac{1}{2}\left(\GE^{w_n}_p (\vec u_1) + \GE^{w_n}_p (\vec u_2)\right) 
+= \GE^{w_n}_p (\vec u_1),
+\end{align*}
+%
+which is a contradiction. Here, we employed the strict convexity of $t\mapsto \abs{t}^p$ which implies $\abs{t+\bar t}^p \leq 2^{p-1} \left(\abs{t}^p + \abs{\bar t}^{p}\right)$, where the inequality is sharp if $t\neq \bar t$. Therefore, we obtain that
+%
+\begin{align}\label{eq:diffid}
+\vec u_1(x) - \vec u_1(y) = \vec u_2(x) - \vec u_2(y) \qquad\text{for all}\qquad (x,y)\in E.
+\end{align}
+%
+Since $(\domain_n, w_n)$ is connected to $\conset_n$ for any $x\in\domain_n$ we can find a path $x=\gamma_1,\ldots,\gamma_m=o$ connecting $x$ to a point $o\in\conset_n$. By definition $w_n(\gamma_{i+1}, \gamma_i) >0$ for all $i=1,\ldots, m-1$ and therefore using \cref{eq:diffid} we obtain
+%
+\begin{align*}
+\vec u_1(\gamma_{i+1}) - \vec u_1(\gamma_i) = \vec u_2(\gamma_{i+1}) - \vec u_2(\gamma_i) \qquad\text{for all}\qquad i=1,\ldots,m-1.
+\end{align*}
+%
+and therefore
+%
+\begin{align*}
+\vec u_1(x) - \vec u_1(o) &= \left[\sum_{i=1}^{m-1} \vec u_1(\gamma_{i+1}) - \vec u_1(\gamma_i)\right] + \vec u_1(o)
+= \left[\sum_{i=1}^{m-1} \vec u_2(\gamma_{i+1}) - \vec u_2(\gamma_i)\right]\\&=
+\vec u_2(x) - \vec u_2(o).
+\end{align*}
+%
+Employing the boundary conditions $\vec u_1(o)=\vec u_2(o)$, it follows that $\vec u_1(x) = \vec u_2(x)$. Since $x\in\domain_n$ was arbitrary, we get $\vec u_1 = \vec u_2$.\par
+%
+\noindent%
+To show existence, we do not need to assume that the graph is connected to the boundary. In fact one easily observes that being constant, on every connected component that is not connected to $\conset$ is optimal. W.l.o.g. we neglect connected components not connected to the boundary and see that for $\vec u:\domain_n\to\R$ and any $x\in\domain_n$ we have that
+%
+\begin{align*}
+\abs{\vec u(x)}^p \leq \sum_{i=1}^{m-1}\abs{\vec u(\gamma_{i+1}) - \vec u(\gamma_i)}^p + \abs{\vec g(o)}^p 
+\end{align*}
+%
+where we employed a path to the boundary as in the previous example. Therefore, we obtain that $\norm{\vec u}^p_p \leq C (\GE^{w_n}_p(\vec u) + \norm{\vec g}^p_p)$. Let now $\vec u_j$ denote a sequence such that $\GE^{w_n}_p(\vec u_j) \leq I + 1/j$, where
+%
+\begin{align*}
+I := \inf_{\vec u=\vec g\text{ on } \conset_n} \GE^{w_n}_p(\vec u).
+\end{align*}
+%
+Then we have that
+%
+\begin{align*}
+\norm{\vec u_j}^p_p \leq C(I + 1/j + \norm{\vec g}^p_p) \leq \tilde C
+\end{align*}
+%
+i.e. $\vec u_j$ is a bounded sequence of vectors in the finite dimensional space $\R^n$, and therefore there exists a subsequence---which we do not relabel---that converges to $\vec u$. Since the functional $\GE^{w_n}_p:\R^n\to\R$ is continuous we obtain that
+%
+\begin{align*}
+\GE^{w_n}_p(\vec u) = \lim_{j\to\infty} \GE^{w_n}_p(\vec u_j) = I
+\end{align*}
+%
+which yields existence.
+\end{proof}
+%
+%
+\paragraph{The Graph Laplacian}
+%
+In the continuum case one considers the Euler--Lagrange equation for the functional $\pDir_p$, which yields the 
+$p$-Laplacian, see \cref{sec:pLap}. Analogously, the optimality conditions for the graph $p$-Dirichlet energy $\GE^{w_n}_p$ yield
+%
+\begin{align*}
+	\Delta^{w_n}_p \vec u(x):= \sum_{y\in\domain_n} w_n(x,y)^p \abs{\vec u(y) - \vec u(x)}^{p-2} \left( \vec u(y) - \vec u(x) \right) = 0, 
+	\text{ for all } x\in\domain_n,
+\end{align*}
+%
+where $\Delta^{w_n}_p$ is referred to as thegraph $p$-Laplacian operator. This yields the graph $p$-Laplacian problem.
+%
+\begin{problem}{Graph $p$-Laplacian}{prob:graphLaplace}
+	Given a weighted graph $(\domain_n, w_n)$ and a labeling function $\vec g:\conset_n\to\R$ with $\conset_n\subset\domain_n$, find 
+	a function $\vec u:\domain_n\to\R$ such that
+	%
+	\begin{align*}
+		\Delta_p^{w_n} \vec u &= 0, \text{ in } \domain_n\setminus \conset_n,\\
+		\vec u &= \vec g \text{ on } \conset_n.
+	\end{align*}
+\end{problem}
+%
+Since the functional $\GE^{w_n}_p$ has a unique minimizer subject to the constraints given by $\vec g$ and the graph $p$-Laplacian is derived 
+via optimality conditions, one expects that the \cref{prob:vargraph} and \cref{prob:graphLaplace} are equivalent. This is formulated in the following 
+theorem.
+%
+\begin{theorem}{Existence and Uniqueness}{}
+Let $(\domain_n,w_n)$ be a graph with non-negative weights, that is connected to its boundary $\conset_n\subset\domain_n$. Then there exists a unique solution $\vec u:\domain_n\to\R$ to \cref{prob:graphLaplace}, which also is the unique minimizer of \cref{prob:vargraph}.
+\end{theorem}
+%
+\begin{proof}
+This statement can be proven similarly to \cite[Theorem 5.3]{elmoataz2015p}.
+\end{proof}
+%
+%
+%
+%
+%
+\subsection{Consistency for Graph-based SSL}\label{sec:CSSL}
+%
+%
+
+ While there are many examples where this simple concept does in fact yield good solutions \cite{zhu2003semi, zhou2005regularization}, it has been observed that solutions tend to degenerate for large amounts of data, whenever $d\geq 2$ \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}. We illustrate this phenomenon in \cref{ex:pLapBad}.
 %
 \begin{figure}
 \includegraphics[width=.28\textwidth, trim={3.1cm 1cm 3.5cm 0cm},clip]{code/SSL/2Dex_100.png}%
@@ -244,7 +475,7 @@ In our case \enquote{consistency} roughly ask the discrete solutions to converge
 %
 %
 \paragraph{Consistency for the $p$-Laplacian} 
-In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum counterpart, see \cref{sec:GpLap}. As observed in \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic} the question of consistency is now connected to relation between $p$ and $d$, where divides into the three regimes $p<d$, $p=d$ and probably the most relevant case $p>d$.
+As observed in \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic} the question of consistency is now connected to relation between $p$ and $d$, where divides into the three regimes $p<d$, $p=d$ and probably the most relevant case $p>d$.
 
 The $p$-Dirichlet problem in the continuum can be formulated as a variational problem in $W^{1,p}$. However, it is important to remember that in our setting we most likely consider pointwise constraints on a discrete set $\conset$ even in the continuum. In order to impose pointwise constraints, one requires that functions in $W^{1,p}$ exhibit some continuity properties. By the Sobolev embedding theorem, this is the case when $p>d$, \cite{adams2003sobolev}. This leads to a first qualitative intuition that consistency can only be achieved in the case $p>d$. The situation is in fact more subtle, which is reviewed in \cref{sec:GConv}. 
 
@@ -261,165 +492,10 @@ Since the assumption that $p>d$ is crucial for asymptotic consistency, a natural
 \hfill%
 \includegraphics[width=.28\textwidth,trim={3.1cm 1cm 3.5cm 0cm},clip]{code/SSL/2Dex_10000-p=inf.png}%
 %
-\caption{Solution to the Laplacian Learning problem ($p=\infty$) for different number of data points $n\in\{100,1000,10000\}$. The setup is otherwise copied from \cref{ex:fig:pLapBad}}\label{fig:pinf}
+\caption{Solution to the Laplacian Learning problem ($p=\infty$) for different number of data points $n\in\{100,1000,10000\}$. The setup is otherwise copied from \cref{ex:pLapBad}}\label{fig:pinf}
 \end{figure}
 %
 However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ problem, Lipschitz learning does not respect the density of data in any way. Namely, the method is exclusively distance based. This behavior is a drawback in many machine learning applications. However, by carefully rescaling the graph weights one obtains a data sensitive problem, see \cite{calder2019consistency} and \cref{sec:GConv}.
-%
-%
-%
-%
-%
-%
-%
-\section{The $p$-Laplacian: Continuum and Graph}\label{sec:pLap}
-%
-%
-The contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$. However, the case $p<\infty$ serves as a  motivation for the whole discussion, for which we quickly review it in the following. Here, we first introduce the continuum setting and then discuss the situation on the graph.
-%
-%
-%
-\subsection{The $p$-Laplacian: Continuum Setting}\label{sec:pLapcont}
-We follow the exposition in \cite{lindqvist2017notes}. Let $\domain\subset\R^d$ be a bounded domain, then we consider the $p$-Dirichlet energy for functions $u\in W^{1,p}(\domain)$,
-%
-\begin{align}\label{eq:DirichletEnergy}
-\pDir{}_{p,\rho}(u) := \int_\domain \abs{\nabla u}^p \rho(x)^2 \, dx,
-\end{align}
-%
-%
-where $\rho:\domain\to\R$ is some given function. When working with data, one usually assumes a distribution $\mu$ w.r.t. which the data is distributed. This is the setting of \cite{GarcSlep15, slepcev2019analysis} where $\rho$ then denotes the density of $\mu$. The associated variational problem is given in the following.
-%
-\begin{problem}{Variational Formulation}{}
-For $p\in (1,\infty)$ and $V\subset W^{1,p}(\domain)$ find $u\in W^{1,p}(\domain)$ such that
-%
-\begin{align*}
-\pDir{}_{p,\rho}(u) \leq \pDir{}_p(v)
-\end{align*}
-%
-for all $v$, such that $(u-v)\in W^{1,p}_0$.
-\end{problem}
-%
-If $u\in V$ is a minimizer of the above problem, then its first variation must vanish, i.e., for all $\phi\in C^\infty_0(\domain)$ one has
-%
-\begin{align}\label{eq:weakLap}
-\int_\domain \langle \abs{\Delta_p u}^p \nabla u, \nabla \phi \rangle \, dx = 0.
-\end{align}
-%
-A function $u\in V$ satisfying \cref{eq:weakLap} is called a \emph{weak solution} of the $p$-Laplace equation. In fact, if $u$ 
-is smooth enough one has that
-%
-\begin{align}\label{eq:strongLap}
-\Delta_p u := \div(\abs{\Delta_p u}^{p-2} \nabla u) = 0
-\end{align}
-%
-where $\Delta_p$ is called the $p$-Laplacian. For most of our applications we want to prescribe boundary conditions on $\partial \domain$. 
-For a given function $g\in W^{1,p}(\domain)$ we therefore consider the set 
-$V_g := \{u\in W^{1,p}(\domain): u-g \in W^{1,p}_0(\domain)\}$ for which we have the following result.
-%
-\begin{theorem}{Existence and Uniqueness}{}
-For $p\in (1,\infty)$ and $g\in W^{1,p}(\domain)$ there exists a unique minimizer $u\in V_g$ of the $p$-Dirichlet energy, i.e.,
-%
-\begin{align*}
-\argmin_{u\in V_g} \pDir{}_p(u) = u.
-\end{align*}
-%
-Moreover, $u$ is a weak solution of the $p$-Laplace equation and there exists a function $\tilde{u}\in C(\domain)$ such that
-$u = \tilde{u}$ a.e. in $\domain$. If $g\in C(\domain)$ and $\domain$ is sufficiently smooth, then 
-$\tilde{u}\vert_{\partial \domain} = g\vert_{\partial \domain}$.
-\end{theorem}
-%
-%
-\begin{proof}
-The proof can be found in \cite[Thm. 2.16]{lindqvist2017notes}.
-\end{proof}
-%
-%
-\paragraph*{Local minimization property}
-%
-%
-\subsection{Laplacian Learning}\label{sec:GpLap}
-
-%
-A natural extension of this problem is obtained by substituting the target functional by
-%
-\begin{align*}
-\GE^{w_n}_p(\vec u):= \sum_{x,y\in\domain_n} w_n(x,y)^p \abs{\vec u(y) - \vec u(x)}^p,
-\end{align*}
-%
-which we refer to as the graph $p$-Dirichlet energy. Indeed, we notice structural 
-similarities to the $p$-Dirichlet energy $\pDir_p$ in \cref{eq:DirichletEnergy}, replacing the integral by a finite 
-sum and derivatives by weighted finite differences
-%
-\begin{align*}
- w_n(x,y)^p \abs{\vec u(y) - \vec u(x)}^p.
-\end{align*}
-%
-This naturally leads to the following minimization problem.
-%
-\begin{problem}{Graph Energy Minimization}{prob:vargraph}
-Given a weighted graph $(\domain_n, w_n)$ and a labeling function $\vec g:\conset_n\to\R$, for $\conset_n\subset\domain_n$ we consider 
-the problem
-%
-\begin{align*}
-\min_{\vec u:\domain_n\to\R} J^{w_n,p}(\vec u) \text{ subject to } \vec u(x) = \vec g(x) \text{ for all } x\in\conset_n.
-\end{align*}
-\end{problem}
-%
-\noindent%
-Since every function $\vec u:\domain_n\to\R$ can be identified with a vector $\vec u\in\R^n$, the above problem 
-is in fact an optimization problem in $\R^n$. Therefore one can prove unique existence of solutions via standard methods.
-%
-\begin{theorem}{Existence and Uniqueness}{}
-\cref{prob:vargraph} admits a unique solution $\vec u:\domain_n\to\R$.
-\end{theorem}
-%
-\begin{proof}
-This and that, a gecko with a hat.
-\end{proof}
-%
-While Laplacian learning 
-
-\paragraph{Graph Laplacian}
-%
-In the continuum case one considers the Euler--Lagrange equation for the functional $\pDir_p$, which yields the 
-$p$-Laplacian, see \cref{sec:pLap}. Analogously, the optimality conditions for the graph $p$-Dirichlet energy $\GE^{w_n}_p$ yield
-%
-\begin{align*}
-\Delta^{w_n}_p \vec u(x):= \sum_{y\in\domain_n} w_n(x,y)^p \abs{\vec u(y) - \vec u(x)}^{p-2} \left( \vec u(y) - \vec u(x) \right) = 0, 
-\text{ for all } x\in\domain_n,
-\end{align*}
-%
-where $\Delta^{w_n}_p$ is referred to as thegraph $p$-Laplacian operator. This yields the graph $p$-Laplacian problem.
-%
-\begin{problem}{Graph $p$-Laplacian}{prob:graphLaplace}
-Given a weighted graph $(\domain_n, w_n)$ and a labeling function $\vec g:\conset_n\to\R$ with $\conset_n\subset\domain_n$, find 
-a function $\vec u:\domain_n\to\R$ such that
-%
-\begin{align*}
-\Delta_p^{w_n} \vec u &= 0, \text{ in } \domain_n\setminus \conset_n,\\
-\vec u &= \vec g \text{ on } \conset_n.
-\end{align*}
-\end{problem}
-%
-Since the functional $\GE^{w_n}_p$ has a unique minimizer subject to the constraints given by $\vec g$ and the graph $p$-Laplacian is derived 
-via optimality conditions, one expects that the \cref{prob:vargraph} and \cref{prob:graphLaplace} are equivalent. This is formulated in the following 
-theorem.
-%
-\begin{theorem}{Existence and Uniqueness}{}
-There exists a unique solution $\vec u:\domain_n\to\R$ to \cref{prob:graphLaplace}, which also is the unique minimizer 
-of \cref{prob:vargraph}.
-\end{theorem}
-%
-\begin{proof}
-This and that a gecko with a hat.
-\end{proof}
-%
-%
-%
-%
-%
-%
-%
 %
 %
 %
