@@ -245,17 +245,18 @@ where $\rho:\domain\to\R$ is some given function. In the setting of \cite{GarcSl
 	for all $v$, such that $(u-v)\in W^{1,p}_0$.
 \end{problem}
 %
+\noindent%
 Assume for simplicity that $\rho\equiv 1$ and that $u\in V$ is a minimizer of the above problem, then its first variation must vanish, i.e., for all $\phi\in C^\infty_0(\domain)$ one has
 %
 \begin{align}\label{eq:weakLap}
-	\int_\domain \langle \abs{\Delta_p u}^p \nabla u, \nabla \phi \rangle \, dx = 0.
+	\int_\domain \langle \abs{\nabla u}^p \nabla u, \nabla \phi \rangle \, dx = 0.
 \end{align}
 %
 A function $u\in V$ satisfying \cref{eq:weakLap} is called a \emph{weak solution} of the $p$-Laplace equation. In fact, if $u$ 
 is smooth enough one has that
 %
 \begin{align}\label{eq:strongLap}
-	\Delta_p u := \div(\abs{\Delta_p u}^{p-2} \nabla u) = 0
+	\Delta_p u := \div(\abs{\nabla u}^{p-2} \nabla u) = 0
 \end{align}
 %
 where $\Delta_p$ is called the $p$-Laplacian. Boundary conditions on $\partial \domain$ given by a function $g\in W^{1,p}(\domain)$  can be incorporated by considering the set
@@ -293,7 +294,7 @@ Now consider \cref{prob:VarForm} on $V$ with boundary values given by $u$ and de
 \int_{V} \abs{\nabla u}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx = \pDir_p(u).
 \end{align*}
 %
-Since $u$ was unique this yields $u|_V = v|_V$, for which know that any solution on $\domain$ solves \cref{prob:VarForm} also on any nice subset, with the boundary values given by itself. In \cref{sec:LipExt} we see that this \textit{local minimization property} does not hold automatically and has to enforced additionally. The underlying reason here is, that integrals are set-additive, but suprema are not, which is similarly explained in \cite{aronsson2004tour}.
+Since $u$ was unique this yields $u|_V = v|_V$, and therefore we know that any solution on $\domain$ solves \cref{prob:VarForm} also on any \enquote{nice} subset, with the boundary values given by itself. In \cref{sec:LipExt} we see that this \textit{local minimization property} does not hold automatically and has to enforced additionally. The underlying reason here is, that integrals are set-additive, but suprema are not, which is similarly explained in \cite{aronsson2004tour}.
 
 %
 %
@@ -324,7 +325,7 @@ the problem
 %
 \noindent%
 Since every function $\vec u:\domain_n\to\R$ can be identified with a vector $\vec u\in\R^n$, the above problem 
-is in fact an optimization problem in $\R^n$. The functional $\GE^{w_n}_p:\R^n\to\R$ is bounded from below by $0$, continuous, convex and in the case $p>1$ even differentiable. However, one can prove unique existence with techniques very similar to the continuum case in \cite{lindqvist2017notes}. We give the adapted prove below for completeness. The important property to establish uniqueness is that the graph is connected to the boundary, i.e., for every $x\in\domain_n$ there exists a path $x=\gamma_1,\ldots,\gamma_m\in\domain_n=o$ with $w(\gamma_{i+1}, \gamma_i)>0$ connecting $x$ to a point $o\in\conset_n$ in the boundary. This is very intuitive, since on any connected component that does not communicate with the boundary, an arbitrary constant minimizes the \enquote{graph gradient}.
+is in fact an optimization problem in $\R^n$. The functional $\GE^{w_n}_p:\R^n\to\R$ is bounded from below by $0$, continuous, convex and in the case $p>1$ even differentiable. However, one can prove unique existence with techniques very similar to the continuum case in \cite{lindqvist2017notes}. We give the adapted prove below for completeness. The important property to establish uniqueness is that the graph is connected to the boundary, i.e., for every $x\in\domain_n$ there exists a path $x=\gamma_1,\ldots,\gamma_m=o\in\domain_n$ with $w(\gamma_{i+1}, \gamma_i)>0$ connecting $x$ to a point $o\in\conset_n$ in the boundary. This is very intuitive, since on any connected component that does not communicate with the boundary, an arbitrary constant minimizes the \enquote{graph gradient}.
 %
 %
 \begin{theorem}{Existence and Uniqueness}{} Let $(\domain_n,w_n)$ be a graph with non-negative weights, that is connected to its boundary $\conset_n\subset\domain_n$. Then \cref{prob:vargraph} admits a unique solution $\vec u:\domain_n\to\R$.
@@ -347,7 +348,10 @@ the \enquote{graph gradient} on $E$, where we have that
 \end{align*}
 %
 %
-Let $\vec u_1, \vec u_2$ be two  solutions of \cref{prob:vargraph}, i.e. $\GE^{w_n}_p (\vec u_1)= \GE^{w_n}_p (\vec u_2)$. Assume that there exists $(\bar x,\bar y)\in E$ such that $\nabla^{w_n} \vec u_1(\bar x,\bar y)\neq \nabla^{w_n}\vec u_2(\bar x,\bar y)$, then we have that
+Let $\vec u_1, \vec u_2$ be two  solutions of \cref{prob:vargraph}, i.e. $\GE^{w_n}_p (\vec u_1)= \GE^{w_n}_p (\vec u_2)$. Since $\vec u_1,\vec u_2$ fulfill the boundary conditions, this also holds for $1/2(\vec u_1 + \vec u_2)$ and therefore $\GE^{w_n}_p(\vec u_1)\leq\GE^{w_n}_p(1/2(\vec u_1 + \vec u_2))$.
+
+
+Assume that there exists $(\bar x,\bar y)\in E$ such that $\nabla^{w_n} \vec u_1(\bar x,\bar y)\neq \nabla^{w_n}\vec u_2(\bar x,\bar y)$, then we have that
 %
 \begin{align*}
 \GE^{w_n}_p (\vec u_1) &\leq \GE^{w_n}_p \left(\frac{\vec u_1 + \vec u_2}{2}\right) =
@@ -402,20 +406,20 @@ To show existence, we do not need to assume that the graph is connected to the b
 where the contribution on the connected component is zero, since we set $\vec u$ to be constant here. Therefore, w.l.o.g. we can assume that $\domain_n$ is connected to the boundary, since any component not connected to boundary does not contribute to the problem. Let now $\vec u:\domain_n\to\R$ be a function and for $x\in\domain_n$ let $\gamma \in \domain_n^{\times m}$ be a path to a point in the boundary $o^x\in\conset_n$, then we have that
 %
 \begin{gather*}
-\abs{\vec u(x)}^p \leq \sum_{i=1}^{m^x-1}\abs{\vec u(\gamma^x_{i}) - \vec u(\gamma^x_{i+1})}^p + \abs{\vec g(o^x)}^p\leq 
-c \GE^{w_n}_p(\vec u) + \abs{\vec g(o^x)}^p
+\abs{\vec u(x)}^p \leq C\left(\sum_{i=1}^{m^x-1}\abs{\vec u(\gamma_{i}) - \vec u(\gamma_{i+1})}^p + \abs{\vec g(o^x)}^p\right) \leq 
+C\left(\GE^{w_n}_p(\vec u) + \abs{\vec g(o^x)}^p\right)
 \end{gather*}
 %
-where $c=\left(\min_{(x,y)\in E}w_n(x,y)\right)^{-1}$. Summing over all $x\in\domain_n$ yields
+where $C>0$ is a generic constant---not depending on $\vec u$---that also accounts for the factor $\left(\min_{(x,y)\in E}w_n(x,y)\right)^{-1}$. Summing over all $x\in\domain_n$ yields
 
 \begin{gather*}
 \norm{\vec u}^p_p = \sum_{x\in\domain_n} \abs{\vec u(x)}^p \leq 
-n c\ \GE^{w_n}_p(\vec u) + \sum_{x\in\domain_n} \abs{\vec g(o^x)}^p\\
+C\left( n\, \GE^{w_n}_p(\vec u) + \sum_{x\in\domain_n} \abs{\vec g(o^x)}^p\right)\\
 %
-\leq  C \bigg(\GE^{w_n}_p(\vec u) + \norm{\vec g}^p_p\bigg)
+\leq  C \bigg(\GE^{w_n}_p(\vec u) + \norm{\vec g}^p_p\bigg).
 \end{gather*}
 %
-where $C=\max\{nc, 1\}$. Let now $\vec u_j$ denote a sequence such that
+Let now $\vec u_j$ denote a sequence such that
 %
 \begin{align*}
 \GE^{w_n}_p(\vec u_j) \leq I + 1/j,\qquad\text{ where }\qquad
@@ -722,7 +726,7 @@ These solutions are then called Whitney and McShane or respectively maximal and 
 One easily observes that there are cases where $\overline{g}\neq \underline{g}$ and therefore the problem does not admit a unique solution. A concrete example, to showcase this phenomena is given in \cite[p. 53]{jensen1993uniqueness}.
 %
 %
-\paragraph{Lipschitz extensions in metric spaces} The problem considered in the last section was motivated by a variational problem for $\pDir_\infty(u)=\norm{\nabla u}_\infty$. However, the theory of Lipschitz extensions provides a more general framework. Namely, here we do not assume that $\domain$ is a subset of 
+\paragraph{Lipschitz Extensions in Metric Spaces} The problem considered in the last section was motivated by a variational problem for $\pDir_\infty(u)=\norm{\nabla u}_\infty$. However, the theory of Lipschitz extensions provides a more general framework. Namely, here we do not assume that $\domain$ is a subset of 
 $\R^d$ and rather consider a metric space $(\tilde{\domain},d)$ with $\domain\subset \tilde\domain$. 
 %
 \begin{remark}{}{}
@@ -788,7 +792,7 @@ Consider the set $\tilde\domain = [-1,1]$ and $\conset=\{-1,0,1\}$ with
 %
 \begin{align*}
 \color{apple}g_1\bc(x)&:= 0,\\
-\color{grape}g_2\bc(x)&:= 1/2 (x- \sign(x)\cdot x),\\
+\color{grape}g_2\bc(x)&:= 1/2\ (x- \abs{x}),\\
 \color{sky}g_3\bc(x)&:= -\color{grape}g_2\bc.
 \end{align*}
 %
@@ -867,9 +871,8 @@ Let $\domain\subset\R^d$
 \end{problem}
 Solutions are typically considered in the viscosity sense, see e.g. \cite{aronsson2004tour}, where one can also show that solving the infinity Laplace equation
 %
-\begin{align*}
-	
-
+\begin{align*}	
+\end{align*}
 
  
 %For any vector $v\in\R^n$ and $h\in\R^+$ we can employ the Taylor approximation to see that
