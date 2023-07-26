@@ -916,7 +916,7 @@ A function $u\in C(\cl\domain)$ fulfills $\Delta_\infty u=0$ in the viscosity se
 %
 We can now also address the question of uniqueness, where we state the following famous result of Jensen \cite{jensen1993uniqueness}.
 %
-\begin{theorem}{\cite{jensen1993uniqueness}}{} 
+\begin{theorem}{\cite{jensen1993uniqueness}}{th:jens} 
 Let $u,v\in C(\cl\domain)$ be two viscosity solutions of the $\infty$-Laplacian, then we have
 %
 \begin{align*}
@@ -1230,7 +1230,8 @@ Given a connected weighted graph $(\domain_n, w_n)$, $\conset_n\subset\domain_n$
 \end{align*}
 \end{problem}
 %
-This notion of absolute minimizers is employed in \cite{bungert2021uniform, bungert2022ratio}.
+\noindent%
+This notion of absolute minimizers is employed in \cite{bungert2021uniform, bungert2022ratio}.  We see, that graph AMLEs are indeed special solutions of the basic Lipschitz extension problem on the graph, by choosing $V=\domain_n\setminus\conset_n$ in the above problem.
 %
 %
 %
@@ -1321,31 +1322,29 @@ a function $\vec u:\domain_n\to\R$ such that
 \end{problem}
 %
 %
-This problem is again well-posed, which is formulated in the following lemma.
+\noindent%
+To establish existence of solutions of the problem above one can employ the Perron method \cite{perron1923neue}. Alternatively, one can establish the equivalence to so-called lex-minimizers and the show existence as in \cite[Th. 3.3]{kyng2015algorithms}. Uniqueness is a consequence of the following theorem from \cite{calder2019consistency}, which is similar to uniqueness lemma of Jensen \cref{th:jens}.
 %
-\begin{lemma}{}{}
-There exists a unique solution for \cref{prob:graphinfLaplace}.
-\end{lemma}
+\begin{theorem}{\cite[Th. 3.1]{calder2019consistency}}{}
+Let $(\domain_n,w_n)$ be a graph connected to the the boundary $\conset_n\subset\domain_n$ and consider $\vec u,\vec v:\domain_n\to\R$ such that
 %
+\begin{align*}
+\Delta^{w_n}_\infty \vec u \leq 0 \leq \Delta^{w_n}_\infty \vec v
+\quad\text{ in } \domain_n\setminus\conset_n.
+\end{align*}
 %
-\paragraph{Relation between the Graph Lipschitz Extensions}
-We now establish the connection between the different notions of Lipschitz extensions. Compared to the continuum case we do not establish the full equivalences but only the necessary implications required for the convergence proofs in \cite{bungert2021uniform}.
-
-First we see, that graph AMLEs are indeed special solutions of the basic Lipschitz extension problem on the graph.
+Then we know that
 %
-\begin{lemma}{}{}
-A graph AMLE is also a Lipschitz extension.
-\end{lemma}
-%
-\begin{proof}
-
-\end{proof}
+\begin{align*}
+\max_{\domain_n} (\vec u - \vec v) = \max_{\conset_n} (\vec u - \vec v)
+\end{align*}
+\end{theorem}
 %
 %
-We now state the main result concerning the relation between the graph infinity Laplacian, graph AMLEs and comparison cones.
+\paragraph{Relations Between the Graph Lipschitz Extensions} We now establish the connection between the different notions of Lipschitz extensions on the graph. Compared to the continuum case we do not establish the full equivalences but only the necessary implications required for the convergence proofs in \cite{bungert2021uniform}. Namely, in \cite{bungert2021uniform} we show that if $\vec u$ solves the graph $\infty$-Laplace, then it is an graph AMLE and fulfills comparison with graph distance functions. 
 %
 %
-\begin{lemma}{}{}
+\begin{lemma}{\cite[Th. 3.2, Prop. 3.8]{bungert2021uniform}}{}
 Let $(\domain_n,w_n)$ be a weighted connected graph and $\vec g:\conset_n\to\R$ be a given function for $\conset_n\subset\domain_n$. Furthermore, let $\vec u:\domain_n\to\R$ be graph infinity harmonic on $\domain_n\setminus\conset_n$ with boundary conditions given by $\vec g$, i.e., $\vec u$ solves \cref{prob:graphinfLaplace} then we have that
 %
 \begin{itemize}
@@ -1356,11 +1355,18 @@ Let $(\domain_n,w_n)$ be a weighted connected graph and $\vec g:\conset_n\to\R$ 
 %
 %
 \begin{proof}
-Both of the stament are proven in \cite{bungert2021uniform}. From \cite[Prop. 3.8]{bungert2021uniform} we have that $\vec u$ is an graph AMLE. Furthermore, form \cite[Th. 3.2]{bungert2021uniform} we have that $\vec u$ fulfills comparison with cones. In fact, \cite[Th. 3.2]{bungert2021uniform}, shows a more refined statement, namely that
+Both of the statements are proven in \cite{bungert2021uniform}. Let $\vec u$ be such that 
 %
 \begin{align*}
--\Delta^{w_n}_\infty \vec u &\leq 0 \Rightarrow \vec u \text{ fulfills CDFA},\\
--\Delta^{w_n}_\infty \vec u &\geq 0 \Rightarrow \vec u \text{ fulfills CDFB}.
+\Delta^{w_n}_\infty \vec u &= 0\text{ in }\domain_n \setminus \conset_n\\
+\vec u &= \vec g \text{ on } \conset_n.
+\end{align*}
+%
+From \cite[Prop. 3.8]{bungert2021uniform} we have that $\vec u$ is an graph AMLE. Furthermore, form \cite[Th. 3.2]{bungert2021uniform} we have that $\vec u$ fulfills comparison with cones. In fact, \cite[Th. 3.2]{bungert2021uniform}, shows a more refined statement, namely that
+%
+\begin{align*}
+-\Delta^{w_n}_\infty \vec u &\leq 0 \Rightarrow \vec u \text{ fulfills \labelcref{eq:CDFA}},\\
+-\Delta^{w_n}_\infty \vec u &\geq 0 \Rightarrow \vec u \text{ fulfills \labelcref{eq:CDFB}}.
 \end{align*}
 %
 \end{proof}
@@ -1368,18 +1374,79 @@ Both of the stament are proven in \cite{bungert2021uniform}. From \cite[Prop. 3.
 %
 %
 %
-%
-%
-%
-%
-%
 \section{Gamma Convergence: \cite{roith2022continuum}}\label{sec:GConv}
-We are now in the situation to present the main results of \cite{roith2022continuum, bungert2022ratio}. 
+We now present the main results of \cite{roith2022continuum}. This works considers the limit of the basic Lipschitz extension from the graph \cref{prob:lipgraph} to the continuum case \cref{prob:Lipext}. As detailed in the previous sections both of these problems do not admit for unique solutions, however it still meaningful to study the convergence in the infinite data limit. We first start by specifying the setting and recalling the concept of $\Gamma$-convergence and then state the main results.
+%
+%
+\paragraph{Main Contributions in \cite{roith2022continuum}} We first prove $\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$ to their continuum counterpart $\pDir_\infty$. This result can be seen as the extension of the results in \cite{GarcSlep15, slepcev2019analysis} to the case $p=\infty$. Here, we employ a different type of metric as we detail in the following. Furthermore, we identify the optimal graph scaling which in this case is derived in a deterministic manner. The key difference to \cite{GarcSlep15, slepcev2019analysis} is that we can work with any point-clouds and not only i.i.d. points. The inherent reason is that $L^\infty$ problems only consider mass in a qualitative not in a quantitative way. We then establish a compactness result, that allows us to infer convergence of minimizers. Finally, we apply this theory to the ground state problem.
+
+Parts of this work was motivated by the findings in TR's master thesis \cite{roith2022msc}. The convergence result in the latter, was however not fully established and therefore \cite{roith2022continuum} constitutes a non-trivial expansion and also correction. We want to highlight two major differences:
+%
+\begin{itemize}
+\item The domain $\domain$ in \cite{roith2022msc} was assumed to be convex. This restriction was omitted in \cite{roith2022continuum} by identifying a class of locally convex domains, that prevent internal sharp corners.
+\item We are able to work with asymptotic boundary conditions, i.e., the boundary conditions for each graph problem do need to be the same as in the continuum. They only need to approximate them in some sense. 
+\end{itemize} 
 %
 %
 %
 %
-\paragraph{The kernel}
+\subsection{Setting and Preliminaries}
+%
+Here, we detail the concrete setting of \cite{roith2022continuum} and provide some background on the employed notions.
+%
+%
+\paragraph{$\Gamma$-Convergence} Originally, the concept of $\Gamma$-convergence dates back to De Giorgi \cite{de1975tipo} as a type of variational convergence. We refer to \cite{Brad02, dal2012introduction} for a detailed overview on this notion and related topics. While $\Gamma$-convergence was successfully employed in a pure continuum setting for a longer time (see e.g. \cite{modica1977esempio}), it was more recently used to prove convergence form a discrete to a continuum functional \cite{chambolle2010continuous, braides2012quantitative, van2012gamma}. 
+%
+%
+%
+\begin{definition}{\cite{de1975tipo}: $\Gamma$-convergence}{}
+Let $X$ be a metric space and let $F_n:X\rightarrow [-\infty,\infty]$ be a sequence of 
+functionals. We say that $F_n$ $\Gamma$-converges to the functional 
+$F:X\rightarrow [-\infty,\infty]$ if
+\begin{enumerate}[label=(\roman*)]
+	\item \textbf{(liminf inequality)} for every sequence $(x)_{n\in\N}\subset X$ converging to 
+	$x\in X$ we have that
+	\begin{align*}
+		\liminf_{n\rightarrow\infty} F_n(x_n) \geq F(x);
+	\end{align*}
+	\item\textbf{(limsup inequality)} for every $x\in X$ there exists a sequence 
+	$(x)_{n\in\N}\subset X$ converging to $x$ and 
+	\begin{align*}
+		\limsup_{n\rightarrow\infty} F_n(x_n)\leq F(x).
+	\end{align*}
+\end{enumerate}
+\end{definition}
+%
+\noindent%
+The most relevant reference for \cite{roith2022continuum} was the disruptive work presented by Garc\'ia Trillos and Slep\v{c}ev in \cite{GarcSlep15}, which is also commented on in \cref{sec:GSSL}. Among other important ideas and notions, we want to highlight two ingredients that directly influenced \cite{roith2022continuum}:
+%
+\begin{enumerate}[label=\arabic*)]
+\item $\Gamma$-convergence on a common metric space, that allows to compare graph functions with continuum functions.
+\item The proof strategy of first considering the discrete to non-local convergence and then non-local to continuum.
+\end{enumerate}
+%
+%
+Employing $\Gamma$-convergence the authors in \cite{slepcev2019analysis} were able to prove convergence of minimizers of the graph $p$-Dirichlet problem. Here, one can employ the convenient result that $\Gamma$-convergence implies converrgence of minimizers.
+%
+\begin{lemma}{\cite[Thm. 1.21]{Brad02} Convergence of Minimizers}{lem:ConvMin}
+	Let $X$ be a metric space and $F_n:X\rightarrow [0,\infty]$ a sequence of 
+	functionals $\Gamma$-converging to $F\rightarrow X:[0,\infty]$ which is not 
+	identically $+\infty$. 
+	If there exists a relatively compact sequence $(x_n)_{n\in\N}$ such that 
+	\begin{align*}
+		\lim_{n\rightarrow\infty} \left(F_n(x_n) - \inf_{x\in X} F_n(x)\right) = 0, 
+	\end{align*}
+	then we have that 
+	\begin{align*}
+		\lim_{n\rightarrow\infty} \inf_{x\in X} F_n(x) = \min_{x\in X} F(x)
+	\end{align*}
+	and any cluster point of $(x_n)_{n\in\N}$ is a minimizer of $F$.
+\end{lemma}
+%
+%
+\paragraph{The Kernel and the Graph Scale}
+%
+In \cref{sec:GSSL} we comment on the relevance of the kernel and graph scaling $\gscale_n$ for continuum limits. We first state the concrete assumptions we make in \cite{roith2022continuum} on the kernel $\eta:\R_0^+\to\R_0^+$, namely we require
 
 \begin{enumerate}[label=(K\upshape\arabic*)]
 \item\label{en:K1} $\eta$ is positive and continuous at $0$,
@@ -1387,43 +1454,27 @@ We are now in the situation to present the main results of \cite{roith2022contin
 \item\label{en:K4} $\supp(\eta) \subset [0,\etaradius_\eta]$ for some $\etaradius_\eta>0$.
 \end{enumerate}
 %
+As seen in \cite{GarcSlep15, slepcev2019analysis} and \cref{eq:kernelconst} we also need to consider the constant $\sigma_\eta$ which in our case is given by
 %
-%
-%
-%
-Originally, the concept of $\Gamma$-convergence dates back to De Giorgi \cite{de1975tipo} as a type of variational convergence. We refer to \cite{Brad02, dal2012introduction} for a detailed overview on this notion and related topics. While $\Gamma$-convergence was successfully employed in a pure continuum setting for a longer time (see e.g. \cite{modica1977esempio}), it was more recently used to prove convergence form a discrete to a continuum functional \cite{chambolle2010continuous, braides2012quantitative, van2012gamma}. The most relevant reference for this thesis was disruptive work presented by Garc\'ia Trillos and Slep\v{c}ev in \cite{GarcSlep15}. Here, the considered object was a graph total variation or generalized parameter, where the functional corresponds to $\GE^{w_n}_p$ for $p=1$ from \cref{prob:vargraph}. Among other important ideas and notions, we want to highlight two ingredients that directly influenced \cite{roith2022continuum}:
-%
-\begin{enumerate}[label=\arabic*)]
-\item $\Gamma$-convergence on a common metric space, that allows to compare graph functions with continuum functions.
-\item The proof strategy, discrete to non-local, non-local to continuum.
-\end{enumerate}
-%
-%
-We review how theses concepts influence \cite{roith2022continuum} in the following sections. The results in \cite{GarcSlep15} were later transferred to the case $1<p<\infty$ in \cite{slepcev2019analysis} and in this sense \cite{roith2022continuum} constitutes the generalization to $p=\infty$. \todo{G Convergence in L infty}
-%
-%
-\paragraph{$\Gamma$-convergence}
-%
-We start with the basic definition of $\Gamma$-convergence.
-%
-%
-\begin{definition}{$\Gamma$-convergence}{}
-Let $X$ be a metric space and let $F_n:X\rightarrow [-\infty,\infty]$ be a sequence of 
-functionals. We say that $F_n$ $\Gamma$-converges to the functional 
-$F:X\rightarrow [-\infty,\infty]$ if
-\begin{enumerate}[label=(\roman*)]
-\item \textbf{(liminf inequality)} for every sequence $(x)_{n\in\N}\subset X$ converging to 
-$x\in X$ we have that
 \begin{align*}
-\liminf_{n\rightarrow\infty} F_n(x_n) \geq F(x);
+\sigma_\eta = \esssup_{t\in \R^+} \eta(t)\, t =
+\lim_{p\to\infty} \left(\int_{\R^+} \eta(t)^p\, t^{d+p} dt\right)^{1/p}.
 \end{align*}
-\item\textbf{(limsup inequality)} for every $x\in X$ there exists a sequence 
-$(x)_{n\in\N}\subset X$ converging to $x$ and 
-\begin{align*}
-\limsup_{n\rightarrow\infty} F_n(x_n)\leq F(x).
-\end{align*}
-\end{enumerate}
-\end{definition}
+%
+%
+A main difference to the results for $p<\infty$ is that we can work with point clouds $\domain_n$, that do not necessarily need be constructed by an i.i.d. sampling process. However, this rises the question how we can ensure that $\domain_n$ fill out the continuum domain $\domain$ sufficiently fast. In \cite{roith2022continuum} we employed 
+
+%
+%
+\paragraph{Assumptions on the Domain}
+%
+%
+%
+
+%
+\subsection{$\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$}
+%
+
 %
 %
 In order to show convergence of discrete functions defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. \cite{GarcSlep15} introduced the space $TL^p$
