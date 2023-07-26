@@ -1462,7 +1462,44 @@ As seen in \cite{GarcSlep15, slepcev2019analysis} and \cref{eq:kernelconst} we a
 \end{align*}
 %
 %
-A main difference to the results for $p<\infty$ is that we can work with point clouds $\domain_n$, that do not necessarily need be constructed by an i.i.d. sampling process. However, this rises the question how we can ensure that $\domain_n$ fill out the continuum domain $\domain$ sufficiently fast. In \cite{roith2022continuum} we employed 
+A main difference to the results for $p<\infty$ is that we can work with point clouds $\domain_n$, that do not necessarily need be constructed by an i.i.d. sampling process. However, this rises the question how we can ensure that $\domain_n$ fill out the continuum domain $\domain$ sufficiently fast. In \cite{roith2022continuum} we consider the maximum distance of any continuum point to its next vertex
+%
+\begin{align}\label{eq:resolution}
+\sup_{x\in\domain} \min_{y\in\domain_n} \abs{x-y},
+\end{align}
+%
+as a measure of the distance between $\domain_n$ and $\domain$. In fact, this is the Hausdorff distance (\cite{hausdorff1914}) between the two sets, since 
+%
+\begin{align*}
+d_H(\domain_n, \domain) = 
+\max
+\left\{
+\sup_{x\in\domain} \inf_{y\in\domain_n} \abs{x-y},  
+\sup_{x\in\domain_n} \inf_{y\in\domain} \abs{x-y}
+\right\} = 
+\sup_{x\in\domain} \min_{y\in\domain_n} \abs{x-y},
+\end{align*}
+%
+where the second term vanishes since $\domain_n\subset\domain$.
+%
+\begin{remark}{}{}
+We remark on the historical correctness of the name \enquote{Hausdorff} distance, motivated by the review in \cite{birsan2006one}. This distance can actually be contributed to Pompeiu, who employed a similar notion in \cite{pompeiu1905continuite}, which also relates to concepts developed in Fréchet's Ph.D. thesis \cite{frechet1906quelques}. Hausdorff modified this distance into the presented form in \cite{hausdorff1914}.
+\end{remark}
+%
+%
+\noindent%
+We also allow the constraint set $\conset_n$ to vary with each $n\in\N$, therfore we also measure the distance between $\conset_n$ and the continuum constraint set $\conset\subset\cl\domain$, via
+%
+\begin{align*}
+d_H(\domain_n, \domain) = 
+\max
+\left\{
+\sup_{x\in\conset} \inf_{y\in\conset_n} \abs{x-y},  
+\max_{x\in\conset_n} \inf_{y\in\conset} \abs{x-y}
+\right\}
+\end{align*}
+%
+where the second term does not vanish, because in general $\conset_n\nsubseteq\conset$.
 
 %
 %
