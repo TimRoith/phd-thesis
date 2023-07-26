@@ -826,7 +826,7 @@ yields the Lipschitz extension task, which however does not admit for unique sol
 \end{align}
 %
 and every function $v$ such that $(u-v)\in W^{1,\infty}_0$. In fact in \cite{aronsson1967extension} it is also shown, that 
-$u_p\xrightarrow{p\to\infty} u_\infty$ (), which seems to validate the notion of absolute minimizers. In \cite{aronsson2004tour} it was shown, that one has an equivalent formulation involving the Lipschitz constant. For a given Lipschitz function $g:\overline{\domain}\to\R$ we have that $u_\infty$ with $(u_\infty-g)\in W^{1,\infty}_0(\domain)$ fulfills \cref{eq:absmin} iff
+$u_p\xrightarrow{p\to\infty} u_\infty$, which seems to validate the notion of absolute minimizers. In \cite{aronsson2004tour} it was shown, that one has an equivalent formulation involving the Lipschitz constant. For a given Lipschitz function $g:\overline{\domain}\to\R$ we have that $u_\infty$ with $(u_\infty-g)\in W^{1,\infty}_0(\domain)$ fulfills \cref{eq:absmin} iff
 %
 \begin{align*}
 \Lip(u_\infty; V) \leq \Lip(v; V) \text{ for every } V\subset \domain
@@ -837,9 +837,9 @@ and every function $v$ such that $(u-v)\in W^{1,\infty}_0(V)$, see \cite{aronsso
 \begin{problem}{AMLEs}{prob:amles}
 Let $(\tilde{\domain}, d)$ be a length space, $\conset\subset\tilde{\domain}$ a closed subset and $g:\conset\to\R$ a Lipschitz function. Find an extension $u\in C(\tilde{\domain})$ such that $u=g$ on $\conset$ and
 %
-\begin{align*}
+\begin{align}\label{eq:amlewg}
 \Lip_d(u; \overline{V}) = \Lip_d(u, \partial V) \text{ for all open and connected sets } V\subset \tilde{\domain}\setminus \conset.
-\end{align*}
+\end{align}
 %
 A function $u$ fulfilling this property is called absolutely minimizing Lipschitz extension of $g$.
 \end{problem}
@@ -851,10 +851,21 @@ the topological notions like boundary and interior are to be understood relative
 %
 \begin{figure}
 \begin{center}
-\includegraphics[width=.7\textwidth]{atelier/SSL/relboundary.pdf}
+\includegraphics[width=.5\textwidth]{atelier/SSL/relboundary.pdf}
 \end{center}
 \caption{A set $V\subset\overline{\domain}$ can be relatively open w.r.t. the metric space $\overline{\domain}$ although, $V\cap\partial\domain \neq\emptyset$, where $\partial \domain$ is the boundary within the standard topology on $\R^d$. The relative boundary of $\partial_{\overline{\domain}} V$ does not include any parts of $\partial \domain$.}\label{fig:relb}
 \end{figure}
+%
+%
+\noindent%
+Fulfilling \cref{eq:amlewg} also makes sense without enforcing boundary conditions on some set $\conset$. Typically, one just says $u$ is absolutely minimizing (AM) if it \cref{eq:amlewg} holds, see \cite{aronsson2004tour}. In the convex and Euclidean case, existence of solutions to \cref{prob:amles} follow directly from Aronssons proof that the limit $u_p\xrightarrow{p\to\infty} u_\infty$ fulfills \cref{eq:absmin}, see \cite{aronsson1967extension}. For general length spaces, it can be shown via an adapted Perron's method \cite{perron1923neue}, which we state in the following result from \cite{juutinen2002absolutely}.
+
+\begin{theorem}{\cite[Th. 4.3]{juutinen2002absolutely}}{}
+Let $(\tilde\domain, d)$ be a separable length space, and suppose $g: \conset\to\R$ is Lipschitz. Then there exists an absolutely minimizing Lipschitz extension $u$ of $g$ to $\tilde\domain$, i.e. $u$ solves \cref{prob:amles}.
+\end{theorem}
+%
+\noindent%
+We address the question of existence and uniqueness of solutions to \cref{prob:amles} in the following paragraphs.
 %
 %
 \paragraph{The Infinity Laplacian} In the Euclidean case one can derive an operator equation by considering the limit of the $p$-Laplacian operator. This yields the $\infty$-Laplacian which is defined as
@@ -864,62 +875,122 @@ the topological notions like boundary and interior are to be understood relative
 \sum_{i,j} \partial_{x_i} u\, \partial_{x_j} u\, \partial_{x_i,x_j} u
 \end{align*}
 %
-for functions of class $C^2$. Intuitively this operator gives the second derivative of $u$ into the direction of its gradient. This then yields the infinity Laplace equation.
+for functions of class $C^2$. This operator had one of its first appearances in \cite{aronsson1968partial}, but we refer to \cite{lindqvist2017notes} for a detailed overview of the topic. The brief exposition here, also follows \cite{lindqvist2017notes} to some extent. Intuitively the $\infty$-Laplace operator gives the second derivative of $u$ into the direction of its gradient. The associated infinity Laplace equation takes the following form.
 %
 \begin{problem}{}{}
-Let $\domain\subset\R^d$ 
-\end{problem}
-Solutions are typically considered in the viscosity sense, see e.g. \cite{aronsson2004tour}, where one can also show that solving the infinity Laplace equation
+Let $\domain\subset\R^d$ be an open and bounded domain and $g\in W^{1,\infty}$, then the task is to find $u$ such that
 %
-\begin{align*}	
+\begin{align*}
+\Delta_\infty u &= 0\quad\text{ in }\domain,\\
+u &= g\quad \text{ on }\partial\domain.
 \end{align*}
-
- 
-%For any vector $v\in\R^n$ and $h\in\R^+$ we can employ the Taylor approximation to see that
-%%
-%\begin{align*}
-%u(x + h\, v) + u(x - h\, v) - 2u(x) = \langle v, D^2 u\, v\rangle + o(h^2)
-%\end{align*}
-
-
+\end{problem}
+%
+\noindent%
+At first glance, the definition of the $\infty$-Laplacian only makes sense for for functions of class $C^2$. However, as shown in \cite{yu2006remark, aronsson1968partial} if $u\in C^2(\domain)$ fulfills $\Delta_\infty u = 0$ in $\domain$, then either $\nabla u \neq 0$ in the whole domain or it is constant. However on can easily construct boundary values $g$ that are not constant but force the solution $u$ to have critical points inside of the domain, see e.g. \cite{lindqvist2016notes}. Therefore, one requires a different concept, where one typically considers \emph{viscosity solutions}. For the $\infty$-Laplacian this strategy was first employed in \cite{bhattacharya1989limits}, where the term \emph{viscosity} is motivated by similar concepts for the Burgers' equation \cite{burgers1948mathematical}. First we consider subsolutions, where we take any $\phi\in C^2(\domain)$ that touches $u$ from above at any $x\in\domain$, i.e.
+%
+\begin{align}\label{eq:visc}
+u < \phi \text{ in } \domain\setminus\{x\}\qquad\text{ and } u(x) = \phi(x).
+\end{align}
+%
+Since we $\phi$ is $C^2$ we can shift the application of $\Delta_\infty$ onto this functions and then say $u$ is a subsolution if for any $\phi$ fulfilling \cref{eq:visc} we have
+%
+\begin{align*}
+- \Delta_\infty \phi(x) \leq 0.
+\end{align*}
+%
+Note, that the $\infty$-Laplacian is only evaluated at the touching point $x\in\domain$. Analogously, we say $u$ is a supersolution if for any $\phi$ touching from below we have $- \Delta_\infty \phi(x) \geq 0$. If $u$ is both a sub- and a supersolution, we say it is a solution in the viscosity sense. 
+%
+\begin{remark}{}{}
+The concept of viscosity solutions can similarly be applied to the $p$-Laplacian or even a more general class of differential operators, see \cite{lindqvist2017notes}. We also note, that one has the consistency result, that if $u\in C^2$ is a viscosity solution, we also have that $\Delta_\infty u = 0$ in the classical sense. 
+\end{remark}
 %
 %
-
+\noindent%
+Solving the $\infty$-Laplace equation in the viscosity sense is in fact equivalent to being absolutely minimizing, which we state in the following theorem taken from \cite{aronsson2004tour}
+%
+\begin{theorem}{\cite[Theorem 4.13]{aronsson2004tour}}{th:compprinc}
+A function $u\in C(\cl\domain)$ fulfills $\Delta_\infty u=0$ in the viscosity sense iff it is an absolutely minimizing function.
+\end{theorem}
+%
+%
+We can now also address the question of uniqueness, where we state the following famous result of Jensen \cite{jensen1993uniqueness}.
+%
+\begin{theorem}{\cite{jensen1993uniqueness}}{} 
+Let $u,v\in C(\cl\domain)$ be two viscosity solutions of the $\infty$-Laplacian, then we have
+%
+\begin{align*}
+\max_{\cl\domain} (u - v) = \max_{\partial\domain} (u - v).
+\end{align*}
+\end{theorem}
+%
+%
+Originally proven by Jensen in \cite{jensen1993uniqueness}, there exists a very simple proof by Amstrong and Smart \cite{armstrong2010easy} employing the \emph{comparison with cones} which we detail in the following paragraph.
+%
+%
+%
 \paragraph{Comparison with Cones} As shown in \cite{aronsson2004tour} the concept of absolutely minimizing extensions is equivalent to so-called \emph{comparison with cones}. For some metric $d(\cdot,\cdot)$ a cone function is defined as
 %
 \begin{align*}
 x\mapsto a\, d(x,z) + c
 \end{align*}
 %
-where $z$ denotes the origin or cone tip, $a$ its opening angle and $c$ some offset. The property we consider in the following basically asks, if a function $u$ is smaller than a cone on the boundary of some set $V$ not including the tip $z$, then it should be smaller also in the interior of the domain. This means for any $a,c\in\R$ and $z\notin V$ we have the implication
+where $z\in\domain$ denotes the origin or cone tip, $a\geq 0$ its opening angle and $c\in\R$ some offset. The property we consider in the following basically asks, if a function $u$ is smaller than a cone on the boundary of some set $V$ not including the tip $z$, then it should be smaller also in the interior of the domain. This means for any $a\geq 0,c\in\R$ and $z\notin V$ we have the implication
 %
 \begin{align*}
-u \leq a\, d(x,z) + c \text{ on }\partial V \Rightarrow
-u \leq a\, d(x,z) + c \text{ in } V
+\left[u \leq a\, d(\cdot,z) + c \text{ on }\partial V\right]
+\quad \Rightarrow\quad
+\left[u \leq a\, d(\cdot,z) + c \text{ in } V\right].
 \end{align*}
-
-
-
 %
 %
-
+One can omit the explicit use of the offset $c\in\R$ and equivalently consider the property
+%
+\begin{align}\label{eq:conecont}
+\max_{\partial V}\left(u - a\, d(\cdot,z)\right) = \max_{V}\left(u - a\, d(\cdot,z)\right)
+\end{align}
+%
+which is reminiscent of the comparison principle in \cref{th:compprinc}. In the Euclidean case cone functions are infinity harmonic away from their cone tip, since they are constant in the direction of their gradient. We make the explicit computation below
+%
+\begin{align*}
+\partial_{x_i} \abs{x-z} &= \frac{x_i - z_i}{\abs{x-z}}\\
+\partial_{x_i x_j}\abs{x-z} &= -\frac{(x_i - z_i)\, (x_j - z_j)}{\abs{x-z}^3}\text{ for } i\neq j,\\
+\partial_{x_i}^2\abs{x-z} &= \frac{1}{\abs{x-z}^3} \sum_{j\neq i} (x_j - z_j)^2,\\
+\Rightarrow
+\Delta_\infty \abs{x-z} &= 
+%
+\sum_{i} \frac{(x_i - z_i)^2}{\abs{x-z}^5} \, \sum_{j\neq i} (x_j - z_j)^2\\
+&\quad-\sum_{i\neq j}\frac{(x_i - z_i)^2\, (x_j - z_j)^2}{\abs{x-z}^5} = 0.
+\end{align*}
+%
+%
+In the Euclidean case as in \cite{aronsson2004tour} one says a function fulfills \emph{comparison with cones} from above, if it fulfills \cref{eq:conecont} in $\domain$ for every subset $V\subset\subset\domain$, every $a\geq 0$ and $z\in\R^n\setminus V$. We say $u$ fulfills \emph{comparison with cones} from below if $-u$ fulfills comparison from above. If it fulfills both comparisons from above and below, we say it fulfills comparison with cones. Here, \cite{aronsson2004tour} shows the following equivalence to being absolutely minimizing.
+%
+\begin{theorem}{\cite[Prop. 2.1]{aronsson2004tour}}{}
+A function $u\in C(\domain)$ is absolutely minimizing iff it fulfills comparison with cones in $\domain$.
+\end{theorem}
+%
+We later on work with this concept for arbitrary distances, which we detail in the next section.
+%
+%
 \subsection{Graph Lipschitz Extensions}\label{sec:GLipExt}
 %
-We now consider the limit $p\to\infty$ of \cref{prob:vargraph} in the graph case. Analogously to \cref{sec:InfLip} we derive
+We now consider the limit $p\to\infty$ of \cref{prob:vargraph} in the graph case. Analogously to \cref{sec:LipExtCont} we derive
 %
 \begin{align*}
 \lim_{p\to\infty} \left(\GE^{w_n}_p(\vec u)\right)^{1/p}= \max_{x,y\in\domain_n} w_n(x,y) \abs{\vec u(y) - \vec u(x)}=:\GE^{w_n}_\infty(\vec u)
 \end{align*}
 %
-which extends the graph $p$-Laplacian energy to the case $p=\infty$. Again we notice structural similarities to 
+which extends the graph $p$-Dirichlet energy to the case $p=\infty$. Again we notice structural similarities to 
 the continuum version $\pDir_\infty$. 
 %
 \begin{remark}{}{}
-Informally speaking the functional $\GE$ combines elements of a gradient and Lipschitz constant. Assuming that $w_n(x,y)$ relates to $\abs{x-y}$ we see that the finite difference approximation
-resembles a Lipschitz constant. However, typically $w_n(x,y)$ has also some localizing property which fits the interpretation of a gradient better.
+Informally speaking the functional $\GE^{w_n}_\infty$ combines elements of a gradient and a Lipschitz constant. Assuming that $w_n(x,y)$ relates to $1/\abs{x-y}$ we see that the finite difference approximation
+resembles a Lipschitz constant. However, in the limit $n\to\infty$ the weighting $w_n(x,y)$ has a localizing property which fits the interpretation of a gradient better.
 \end{remark}
 %
-This functional now leads to the graph Lipschitz extension problem.
+\noindent%
+This functional now yields the graph Lipschitz extension problem.
 %
 \begin{problem}{Graph Energy Minimization}{prob:lipgraph}
 Given a weighted graph $(\domain_n, w_n)$ and a labeling function $\vec g:\conset_n\to\R$, for $\conset_n\subset\domain_n$ we consider 
@@ -931,17 +1002,16 @@ the problem
 \end{problem}
 %
 \noindent%
-Since the weighting function $w_n:\domain_n\times\domain_n\to\R^+_0$ does not induce a metric, \cref{prob:lipgraph} does not directly fit the framework of the abstract Lipschitz Extension in \cref{prob:Lipext}. However, we can consider paths in $(\domain_n, w_n)$, connecting arbitrary $x,y\in\domain_n$ i.e. vectors $\gamma\in\domain_n^{\times k}$ such that 
+Since the weighting function $w_n:\domain_n\times\domain_n\to\R^+_0$ does not induce a metric, \cref{prob:lipgraph} does not directly fit the framework of the abstract Lipschitz Extension in \cref{prob:Lipext}. However, we can consider paths in $(\domain_n, w_n)$, connecting arbitrary $x,y\in\domain_n$ i.e. $\gamma\in\domain_n^{\times k}, x=\gamma_1,\ldots, \gamma_k = y$ such that 
 %
 \begin{align*}
-w_n(\gamma_i, \gamma_{i+1}) &> 0\quad\text{for all } i=1,\ldots, k-1,\\
-\gamma_1 &= x, \\ \gamma_k &= y
+w_n(\gamma_i, \gamma_{i+1}) &> 0\quad\text{for all } i=1,\ldots, k-1,
 \end{align*}
 %
 for which we define the length as
 %
 \begin{align*}
-\abs{\gamma} = \sum_{i=1}^{k-1} w(\gamma_i, \gamma_{i+1})^{-1}.
+\abs{\gamma} = \sum_{i=1}^{k-1} w_n(\gamma_i, \gamma_{i+1})^{-1}.
 \end{align*}
 %
 This yields the metric space $(\domain_n, d_{w_n})$, where $d_{w_n}:\domain_n\times\domain_n\to\R$ is defined as
@@ -956,6 +1026,7 @@ We note that it is important to only consider non-negative weights, otherwise an
 length of the whole path arbitrarily. However, restricting ourselves to non-negative weights we can easily see, that the minimum in \cref{eq:graphdist} is indeed attained.
 \end{remark}
 %
+\noindent%
 With this definition we can consider the Lipschitz extension task of $g:\conset_n\to\R$ to $\domain_n$ within the metric space $(\domain_n,d_{w_n})$, i.e. within the setting of \cref{prob:Lipext}. Therefore the question arises, whether the minimization problem in \cref{prob:lipgraph} is equivalent to the metric Lipschitz extension problem for which we have the following lemma.
 %
 %
@@ -998,7 +1069,7 @@ a_i\cdot b_i \leq c\in\R \quad\text{ for }
 i=1,\ldots, m
 \right]
 %
-\Rightarrow 
+\quad\Rightarrow\quad
 %
 \frac{\sum_{i=1}^{m}a_i}{\sum_{i=1}^{m} b_i^{-1}} \leq c
 \end{align}
@@ -1006,10 +1077,10 @@ i=1,\ldots, m
 which can be seen as follows
 %
 \begin{align*}
-a_i\cdot b_i &\leq c\quad\text{ for } i=1,\ldots, m\\
+a_i\cdot b_i &\leq c\quad\text{ for } i=1,\ldots, m,\\
 \Rightarrow
-a_i &\leq b_i^{-1}\cdot c \quad\text{ for } i=1,\ldots, m\\
-\Rightarrow\sum_{i=1}^{m} a_i &\leq \left(\sum_{i=1}^m b_i^{-1}\right)\cdot c\\
+a_i &\leq b_i^{-1}\cdot c \quad\text{ for } i=1,\ldots, m,\\
+\Rightarrow\sum_{i=1}^{m} a_i &\leq \left(\sum_{i=1}^m b_i^{-1}\right)\cdot c,\\
 %
 \Rightarrow\frac{\sum_{i=1}^{m} a_i}{\sum_{i=1}^{m} b_i^{-1}} &\leq c.
 \end{align*}
@@ -1019,7 +1090,7 @@ This then yields
 \begin{align*}
 \frac{\abs{\vec u(\gamma_1) - \vec u(\gamma_k)}}{\abs{\gamma}}\leq
 \frac{\sum_{i=1}^{k-1} \abs{\vec u(\gamma_i) - \vec u(\gamma_{i+1})}}{\abs{\gamma}} = 
-\frac{\sum_{i=1}^{k-1} \abs{\vec u(\gamma_i) - \vec u(\gamma_{i+1})}}{\sum_{i=1}^{k-1} w_n(\gamma_i, \gamma_{i+1)^{-1}}}
+\frac{\sum_{i=1}^{k-1} \abs{\vec u(\gamma_i) - \vec u(\gamma_{i+1})}}{\sum_{i=1}^{k-1} w_n(\gamma_i, \gamma_{i+1})^{-1}}
 %
 \leq
 \GE^{w_n}_\infty(\vec u) 
@@ -1065,6 +1136,7 @@ If $\vec g = \vec u$ on $\conset$ this simply follows since the maximum for the 
 %
 %
 %
+\noindent%
 This lemma shows that the abstract Lipschitz extension task considered on the metric space $(\domain_n, d_{w_n})$ and the Graph $\infty$-Dirichlet minimization task are indeed equivalent. Therefore, we also have the Whitney and McShane extensions
 %
 \begin{align*}
@@ -1089,11 +1161,12 @@ Let $(\domain_n, w_n)$ be a weight graph and let $V\subset\domain_n$ be a subset
 \item the \textbf{interior} boundary as $\partialint :=\{x\in V: w_n(x,y) > 0 \text{ for some } y\in \domain_n\setminus V\}$.
 \end{itemize}
 %
-The closure of $V$ is then defined as $\extcl{V} V := V\cup \partialext$ and the interior as 
+The closure of $V$ is then defined as $\extcl{V} := V\cup \partialext$ and the interior as 
 $\stackrel{\circ}{V}^{\text{int}}:= V\setminus \partialint V$.
 \end{definition}
 %
 %
+\noindent%
 We note that it is not possible to define a topology on $\domain_n$ that would yield the above notions. Namely, the only admissible topology in our case would be the discrete topology, i.e., $2^{\domain_n}$. However, in this topology the only closed sets are $\emptyset$ and $\domain_n$ which is not useful for the applications in the following. Using the Kuratowski closure axioms \cite{kuratowski1922operation} we remark the following.
 %
 \begin{lemma}{}{}
@@ -1131,6 +1204,7 @@ This shows that the closure preserves binary unions and therefore we have shown,
 %
 %
 %
+\noindent%
 The missing property, that inhibits the closure to induce a topology is the so-called idempotence. Namely, there are sets $V\subset \domain_n$ such that
 %
 \begin{align*}
@@ -1143,10 +1217,11 @@ The missing property, that inhibits the closure to induce a topology is the so-c
 \caption{Visualization of exterior and interior boundary on a graph.}\label{fig:graphb}
 \end{figure}
 %
-E.g. in the example visualized in \cref{fig:graphb} we see that $\overline{\overline{V}^{\text{ext}}}^{\text{ext}}=\domain_n\neq \overline{V}^{\text{ext}}$. Since the closure we employ here does not induce a topology, we have a slightly modified notion of absolutely minimizers.
+\noindent%
+In the example visualized in \cref{fig:graphb} we see that $\overline{\overline{V}^{\text{ext}}}^{\text{ext}}=\domain_n\neq \overline{V}^{\text{ext}}$. Since the closure we employ here does not induce a topology, we have a slightly modified notion of absolutely minimizers.
 %
 \begin{problem}{Graph AMLEs}{prob:GAMLE}
-Given a connected weighted graph $(\domain_n, w_n)$, $\conset_n\subset\domain_n)$ and a function $\vec g:\conset_n\to\R$ find a function $\vec u:\domain_n\to\R$ such that
+Given a connected weighted graph $(\domain_n, w_n)$, $\conset_n\subset\domain_n$ and a function $\vec g:\conset_n\to\R$ find a function $\vec u:\domain_n\to\R$ such that
 %
 \begin{align*}
 \Lip_{d_{w_n}}(\vec u; \extcl{V}) &= \Lip_{d_{w_n}}(\vec u; \partialext V)
@@ -1155,47 +1230,49 @@ Given a connected weighted graph $(\domain_n, w_n)$, $\conset_n\subset\domain_n)
 \end{align*}
 \end{problem}
 %
+This notion of absolute minimizers is employed in \cite{bungert2021uniform, bungert2022ratio}.
 %
 %
-\paragraph{Comparison with graph Distance functions}
 %
-Analogously to the continuum case \cref{??} we can also consider comparison with distance functions on graphs. The main ingredients here, are the graph distance function $d_{w_n}$ and the notion of closure on a graph as developed in the last section.
+\paragraph{Comparison with Graph Distance functions}
+%
+Analogously to the continuum case \cref{sec:LipExtCont} we can also consider comparison with distance functions, but now on graphs. The main ingredients here, are the graph distance function $d_{w_n}$ and the notion of closure on a graph as developed in the last section.
 %
 %
 \begin{definition}{}{}
 For a weighted graph $(\domain_n,w_n)$ we say a function $\vec u:\domain_n\to\R$ fulfills comparison with distance function from above (CDFA) on a subset $U\subset \domain_n$ if for every $V\subset U$ we have
 %
 \begin{align}\label{eq:CDFA}\tag{CDFA}
-\max_{\extcl{V}} \left(u + a\ d_{w_n}(\cdot, z)\right)=
-\max_{\partialext V} \left(u + a\ d_{w_n}(\cdot, z)\right)
+\max_{\extcl{V}} \left(u - a\ d_{w_n}(\cdot, z)\right)=
+\max_{\partialext V} \left(u - a\ d_{w_n}(\cdot, z)\right)
 \end{align}
 %
-for every $z\in \domain_n\setminus V$ and every $a\in\R$. We say that $\vec u$ fulfills comparison with distance function from below (CDFB) on a subset $U\subset \domain_n$ if for every $V\subset U$ we have
+for every $z\in \domain_n\setminus V$ and every $a\geq 0$. We say that $\vec u$ fulfills comparison with distance function from below (CDFB) on a subset $U\subset \domain_n$ if for every $V\subset U$ we have
 %
 \begin{align}\label{eq:CDFB}\tag{CDFB}
-\min_{\extcl{V}} \left(u - a\ d_{w_n}(\cdot, z)\right)=
-\min_{\partialext V} \left(u - a\ d_{w_n}(\cdot, z)\right)
+\min_{\extcl{V}} \left(u + a\ d_{w_n}(\cdot, z)\right)=
+\min_{\partialext V} \left(u + a\ d_{w_n}(\cdot, z)\right)
 \end{align}
 %
-for every $z\in \domain_n\setminus V$ and every $a\in\R$.
+for every $z\in \domain_n\setminus V$ and every $a\geq 0$.
 \end{definition}
 %
 %
-Analogously to the continuum case, we say that a function fulfills comparison with distance functions, if it fulfills both, \cref{eq:CDFA} and \cref{eq:CDFB}. Existence of such functions is established later, we are first interested in the question of uniqueness. Since the notion of graph boundaries is not directly compatible with the usual definitions on metric spaces, we prove it separately. Here, we adapt arguments from [smart] and [LeGruyer]. To do so we first consider the operators
+\noindent%
+Analogously to the continuum case, we say that a function fulfills comparison with distance functions, if it fulfills both, \labelcref{eq:CDFA} and \labelcref{eq:CDFB}. 
 %
-\def\eps{\varepsilon}
-\begin{align*}
-\vec S^\eps \vec u (x) := \max_{y\in\domain_n: d_{w_n}(x,y)\leq \eps} \vec u(y) \quad
-\vec S_\eps \vec u (x) := \min_{y\in\domain_n: d_{w_n}(x,y)\leq \eps} \vec u(y)
-\end{align*}
+%Existence of such functions is established later, we are first interested in the question of uniqueness. Since the notion of graph boundaries is not directly compatible with the usual definitions on metric spaces, we prove it separately. Here, we adapt arguments from [smart] and [LeGruyer]. To do so we first consider the operators
+%%
+%\def\eps{\varepsilon}
+%\begin{align*}
+%\vec S^\eps \vec u (x) := \max_{y\in\domain_n: d_{w_n}(x,y)\leq \eps} \vec u(y) \quad
+%\vec S_\eps \vec u (x) := \min_{y\in\domain_n: d_{w_n}(x,y)\leq \eps} \vec u(y)
+%\end{align*}
+%%
+%and proof the following lemma, which is the analogue of 
 %
-and proof the following lemma, which is the analogue of 
-
 %
-%
-%
-%
-\paragraph{The Graph infinity Laplacian}
+\paragraph{The Graph $\infty$-Laplacian}
 %
 We can also obtain the limit of the Graph $p$-Laplace operator via the following formal calculation,
 %
