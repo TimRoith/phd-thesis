@@ -1491,7 +1491,7 @@ We remark on the historical correctness of the name \enquote{Hausdorff} distance
 We also allow the constraint set $\conset_n$ to vary with each $n\in\N$, therfore we also measure the distance between $\conset_n$ and the continuum constraint set $\conset\subset\cl\domain$, via
 %
 \begin{align*}
-d_H(\domain_n, \domain) = 
+d_H(\conset_n, \conset) = 
 \max
 \left\{
 \sup_{x\in\conset} \inf_{y\in\conset_n} \abs{x-y},  
@@ -1499,7 +1499,17 @@ d_H(\domain_n, \domain) =
 \right\}
 \end{align*}
 %
-where the second term does not vanish, because in general $\conset_n\nsubseteq\conset$.
+where the second term does not vanish, because in general $\conset_n\nsubseteq\conset$. In total we then need to control the graph resolution 
+%
+\begin{align*}
+\gres_n := \max\{d_H(\domain_n, \domain), d_H(\conset_n, \conset)\}.
+\end{align*}
+%
+This then allows us to formulating our scaling \ldots
+%
+\begin{align}\label{eq:scaling}
+	\frac{\gres_n}{\gscale_n}\longrightarrow 0, \quad n \to \infty.
+\end{align}
 
 %
 %
