@@ -1420,10 +1420,10 @@ $F:X\rightarrow [-\infty,\infty]$ if
 \noindent%
 The most relevant reference for \cite{roith2022continuum} was the disruptive work presented by Garc\'ia Trillos and Slep\v{c}ev in \cite{GarcSlep15}, which is also commented on in \cref{sec:GSSL}. Among other important ideas and notions, we want to highlight two ingredients that directly influenced \cite{roith2022continuum}:
 %
-\begin{enumerate}[label=\arabic*)]
+\begin{itemize}
 \item $\Gamma$-convergence on a common metric space, that allows to compare graph functions with continuum functions.
 \item The proof strategy of first considering the discrete to non-local convergence and then non-local to continuum.
-\end{enumerate}
+\end{itemize}
 %
 %
 Employing $\Gamma$-convergence the authors in \cite{slepcev2019analysis} were able to prove convergence of minimizers of the graph $p$-Dirichlet problem. Here, one can employ the convenient result that $\Gamma$-convergence implies converrgence of minimizers.
@@ -1446,12 +1446,73 @@ Employing $\Gamma$-convergence the authors in \cite{slepcev2019analysis} were ab
 %
 \paragraph{The Kernel and the Graph Scale}
 %
+\begin{wrapfigure}[11]{r}{.5\textwidth}%
+\tikzfading[name=fade out, 
+inner color=transparent!0,
+outer color=transparent!60]
+\hspace*{2em}%
+\vspace{-2em}%
+
+\begin{tikzpicture}[scale=1.]%
+\draw[fill=sky!10, draw = none, thick, dashed] plot [smooth cycle] coordinates {(-1,.1)(-0.2,5.5)(4,4.9)(4.5,3)(6,1)(4,-0.5)(2,-1)} node at (1.8,1.7) {};
+%
+\node (F) at (3.5,1.5) {};
+\fill[apple!20,path fading = fade out] (F) circle (57pt);
+%
+\begin{scope}[every node/.style={circle,very thick,sky,draw,inner sep=2pt}]
+	\node (A) at (0.7,1.9) {};
+	\node (B) at (1.8,1.3) {};	
+	\node[grape] (C) at (2.,5.2) {};
+	\node[grape] (D) at (-0.7,2.5) {};
+	\node[] (F) at (F) {};
+	\node[grape] (G) at (-0.2,1.5) {} ;
+	\node[grape] (E) at (0.2,3.8) {};
+	\node (H) at (2.8,4) {};
+	\node (I) at (2.5,3.) {};
+\end{scope}
+
+\draw[->,>=Latex,apple, thick] (F) -- 
++(-135:57pt) node[midway,below,sloped]{\small\nc$\sim \gscale_n$};
+
+\node (Omega) at (0,5) {$\domain$};
+\node (Omegan) at (3.5,4.2) {$\domain_n$};
+\node (On) at ($(E)+(0.5,0.5)$) {$\conset_n$};
+
+% boundary
+\begin{scope}
+	\clip (-0.5,-1.2) rectangle (3,6);
+	\draw[fill=none, draw = grape, very thick, dashed] plot [smooth cycle] coordinates {(-1,.1)(-0.2,5.5)(4,4.9)(4.5,3)(6,1)(4,-0.5)(2,-1)} node at (2.2,5.7) {$\conset$};
+\end{scope}
+\draw[grape,very thick,dashed] plot [smooth] coordinates {(-0.5,-0.44)(-.7,.2)(0,3.5)(1.5,2.5)(2,3.0)};
+%
+\begin{scope}[every path/.style={sky}]
+	\path [-] (A) edge (B);
+	\path [-] (A) edge (E);
+	\path [-] (A) edge (D);
+	\path [-] (A) edge (G);
+	\path [-] (D) edge (G);
+	\path [-] (C) edge (H);
+	\path [-] (D) edge (E);
+	\path [-] (B) edge (F);
+	\path [-] (I) edge (F);
+	\path [-] (I) edge (B);
+	\path [-] (I) edge (H);
+\end{scope}
+%
+\node[circle,very thick,ponk,draw, fill, inner sep=2pt] (J) at (0.5,-0.5) {};
+\path[draw=ponk, dotted, very thick] [-] (B) edge node[midway,below, sloped] {\small$\gres_n$} (J) ;
+\end{tikzpicture}%
+%
+\end{wrapfigure}%
+
+%
+%
 In \cref{sec:GSSL} we comment on the relevance of the kernel and graph scaling $\gscale_n$ for continuum limits. We first state the concrete assumptions we make in \cite{roith2022continuum} on the kernel $\eta:\R_0^+\to\R_0^+$, namely we require
 
 \begin{enumerate}[label=(K\upshape\arabic*)]
-\item\label{en:K1} $\eta$ is positive and continuous at $0$,
-\item\label{en:K2} $\eta$ is non-increasing,
-\item\label{en:K4} $\supp(\eta) \subset [0,\etaradius_\eta]$ for some $\etaradius_\eta>0$.
+	\item\label{en:K1} $\eta$ is positive and continuous at $0$,
+	\item\label{en:K2} $\eta$ is non-increasing,
+	\item\label{en:K4} $\supp(\eta) \subset [0,\etaradius_\eta]$ for some $\etaradius_\eta>0$.
 \end{enumerate}
 %
 As seen in \cite{GarcSlep15, slepcev2019analysis} and \cref{eq:kernelconst} we also need to consider the constant $\sigma_\eta$ which in our case is given by
@@ -1482,6 +1543,7 @@ d_H(\domain_n, \domain) =
 %
 where the second term vanishes since $\domain_n\subset\domain$.
 %
+
 \begin{remark}{}{}
 We remark on the historical correctness of the name \enquote{Hausdorff} distance, motivated by the review in \cite{birsan2006one}. This distance can actually be contributed to Pompeiu, who employed a similar notion in \cite{pompeiu1905continuite}, which also relates to concepts developed in Fréchet's Ph.D. thesis \cite{frechet1906quelques}. Hausdorff modified this distance into the presented form in \cite{hausdorff1914}.
 \end{remark}
@@ -1505,26 +1567,88 @@ where the second term does not vanish, because in general $\conset_n\nsubseteq\c
 \gres_n := \max\{d_H(\domain_n, \domain), d_H(\conset_n, \conset)\}.
 \end{align*}
 %
-This then allows us to formulating our scaling \ldots
+This then allows us to formulating our scaling assumption, namely we require that the graph resolution tends to zero faster than the graph scaling
 %
 \begin{align}\label{eq:scaling}
-	\frac{\gres_n}{\gscale_n}\longrightarrow 0, \quad n \to \infty.
+\frac{\gres_n}{\gscale_n}\longrightarrow 0, \quad n \to \infty,
 \end{align}
+%
+which has similarly employed in \cite{penrose1999strong,penrose1999strong2}. This is the weakest possible assumption that ensures connectivity of the graph in the limit $n\to\infty$. However, compared to \cref{eq:garcscaling} it is more of deterministic nature, since we do not assume anything on how $\domain_n$ is created. In case of a i.i.d. point cloud one can show that
+%
+\begin{align*}
+\gres_n \sim \left(\frac{\log n}{n}\right)^{1/d}
+\end{align*}
+%
+see \cite{penrose1999strong2}, which is the setting in \cite{GarcSlep15}.
+%
+%
+\paragraph{Assumptions on the Domain} As we mention in the introduction, we do not need to restrict ourselves to convex domains. However, for our convergence results, it is important that the geodesic distance 
+%
+\begin{align*}
+d_\domain(x,y)=\inf\left\lbrace
+\mathrm{len}(\gamma): \gamma:[a,b]\rightarrow\domain 
+\text{ is a curve with }
+\gamma(a)=x, \gamma(b) = y
+\right\rbrace,
+\end{align*}
+%
+is converges to the Euclidean distance if $x$ goes to $y$. We formulate this in the following assumption
+%
+\begin{align}\label{eq:cond_domain}
+\lim_{\delta\downarrow0}\sup
+\left\lbrace
+\frac{d_\domain(x,y)}{\abs{x-y}}\,:\,
+x,y\in\domain,\,\abs{x-y}<\delta\right\rbrace \leq 1.
+\end{align}
+%
+The inherent reason that we need no enforces this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$.
+%
+\begin{figure}
+\centering%
+\begin{tikzpicture}[scale=1.5]
+\begin{scope}
+	\clip(1.2,1.0) rectangle (4.5,5.5);
+	\clip(1.0,1.0) circle (4.1cm);
+	
+	\begin{scope}
+		%\path [scope fading=my fading,fit fading=false] (1,0) rectangle (8,8);
+		\path[fill=sky!30, draw = none, path fading=south] plot coordinates {(0,0)(0,8)(4,8)(2,2)(6,4)(8,0)} node at (1.8,1.7) {};
+	\end{scope}
+	\begin{scope}[every node/.style={circle,thick,sky,draw, inner sep=6pt}]
+		\node (X1) at (2.5,4.5) {};
+		\node (X2) at (2.25,3.75) {};
+		\node (X3) at (2.0,3.0) {};
+		\node (Y1) at (4.2,2.8) {};
+		\node (Y2) at (3.5,2.45) {};
+		\node (Y3) at (2.8,2.1) {};
+	\end{scope}
+	\node[circle,fill,draw,grape,inner sep=0pt] (Z) at ($(X1) - 1.03*(1,3)$) {};
+	%\node[circle,fill=faulnat,inner sep=0,text=sky] (J) at (1.5,5.2) {$x$};
+	
+	\begin{scope}[every path/.style={grape,dotted,thick}]
+		\path (X1) edge (X2);
+		\path (X2) edge (X3);
+		\path (Y1) edge (Y2);
+		\path (Y2) edge (Y3);
+	\end{scope}
+	%\path[draw=sky] [-] (B) edge (J2);
+	\path[grape,thick] (X3) edge (Z);
+	\path[grape,thick] (Y3) edge node[sloped,below=5pt,pos=0.5] {\small\nc$d_{\domain}$} (Z);
+	\begin{scope}[every path/.style={sky!80,dotted, thick}]
+		\path (X1) edge  node[sloped, above] {\small$|x_i-y_i|$} (Y1);
+		\path (X2) edge (Y2);
+		\path (X3) edge (Y3);
+	\end{scope}
+\end{scope}
+\end{tikzpicture}
+%
+\caption{An example of a sharp internal corner, violating \cref{eq:cond_domain}. The geodesic distance between the pairs of points converging to the corner point is bigger than then Euclidean one by a constant factor.}
+\end{figure}
+%
+%
 
 %
-%
-\paragraph{Assumptions on the Domain}
-%
-%
-%
-
-%
-\subsection{$\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$}
-%
-
-%
-%
-In order to show convergence of discrete functions defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. \cite{GarcSlep15} introduced the space $TL^p$
+\subsection{$\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$} In order to show convergence of discrete functions defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. \cite{GarcSlep15} introduced the space $TL^p$
 %
 \begin{align*}
 TL^p :=\left\{(\mu, u): \mu\in \mathcal{P}(\domain), u\in L^p(\mu)\right\}
