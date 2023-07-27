@@ -1601,7 +1601,7 @@ is converges to the Euclidean distance if $x$ goes to $y$. We formulate this in 
 x,y\in\domain,\,\abs{x-y}<\delta\right\rbrace \leq 1.
 \end{align}
 %
-The inherent reason that we need no enforces this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$.
+The inherent reason that we need no enforces this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$. Most importantly, \cref{eq:cond_domain} prohibits sharp internal corners in the domain, see \cref{fig:sharp}. Furthermore, note that we consider the geodesic distance $d_\domain$ on the open domain $\domain$, not on its closure. Therefore, we also exclude situations of a touching boundary as in \cref{fig:tube}.
 %
 \begin{figure}
 \centering%
@@ -1642,7 +1642,7 @@ The inherent reason that we need no enforces this, is that edges in the graph ar
 \end{scope}
 \end{tikzpicture}
 %
-\caption{An example of a sharp internal corner, violating \cref{eq:cond_domain}. The geodesic distance between the pairs of points converging to the corner point is bigger than then Euclidean one by a constant factor.}
+\caption{An example of a sharp internal corner, violating \cref{eq:cond_domain}. The geodesic distance between the pairs of points converging to the corner point is bigger than then Euclidean one by a constant factor.}\label{fig:sharp}
 \end{figure}
 %
 %
