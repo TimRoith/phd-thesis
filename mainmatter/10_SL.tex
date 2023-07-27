@@ -201,7 +201,7 @@ f_\param(\inpp)\neq h(\inpp) = h(\inp).
 \end{center}
 %
 %
-The vague concept of a \emph{human classifier}, bears the intuition of the classification problem as a human would solve it. Assuming that we are given data $\tset\subset \Inp\times\Oup$ that is samples i.i.d. from a joint distribution $P_{\Inp,\Oup}$ this function could also be chosen as $h(x)_c:=P_{\Inp,\Oup}(c|\inp)$.
+The vague concept of a \emph{human classifier}, incorporates the intuition of the classification problem as a human would solve it. Assuming that we are given data $\tset\subset \Inp\times\Oup$ that is samples i.i.d. from a joint distribution $P_{\Inp,\Oup}$ this function could also be chosen as $h(x)_c:=P_{\Inp,\Oup}(c|\inp)$.
 
 
 \begin{remark}{}{}
@@ -210,10 +210,10 @@ While we mostly focus on neural networks, some authors argue that these instabil
 %
 %
 %
-\paragraph{What are Adversarial Examples Formally} In order to formalize this idea we omit any influence of the typically unavailable function $h$ and instead consider $\inpp$ adversarial if $\net_\param(\inp)\neq\net_\param(\inpp)$, i.e. we assume $\net_\param(\inp)$ to be \enquote{correct}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
+\paragraph{What are Adversarial Examples Formally?} In order to formalize this idea we omit any influence of the typically unavailable function $h$ and instead consider $\inpp$ adversarial if $\net_\param(\inp)\neq\net_\param(\inpp)$, i.e. we assume $\net_\param(\inp)$ to be \enquote{correct}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
 %
 \begin{remark}{}{}
-In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparison---can be an unfavorable choice. Images that appear very different visually, (i.e. for a human classifier) can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy tp evaluate, which is crucial for most applications. In the absence of a better criterion, having a small $L^p$ norm, is commonly the only way to decide if $\inpp$ is an admissible adversarial example. 
+In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparison---can be an unfavorable choice. Images that appear very different visually, (i.e. for a human classifier) can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy to evaluate, which is crucial for most applications. In the absence of a better criterion, having a small $L^p$ norm, is commonly the only way to decide if $\inpp$ is an admissible adversarial example. 
 \end{remark}
 %
 %
@@ -224,9 +224,7 @@ Employing these simplifications we then say that $\inpp\in\Inp$ is adversarial, 
 d(\inp,\inpp) \leq \budget \qquad \text{ and } \qquad \net_\param(\inp)\neq \net_\param(\inpp),
 \end{align*}
 %
-where $\budget$ is called the \emph{adversarial budget}. This parameter
-%
-This interpretation only makes sense, if we assume that $\net_\param(\inp)$ is \emph{correct}, which can only be easily checked on the training data \cite{bungert2023begins}.
+where $\budget$ is called the \emph{adversarial budget}. This parameter controls how far $\tilde{x}$ can be from the original point $x$ to be still considered adversarial. Here, we also have decide how much we trust the metric $d(\cdot,\cdot)$ as a measure of closeness. This interpretation only makes sense, if we assume that $\net_\param(\inp)$ is \emph{correct}, which can only be easily checked on the training data \cite{bungert2023begins}.
 %
 %
 \paragraph{Types of Adversarial Examples} Typically, adversarial examples are created from the clean image $\inp$ via some distortion $\delta\in\R^n$. Together with an application map $T:\Inp\times\R^s\to\Inp$ one then obtains $\inpp=T(x,\delta)$ as the adversarial example. In this formulation one can the alternatively employ the criterion $\norm{\delta}\leq \budget$ to decide, whether $T(\inp,\delta)$ is an adversarial example. We only list some of the approaches below:
@@ -234,11 +232,11 @@ This interpretation only makes sense, if we assume that $\net_\param(\inp)$ is \
 \begin{itemize}
 \item\textbf{Addition}: the most well-known examples are created by $T(x,\delta):=\inp+\delta$, i.e. $\inpp = \inp + \delta$. Here, it is important to note that typically images are assumed to have values between $0$ and $1$, i.e. $\Inp=[0,1]^{K\times N\times M}$ for which it is important to ensure that $\inpp\in\Inp$.
 %
-\item\textbf{Translation and Rotation}: Simple geometric transformations---that would be unnoticeable for a human classifier---are quite effective to fool neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$ one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case $\delta\in[-\pi,\pi]$ models the angle of the rotation and would yield an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some expressivity:
+\item\textbf{Translation and Rotation}: Simple geometric transformations---that would be unnoticeable for a human classifier---are quite effective to \enquote{fool} neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$ one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case $\delta\in[-\pi,\pi]$ models the angle of the rotation and would yield an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some expressivity. Consider the MNIST dataset \cite{leCun10}, where the task is to classify handwritten digits from $0$ to $9$:
 %
 \begin{itemize}
-\item On the MNIST classification task, we see that only $\budget<\pi/2$ makes sense. Otherwise the number \enquote{6} could be always transformed to the number \enquote{9} and vice versa.
-\item Considering the number \enquote{0} rotations above the angle $\pi/2$ can definitely yield proper adversarial examples $\inpp$.
+\item We see that only $\budget<\pi/2$ makes sense, otherwise the number \enquote{6} could be always transformed to the number \enquote{9} and vice versa.
+\item However, considering the number \enquote{0} rotations above the angle $\pi/2$ can definitely yield proper adversarial examples $\inpp$.
 \end{itemize}
 %
 We refer to \cite{engstrom2018rotation} for a study on these types of adversarial examples.
@@ -281,7 +279,7 @@ A popular method to solve \cref{eq:advprob} is the projected sign gradient ascen
 Here, $\operatorname{Proj}_d$ denotes the projection onto the set $\Inp\cap B_{d,\budget}(\inp)$, where $B_{d,\budget}(\inp)$ is the ball with radius $\budget$ around $\inp$, w.r.t. to the distance $d$. Performing only one step of this iteration yields the fast gradient sign method \cite{goodfellow2014explaining}. There is a wide variety of these so-called gradient-based white-box attacks \cite{yuan2019adversarial}, i.e. methods that assume that the gradient of the model is available. In more realistic scenarios, this might not be the case. Attacks that do not employ the actual gradient of the model to attack are called \emph{black box} attacks \cite{ilyas2018black}, which however not part of this thesis.
 %
 %
-\paragraph{Defending Against Adversarial Examples}
+\paragraph{Defending against Adversarial Attacks}
 %
 %
 We consider the question of finding parameters $\param\in\Param$ such that corresponding model $\net_\param$ is \emph{adversarially robust}, i.e. is less vulnerable to attacks. Therefore, we want the attack problem in \cref{eq:advprob} to be hard to solve. This intuition leads to the optimization problem
@@ -323,7 +321,7 @@ We employ the Lipschitz constant as a regularizer and consider the problem
 \min_\param \empLoss(\param) +\lambda\ \Lip(\net_\param)
 \end{align}
 %
-for a parameter $\lambda$. Unfortunately, computing the Lipschitz constant of neural networks is a NP-hard problem \cite{scaman2018lipschitz} for which many works employ the estimate
+for a parameter $\lambda$. Unfortunately, computing the Lipschitz constant of neural networks is a NP-hard problem \cite{scaman2018lipschitz}, therefore many works employ the estimate
 %
 \begin{align}\label{ineq:lip_weights}
 \lip(\net_\param) \ \leq \ \prod_{l=1}^L  \lip(\Phi_l) \leq 
@@ -532,7 +530,7 @@ We briefly comment on the numerical results \cite{bungert2021clip}. All the expe
 \end{wrapfigure}
 %
 %
-Starting from the first simple neural architectures (e.g. \cite{rosenblatt1958perceptron}) the size of typical architectures has grown significantly in the last years \cite{hoefler2021sparsity}. While this development allowed to solve increasingly difficult tasks with neural networks, it also lead to immense computational requirements, both for the training and evaluation of the net. Therefore it seems natural, how the weights of neural networks can be compressed or more general how evaluation and training can be made more efficient. Some of the approaches here include (see \cite{gholami2021survey} for a comprehensive overview):
+Starting from the first simple neural architectures (e.g. \cite{rosenblatt1958perceptron}) the size of typical architectures has grown significantly in the last years \cite{hoefler2021sparsity}. While this development allowed to solve increasingly difficult tasks with neural networks, it also lead to immense computational requirements, both for the training and evaluation of the net. Therefore, the question arises how the evaluation and training of large neural networks can be made more efficient. Some of the approaches here include (see \cite{gholami2021survey} for a comprehensive overview):
 %
 \begin{itemize}
 \item \textbf{Architecture Optimization}: Designing an architecture that can be trained to have the same performance as a comparable one, while having less parameters, e.g. \cite{elsken2019neural, howard2017mobilenets}.
@@ -565,7 +563,7 @@ where we extend the $L^1$ norm to $\Param$ as discussed in \cref{sec:Bregnum}. T
 \param^\k{k+1} = \operatorname{soft\ shrinkage}(\param - \tau \nabla\empLoss(\param^\k{k}))
 \end{align}
 %
-where the shrinkage operator from \cref{ex:softshrink}. This iteration was employed in \cite{nitanda2014stochastic, rosasco2014convergence, reddi2016proximal} to train sparse neural networks.
+where the shrinkage operator is defined in \cref{ex:softshrink}. This iteration was employed in \cite{nitanda2014stochastic, rosasco2014convergence, reddi2016proximal} to train sparse neural networks.
 %
 %
 \paragraph{Sparse-to-Sparse Training} All of the sparsity-based methods mentioned before start with dense weight matrices and only decrease the number of parameters during or at the end of the training process. Our approach yields an iteration, where the network is sparse throughout the iteration. In fact we start with only very few non-zero parameters and only activate necessary weights during training. This paradigm is known as sparse-to-sparse or evolutionary training \cite{mocanu2018scalable, dettmers2019sparse, Evci2020, dai2019nest, fu2019exploring, huang2016split, liu2021}.
@@ -999,8 +997,8 @@ This finally yields the linearized Bregman iterations
 %
 \begin{subequations}\label{eq:lin_bregman_iteration}
 \begin{align}
-\sg^{(k+1)} = \sg^{(k)} - \tau \nabla\empLoss(\param^{(k)}),\\
-\param^{(k+1)} = \prox{\delta J}(\delta \sg^{(k+1)}).
+\sg^{(k+1)} &= \sg^{(k)} - \tau \nabla\empLoss(\param^{(k)}),\\
+\param^{(k+1)} &= \prox{\delta J}(\delta \sg^{(k+1)}).
 \end{align}
 \end{subequations}
 %

@@ -24,32 +24,32 @@ Before we present these works we first introduce the setting of consistency for 
 \hypersetup{linkcolor=black}%
 \filldraw[fill=orong!20, draw=none] (0,12.5) rectangle (14.5,11.5) node[midway] {%
 \cref{sec:GSSL}: \nameref{sec:GSSL}};
-\filldraw[fill=grape!20, draw=none] (0,11) rectangle (6.5,10) node[midway] {\cref{sec:pLap}: The $p$ Laplacian}; %
-\filldraw[fill=grape!10, draw=none] (0,10) rectangle (6.5,9) node[midway] {\cref{sec:pLapcont}: Continuum Setting};
-\filldraw[fill=grape!10, draw=none] (0,9) rectangle (6.5,8) node[midway] {\cref{sec:GpLap}: Graph Setting};
+%\filldraw[fill=grape!20, draw=none] (0,11) rectangle (6.5,10) node[midway] {\cref{sec:pLap}: The $p$ Laplacian}; %
+%\filldraw[fill=grape!10, draw=none] (0,10) rectangle (6.5,9) node[midway] {\cref{sec:pLapcont}: Continuum Setting};
+%\filldraw[fill=grape!10, draw=none] (0,9) rectangle (6.5,8) node[midway] {\cref{sec:GpLap}: Graph Setting};
 %
 %
 %
 %
 %
-\filldraw[fill=apple!20, draw=none] (8,11) rectangle (14.5,10) 
-node[midway] {\cref{sec:LipExt} Lipschitz Extensions}; %
-\filldraw[fill=apple!10, draw=none] (8,10) rectangle (14.5,9) 
-node[midway] {\cref{sec:LipExtCont}: Continuum Setting}; %
-\filldraw[fill=apple!10, draw=none] (8,9) rectangle (14.5,8) 
-node[midway] {\cref{sec:GLipExt}: Graph Setting}; %
+\filldraw[fill=apple!20, draw=none] (0,11) rectangle (14.5,10) 
+node[midway] {\cref{sec:LipExt} Lipschitz Extensions and the Infinity Laplacian}; %
+%\filldraw[fill=apple!10, draw=none] (8,10) rectangle (14.5,9) 
+%node[midway] {\cref{sec:LipExtCont}: Continuum Setting}; %
+%\filldraw[fill=apple!10, draw=none] (8,9) rectangle (14.5,8) 
+%node[midway] {\cref{sec:GLipExt}: Graph Setting}; %
 %
 %
 %
 %
-\filldraw[fill=sky!20, draw=none] (0,7.5) rectangle (4.5, 6.5) node[midway] {%
+\filldraw[fill=sky!20, draw=none] (0,9.5) rectangle (7, 8.5) node[midway] {%
 \cref{sec:GConv}:  \cite{roith2022continuum}};
 %
-\filldraw[fill=sky!20, draw=none] (5,7.5) rectangle (9.5, 6.5) node[midway] {%
+\filldraw[fill=sky!20, draw=none] (7.5,9.5) rectangle (14.5, 8.5) node[midway] {%
 \cref{sec:UnifConv}:  \cite{bungert2021uniform}};
 %
-\filldraw[fill=sky!20, draw=none] (10,7.5) rectangle (14.5, 6.5) node[midway] {%
-\cref{sec:RatConv}:  \cite{bungert2022ratio}};
+%\filldraw[fill=sky!20, draw=none] (10,9.5) rectangle (14.5, 8.5) node[midway] {%
+%\cref{sec:RatConv}:  \cite{bungert2022ratio}};
 \end{tikzpicture}
 \end{center}
 %
@@ -59,7 +59,7 @@ node[midway] {\cref{sec:GLipExt}: Graph Setting}; %
 %
 %
 %
-\section{Graph-based SSL and Consistency}\label{sec:GSSL}
+\section{Graph-Based SSL and Consistency}\label{sec:GSSL}
 
 \begin{wrapfigure}{r}{.5\textwidth}
 \centering
@@ -1523,25 +1523,25 @@ As seen in \cite{GarcSlep15, slepcev2019analysis} and \cref{eq:kernelconst} we a
 \end{align*}
 %
 %
-A main difference to the results for $p<\infty$ is that we can work with point clouds $\domain_n$, that do not necessarily need be constructed by an i.i.d. sampling process. However, this rises the question how we can ensure that $\domain_n$ fill out the continuum domain $\domain$ sufficiently fast. In \cite{roith2022continuum} we consider the maximum distance of any continuum point to its next vertex
+A main difference to the results for $p<\infty$ is that we can work with point clouds $\domain_n$, that do not necessarily need be constructed by an i.i.d. sampling process. However, this rises the question how we can ensure that $\domain_n\subset\cl\domain$ fills out the continuum domain $\cl\domain$ sufficiently fast. In \cite{roith2022continuum} we consider the maximum distance of any continuum point to its next vertex
 %
 \begin{align}\label{eq:resolution}
-\sup_{x\in\domain} \min_{y\in\domain_n} \abs{x-y},
+\sup_{x\in\cl\domain} \min_{y\in\domain_n} \abs{x-y},
 \end{align}
 %
-as a measure of the distance between $\domain_n$ and $\domain$. In fact, this is the Hausdorff distance (\cite{hausdorff1914}) between the two sets, since 
+as a measure of the distance between $\domain_n$ and $\cl\domain$. In fact, this is the Hausdorff distance (\cite{hausdorff1914}) between the two sets, since 
 %
 \begin{align*}
-d_H(\domain_n, \domain) = 
+d_H(\domain_n, \cl\domain) = 
 \max
 \left\{
-\sup_{x\in\domain} \inf_{y\in\domain_n} \abs{x-y},  
-\sup_{x\in\domain_n} \inf_{y\in\domain} \abs{x-y}
+\sup_{x\in\cl\domain} \inf_{y\in\domain_n} \abs{x-y},  
+\sup_{x\in\domain_n} \inf_{y\in\cl\domain} \abs{x-y}
 \right\} = 
 \sup_{x\in\domain} \min_{y\in\domain_n} \abs{x-y},
 \end{align*}
 %
-where the second term vanishes since $\domain_n\subset\domain$.
+where the second term vanishes since $\domain_n\subset\cl\domain$.
 %
 
 \begin{remark}{}{}
@@ -1561,10 +1561,10 @@ d_H(\conset_n, \conset) =
 \right\}
 \end{align*}
 %
-where the second term does not vanish, because in general $\conset_n\nsubseteq\conset$. In total we then need to control the graph resolution 
+where the second term does not vanish, because in general $\conset_n\nsubseteq\conset$. We assume that we have a Lipschitz continuous function $g:\cl\domain\to\R$ such that for each $n$ the boundary conditions are given by the function $\vec g_n = g\rvert_{\conset_n}$. In total we then need to control the graph resolution 
 %
 \begin{align*}
-\gres_n := \max\{d_H(\domain_n, \domain), d_H(\conset_n, \conset)\}.
+\gres_n := \max\{d_H(\domain_n, \cl\domain), d_H(\conset_n, \conset)\}.
 \end{align*}
 %
 This then allows us to formulating our scaling assumption, namely we require that the graph resolution tends to zero faster than the graph scaling
@@ -1601,7 +1601,7 @@ is converges to the Euclidean distance if $x$ goes to $y$. We formulate this in 
 x,y\in\domain,\,\abs{x-y}<\delta\right\rbrace \leq 1.
 \end{align}
 %
-The inherent reason that we need no enforces this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$. Most importantly, \cref{eq:cond_domain} prohibits sharp internal corners in the domain, see \cref{fig:sharp}. Furthermore, note that we consider the geodesic distance $d_\domain$ on the open domain $\domain$, not on its closure. Therefore, we also exclude situations of a touching boundary as in \cref{fig:tube}.
+The inherent reason that we need no enforces this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$. Most importantly, \cref{eq:cond_domain} prohibits sharp internal corners in the domain, see \cref{fig:sharp}. Furthermore, note that we consider the geodesic distance $d_\domain$ on the open domain $\domain$, not on its closure. Therefore, we also exclude situations of a touching boundary as in \cref{fig:tube}. In \cite{roith2022continuum} we also provide examples of domains fulfilling this condition.
 %
 \begin{figure}
 \centering%
@@ -1634,7 +1634,7 @@ The inherent reason that we need no enforces this, is that edges in the graph ar
 	%\path[draw=sky] [-] (B) edge (J2);
 	\path[grape,thick] (X3) edge (Z);
 	\path[grape,thick] (Y3) edge node[sloped,below=5pt,pos=0.5] {\small\nc$d_{\domain}$} (Z);
-	\begin{scope}[every path/.style={sky!80,dotted, thick}]
+	\begin{scope}[every path/.style={sky,dotted, thick}]
 		\path (X1) edge  node[sloped, above] {\small$|x_i-y_i|$} (Y1);
 		\path (X2) edge (Y2);
 		\path (X3) edge (Y3);
@@ -1661,13 +1661,13 @@ d_{TL^p}((\mu, u), (\nu, v)) = \inf_{\pi\in \Gamma(\mu,\nu)}
 \left(\int_{\domain\times\domain} \abs{x-y}^p + \abs{u(x) - v(y)}^p d\pi(x,y)\right)^{1/p}
 \end{align*}
 %
-where $\Gamma(\mu,\nu)$ is the set of coupling between $\mu$ and $\nu$. A sequence $(mu_n, u_n)$ converges to $(\mu,u)$ in $TL^p$ iff there exists a sequence of transportation maps $T_n:\domain\to\domain$ with $T_n\#\mu = \mu_n$ and 
+where $\Gamma(\mu,\nu)$ is the set of coupling between $\mu$ and $\nu$. A sequence $(\mu_n, u_n)$ converges to $(\mu,u)$ in $TL^p$ iff there exists a sequence of transportation maps $T_n:\domain\to\domain$ with $T_n\#\mu = \mu_n$ and 
 %
 \begin{align*}
 \int_{\domain} \abs{x- T_n(x)} d\mu(x)\rightarrow 0
 \end{align*}
 %
-such that $u_n\circ T_n \xrightarrow{L^p} u$, \cite[Prop. 3.12]{GarcSlep15}. Therefore, the maps $T_n$ allow to employ standard convergence in $L^p$. In order to transfer this situation to $L^\infty$ one could try to employ a $\infty$-Wasserstein distance. However, as argued in \cite{roith2022msc} the arguments do not transfer directly, since convergence in $W^\infty$ does not metrize weak convergence of measures \cite[Thm. 5.10]{santambrogio2015optimal}. However, as seen in \cite{roith2022continuum} one can employ a more direct argument. For problems in $L^p$ the conservation of mass was important for the maps $T_n$ (i.e. $T_n\#\mu = \mu_n$) such that the integrals could be transformed. This condition is irrelevant in $L^\infty$, namely we have the following analogous transformation rule in $L^\infty$.
+such that $u_n\circ T_n \xrightarrow{L^p} u$, \cite[Prop. 3.12]{GarcSlep15}. Therefore, the maps $T_n$ allow to employ standard convergence in $L^p$. In order to transfer this situation to $L^\infty$ one could try to employ a $\infty$-Wasserstein distance. However, as argued in \cite{roith2022msc} the strategy does not transfer directly, since convergence in $W^\infty$ does not metrize weak convergence of measures \cite[Thm. 5.10]{santambrogio2015optimal}. However, as seen in \cite{roith2022continuum} one can employ a more direct argument. For problems in $L^p$ the conservation of mass was important for the maps $T_n$ (i.e. $T_n\#\mu = \mu_n$) such that the integrals could be transformed. This condition is irrelevant in $L^\infty$, namely we have the following analogous transformation rule in $L^\infty$.
 %
 \begin{lemma}{\cite[Lem. 2]{roith2022continuum}}{lem:suptrafo}
 For two probability measures $\mu,\nu \in \mathcal{P}(\overline{\domain})$, a measurable map 
@@ -1683,6 +1683,7 @@ and for a measurable function $u:\domain\rightarrow\R$ we have that
 \end{lemma}
 %
 %
+\noindent%
 We want to compare the discrete measure $\mu_n = \frac{1}{n}\sum_{x\in\domain_n} \delta_x$ to the target measure $\mu$. In this setting a closest point projection $p_n:\domain\to\domain_n$
 %
 \begin{align*}
@@ -1705,23 +1706,23 @@ which was similarly done in \cite{GarcSlep15, slepcev2019analysis}. Additionally
 \begin{align*}
 \GE^{w_n, \text{cons}}_\infty (\vec u):=
 \begin{cases}
-\GE(\vec u)&\text{ if } \vec u = g \text{ on } \conset_n,\\
+\GE(\vec u)&\text{ if } \vec u = \vec g \text{ on } \conset_n,\\
 \infty &\text{ else},
 \end{cases}
 \end{align*}
 %
-with the analogous extension to $\L^\infty$ as in \cref{eq:lipextend}.
+with the analogous extension to $L^\infty$ as in \cref{eq:lipextend}. We can now state the first main result of \cite{roith2022continuum} that provides the $\Gamma$-convergence of the graph functionals.
 %
-This now allows us to state the first main result of \cite{roith2022continuum}.
-
+%
 \begin{theorem}{Discrete to continuum $\Gamma$-convergence}{thm:DCGamma}
-Let $\domain\subset\R^d$ be a domain satisfying~\labelcref{eq:cond_domain}, let the kernel fulfill \labelcref{en:K1}-\labelcref{en:K4}, and let the constraint sets $\conset_n,\conset$ satisfy~\labelcref{eq:labelset_cvgc}, then for any null sequence $(\gscale_n)_{n\in\N}\subset(0,\infty)$ which satisfies the scaling condition~\labelcref{eq:scaling}
+Let $\domain\subset\R^d$ be a domain satisfying~\labelcref{eq:cond_domain}, let the kernel fulfill \labelcref{en:K1}-\labelcref{en:K4}, then for any null sequence $(\gscale_n)_{n\in\N}\subset(0,\infty)$ which satisfies the scaling condition~\labelcref{eq:scaling}
 we have
 \begin{align}
 \GE^{n,\mathrm{cons}}_\infty \GConv \sigma_{\eta}~\pDir^\mathrm{cons}.
 \end{align}
 \end{theorem}
 %
+\noindent%
 The main proof strategy here is similar to the one in \cite{GarcSlep15, slepcev2019analysis}. Namely one defines the non-local functional
 %
 \begin{align*}
@@ -1731,12 +1732,12 @@ The main proof strategy here is similar to the one in \cite{GarcSlep15, slepcev2
 \right\},\quad\gscale>0
 \end{align*}
 %
-for which we show that for any sequence $\gscale_n\to 0$ we have \cite[Thm. 4]{roith2022continuum}
+for which we show that for any sequence $\gscale_n\to 0$ we have
 \begin{align*}
-\pDir^{\gscale_n}_\infty\GConv \sigma_{\eta}~\pDir_\infty.
+\pDir^{\gscale_n}_\infty\GConv \sigma_{\eta}~\pDir_\infty,
 \end{align*}
 %
-For the liminf inequality of the discrete functionals, one has to take special care of points $x,y\in\domain_n$ where $\eta_{\gscale_n}(\abs{p_n(x) - p_n(y)})=0$. We want to bound $\GE^{w_n}_\infty$ from below by $\pDir_\infty^{\gscale_n}$ for which we have to permit significant communication of $x$ and $y$ whenever $p_n(x)$  and $p_n(y)$ do not communicate. This can be done, (temporarily assuming $\eta$ is constant on $[0,t]$) by introducing a smaller length scale $\tilde{\gscale}$ such that
+see \cite[Thm. 4]{roith2022continuum}. For the liminf inequality of the discrete functionals, one has to take special care of points $x,y\in\domain_n$ where $\eta_{\gscale_n}(\abs{p_n(x) - p_n(y)})=0$. We want to bound $\GE^{w_n}_\infty$ from below by $\pDir_\infty^{\gscale_n}$ for which we have to permit significant communication of $x$ and $y$ whenever $p_n(x)$  and $p_n(y)$ do not communicate. This can be done, (temporarily assuming $\eta$ is constant on $[0,t]$) by introducing a smaller length scale $\tilde{\gscale}$ such that
 %
 \begin{enumerate}[label=(\roman*)]
 \item\label{ga} $\abs{p_n(x) - p_n(y)} > t\gscale_n\Rightarrow \abs{p_n(x) - p_n(y)}/\gscale_n < \abs{x-y}/\tilde{\gscale}$,
@@ -1753,7 +1754,7 @@ As shown in \cite{roith2022continuum} the choice $\tilde\gscale= \gscale - 2 \gr
 This then allows to prove the liminf inequality since $\GE^{w_n}_\infty(u_n)\geq \frac{\tilde{\gscale}_n}{\gscale_n} \pDir^{\tilde{\gscale}_n}_\infty(u_n)$ holds. The limsup inequality can then be shown by choosing the constant sequence, with some additional care for the changing constraint set $\conset_n$.
 %
 %
-\paragraph{Convergence of Minimizers}
+\subsection{Convergence of Minimizers}
 %
 The convenient aspect of $\Gamma$-convergence is, that under additional compactness properties it directly shows convergence of minimizers, \cite[Thm. 8]{Brad02}. This yields the second main result in \cite{roith2022continuum}.
 %
@@ -1761,7 +1762,6 @@ The convenient aspect of $\Gamma$-convergence is, that under additional compactn
 \begin{theorem}{\cite[Thm. 2]{roith2022continuum}}{thm:ConvMinLip}
 Let $\domain\subset R^d$ be a domain satisfying~\labelcref{eq:cond_domain}, 
 let the kernel fulfil \labelcref{en:K1}-\labelcref{en:K4}, 
-let the constraint sets $\conset_n,\conset$ satisfy~\labelcref{eq:labelset_cvgc}, 
 and $(\gscale_n)_{n\in\N}\subset(0,\infty)$ be a null sequence which satisfies the scaling 
 condition~\labelcref{eq:scaling}.
 Then any sequence $(u)_{n\in\N}\subset L^{\infty}(\Omega)$ such that 
@@ -1779,6 +1779,7 @@ $\pDir_{\mathrm{cons}}$.
 \end{theorem}
 %
 %
+\noindent%
 In order to show the compactness in the above theorem one employs the following lemma.
 %
 %
@@ -1795,6 +1796,7 @@ then $K$ is relatively compact.
 The proof of this statement employs ideas from \cite[Lem. IV.5.4]{dunford1988linear} and appeared similarly in TR's master thesis. However, therein the statement was slightly wrong, which was corrected in \cite{roith2022continuum}.
 \end{remark}
 %
+\noindent%
 This lemma is the used to show that if a sequence $u_n$ fulfills
 \begin{align*}
 \sup_{n\in\N}\GE^{w_n,\text{cons}}_\infty(u_n)<\infty
@@ -1802,18 +1804,54 @@ This lemma is the used to show that if a sequence $u_n$ fulfills
 %
 then it is relatively compact.
 %
-\paragraph{Application to ground states}
+\subsection{Application to Ground States}
 %
-Ground states, no rates.
+The convergence results of the previous paragraphs can be applied to the ground states problem. Namely, for a $p$-homogeneous functional $\pDir$---i.e. $\pDir{}(cu) = \abs{c}^p \pDir{}(u)$ for $c\in\R$---we consider the following problem
+%
+\begin{align*}
+\min\left\lbrace \pDir(u) \,:\, \inf_{v\in\argmin \pDir{}}\norm{u-v} = 1 \right\rbrace,
+\end{align*}
+%
+as studied in \cite{bung20}. In our setting, if $g\equiv 0$ then the functionals $\GE^{w_n,\text{cons}}_\infty$ and $\pDir^{\text{cons}}_\infty$ are $1$-homogeneous. In \cite[Th. 5]{roith2022continuum} we first show that the up to a global sign unique ground state of $\pDir^{\text{cons}}_\infty$ is a multiple of the distance function
+%
+\begin{align*}
+d_{\conset}(x)=
+\inf_{y\in\conset}d_\domain(x,y).
+\end{align*}
+%
+%
+We then employ the $\Gamma$-convergence results to show the convergence of discrete ground states to the above continuum one.
+%
+\begin{theorem}{\cite[Thm. 6]{roith2022continuum}: Convergence of Ground States}{thm:cgvc_GS}
+Under the conditions of \cite[Thm. 1]{roith2022continuum} let the sequence $(u_n)_{n\in\N}\subset L^{\infty}(\domain)$ fulfill
+\begin{align*}
+    \vec u_n \in \argmin\left\lbrace
+    \GE^{w_n,\mathrm{cons}}_\infty(\vec u) \,:\,\vec u\in L^{\infty}(\domain),\, \norm{\vec u}_{L^{p}}=1 \right\rbrace.
+\end{align*}
+Then (up to a subsequence) $\vec u_n\to u$ in $L^{\infty}(\domain)$ where
+\begin{align*}
+    u \in \argmin\left\lbrace
+    \pDir^{\mathrm{cons}}_\infty(u) \,:\,u\in L^{\infty}(\domain),\, \norm{u}_{L^{p}}=1 \right\rbrace
+\end{align*}
+and it holds
+\begin{align}\label{eq:cvgc_eigenvalues}
+    \lim_{n\to\infty}{\GE^{w_n,\mathrm{cons}}_\infty(\vec u_n)} = \sigma_\eta~\pDir^{\mathrm{cons}}_\infty(u).
+\end{align}
+\end{theorem}
+
+
+%
+\section{Uniform Convergence of AMLES: \cite{bungert2021uniform}}\label{sec:UnifConv}
+
+\subsection{Setting}
+
+\subsection{Convergence Results}
+
+\subsection{Numerical Examples}
 %
 %
 %
 %
-\section{Uniform Convergence}\label{sec:UnifConv}
-%
-%
-%
-%
-\section{Ratio Convergence}\label{sec:RatConv}
+%\section{Ratio Convergence}\label{sec:RatConv}
 %
 
