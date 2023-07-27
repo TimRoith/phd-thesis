@@ -1094,7 +1094,7 @@ v^{(k+1)} &= v^{(k)} - m^{(k+1)},\\
 \end{align}
 %
 %
-\paragraph{Adamized Bregman Iteration} We shortly remark that one can replace the momentum update in \cref{eq:momBreg} with a Adam update \cite{kingma2014adam}. This then yields an Adamized version of linearized Bregman iterations as employed in \cite{bungert2022bregman}.
+\paragraph{Adamized Bregman Iteration} We shortly remark that one can replace the momentum update in \cref{eq:momBreg} with an Adam update \cite{kingma2014adam}. This then yields an Adamized version of linearized Bregman iterations as employed in \cite{bungert2022bregman}.
 
 
 \subsection{Convergence of Stochastic Bregman Iterations}\label{sec:ConvAna}
@@ -1128,7 +1128,7 @@ We want to remark, that this property is weaker than the bounded gradient assump
 \E\left[\norm{g(\param;\omega)}^2\right] \leq C
 \end{align*}
 %
-for some constant $C>0$. In fact this condition can not be enforced together with a strong convexity assumption---which we employ in \cref{thm:??}---as shown in \cite{pmlr-v80-nguyen18c}.
+for some constant $C>0$. In fact this condition can not be enforced together with a strong convexity assumption---which we employ in \cref{thm:cvgc_norm}---as shown in \cite{pmlr-v80-nguyen18c}.
 \end{remark}
 \paragraph{Assumptions on the Regularizer and on the Loss Function}
 %
@@ -1368,7 +1368,7 @@ W^l_{ij} = 0 \nRightarrow \partial_{W^l_{ij}} \empLoss(\theta) = 0.
 %
 In \cite{bungert2022bregman, bungert2021neural} there are no evaluation on the training time and memory consumption of the Bregman algorithm. Since the complexity does not increase in comparison to the standard SGD, one hopes to obtain a faster training time here. This is an interesting open question for future work. It should however be remarked that the computational complexity of the LinBreg algorithm does not increase significantly, compared to SGD, since the evaluation of the proximal operator is very efficient for $L^1$ type functionals.
 
-\paragraph{Neural Architecture Search} An interesting aspect hinted in \cite{bungert2022bregman} is optimizing the architecture of a neural network via sparsity. In the example provided in \cite[Fig. 4]{bungert2022bregman} one defines a super-architecture as multi-layer perceptron with an equal number of neurons in each layer. Training this task with the LinBreg algorithm reveals the well-known autoencoder structure \cite{hinton1993autoencoders}. This idea was developed further in \cite{bungert2021neural}, where also skip connection of a residual architecture were learned. Here, the super-architecture was given by a dense net \cite{huang2017densely}, where a each skip connection was scaled by a parameter, which was penalized with a sparsity term. The driving question here, if it is possible also learn an architecture similar to the U-Net as proposed in \cite{ronneberger2015u}.
+\paragraph{Neural Architecture Search} An interesting aspect hinted in \cite{bungert2022bregman} is optimizing the architecture of a neural network via sparsity. In the example provided in \cite[Fig. 4]{bungert2022bregman} one defines a super-architecture as multi-layer perceptron with an equal number of neurons in each layer. Training this task with the LinBreg algorithm reveals the well-known autoencoder structure \cite{hinton1993autoencoders}. This idea was developed further in \cite{bungert2021neural}, where also skip connection of a residual architecture were learned. Here, the super-architecture was given by a dense net \cite{huang2017densely}, where each skip connection was scaled by a parameter, which was penalized with a sparsity term. The driving question here, if it is possible also learn an architecture similar to the U-Net as proposed in \cite{ronneberger2015u}.
 %
 %
 %
@@ -1495,15 +1495,13 @@ where
 \end{itemize}
 %
 %
-By a slight abuse of notation, the activation function $\sigma:\R\to\R$ acts as a \Nem operator
+By a slight abuse of notation, the activation function $\sigma:\R\to\R$ acts as a \Nem{} operator, i.e.,
 %
 \begin{align}\label{eq:nemytskii}%
 \sigma: v \mapsto \sigma(v(\cdot)),
 \end{align}
 %
-see e.g. \cite{tröltzsch}.
-
-In \cref{sec:FNOAna} we analyze continuity and differentiablility of a layer in this abstract form. However, the most relevant case for us, is when $\mathcal{K}$ is a convolution operator, i.e. $\kappa(x,y)=\kappa(x-y)$ is a translation invariant kernel. In this special case $\mathcal{G}$ is then known as layer of a \emph{Fourier Neural Operator} (FNO) as introduced in \cite{li2020fourier}, by parameterizing the kernel via its Fourier coefficients $\hat{\param}_k\in\C$
+see e.g. \cite{tröltzsch}. In \cref{sec:FNOAna} we analyze continuity and differentiablility of a layer in this abstract form. However, the most relevant case for us, is when $\mathcal{K}$ is a convolution operator, i.e. $\kappa(x,y)=\kappa(x-y)$ is a translation invariant kernel. In this special case $\mathcal{G}$ is then known as layer of a \emph{Fourier Neural Operator} (FNO) as introduced in \cite{li2020fourier}, by parameterizing the kernel via its Fourier coefficients $\hat{\param}_k\in\C$
 %
 \begin{align}\label{eq:fnokernel}
 \kappa_{\hat{\theta}}(x) = \sum_{k \in \mathcal{I}} \hat{\theta}_k\, b_k(x),
@@ -1660,7 +1658,7 @@ Therefore, applying one FNO layer is equivalent to trigonometric interpolation o
 \paragraph{Adaption to Even Dimensions}
 %
 %
-Zero-padding of the spectral coefficients only fulfills Hermitian symmetry in the case where $M,N$ are odd. In order ot adapt this to the even case, we employ so-called Nyquist splitting, see \cite{trigo19}. In all our experiments the implementation carefully employs this method, which ensures that the output of the spectral convolution is real valued.
+Zero-padding of the spectral coefficients only fulfills Hermitian symmetry in the case where $M,N$ are odd. In order to adapt this to the even case, we employ so-called Nyquist splitting, see \cite{trigo19}. In all our experiments the implementation carefully employs this method, which ensures that the output of the spectral convolution is real valued.
 %
 %
 \subsection{Analytical Results for FNOs}\label{sec:FNOAna}
@@ -1744,7 +1742,7 @@ The following lemma formalizes the intuition that FNOs and CNNs are equivalent i
 %
 %
 \noindent%
-From this and from \cite[Fig. 3]{kabri2023resolution} we obtain the negative result that in order to convert a CNN to a FNO we need a large number of spectral parameters. This also connected to the fact that spatial locality can usually only expressed using more spectral coefficients. Therefore, one might think that FNOs are infeasible due to memory requirements. However, it turns out that directly optimizing over the spectral parameters leads to a comparable performance, already for a low number of Fourier coefficients. This is reported in the blue curve in \cite[Fig. 3]{kabri2023resolution}. This hints, that while the forward pass can be equivalent, computing the gradient w.r.t. their parameters is not. This is formalized in the following lemma.
+From this and from \cite[Fig. 3]{kabri2023resolution} we obtain the negative result that in order to convert a CNN to a FNO we need a large number of spectral parameters. This is also connected to the fact that spatial locality can usually only expressed using more spectral coefficients. Therefore, one might think that FNOs are infeasible due to memory requirements. However, it turns out that directly optimizing over the spectral parameters leads to a comparable performance, already for a low number of Fourier coefficients. This is reported in the blue curve in \cite[Fig. 3]{kabri2023resolution}, which hints, that while the forward pass can be equivalent, computing the gradient w.r.t. their parameters is not. We formalize this in the following lemma.
 %
 %
 \begin{lemma}{\cite[Lem. 4]{kabri2023resolution}}{lem:FNOGrad}
@@ -1789,7 +1787,7 @@ In the numerical section of \cite{kabri2023resolution} we study the convertibili
 %
 \paragraph{Resolution Invariance}
 %
-In the second experiment we study the resolution invariance of the three discretization independent architectures we considered, namely the naive CNN adaptation, input interpolation and the FNO implementation. We first train the convolutional architecture as in the previous paragraph on the FashionMNIST dataset, that has an input size of $28\times 28$. We resize the input data via trigonometric and bilienear interpolation---referred to as data sizing---to simulate multi-resolution data. One expects that the classification performance drops when the data is resized to a smaller size, since this step looses information. However, resizing the images to higher resolutions should yield the same performance.
+In the second experiment we study the resolution invariance of the three discretization independent architectures we considered, namely the naive CNN adaptation, input interpolation and the FNO implementation. We first train the convolutional architecture as in the previous paragraph on the FashionMNIST dataset, that has an input size of $28\times 28$. We resize the input data via trigonometric and bilinear interpolation---referred to as data sizing---to simulate multi-resolution data. One expects that the classification performance drops when the data is resized to a smaller size, since this step looses information. However, resizing the images to higher resolutions should yield the same performance.
 
 In \cite[Fig. 4]{kabri2023resolution} see that the simple adaption does not perform well both in the lower and the higher resolution setting. Employing input interpolation improves the performance in the lower resolution setting. In the higher resolution regime, we obtain a constant performance which is expected. Finally we see that the FNO---which was converted from the CNN---performs as well as input interpolation, which justifies the resolution independence of this architecture.
 
