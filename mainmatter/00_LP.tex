@@ -9,10 +9,10 @@ Throughout this thesis, we assume to be given data $\Inp_n\subset\Inp\subset \R^
 y\in \Delta^C := \left\{z\in[0,1]^d: \sum_{i=1}^C z_i = 1\right\}.
 \end{align*}
 %
-This can be enforced via the softmax function \cite{bridle1990probabilistic} $Q:\R^d\to\R^d$
+This can be enforced via the softmax function \cite{bridle1990probabilistic} $\operatorname{soft max}:\R^d\to\R^d$
 %
 \begin{align*}
-	Q(z)_i := \frac{\exp(z_i)}{\sum_{j=1}^C \exp(z_j)} 	
+\operatorname{soft max}(z)_i := \frac{\exp(z_i)}{\sum_{j=1}^C \exp(z_j)} 	
 \end{align*}
 %
 which was actually introduced by Boltzman in \cite{boltzmann1868studien}. This allows the interpretation that the $i$th entry of $\net_\param(\inp)\in\Delta^C$ models the probability that $\inp$ belongs to class $i$. In order to obtain a label one can simply choose the maximum entry, $\argmax_{i=1,\ldots,C} \net_\param(\inp)_i$.
@@ -39,7 +39,7 @@ In this case we are not given any labeled data. In our context the most importan
 \item K-means algorithm \cite{steinhaus1956division},
 \item Expectation Maximization  \cite{dempster1977maximum},
 \item Cheeger cuts \cite{GarcSlep15, szlam2009total, trillos2016consistency, garcia2022graph},
-\item spectral clustering \cite{trillos2018variational}.
+\item spectral clustering \cite{trillos2018variational, trillos2021geometric, hoffmann2022spectral}.
 \end{itemize}
 %
 %
@@ -81,4 +81,28 @@ In the semi-supervised setting we assume that only a fraction of the data $\Inp_
 \end{itemize}
 %
 %
-In \cref{ch:SSL} we focus on graph-based learning algorithms, however we refer to \cite{zhu2005semi} for a overview of semi-supervised learning algorithms.
+Mostly, we consider the extension task with $\Oup$ being chosen as $\R$. In application this can be seen as a binary classification task, where for $o\in\conset_n$ we have $g(o)=1$ if $o$ belongs to a some class and $g(o)=0$ otherwise. The function $f:\Inp_n\to\R$ then determines the probability that any vertex $x\in X_n$ belongs o this class, where we can binarize the output afterwards via some thresholding, e.g.,
+%
+\begin{align*}
+x \text{ belongs to the class } \Leftrightarrow f(x) > 0.5
+\end{align*}
+%
+This methodology can be extended to classification tasks beyond the binary case, via the so-called one-vs-all technique \cite{zhu2003semi}. Given a classification problem with $C\in\N$ possible classes, we assume that the labeling function $g:\conset_n\to \Delta^C$ outputs one-hot vectors, i.e. $g(o)_c =1$ if $o$ belongs to class $c$ and $g(o)_c=0$ otherwise, for every $c = 1,\ldots, C$. We then perform the binary classification problem \enquote{$x$ belongs to class $c$} for every $c=1,\ldots,C$, by considering the extension task of 
+%
+\begin{align*}
+g_c:\conset_n\to\R\qquad g_c(o) = g(o)_c,
+\end{align*}
+%
+which yields a function $f_c(o)$. The final output can then either obtained by taking the argmax, i.e. $f:\Inp_n\to\{1,\ldots, C\}$ 
+%
+\begin{align*}
+f(x) := \argmax_{c=1,\ldots, C} f_c(x)
+\end{align*}
+%
+or by applying a softmax to obtain a probability vector, i.e. $f:\Inp_n\to\Delta^C$ 
+%
+\begin{align*}
+f(x) := \operatorname{soft max}\left(f_1(x), \ldots, f_c(x)\right).
+\end{align*}
+%
+In \cref{ch:SSL} we focus on graph-based learning algorithms, however we refer to \cite{zhu2005semi} for a overview of semi-supervised learning algorithms. 

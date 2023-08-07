@@ -515,11 +515,11 @@ This observation motivates the driving question of this chapter and the works pr
 Are Semi-Supervised Learning algorithms consistent in the infinite data limit?}
 \end{center}
 %
-In our case \enquote{consistency} roughly ask the discrete solutions to converge to the continuum counterparts they are motivated by, in the data limit $n\to\infty$. Here, we distinguish between point-wise consistency as in \cite{von2008consistency, gine2006empirical, hein2005graphs}, consistency on a function space level \cite{slepcev2019analysis, GarcSlep15,calder2019consistency, roith2022continuum, bungert2021uniform} and consistency of a discretized operator \cite{calder2019consistency, bungert2022ratio}. We detail the notion of consistency in the following.  
+In our case \enquote{consistency} roughly ask the discrete solutions to converge to the continuum counterparts they are motivated by, in the data limit $n\to\infty$. Here, we distinguish between point-wise consistency as in \cite{von2008consistency, gine2006empirical, hein2005graphs}, consistency on a function space level \cite{slepcev2019analysis, GarcSlep15,calder2019consistency, roith2022continuum, bungert2021uniform} and consistency of a discretized operator \cite{calder2019consistency, bungert2022ratio}. Other related work also consider the limit of clustering methods \cite{hoffmann2022spectral, trillos2018variational} or the no-noise limit \cite{hoffmann2020consistency, dunlop2020large}. We detail the notion of consistency in the following.  
 %
 %
 \paragraph{Consistency for the $p$-Laplacian} 
-As observed in \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic} the question of consistency is now connected to the relation between $p$ and $d$, where one considers the three regimes $p<d$, $p=d$ and probably the most relevant case $p>d$. The $p$-Dirichlet problem in the continuum can be formulated as a variational problem in $W^{1,p}$. However, it is important to remember that in our setting we most likely consider pointwise constraints on a discrete set $\conset$ even in the continuum. In order to impose pointwise constraints, one requires that functions in $W^{1,p}$ exhibit some continuity properties. By the Sobolev embedding theorem, this is the case when $p>d$, \cite{adams2003sobolev}. This leads to a first qualitative intuition that consistency can only be achieved in the case $p>d$. We note that $p$-harmonic functions are actually more regular also in the case $p\leq d$, beyond the implication of the Sobolev embedding theorem. However, this regularity does not help for the continuum limits \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}.
+As observed in \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic, calder2020properly} the question of consistency is now connected to the relation between $p$ and $d$, where one considers the three regimes $p<d$, $p=d$ and probably the most relevant case $p>d$. The $p$-Dirichlet problem in the continuum can be formulated as a variational problem in $W^{1,p}$. However, it is important to remember that in our setting we most likely consider pointwise constraints on a discrete set $\conset$ even in the continuum. In order to impose pointwise constraints, one requires that functions in $W^{1,p}$ exhibit some continuity properties. By the Sobolev embedding theorem, this is the case when $p>d$, \cite{adams2003sobolev}. This leads to a first qualitative intuition that consistency can only be achieved in the case $p>d$. We note that $p$-harmonic functions are actually more regular also in the case $p\leq d$, beyond the implication of the Sobolev embedding theorem. However, this regularity does not help for the continuum limits \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}.
 
 The most relevant result for our contribution in \cite{roith2022continuum} is the $\Gamma$-convergence statement of \cite{GarcSlep15}, which considers a clustering task, via the TV functional. Here, the authors show 
 %
@@ -860,7 +860,7 @@ the topological notions like boundary and interior are to be understood relative
 \noindent%
 Fulfilling \cref{eq:amlewg} also makes sense without enforcing boundary conditions on some set $\conset$. Typically, one just says $u$ is absolutely minimizing (AM) if it \cref{eq:amlewg} holds, see \cite{aronsson2004tour}. In the convex and Euclidean case, existence of solutions to \cref{prob:amles} follow directly from Aronssons proof that the limit $u_p\xrightarrow{p\to\infty} u_\infty$ fulfills \cref{eq:absmin}, see \cite{aronsson1967extension}. For general length spaces, it can be shown via an adapted Perron's method \cite{perron1923neue}, which we state in the following result from \cite{juutinen2002absolutely}.
 
-\begin{theorem}{\cite[Th. 4.3]{juutinen2002absolutely}}{}
+\begin{theorem}{\cite[Th. 4.3]{juutinen2002absolutely}}{thm:examle}
 Let $(\tilde\domain, d)$ be a separable length space, and suppose $g: \conset\to\R$ is Lipschitz. Then there exists an absolutely minimizing Lipschitz extension $u$ of $g$ to $\tilde\domain$, i.e. $u$ solves \cref{prob:amles}.
 \end{theorem}
 %
@@ -964,13 +964,21 @@ which is reminiscent of the comparison principle in \cref{th:compprinc}. In the 
 \end{align*}
 %
 %
-In the Euclidean case as in \cite{aronsson2004tour} one says a function fulfills \emph{comparison with cones} from above, if it fulfills \cref{eq:conecont} in $\domain$ for every subset $V\subset\subset\domain$, every $a\geq 0$ and $z\in\R^n\setminus V$. We say $u$ fulfills \emph{comparison with cones} from below if $-u$ fulfills comparison from above. If it fulfills both comparisons from above and below, we say it fulfills comparison with cones. Here, \cite{aronsson2004tour} shows the following equivalence to being absolutely minimizing.
+In the Euclidean case as in \cite{aronsson2004tour} one says a function fulfills \emph{comparison with cones} from above, if it fulfills \cref{eq:conecont} in $\domain$ for every subset $V\subset\subset\domain$, every $a\geq 0$ and $z\in\R^n\setminus V$. We say $u$ fulfills \emph{comparison with cones} from below if $-u$ fulfills comparison from above. If it fulfills both comparisons from above and below, we say it fulfills comparison with cones. Here, \cite[Prop. 2.1]{aronsson2004tour} shows the following equivalence to being absolutely minimizing, which however mainly focuses on the Euclidean case. The version for general metric spaces is due to \cite{juutinen2006equivalence} to which we refer to in the following.
 %
-\begin{theorem}{\cite[Prop. 2.1]{aronsson2004tour}}{}
+%
+\begin{theorem}{\cite[Prop. 4.1]{juutinen2006equivalence}}{}
 A function $u\in C(\domain)$ is absolutely minimizing iff it fulfills comparison with cones in $\domain$.
 \end{theorem}
 %
-We later on work with this concept for arbitrary distances, which we detail in the next section.
+\noindent%
+Therefore, we can rewrite \cref{prob:amles} employing the comparison with cones condition. In \cite{bungert2021uniform} we are interested in the case, where the metric space is given as $(\cl\domain, d_{\cl\domain})$, where $\domain\subset\R^n$ is some open set in the Euclidean sense. We are therefore dealing with a separable length space, where \cref{thm:examle} yields existence of solutions for \cref{prob:amles}. Concerning uniqueness, we refer to \cite{peres2009tug} which were the first to prove uniqueness in the length space setting. For a more general result we refer to \cite{naor2012absolutely}. In our work we obtain uniqueness by a careful adaption of the proof in \cite{armstrong2010easy}, which we state here for completeness.
+%
+\begin{align*}
+Consider the metric space $(\cl\domain, d_{\cl\domain})$
+\end{align*}
+
+
 %
 %
 \subsection{Graph Lipschitz Extensions}\label{sec:GLipExt}
@@ -1648,7 +1656,7 @@ The inherent reason that we need no enforces this, is that edges in the graph ar
 %
 
 %
-\subsection{$\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$} In order to show convergence of discrete functions defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. \cite{GarcSlep15} introduced the space $TL^p$
+\subsection{$\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$} In order to show convergence of discrete functions defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. Employing results form \cite{trillos2015rate} in \cite{GarcSlep15} the authors introduced the space $TL^p$
 %
 \begin{align*}
 TL^p :=\left\{(\mu, u): \mu\in \mathcal{P}(\domain), u\in L^p(\mu)\right\}
@@ -1842,10 +1850,166 @@ and it holds
 
 %
 \section{Uniform Convergence of AMLES: \cite{bungert2021uniform}}\label{sec:UnifConv}
-
+%
+%
+In the previous section we consider the limit of the Lipschitz extension task. The major limitations of this work are:
+%
+\begin{itemize}
+\item The considered problem does not admit for unique solutions. The $\Gamma$-convergence framework does not directly allow to select certain minimizers, e.g. AMLEs, and consider the respective limit to continuum AMLEs.
+%
+\item We can only show qualitative convergence results. It is not directly possible to prove quantitative statements and convergence rates.
+\end{itemize}
+%
+These drawbacks are the main motivation for the work presented in this section. We first state the main contributions and then provide details below.
+%
+\paragraph{Main Contributions in \cite{bungert2021uniform}} We prove a quantitative convergence results for discrete AMLEs to their continuum counterpart. Convergence was already established in \cite{calder2019consistency}, however employing a more restrictive scaling assumption and only allowing for smooth kernels $\eta$, which was due to the viscosity techniques employed. By using the AMLE characterization of infinity harmonic functions, we are able to show convergence rates under the weakest scaling assumption and allowing for very general kernels. This is done via a using a comparison principle on a homogenized length scale. The key insight we obtain in this work, is that convergence rates for graph distance functions imply rates for AMLEs. Finally, we examine some numerical convergence rates.
+%
+%
+%
 \subsection{Setting}
+%
+Conceptually, the basic setting is very similar to the previous one in \cref{sec:GConv}. We highlight some minor differences in the paragraphs below.
+%
+%
+\paragraph{Assumptions on the Kernel}
+%
+We employ \labelcref{en:K2,en:K4} from \cite{roith2022continuum} and set $t_\eta =1$ for simplicity. However we do not need to assume continuity in $0$, i.e. \labelcref{en:K1}. Instead we additionally require the following.
+%
+\begin{enumerate}[label=(K\upshape\arabic*)]
+\setcounter{enumi}{3}
+\item\label{ass:kernel} We assume that there exists $t_0\in(0,1]$, chosen as the largest number with this property with $\sigma_\eta=t_0\eta(t_0)$.
+\end{enumerate}
+%
+Assuming \labelcref{en:K2,en:K4,ass:kernel} allows for the so-called singular weights
+%
+\begin{align*}
+\eta(t)=\frac{1}{t^p}1_{[0,1]}(t)
+\end{align*}
+%
+with $p\in(0,1]$. As noted in \cite{bungert2021uniform} the above assumption is not redundant, since for example the function
+%
+\begin{align*}
+\eta(t) = \frac{1}{t^{\frac{1}{t-1}+2}}1_{[0,1]}(t),\quad t>0,
+\end{align*}
+%
+violates \labelcref{ass:kernel}, while fulfilling \labelcref{en:K2,en:K4}.
+%
+%
+\paragraph{Assumptions on the Domain} Again we take the concept from \cite{roith2022continuum}, where we assume asymptotic convexity. We alter the \cref{eq:cond_domain} slightly to be more quantitative. We assume that there exists a function $\phi:[0,\infty)\to[0,\infty)$ with $\lim_{h\downarrow 0}\frac{\phi(h)}{h} = 0$ and $r_\domain>0$ such that 
+\begin{equation}\label{eq:geodesic_euclidean}
+d_{\cl\domain}(x,y) \leq |x-y| + \phi(\abs{x-y}), \quad \text{for all }x,y\in\domain\st |x-y|\leq r_\domain.
+\end{equation}
+%
+Furthermore, for $\gscale>0$ we define $\sigma_\phi(\gscale) = \sup_{0 < s \leq \gscale}\frac{\phi(s)}{s}$. Note that we now employ the geodesic distance $d_{\cl\domain}$, i.e. path can also lie on the boundary of $\domain$.
+%
+%
+\paragraph{Assumptions on the Labeling Function} The assumption on the labeling for each sub-problem is weakened even further. Namely, we do not assume the labels for each discrete problem to be given by the continuum constraint $g:\conset\to\R$. Instead we require 
 
+\begin{enumerate}[label=(C\arabic*)]
+\item\label{ass:dataA} $\sup_{n\in\N}\Lip_n(\vec g_n;\conset_n)<\infty$ and $\Lip_\domain(g;\conset)<\infty$,
+\item\label{ass:dataB} there exists $C>0$ such that for all $z\in\conset$ it holds that $\abs{\vec g_n(\pi_{\conset_n}(z))-g(z)}\leq C\gres_n$.
+\end{enumerate}
+%
+%
+This assumption on the labeling function, is also connected to the no-noise and infinite data limit, see e.g. \cite{hoffmann2020consistency}.
+%
+%
 \subsection{Convergence Results}
+%
+%
+In \cite{roith2022continuum} the proof strategy relied on $\Gamma$-convergence. In \cite{bungert2021uniform} we use the comparison with cones characterization of AMLEs together with comparison principles for the infinity Laplace operator. An important strategy is to consider the homogenized operator
+%
+\begin{align*}
+\Delta_\infty^\nlscale u(x) = \frac{1}{\nlscale^2}\left(\inf_{y\in B_\nlscale(x)}(u(y)-u(x))
++
+\sup_{y\in B_\nlscale(x)}(u(y)-u(x))\right)
+\end{align*}
+%
+%
+on the length scale $\nlscale>0$ which is typically larger than the graph scale $\gscale$. The results in the following are non-asymptotic, for which also our scaling assumption reads as follows
+%
+\begin{align}\label{ass:scaling}
+\begin{aligned}
+\gscale &\leq {r_\domain,} \\
+\frac{\gscale}{\nlscale} &< \frac{1}{2}, \\
+\sigma_\phi(\gscale) + \frac{\res_n}{\gscale} 
+&\leq
+\frac{t_0}{4+2\sigma_\phi(\gscale)}
+\left(1-2\frac{\gscale}{\nlscale}\right).
+\end{aligned}
+\end{align}
+%
+for some $n\in\N$. We detail the concrete appearance of the operator $\Delta^\tau_\infty$ in the following paragraphs and first state the main general result. We employ the notation $a\lesssim b$ which means that $a\leq C\,b$ for some constant $C>0$ depending only on $g$ and $\eta$, but not on $n, \gscale$ or $\gres$.
+%
+\begin{theorem}{\cite[Th. 2.2]{bungert2021uniform}}{thm:general_convergence_result}
+Let $\nlscale>0$, let the kernel and data fulfill \labelcref{en:K2,en:K4,ass:kernel}, \labelcref{ass:dataA,ass:dataB} and let \labelcref{eq:geodesic_euclidean,ass:scaling} hold. Let $\vec u_n:\domain_n\to\R$ solve \cref{prob:GAMLE}, and $u:\closure\domain\to\R$ solve \cref{prob:amles}.
+\begin{enumerate}
+\item It holds 
+\begin{align*}
+    \sup_{\domain_n}\abs{u-\vec u_n} = \sup_{\closure\domain}\abs{u- u_n} \lesssim \nlscale +  \sqrt[3]{\frac{\res_n}{\gscale\nlscale} + \frac{\gscale}{\nlscale^2}+\frac{\phi(\gscale)}{\gscale\nlscale}}.
+\end{align*}
+\item If $\inf_{\cl\domain}\abs{\nabla u}>0$, then it even holds 
+\begin{align*}
+\sup_{\domain_n}\abs{u-\vec u_n} = \sup_{\closure\domain}\abs{u- u_n} \lesssim \nlscale +  {\frac{\res_n}{\gscale\nlscale} + \frac{\gscale}{\nlscale^2}+\frac{\phi(\gscale)}{\gscale\nlscale}}.
+\end{align*}
+%
+Here, $u_n:\closure\domain\to\R$ denotes the piecewise constant extension of $\vec u_n$, as in \labelcref{eq:lipextend}.
+\end{enumerate}
+\end{theorem}
+%
+%
+\noindent%
+We observe that in the case where $\abs{\nabla u}$ is bounded away from zero the rate improves, which is due to a perturbation we briefly mention in the following. The parameter $\nlscale$ appears due to our proof strategy and does not have a concrete meaning for the final problem. An immediate consequence is that for an arbitrary $\nlscale>0$ we obtain
+%
+\begin{align*}
+\sup_{\domain_n}\abs{u-\vec u_n} < \nlscale
+\end{align*}
+%
+by sending $\gres_n,\gscale_n$ to zero as $n\to\infty$ employing the weakest scaling assumption $\gres_n\ll \gscale_n$. Since $\nlscale >0$ was arbitrary this already yields convergence of discrete AMLEs under the weakest scaling assumption \cite[Cor. 2.3]{bungert2021uniform}. In order to obtain the convergence rates involving only $\gres$ and $\gscale$ we can \enquote{optimize} over $\nlscale$. We first consider the small length scale regime, which in our case includes any graph scaling such that $\gscale\lesssim \gres_n^{5/9}$. In that case we can choose $\nlscale = ((\delta_n + \phi(\gscale))/\gscale)^{1/4}$ to obtain
+%
+%
+\begin{align*}
+\sup_{\domain_n}\abs{u-\vec u_n}
+=
+\sup_{\closure\domain}\abs{u-u_n} 
+\lesssim\left(\frac{\res_n + \phi(\gscale)}{\gscale}\right)^\frac{1}{4}.
+\end{align*}
+%
+%
+If $\abs{\nabla u}$ is bounded away from zero this can be improved to 
+%
+\begin{align*}
+\sup_{\domain_n}\abs{u-\vec u_n} 
+=
+\sup_{\closure\domain}\abs{u-u_n} 
+\lesssim \left(\frac{\res_n + \phi(\gscale)}{\gscale}\right)^\frac{1}{2}.
+\end{align*}
+%
+where we consider the regime $\gscale\lesssim\gres^{3/5}$. In the convex case, i.e. $\phi\equiv 0$ we therefore directly obtain the rates
+%
+\begin{align*}
+\inf_{\cl\domain}\abs{\nabla u} = 0 &:
+\left(\frac{\gres_n}{\gres_n^{5/9}}\right)^{\frac{1}{4}} = \gres_n^{\frac{1}{9}},\\
+\inf_{\cl\domain}\abs{\nabla u} > 0 &:
+\left(\frac{\gres_n}{\gres_n^{3/5}}\right)^{\frac{1}{2}} = \gres_n^{\frac{1}{5}},
+\end{align*}
+%
+see \cite[Cor. 2.4]{bungert2021uniform}. In fact the convexity assumption is too strict, instead we just have to require that $\phi(\gscale)\lesssim \gscale^p$ for some power of $p\in\R^+$ that does not deteriorate the rate. This is done in \cite[Cor. 2.5, 2.6]{bungert2021uniform}, where also a better rate is obtained by allowing for larger length scales. In the following we sketch the main ingredients of the proof. While in the $\Gamma$-convergence case we employ the hierarchy
+%
+\begin{center}
+\enquote{discrete $\to$ non-local $\to$ continuum}
+\end{center} 
+%
+%
+our scheme now has the form
+%
+\begin{center}
+\enquote{discrete $\to$ homogenized non-local $\leftarrow$ continuum}.
+\end{center}
+%
+We discuss the two directions below and then discuss how to \enquote{meet in the middle}.
+%
+\paragraph{Non-Local to C}
 
 \subsection{Numerical Examples}
 %
