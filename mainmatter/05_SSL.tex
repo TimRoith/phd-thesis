@@ -877,7 +877,7 @@ We address the question of existence and uniqueness of solutions to \cref{prob:a
 %
 for functions of class $C^2$. This operator had one of its first appearances in \cite{aronsson1968partial}, but we refer to \cite{lindqvist2017notes} for a detailed overview of the topic. The brief exposition here, also follows \cite{lindqvist2017notes} to some extent. Intuitively the $\infty$-Laplace operator gives the second derivative of $u$ into the direction of its gradient. The associated infinity Laplace equation takes the following form.
 %
-\begin{problem}{}{}
+\begin{problem}{}{prob:inflap}
 Let $\domain\subset\R^d$ be an open and bounded domain and $g\in W^{1,\infty}$, then the task is to find $u$ such that
 %
 \begin{align*}
@@ -910,10 +910,23 @@ The concept of viscosity solutions can similarly be applied to the $p$-Laplacian
 Solving the $\infty$-Laplace equation in the viscosity sense is in fact equivalent to being absolutely minimizing, which we state in the following theorem taken from \cite{aronsson2004tour}
 %
 \begin{theorem}{\cite[Theorem 4.13]{aronsson2004tour}}{th:compprinc}
-A function $u\in C(\cl\domain)$ fulfills $\Delta_\infty u=0$ in the viscosity sense iff it is an absolutely minimizing function.
+A function $u\in C(\cl\domain)$ fulfills $\Delta_\infty u=0$ in $\domain$ in the viscosity sense iff it is an absolutely minimizing function on $\domain$.
 \end{theorem}
 %
 %
+\noindent
+In \cref{prob:inflap} we only consider the case where boundary values are given on $\partial\domain$. However, for our application we would rather have a Dirichlet condition on the set $\conset\subset\cl\domain$, since it often does not make sense to prescribe boundary values on $\partial\domain$. Therefore, we assume Neumann boundary conditions on this boundary and then consider the problem
+%
+\begin{align}\label{eq:inflapneumann}
+\begin{aligned}
+\Delta_\infty u = 0 &\text{ in }\domain\setminus\conset\\
+\frac{\partial u}{\partial \nu} = 0 &\text{ on }\partial\domain\setminus\conset\\
+u = g &\text{ on }\conset.
+\end{aligned}
+\end{align}
+%
+In the case that $\domain$ is smooth and convex, from \cite[Lem. 3.1]{armstrong2011infinity} we have that $u\in C(\cl\domain)$ is an AMLE of $g:\conset\to\R$ to $\cl\domain$ iff it fulfills \cref{eq:inflapneumann}.\par
+
 We can now also address the question of uniqueness, where we state the following famous result of Jensen \cite{jensen1993uniqueness}.
 %
 \begin{theorem}{\cite{jensen1993uniqueness}}{th:jens} 
@@ -925,6 +938,7 @@ Let $u,v\in C(\cl\domain)$ be two viscosity solutions of the $\infty$-Laplacian,
 \end{theorem}
 %
 %
+\noindent%
 Originally proven by Jensen in \cite{jensen1993uniqueness}, there exists a very simple proof by Amstrong and Smart \cite{armstrong2010easy} employing the \emph{comparison with cones} which we detail in the following paragraph.
 %
 %
@@ -964,21 +978,30 @@ which is reminiscent of the comparison principle in \cref{th:compprinc}. In the 
 \end{align*}
 %
 %
-In the Euclidean case as in \cite{aronsson2004tour} one says a function fulfills \emph{comparison with cones} from above, if it fulfills \cref{eq:conecont} in $\domain$ for every subset $V\subset\subset\domain$, every $a\geq 0$ and $z\in\R^n\setminus V$. We say $u$ fulfills \emph{comparison with cones} from below if $-u$ fulfills comparison from above. If it fulfills both comparisons from above and below, we say it fulfills comparison with cones. Here, \cite[Prop. 2.1]{aronsson2004tour} shows the following equivalence to being absolutely minimizing, which however mainly focuses on the Euclidean case. The version for general metric spaces is due to \cite{juutinen2006equivalence} to which we refer to in the following.
+In the Euclidean case as in \cite{aronsson2004tour} one says a function fulfills \emph{comparison with cones} from above, if it fulfills \cref{eq:conecont} in $\domain$ for every subset $V\subset\subset\domain$, every $a\geq 0$ and $z\in\R^n\setminus V$. We say $u$ fulfills \emph{comparison with cones} from below if $-u$ fulfills comparison from above. If it fulfills both comparisons from above and below, we say it fulfills comparison with cones. Here, \cite[Prop. 2.1]{aronsson2004tour} shows the following equivalence to being absolutely minimizing, which however mainly focuses on the Euclidean case. Our setting slightly deviates from the Euclidean one, where in \cite{bungert2021uniform} we consider the following notion.
+%
+\begin{definition}{\cite[Def. 4.1]{bungert2021uniform}}{def:comparison_distance_functions}
+We shall say that a upper semicontinuous function $u\in USC(\closure \domain)$ satisfies CDF from above in $\cl\domain\setminus\constr$, if  for each relatively open and connected subset $V \subset \cl\domain\setminus\constr$, any \revision{$x_0\in \closure\domain\setminus V$} and $a\geq 0$ we have
+\[\max_{\closure V}(u - a\,d_{\cl\domain}(x_0,\cdot)) = \max_{\revision{\relpartial V}}(u - a\,d_{\cl\domain}(x_0,\cdot)).\]
+Similarly, we say  $u\in LSC(\closure\domain)$ satisfies CDF from below in $\cl\domain\setminus\constr$, if for each relatively open and connected subset \revision{$V\subset \cl\domain\setminus\constr$}, any \revision{$x_0\in \closure\domain\setminus V$} and $a\geq 0$ we have
+\[\min_{\closure V}(u + a\,d_{\cl\domain}(x_0,\cdot)) = \min_{\revision{\relpartial V}}(u + a\,d_{\cl\domain}(x_0,\cdot)).\]
+We say $u\in C(\closure\domain)$ satisfies CDF if it satisfies CDF from above and below.
+\end{definition}
+%
+\noindent%
+This definition is a special case of the notion in \cite{juutinen2006equivalence}. Therein, the authors also show the equivalence to the absolutely minimizing property, which we state in the following.
 %
 %
 \begin{theorem}{\cite[Prop. 4.1]{juutinen2006equivalence}}{}
-A function $u\in C(\domain)$ is absolutely minimizing iff it fulfills comparison with cones in $\domain$.
+A function $u\in C(\cl\domain)$ is absolutely minimizing iff it fulfills comparison with cones in $\domain$.
 \end{theorem}
 %
 \noindent%
-Therefore, we can rewrite \cref{prob:amles} employing the comparison with cones condition. In \cite{bungert2021uniform} we are interested in the case, where the metric space is given as $(\cl\domain, d_{\cl\domain})$, where $\domain\subset\R^n$ is some open set in the Euclidean sense. We are therefore dealing with a separable length space, where \cref{thm:examle} yields existence of solutions for \cref{prob:amles}. Concerning uniqueness, we refer to \cite{peres2009tug} which were the first to prove uniqueness in the length space setting. For a more general result we refer to \cite{naor2012absolutely}. In our work we obtain uniqueness by a careful adaption of the proof in \cite{armstrong2010easy}, which we state here for completeness.
+Therefore, we can rewrite \cref{prob:amles} employing the comparison with cones condition. Our metric space is given as $(\cl\domain, d_{\cl\domain})$, where $\domain\subset\R^n$ is some open set in the Euclidean sense, therefore we have a separable length space, where \cref{thm:examle} yields existence of solutions for \cref{prob:amles}. Concerning uniqueness, we refer to \cite{peres2009tug} which were the first to prove uniqueness in the length space setting. For a more general result we refer to \cite{naor2012absolutely}. In our work we obtain uniqueness by a careful adaption of the proof in \cite{armstrong2010easy}, which we state here for completeness.
 %
-\begin{align*}
-Consider the metric space $(\cl\domain, d_{\cl\domain})$
-\end{align*}
-
-
+\begin{proposition}{\cite[Prop. 4.11]{bungert2021uniform}}{}
+Consider the metric space $(\cl\domain, d_{\cl\domain})$, then \cref{prob:amles} has at most one solution.
+\end{proposition}
 %
 %
 \subsection{Graph Lipschitz Extensions}\label{sec:GLipExt}
@@ -1919,11 +1942,11 @@ This assumption on the labeling function, is also connected to the no-noise and 
 %
 In \cite{roith2022continuum} the proof strategy relied on $\Gamma$-convergence. In \cite{bungert2021uniform} we use the comparison with cones characterization of AMLEs together with comparison principles for the infinity Laplace operator. An important strategy is to consider the homogenized operator
 %
-\begin{align*}
+\begin{align}\label{eq:homop}
 \Delta_\infty^\nlscale u(x) = \frac{1}{\nlscale^2}\left(\inf_{y\in B_\nlscale(x)}(u(y)-u(x))
 +
 \sup_{y\in B_\nlscale(x)}(u(y)-u(x))\right)
-\end{align*}
+\end{align}
 %
 %
 on the length scale $\nlscale>0$ which is typically larger than the graph scale $\gscale$. The results in the following are non-asymptotic, for which also our scaling assumption reads as follows
@@ -2009,7 +2032,38 @@ our scheme now has the form
 %
 We discuss the two directions below and then discuss how to \enquote{meet in the middle}.
 %
-\paragraph{Non-Local to C}
+\paragraph{Non-Local to Continuum}
+%
+In this paragraph we comment on how to relate continuum AMLEs to the homogenized operator in \cref{eq:homop}. Here, it is convenient to copy the following definitions from \cite{bungert2021uniform},
+%
+\begin{alignat}{2}
+\label{eq:T-operators}
+T^\nlscale u(x) &:= \sup_{\closure B_\domain(x,\nlscale)} u, 
+\qquad
+T_\nlscale u(x) &&:= \inf_{\closure B_\domain(x,\nlscale)} u,
+\\
+\label{eq:slopes}
+S_\nlscale^+ u &:= \frac{1}{\nlscale}(T^\nlscale u - u),
+\qquad
+S_\nlscale^- u &&:= \frac{1}{\nlscale}(u-T_\nlscale u),
+\end{alignat}
+%
+so that we can write $\Delta_\infty^\nlscale u = \frac{1}{\nlscale}\left(S^+_\nlscale u - S^-_\nlscale u\right)$. The astonishing property of this operator is the so-called \enquote{max-ball} lemma. If $u\in USC(\cl\domain)$ fulfills comparison with distance functions from above, then we have that the function $T^\nlscale u$ fulfills
+%
+\begin{align*}
+-\Delta^\nlscale_\infty T^\nlscale u \leq 0,
+\end{align*}
+%
+analogously if $u\in LSC(\cl\domain)$ fulfills CDF form below we have
+%
+\begin{align*}
+-\Delta^\nlscale_\infty T_\nlscale u \geq 0.
+\end{align*}
+%
+This shown in \cite[Lem. 4.6]{bungert2021uniform}, again borrowing concepts from \cite{armstrong2010easy}. It is interesting that the inequality is exact, i.e., we do not need to introduce an error term of order $\nlscale$. The observation in \cite[Lem. 4.6]{bungert2021uniform} allows us to pass from the continuum setting to the non-local one.
+%
+%
+\paragraph{Discrete to Non-Local} Compared to the previous paragraph passing from the discrete problem to the non-local one is more challenging.
 
 \subsection{Numerical Examples}
 %
