@@ -20,7 +20,20 @@
 \usetikzlibrary{arrows}
 \usetikzlibrary{calc,arrows.meta,fadings}
 %
-%\DeclareUnicodeCharacter{0301}{aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+\RedeclareSectionCommand[
+tocnumwidth=2em
+]{chapter}
+\RedeclareSectionCommand[
+tocindent=2em,
+tocnumwidth=2.8em
+]{section}
+\RedeclareSectionCommand[
+tocindent=4.8em,
+tocnumwidth=4em
+]{subsection}
+\hypersetup{hypertexnames=false}
+
+
 \begin{document}
 %-------------------------------------------------
 \frontmatter
@@ -38,7 +51,7 @@
 \part{Exposition}\label{part:Intro}
 \input{mainmatter/00_Intro.tex}
 \input{mainmatter/00_LP.tex}
-\input{mainmatter/05_SSL.tex}
+%\input{mainmatter/05_SSL.tex}
 %\input{mainmatter/10_SL.tex}
 %\input{mainmatter/15_C.tex}
 \input{backmatter/thesis-printbib.tex}
@@ -49,10 +62,10 @@
 \renewcommand{\chapapp}{Print}
 %\paperchapter{roith2022continuum}{}{}{1}{1}
 %\paperchapter{bungert2021uniform}{}{}{1}{1}
-% %
-% \paperchapter{bungert2021clip}{}{}{1}{1}
-% \paperchapter{bungert2022bregman}{}{}{1}{1}
-% \paperchapter{kabri2023resolution}{}{}{1}{1}
+%% %
+%\paperchapter{bungert2021clip}{}{}{1}{0}
+%\paperchapter{bungert2022bregman}{}{}{1}{1}
+%\paperchapter{kabri2023resolution}{}{}{1}{0}
 %-------------------------------------------------
 %\declarationGer
 %-------------------------------------------------
