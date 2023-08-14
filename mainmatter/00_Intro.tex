@@ -1,0 +1,19 @@
+\chapter{Introduction}
+%
+%
+The field of \textit{machine learning} emerged in the 1950s \cite{samuel1959some, rosenblatt1958perceptron}, motivated by the idea of letting a machine discover algorithms and patterns without having to explicitly arrange them by hand. After the initial phase and multiple \enquote{AI-winters} \cite{steele1996evolution}, numerous important developments---e.g. the rediscovery of the backpropagation algorithm, originally due to \cite{kelley1960gradient,rosenblatt1962principles} and then popularized in \cite{rumelhart1986learning}, see e.g. \cite{schmidhuber2022annotated}---contributed to the relevance of learning methods. The advances in computer hardware together with the availability of large amounts of data, finally allowed the machine learning enthusiasm of the recent years to spark. While \enquote{deep} learning methods---i.e. techniques involving many stacked neural layers as originally proposed in \cite{rosenblatt1958perceptron}---are the most prominent examples, there is a whole zoo of learning-based strategies that are actively applied in fields like computer vision \cite{chai2021deep}, natural language processing \cite{khurana2023natural} or healthcare \cite{shehab2022machine}. In this work we mainly focus on data-driven approaches, applied to classification tasks, where the concrete modality of the given data determines our approach. Namely, we focus on supervised---the dataset consists of input-output pairs, i.e. is fully labeled---and the semi-supervised---the data is only partially labeled---learning tasks.
+
+For both regimes especially the last 20 years have seen great success of these data-driven methods. However, the sometimes purely heuristic learning strategies also exhibit serious drawbacks. In the supervised setting one is usually interested in the generalization behavior of a learned classifier, i.e. how good is the performance on unseen inputs that are not part of the given training data. Unfortunately in \cite{goodfellow2014explaining} it was discovered, that this performance can be completely corrupted, by small, seemingly invisible perturbations known as \textit{adversarial attacks}. More generally this phenomenon leads us to the issue of \textit{input robustness}. Given some input $\inp$ and suppose that a human and some machine would classify this input to be of type $c$. In a rather vague but demonstrative formulation the key implication for transformed input $\inpp$ we want to obtain is
+%
+\begin{align*}
+\left.
+\begin{gathered}
+\inpp\text{ is close to }\inp,\\
+\inpp\text{ is still classified as }c\text{ by a human}
+\end{gathered}
+\right\}
+\Rightarrow
+\text{the machine classifies }\inpp\text{ as } c. 
+\end{align*}
+%
+Next to adversarial examples this also includes resolution changes of images, which do not---if they are reasonably small---change the classification by a human. For the semi-supervised setting 
