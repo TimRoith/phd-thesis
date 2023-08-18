@@ -1,20 +1,11 @@
 \chapter{Consistent Semi-Supervised Learning on Sparse Graphs}\label{ch:SSL}
 
-This chapter considers the consistency of graph-based semi-supervised learning methods and contextualizes the topics provided in the prints \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. We are given partially labeled data, where the task is to obtain a labeling on the  whole graph. Here, we consider learning algorithms on graphs and are especially interested in the following aspects:
+This chapter considers the consistency of graph-based semi-supervised learning methods and contextualizes the topics provided in the prints \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. We are given partially labeled data, where the task is to obtain a labeling on the  whole graph. Considering learning algorithms we are especially interested in the following aspects:
 %
 \begin{itemize}
 \item \textbf{Consistency:} what is the behavior in the infinite data limit?
 \item \textbf{Sparsity:} how does sparsity of the graph weights affect this behavior?
 \end{itemize}
-%
-%
-In \cite{roith2022continuum} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart. This allows to then show convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not allow for unique solutions. We refer to \cref{sec:GConv} for more details.
-
-The issue of non-uniqueness is addressed in \cite{bungert2021uniform}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. These functions are in fact special solutions of the extension task  in \cite{roith2022continuum}, namely so-called absolutely minimizing Lipschitz extensions, which are---under certain assumptions---unique. Again, we are able to work with a very mild scaling assumption that allows for sparse graphs. Furthermore, we are able to prove the first quantitative convergence rates, where we provide the key insight, that a rate for graph distance functions transfers to a rate for infinity harmonic functions. The main contributions are presented in \cref{sec:RatConv}.
-
-To allow even sparser graphs, directly at the connectivity threshold, we consider first passage percolation in \cite{bungert2022ratio}. Here, we prove a ratio convergence of a graph distance function on a Poisson point cloud. The results can ultimately be employed to show convergence rates for Lipschitz learning. Details are provided in \cref{sec:Perc}.
-
-Before we present these works we first introduce the setting of consistency for graph-based SSL in \cref{sec:GSSL}. We then discuss the $p$-Laplacian in \cref{sec:pLap} both in the continuum and the graph setting. Similarly, we then introduce the problem we are actually concerned namely the $\infty$-Laplacian and Lipschitz extensions in \cref{sec:LipExt}. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit.
 %
 %
 %
@@ -53,7 +44,13 @@ node[midway] {\cref{sec:LipExt} Lipschitz Extensions and the Infinity Laplacian}
 \end{tikzpicture}
 \end{center}
 %
-%
+In \cite{roith2022continuum} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart. This allows to then show convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not allow for unique solutions. We refer to \cref{sec:GConv} for more details.
+
+The issue of non-uniqueness is addressed in \cite{bungert2021uniform}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. These functions are in fact special solutions of the extension task  in \cite{roith2022continuum}, namely so-called absolutely minimizing Lipschitz extensions, which are---under certain assumptions---unique. Again, we are able to work with a very mild scaling assumption that allows for sparse graphs. Furthermore, we are able to prove the first quantitative convergence rates, where we provide the key insight, that a rate for graph distance functions transfers to a rate for infinity harmonic functions. The main contributions are presented in \cref{sec:UnifConv}.
+
+%To allow even sparser graphs, directly at the connectivity threshold, we consider first passage percolation in \cite{bungert2022ratio}. Here, we prove a ratio convergence of a graph distance function on a Poisson point cloud. The results can ultimately be employed to show convergence rates for Lipschitz learning. Details are provided in \cref{sec:Perc}.
+
+Before we present these works we first introduce the setting of consistency for graph-based SSL in \cref{sec:GSSL}. We then discuss the $p$-Laplacian in \cref{sec:pLap} both in the continuum and the graph setting. Similarly, we then introduce the problem we are actually concerned with namely the $\infty$-Laplacian and Lipschitz extensions in \cref{sec:LipExt}. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit.
 %
 %
 %
@@ -92,11 +89,12 @@ In order to obtain meaningful solutions, one usually incorporates the \emph{smoo
 %
 
 \begin{remark}{Notational Remark}{}
-In \cref{ch:para} we employ the symbol $\Inp$ to denote the input set, which is now replaced by $\domain$. This due to the fact, that the prints \cite{bungert2021uniform, bungert2022ratio, roith2022continuum} employ this notation for which we choose to use it here.
+In \cref{ch:para} we employ the symbol $\Inp$ to denote the input set, which is now replaced by $\domain$. This due to the fact, that \cite{roith2022continuum,bungert2021uniform, bungert2022ratio} employ this notation for which we choose to use it here.
 \end{remark}
 %
 %
-Often one assumes that the points $x\in\domain_n$ are i.i.d. w.r.t. a distribution $\mu$ with density $\rho:\domain\to\R$. However, as observed in \cite{roith2022msc}, the data distribution is not directly relevant for the works in \cite{roith2022continuum, bungert2021uniform}. Therefore, we can usually work with more general sets $\domain_n$.
+\noindent%
+Often one assumes that the points $x\in\domain_n$ are i.i.d. w.r.t. a distribution $\mu$ with density $\rho:\domain\to\R$. However, as observed in \cite{roith2022msc}, the data distribution is not directly relevant for the works in \cite{roith2022continuum, bungert2021uniform}. The appropriate generalization to study the limit of $\domain_n$ for $n\to\infty$ is discussed in \cref{sec:GConv}.
 %
 %
 \subsection{Weighted Graphs}
@@ -124,12 +122,12 @@ a weight function $w:\domain_n\times \domain_n\to\R$ where $w(x,y)>0$ if and onl
 naturally transfers to $w$. In the case of an undirected graph, one simply requires the weight function to be symmetric, i.e., 
 $w(x,y)=w(y,x)$ for all $x,y\in \domain_n$.
 %
-Furthermore, in the above definition the set $\domain_n$ does not enter the definition up to ordering of its $n\in \N$  elements. Therefore, a graph could be entirely represented by a weight function $w:\{1,\ldots,n\}\times\{1,\ldots,n\}\to\R$. However, since the definition of $w$ will incorporate information about points $\domain_n\subset\R^d$ we use the notation $(\domain_n, w_n)$ for graphs in the following.
+Furthermore, in the above definition the set $\domain_n$ does not enter the definition up to the  ordering of its $n\in \N$  elements. Therefore, a graph could be entirely represented by a weight function $w:\{1,\ldots,n\}\times\{1,\ldots,n\}\to\R$. However, since the definition of $w$ will incorporate information about points $\domain_n\subset\R^d$ we use the notation $(\domain_n, w_n)$ for graphs in the following.
 %
 %
 %
 \paragraph{Kernels and the Graph Scale} 
-In most of our applications the data $\domain_n$ is given as a subset of $\R^n$ and in fact we are interested in the limit $n\to\infty$, where $\domain_n$ fills out a domain $\tilde\domain\subset\R^d$. In the continuum we are interested in \emph{local} operators incorporating changes of functions $u:\tilde\domain\to\R$ at an infinitesimal small scale. Since interactions on a graph are inherently non-local in the Euclidean sense, we need to localize the interaction on the graph in the limit $n\to\infty$. A popular choice that guarantees this behavior is to set
+In most of our applications the data $\domain_n$ is given as a subset of $\R^d$ and in fact we are interested in the limit $n\to\infty$, where $\domain_n$ fills out a domain $\tilde\domain\subset\R^d$. In the continuum we are interested in \emph{local} operators incorporating changes of functions $u:\tilde\domain\to\R$ at an infinitesimal small scale. Since interactions on a graph are inherently non-local in the Euclidean sense, we need to localize the interaction on the graph in the limit $n\to\infty$. A popular choice that guarantees this behavior is to set
 %
 \begin{align*}
 w(x,y) = \eta_{\gscale}(\abs{x-y})
@@ -189,7 +187,7 @@ where we assume an ordering $\domain_n=\{x_1,\ldots, x_n\}$. In order to have a 
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{code/SSL/NNZ.pdf}
-\caption{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n\in\N$ points uniformly in the cube $[0,1]^d$ and only connect connect vertices $x_i,x_j\in\domain_n$ if $\norm{x_i-x_j}_2 < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
+\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n\in\N$ points uniformly in the cube $[0,1]^d$ and only connect connect vertices $x_i,x_j\in\domain_n$ if $\norm{x_i-x_j}_2 < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
 \end{figure} 
 %
 %
@@ -498,7 +496,7 @@ While the graph 2-Laplacian has been successfully employed for classification ta
 \hfill%
 \includegraphics[width=.28\textwidth,trim={3.1cm 1cm 3.5cm 0cm},clip]{code/SSL/2Dex_10000.png}%
 %
-\caption{Solution to the Laplacian Learning problem ($p=2$) for different number of data points $n\in\{100,1000,10000\}$.}\label{fig:pdeg}
+\caption[Solution to the Laplacian Learning problem for different number of data points.]{Solution to the Laplacian Learning problem ($p=2$) for different number of data points $n\in\{100,1000,10000\}$.}\label{fig:pdeg}
 \end{figure}
 %
 %
@@ -578,7 +576,7 @@ Since the assumption that $p>d$ is crucial for asymptotic consistency, a natural
 \hfill%
 \includegraphics[width=.28\textwidth,trim={3.1cm 1cm 3.5cm 0cm},clip]{code/SSL/2Dex_10000-p=inf.png}%
 %
-\caption{Solution to the Laplacian Learning problem ($p=\infty$) for different number of data points $n\in\{100,1000,10000\}$. The setup is otherwise copied from \cref{ex:pLapBad}.}\label{fig:pinf}
+\caption[Solution to the Laplacian Learning problem for different number of data points.]{Solution to the Laplacian Learning problem ($p=\infty$) for different number of data points $n\in\{100,1000,10000\}$. The setup is otherwise copied from \cref{ex:pLapBad}.}\label{fig:pinf}
 \end{figure}
 %
 However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ problem, Lipschitz learning does not respect the density of data in any way. Namely, the method is exclusively distance based. This behavior is a drawback in many machine learning applications. However, by carefully rescaling the graph weights one obtains a data sensitive problem, see \cite{calder2019consistency} and \cref{sec:GConv}. 
@@ -812,7 +810,7 @@ see \cref{fig:maxprinc} for a visualization. Analogously, we have that $\color{s
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{code/lipextcomp/comp.pdf}
-\caption{The maximal extension does not admit a comparison principle, as demonstrated in \cref{ex:maxprinc}.}\label{fig:maxprinc}
+\caption[Visualization for \cref{ex:maxprinc}.]{The maximal extension does not admit a comparison principle, as demonstrated in \cref{ex:maxprinc}.}\label{fig:maxprinc}
 \end{figure}
 %
 %
@@ -853,7 +851,7 @@ the topological notions like boundary and interior are to be understood relative
 \begin{center}
 \includegraphics[width=.5\textwidth]{atelier/SSL/relboundary.pdf}
 \end{center}
-\caption{A set $V\subset\overline{\domain}$ can be relatively open w.r.t. the metric space $\overline{\domain}$ although, $V\cap\partial\domain \neq\emptyset$, where $\partial \domain$ is the boundary within the standard topology on $\R^d$. The relative boundary of $\partial_{\overline{\domain}} V$ does not include any parts of $\partial \domain$.}\label{fig:relb}
+\caption[Visualization of the relative boundary.]{A set $V\subset\overline{\domain}$ can be relatively open w.r.t. the metric space $\overline{\domain}$ although, $V\cap\partial\domain \neq\emptyset$, where $\partial \domain$ is the boundary within the standard topology on $\R^d$. The relative boundary of $\partial_{\overline{\domain}} V$ does not include any parts of $\partial \domain$.}\label{fig:relb}
 \end{figure}
 %
 %
@@ -1673,13 +1671,13 @@ The inherent reason that we need no enforces this, is that edges in the graph ar
 \end{scope}
 \end{tikzpicture}
 %
-\caption{An example of a sharp internal corner, violating \cref{eq:cond_domain}. The geodesic distance between the pairs of points converging to the corner point is bigger than then Euclidean one by a constant factor.}\label{fig:sharp}
+\caption[An example of a sharp internal corner, violating \cref{eq:cond_domain}.]{An example of a sharp internal corner, violating \cref{eq:cond_domain}. The geodesic distance between the pairs of points converging to the corner point is bigger than then Euclidean one by a constant factor.}\label{fig:sharp}
 \end{figure}
 %
 %
 
 %
-\subsection{$\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$} In order to show convergence of discrete functions defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. Employing results form \cite{trillos2015rate} in \cite{GarcSlep15} the authors introduced the space $TL^p$
+\subsection{$\Gamma$-Convergence of the Discrete Functionals} In order to show convergence of discrete functionals defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. Employing results form \cite{trillos2015rate} in \cite{GarcSlep15} the authors introduced the space $TL^p$
 %
 \begin{align*}
 TL^p :=\left\{(\mu, u): \mu\in \mathcal{P}(\domain), u\in L^p(\mu)\right\}

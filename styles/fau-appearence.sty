@@ -110,7 +110,7 @@
 	\addtokomafont{author}{\rmfamily}
 	%-------------------------------------------------
 	\renewcommand*\chapterformat{%
-		\begin{tcolorbox}[
+		\begin{tcolorbox}[%
 			enhanced,
 			width=.4\textwidth,
 			colback=white,
@@ -129,19 +129,19 @@
 	\renewcommand*{\chapterlineswithprefixformat}[3]{%
 		%\textcolor{BaseColorA}{\rule{\textwidth}{.4pt}}
 		##2\nobreak% chapter
-		\vspace{-25pt}%
-		\begin{tcolorbox}[
+		\vspace{-45pt}%
+		\begin{tcolorbox}[%
 			enhanced,
 			colback=white,
 			frame hidden,
 			borderline west={4pt}{0pt}{BaseColorA},
-			]
-		\textcolor{BaseColorA}{##3}
-		\end{tcolorbox}
+			]%
+		\textcolor{BaseColorA}{##3}%
+		\end{tcolorbox}%
 		%\textcolor{BaseColorA}{\rule{\textwidth}{.4pt}}%
 	}%
-}
-\chapterheaderstyle % execute option
+}%
+\chapterheaderstyle% execute option
 % ########################################################################################
 %
 %
