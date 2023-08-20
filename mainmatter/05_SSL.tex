@@ -127,7 +127,7 @@ Furthermore, in the above definition the set $\domain_n$ does not enter the defi
 %
 %
 \paragraph{Kernels and the Graph Scale} 
-In most of our applications the data $\domain_n$ is given as a subset of $\R^d$ and in fact we are interested in the limit $n\to\infty$, where $\domain_n$ fills out a domain $\tilde\domain\subset\R^d$. In the continuum we are interested in \emph{local} operators incorporating changes of functions $u:\tilde\domain\to\R$ at an infinitesimal small scale. Since interactions on a graph are inherently non-local in the Euclidean sense, we need to localize the interaction on the graph in the limit $n\to\infty$. A popular choice that guarantees this behavior is to set
+In most of our applications the data $\domain_n$ is given as a subset of $\R^d$ and in fact we are interested in the limit $n\to\infty$, where $\domain_n$ fills out a domain $\tilde\domain\subset\R^d$. In the continuum we consider \emph{local} operators incorporating changes of functions $u:\tilde\domain\to\R$ at an infinitesimal small scale. Since interactions on a graph are inherently non-local in the Euclidean sense, we need to localize the interaction on the graph in the limit $n\to\infty$. A popular choice that guarantees this behavior is
 %
 \begin{align*}
 w(x,y) = \eta_{\gscale}(\abs{x-y})
@@ -187,7 +187,7 @@ where we assume an ordering $\domain_n=\{x_1,\ldots, x_n\}$. In order to have a 
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{code/SSL/NNZ.pdf}
-\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n\in\N$ points uniformly in the cube $[0,1]^d$ and only connect connect vertices $x_i,x_j\in\domain_n$ if $\norm{x_i-x_j}_2 < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
+\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n\in\N$ points uniformly in the cube $[0,1]^d$ and only connect vertices $x_i,x_j\in\domain_n$ if $\norm{x_i-x_j}_2 < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
 \end{figure} 
 %
 %
@@ -392,7 +392,7 @@ which together with the boundary conditions $\vec u_1(o)=\vec u_2(o)=\vec g(o)$ 
 Since $x\in\domain_n$ was arbitrary, we get $\vec u_1 = \vec u_2$.\par
 %
 \noindent%
-To show existence, we do not need to assume that the graph is connected to the boundary. On every connected component $V\subset \domain_n$ that is not connected to $\conset$ we can set $\vec u(x) = c$ for all $x\in V$, where $c\in\R$ is an arbitrary constant. We can select all edges in $V$, i.e. $E_V := E \cap V^{\times 2}$ ans since $V$ was a connected component---i.e. it does not have active edges to vertices outside of $V$---we can also split up the functional
+To show existence, we do not need to assume that the graph is connected to the boundary. On every connected component $V\subset \domain_n$ that is not connected to $\conset$ we can set $\vec u(x) = c$ for all $x\in V$, where $c\in\R$ is an arbitrary constant. We can select all edges in $V$, i.e. $E_V := E \cap V^{\times 2}$ and since $V$ was a connected component---i.e. it does not have active edges to vertices outside of $V$---we can also split up the functional
 %
 \begin{align*}
 \GE^{w_n}_{p}(\vec u) = \sum_{(x,y)\in E\setminus E_V} \abs{\nabla^{w_n} \vec u(x,y)}^p
@@ -604,7 +604,7 @@ $u\in W^{1,\infty}(\domain)$ we have that
 \lim_{p\to\infty} \pDir{}_{p,\rho}(u)^{1/p} = \esssup_{x\in\supp(\rho)} \abs{\nabla u(x)} =: \pDir{}_{\infty,\rho}(u),
 \end{align*}
 %
-see \cite{jensen1993uniqueness}. Again, we see that that the weighting $\rho$ only enters via its support, therefore we do not explicitly consider it in the following and instead assume $\domain=\supp(\rho)$ and then only write $\pDir{}_{\infty}$. The functional $\pDir{}_\infty$ is weak$^*$-lower semi-continuous over $W^{1,\infty}(\domain)$, (see e.g. \cite[Thm. 2.6]{barron2001lower}). In the classical theory developed by Jensen in \cite{jensen1993uniqueness} one considers the following problem, which is tries to \enquote{minimize the \emph{sup-norm} of the gradient} as described by Jensen.
+see \cite{jensen1993uniqueness}. Again, we see that that the weighting $\rho$ only enters via its support, therefore we do not explicitly consider it in the following and instead assume $\domain=\supp(\rho)$ and then only write $\pDir{}_{\infty}$. The functional $\pDir{}_\infty$ is weak$^*$-lower semi-continuous over $W^{1,\infty}(\domain)$, (see e.g. \cite[Thm. 2.6]{barron2001lower}). In the classical theory developed by Jensen in \cite{jensen1993uniqueness} one considers the following problem, which tries to \enquote{minimize the \emph{sup-norm} of the gradient} as described by Jensen.
 %
 \begin{problem}{Gradient Sup-Norm Problem}{prob:gradsup}
 For an open domain $\domain\subset\R^d$ find a function $u\in W^{1,\infty}(\domain)$ such that
