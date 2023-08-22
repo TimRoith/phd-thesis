@@ -255,7 +255,7 @@ In the following we restrict ourselves to the additive case and only consider ex
 \max_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(\oup, \net_\param(\inpp))
 =
 \max_{\delta:\norm{\delta}_d\leq\delta, \inp+\delta\in\Inp}
-\ell(\oup, \net_\param(\inp+\delta),
+\ell(\oup, \net_\param(\inp+\delta)),
 \end{align}
 %
 where $\oup=\net_\param(\inp)$. Solving this problem is referred to as \emph{attacking} the network $\net$. More precisely, this is a so-called \emph{untargeted} attacks, since we do not prescribe $\inpp$ to realize any special output as long as it confuses the network. Opposed to this, there are so called \emph{targeted} attacks. Here we pick $c^\adv \neq \net^\MAP_\param(\inp)$ and then want to find $\inpp$ such that $\net^\MAP_\param(\inpp) = c^\adv$. Here, we then consider the problem
@@ -276,7 +276,7 @@ A popular method to solve \cref{eq:advprob} is the projected sign gradient ascen
 %
 %
 %
-Here, $\operatorname{Proj}_d$ denotes the projection onto the set $\Inp\cap B_{d,\budget}(\inp)$, where $B_{d,\budget}(\inp)$ is the ball with radius $\budget$ around $\inp$, w.r.t. to the distance $d$. Performing only one step of this iteration yields the fast gradient sign method \cite{goodfellow2014explaining}. There is a wide variety of these so-called gradient-based white-box attacks \cite{yuan2019adversarial}, i.e. methods that assume that the gradient of the model is available. In more realistic scenarios, this might not be the case. Attacks that do not employ the actual gradient of the model to attack are called \emph{black box} attacks \cite{ilyas2018black}, which however not part of this thesis.
+Here, $\operatorname{Proj}_d$ denotes the projection onto the set $\Inp\cap B_{d,\budget}(\inp)$, where $B_{d,\budget}(\inp)$ is the ball with radius $\budget$ around $\inp$, w.r.t. to the distance $d$. Performing only one step of this iteration yields the fast gradient sign method \cite{goodfellow2014explaining}. There is a wide variety of these so-called gradient-based white-box attacks \cite{yuan2019adversarial}, i.e. methods that assume that the gradient of the model is available. In more realistic scenarios, this might not be the case. Attacks that do not employ the actual gradient of the model to attack are called \emph{closed box} attacks \cite{ilyas2018black}, which however not part of this thesis.
 %
 %
 \paragraph{Defending against Adversarial Attacks}

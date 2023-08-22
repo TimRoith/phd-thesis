@@ -1,6 +1,6 @@
 \chapter{Consistent Semi-Supervised Learning on Sparse Graphs}\label{ch:SSL}
 
-This chapter considers the consistency of graph-based semi-supervised learning methods and contextualizes the topics provided in the prints \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. We are given partially labeled data, where the task is to obtain a labeling on the  whole graph. Considering learning algorithms we are especially interested in the following aspects:
+This chapter considers the consistency of graph-based semi-supervised learning methods and contextualizes the topics provided in the prints \cite{roith2022continuum, bungert2021uniform}. We are given partially labeled data, where the task is to obtain a labeling on the  whole graph. Considering learning algorithms we are especially interested in the following aspects:
 %
 \begin{itemize}
 \item \textbf{Consistency:} what is the behavior in the infinite data limit?
@@ -44,13 +44,14 @@ node[midway] {\cref{sec:LipExt} Lipschitz Extensions and the Infinity Laplacian}
 \end{tikzpicture}
 \end{center}
 %
-In \cite{roith2022continuum} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart. This allows to then show convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not allow for unique solutions. We refer to \cref{sec:GConv} for more details.
+In \cite{roith2022continuum} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart. This yields convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not admit for unique solutions. We refer to \cref{sec:GConv} for more details.
 
 The issue of non-uniqueness is addressed in \cite{bungert2021uniform}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. These functions are in fact special solutions of the extension task  in \cite{roith2022continuum}, namely so-called absolutely minimizing Lipschitz extensions, which are---under certain assumptions---unique. Again, we are able to work with a very mild scaling assumption that allows for sparse graphs. Furthermore, we are able to prove the first quantitative convergence rates, where we provide the key insight, that a rate for graph distance functions transfers to a rate for infinity harmonic functions. The main contributions are presented in \cref{sec:UnifConv}.
 
 %To allow even sparser graphs, directly at the connectivity threshold, we consider first passage percolation in \cite{bungert2022ratio}. Here, we prove a ratio convergence of a graph distance function on a Poisson point cloud. The results can ultimately be employed to show convergence rates for Lipschitz learning. Details are provided in \cref{sec:Perc}.
 
-Before we present these works we first introduce the setting of consistency for graph-based SSL in \cref{sec:GSSL}. We then discuss the $p$-Laplacian in \cref{sec:pLap} both in the continuum and the graph setting. Similarly, we then introduce the problem we are actually concerned with namely the $\infty$-Laplacian and Lipschitz extensions in \cref{sec:LipExt}. With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit.
+Before we present these works we first introduce the setting of consistency for graph-based SSL in \cref{sec:GSSL}, where we also discuss the $p$-Laplacian both in the continuum and the graph setting. Similarly, we then introduce the problem we are actually concerned with, namely the $\infty$-Laplacian and Lipschitz extensions in \cref{sec:LipExt}.
+%With the necessary tools and background we are then able to present the main contributions on consistency of Lipschitz learning in the infinite data limit.
 %
 %
 %
@@ -94,7 +95,7 @@ In \cref{ch:para} we employ the symbol $\Inp$ to denote the input set, which is 
 %
 %
 \noindent%
-Often one assumes that the points $x\in\domain_n$ are i.i.d. w.r.t. a distribution $\mu$ with density $\rho:\domain\to\R$. However, as observed in \cite{roith2022msc}, the data distribution is not directly relevant for the works in \cite{roith2022continuum, bungert2021uniform}. The appropriate generalization to study the limit of $\domain_n$ for $n\to\infty$ is discussed in \cref{sec:GConv}.
+Often, one assumes that the points $x\in\domain_n$ are i.i.d. w.r.t. a distribution $\mu$ with density $\rho:\domain\to\R$. However, as observed in \cite{roith2022msc}, the data distribution is not directly relevant for the works in \cite{roith2022continuum, bungert2021uniform} and we can instead consider a more general class of point clouds. The appropriate generalization to study the limit of $\domain_n$ for $n\to\infty$ is discussed in \cref{sec:GConv}.
 %
 %
 \subsection{Weighted Graphs}
@@ -162,8 +163,16 @@ the corresponding value is given as
 \sigma_\eta^{(p)} = \int_{\R^+} \eta(t)\, t^{d+p} dt
 \end{align}
 %
-which was first employed in \cite{GarcSlep15} for $p=1$ and then in \cite{slepcev2019analysis} for general $p<\infty$. We see that $\sigma_\eta^{(p)}$ degenerates to $\sigma_\eta$ in the limit $p\to\infty$.
-
+which was first employed in \cite{GarcSlep15} for $p=1$ and then in \cite{slepcev2019analysis} for general $p<\infty$. With the slight modification
+%
+\begin{align*}
+\tilde\sigma_\eta^{(p)} = 
+\int_{\R^+} \eta(t)^p\, t^{d+p} dt
+\end{align*}
+%
+we see that $\tilde\sigma_\eta^{(p)}$ degenerates to $\sigma_\eta$ in the limit $p\to\infty$.
+\end{remark}
+\begin{remark}{}{}
 In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ then appears in the limit functional. In \cite{bungert2021uniform} we rescale the kernel, i.e., $c_\eta = \sigma_\eta$ which allows to work with unrescaled operators in the limit. 
 \end{remark}
 %
@@ -178,7 +187,7 @@ In order to obtain continuum limits in the case $p<\infty$ on usually employs a 
 An important practical aspect connected to the graph scale is the sparsity of the graph, which is given by the numbers of non-zero elements in the weight matrix $W\in\R^{n\times n}$
 %
 \begin{align*}
-W_{ij}:= w(x_i,x_j) \quad x_i,x_j\in\domain_n
+W_{ij}:= w(x_i,x_j) \quad x_i,x_j\in\domain_n,
 \end{align*}
 %
 where we assume an ordering $\domain_n=\{x_1,\ldots, x_n\}$. In order to have a computationally feasible problem this matrix should have very few non-zero elements. Assuming that the kernel $\eta$ has compact support, w.l.o.g. $\supp(\eta)\subset [0,1]$ we observe that the sparsity is directly influenced by the graph scale $\gscale$. Namely, $\abs{x_i-x_j} > \gscale \Rightarrow W_{ij}=0$, see \cref{fig:graphscale}.
@@ -187,7 +196,7 @@ where we assume an ordering $\domain_n=\{x_1,\ldots, x_n\}$. In order to have a 
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{code/SSL/NNZ.pdf}
-\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n\in\N$ points uniformly in the cube $[0,1]^d$ and only connect vertices $x_i,x_j\in\domain_n$ if $\norm{x_i-x_j}_2 < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
+\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n\in\N$ points uniformly in the cube $[0,1]^d$ and only connect vertices $x_i,x_j\in\domain_n$ if $\abs{x_i-x_j} < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
 \end{figure} 
 %
 %
@@ -196,7 +205,7 @@ Therefore, from a practical point of view $\gscale$ should be chosen relatively 
 %
 %
 \begin{remark}{}{}
-In many practical applications graph weights connecting all points within $\gscale$-ball of Euclidean distance are inferior to knn graphs \cite{calder2020poisson, flores2019algorithms, calder2022improved}. While most consistency results employ the $\gscale$-ball setting, recently, the authors in \cite{calder2022improved} were able to show convergence rates in the knn setting. In this thesis we focus on the $\gscale$-ball setting, however it is an interesting open question to transfer the results of \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} to the knn setting.
+In many practical applications graph weights connecting all points within $\gscale$-ball of Euclidean distance are inferior to knn graphs \cite{calder2020poisson, flores2019algorithms, calder2022improved}. While most consistency results employ the $\gscale$-ball setting, recently, the authors in \cite{calder2022improved} were able to show convergence rates for knn graphs. In this thesis we focus on the $\gscale$-ball setting, however it is an interesting open question to transfer the results of \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} to the knn setting.
 \end{remark}
 %
 %
@@ -218,7 +227,7 @@ The archetype of learning methods we consider in the following is so-called \emp
 %
 %
 %
-Here, we always assume non-negative weights $w_n:\domain_n\times\domain_n\to[0,\infty)$. The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum counterpart. While The contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$, the case $p<\infty$ serves as a  motivation for the whole discussion. Therefore, we briefly review the situation in the following. Here, we first introduce the continuum setting and then discuss the situation on the graph.
+Here, we always assume non-negative weights $w_n:\domain_n\times\domain_n\to[0,\infty)$. The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum counterpart. While our contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$, the case $p<\infty$ serves as a  motivation for the whole discussion. Therefore, we briefly review the situation in the following. Here, we first introduce the continuum setting and then discuss the situation on the graph.
 %
 %
 %
@@ -234,7 +243,7 @@ We follow the exposition in \cite{lindqvist2017notes}. Let $\domain\subset\R^d$ 
 where $\rho:\domain\to\R$ is some given function. In the setting of \cite{GarcSlep15, slepcev2019analysis} $\rho$ denotes the density of data distribution as in \cref{sec:GSSL}. For $\rho\equiv1$ we simply write $\pDir{}_{p,1}=\pDir{}_{p}$. The associated variational problem is given in the following.
 %
 \begin{problem}{Variational Formulation}{prob:VarForm}
-	For $p\in (1,\infty)$ and $V\subset W^{1,p}(\domain)$ find $u\in W^{1,p}(\domain)$ such that
+	For $p\in [1,\infty)$ and $V\subset W^{1,p}(\domain)$ find $u\in W^{1,p}(\domain)$ such that
 	%
 	\begin{align*}
 		\pDir{}_{p,\rho}(u) \leq \pDir{}_{p,\rho}(v)
@@ -251,7 +260,7 @@ Assume for simplicity that $\rho\equiv 1$ and that $u\in V$ is a minimizer of th
 \end{align}
 %
 A function $u\in V$ satisfying \cref{eq:weakLap} is called a \emph{weak solution} of the $p$-Laplace equation. In fact, if $u$ 
-is smooth enough one has that
+is smooth enough one can infer that
 %
 \begin{align}\label{eq:strongLap}
 	\Delta_p u := \div(\abs{\nabla u}^{p-2} \nabla u) = 0
@@ -285,7 +294,7 @@ We state the following classical result, which can for example be found in \cite
 \pDir_p(u) = \int_{V} \abs{\nabla u}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx.
 \end{align*}
 %
-Now consider \cref{prob:VarForm} on $V$ with boundary values given by $u$ and denote by $v$ the solution of the problem. Since $u=v$ on $\partial V$ we can extend $v$ onto $\domain$ by setting $v=u$ in $\domain\setminus V$, which gives $v\in W^{1,p}(\domain)$. Therefore, we obtain
+Now consider \cref{prob:VarForm} on $V$ with boundary values given by $u$ and denote by $v$ the solution of this sub-problem. Since $u=v$ on $\partial V$ we can extend $v$ onto $\domain$ by setting $v=u$ in $\domain\setminus V$, which gives $v\in W^{1,p}(\domain)$. Therefore, we obtain
 %
 \begin{align*}
 \pDir_p(v) = \int_{V} \abs{\nabla v}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx \leq 
@@ -346,7 +355,7 @@ the \enquote{graph gradient} on $E$, where we have that
 \end{align*}
 %
 %
-Let $\vec u_1, \vec u_2$ be two  solutions of \cref{prob:vargraph}, i.e. $\GE^{w_n}_p (\vec u_1)= \GE^{w_n}_p (\vec u_2)$. Since $\vec u_1,\vec u_2$ fulfill the boundary conditions, this also holds for $1/2(\vec u_1 + \vec u_2)$ and therefore $\GE^{w_n}_p(\vec u_1)\leq\GE^{w_n}_p(1/2(\vec u_1 + \vec u_2))$.
+Let $\vec u_1, \vec u_2$ be two  solutions of \cref{prob:vargraph}, i.e. $\GE^{w_n}_p (\vec u_1)= \GE^{w_n}_p (\vec u_2)$. Since $\vec u_1,\vec u_2$ fulfill the boundary conditions, this also holds for $1/2\,(\vec u_1 + \vec u_2)$ and therefore $\GE^{w_n}_p(\vec u_1)\leq\GE^{w_n}_p(1/2(\vec u_1 + \vec u_2))$.
 
 
 Assume that there exists $(\bar x,\bar y)\in E$ such that $\nabla^{w_n} \vec u_1(\bar x,\bar y)\neq \nabla^{w_n}\vec u_2(\bar x,\bar y)$, then we have that
@@ -617,7 +626,7 @@ For an open domain $\domain\subset\R^d$ find a function $u\in W^{1,\infty}(\doma
 \noindent%
 This problem can be seen as the limit problem for $p\to\infty$ of \cref{prob:VarForm}. Additionally imposing boundary conditions with $g:\partial\domain\to\R$, \cite{jensen1993uniqueness} then draws the connection to so-called \emph{Lipschitz extensions}, which are the driving concept in this section. We introduce a more general viewpoint---that does not require the notion of a gradient---later on, but first introduce the variational problem. 
 
-\paragraph{The intrinsic metric and the Lipschitz constant.}
+\paragraph{The Lipschitz Constant.}
 
 As noticed in \cite{jensen1993uniqueness} working with the Lipschitz constant and the sup-norm of the gradient requires a careful 
 treatment of the distance measurement. Let $\tilde\domain$ be a set and let $d(\cdot,\cdot)$ be a semi-metric on $\tilde\Omega$, that is $d(\cdot,\cdot)$ fulfills 
@@ -632,7 +641,7 @@ introduce the space of Lipschitz functions $\Lip_d(V)$ on $V$ via
 $u\in \Lip_d(V) \Leftrightarrow \Lip_d(u;V) <\infty$.
 %
 \begin{remark}{Lipschitz and Sobolev functions}{}
-If $\domain\subset\R^d$ is sufficiently regular, e.g., it has Lipschitz boundary then we have that
+If $\domain\subset\R^d$ is sufficiently regular---e.g., it has Lipschitz boundary---then we have that
 %
 \begin{align*}
 \Lip(\domain) = W^{1,\infty}(\domain),
@@ -885,7 +894,7 @@ u &= g\quad \text{ on }\partial\domain.
 \end{problem}
 %
 \noindent%
-At first glance, the definition of the $\infty$-Laplacian only makes sense for for functions of class $C^2$. However, as shown in \cite{yu2006remark, aronsson1968partial} if $u\in C^2(\domain)$ fulfills $\Delta_\infty u = 0$ in $\domain$, then either $\nabla u \neq 0$ in the whole domain or it is constant. However on can easily construct boundary values $g$ that are not constant but force the solution $u$ to have critical points inside of the domain, see e.g. \cite{lindqvist2016notes}. Therefore, one requires a different concept, where one typically considers \emph{viscosity solutions}. For the $\infty$-Laplacian this strategy was first employed in \cite{bhattacharya1989limits}, where the term \emph{viscosity} is motivated by similar concepts for the Burgers' equation \cite{burgers1948mathematical}. First we consider subsolutions, where we take any $\phi\in C^2(\domain)$ that touches $u$ from above at any $x\in\domain$, i.e.
+At first glance, the definition of the $\infty$-Laplacian only makes sense for for functions of class $C^2$. However, as shown in \cite{yu2006remark, aronsson1968partial} if $u\in C^2(\domain)$ fulfills $\Delta_\infty u = 0$ in $\domain$, then either $\nabla u \neq 0$ in the whole domain or it is constant. However, one can easily construct boundary values $g$ that are not constant but force the solution $u$ to have critical points inside of the domain, see e.g. \cite{lindqvist2016notes}. Therefore, one requires a different concept, where one typically considers \emph{viscosity solutions}. For the $\infty$-Laplacian this strategy was first employed in \cite{bhattacharya1989limits}, where the term \emph{viscosity} is motivated by similar concepts for the Burgers' equation \cite{burgers1948mathematical}. First we consider subsolutions, where we take any $\phi\in C^2(\domain)$ that touches $u$ from above at any $x\in\domain$, i.e.
 %
 \begin{align}\label{eq:visc}
 u < \phi \text{ in } \domain\setminus\{x\}\qquad\text{ and } u(x) = \phi(x).
@@ -1149,8 +1158,8 @@ Since this holds for arbitrary $x,y\in\domain_n$ we have that
 \noindent%
 \textbf{Step 3:} We show that $\Lip_{d_{w_n}}(\vec g;\conset_n) \leq \Lip_{d_{w_n}}(\vec u)$.\\
 %
-If $\vec g = \vec u$ on $\conset$ this simply follows since the maximum for the Lipschitz constant of $\vec u$ is taken over a larger set. Indeed,
-
+If $\vec g = \vec u$ on $\conset$ this simply follows since the maximum for the Lipschitz constant of $\vec u$ is taken over a larger set. Indeed, we have that
+%
 \begin{align*}
 \Lip_{d_{w_n}}(\vec u) &= 
 \max_{x,y\in\domain_n} \frac{\abs{\vec u(x) - \vec u(y)}}{d_w(x,y)}
@@ -1370,14 +1379,14 @@ Then we know that
 \end{theorem}
 %
 %
-\paragraph{Relations Between the Graph Lipschitz Extensions} We now establish the connection between the different notions of Lipschitz extensions on the graph. Compared to the continuum case we do not establish the full equivalences but only the necessary implications required for the convergence proofs in \cite{bungert2021uniform}. Namely, in \cite{bungert2021uniform} we show that if $\vec u$ solves the graph $\infty$-Laplace, then it is an graph AMLE and fulfills comparison with graph distance functions. 
+\paragraph{Relations Between the Graph Lipschitz Extensions} We now establish the connection between the different notions of Lipschitz extensions on the graph. Compared to the continuum case we do not establish the full equivalences but only the necessary implications required for the convergence proofs in \cite{bungert2021uniform}. Namely, in \cite{bungert2021uniform} we show that if $\vec u$ solves the graph $\infty$-Laplace, then it is a graph AMLE and fulfills comparison with graph distance functions. 
 %
 %
 \begin{lemma}{\cite[Th. 3.2, Prop. 3.8]{bungert2021uniform}}{}
 Let $(\domain_n,w_n)$ be a weighted connected graph and $\vec g:\conset_n\to\R$ be a given function for $\conset_n\subset\domain_n$. Furthermore, let $\vec u:\domain_n\to\R$ be graph infinity harmonic on $\domain_n\setminus\conset_n$ with boundary conditions given by $\vec g$, i.e., $\vec u$ solves \cref{prob:graphinfLaplace} then we have that
 %
 \begin{itemize}
-\item $\vec u$ is an graph AMLE, i.e., $\vec u$ solves \cref{prob:GAMLE},
+\item $\vec u$ is a graph AMLE, i.e., $\vec u$ solves \cref{prob:GAMLE},
 \item $\vec u$ fulfills comparison with cones.
 \end{itemize}
 \end{lemma}
@@ -1391,7 +1400,7 @@ Both of the statements are proven in \cite{bungert2021uniform}. Let $\vec u$ be 
 \vec u &= \vec g \text{ on } \conset_n.
 \end{align*}
 %
-From \cite[Prop. 3.8]{bungert2021uniform} we have that $\vec u$ is an graph AMLE. Furthermore, form \cite[Th. 3.2]{bungert2021uniform} we have that $\vec u$ fulfills comparison with cones. In fact, \cite[Th. 3.2]{bungert2021uniform}, shows a more refined statement, namely that
+From \cite[Prop. 3.8]{bungert2021uniform} we have that $\vec u$ is a graph AMLE. Furthermore, form \cite[Th. 3.2]{bungert2021uniform} we have that $\vec u$ fulfills comparison with cones. In fact, \cite[Th. 3.2]{bungert2021uniform}, shows a more refined statement, namely that
 %
 \begin{align*}
 -\Delta^{w_n}_\infty \vec u &\leq 0 \Rightarrow \vec u \text{ fulfills \labelcref{eq:CDFA}},\\
