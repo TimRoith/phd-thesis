@@ -395,7 +395,7 @@ which together with the boundary conditions $\vec u_1(o)=\vec u_2(o)=\vec g(o)$ 
 = \Bigg[\sum_{i=1}^{m-1} \vec u_2(\gamma_{i}) &- \vec u_2(\gamma_{i+1})\Bigg] + 
 \vec u_2(o)\\
 %
-=\vec u_2(x)\phantom{---}&
+=\vec u_2(x).\phantom{--..}&
 \end{align*}
 %
 Since $x\in\domain_n$ was arbitrary, we get $\vec u_1 = \vec u_2$.\par
@@ -430,7 +430,7 @@ Let now $\vec u_j$ denote a sequence such that
 %
 \begin{align*}
 \GE^{w_n}_p(\vec u_j) \leq I + 1/j,\qquad\text{ where }\qquad
-I := \inf_{\vec u=\vec g\text{ on } \conset_n} \GE^{w_n}_p(\vec u).
+I := \inf_{\vec u:\vec u=\vec g\text{ on } \conset_n} \GE^{w_n}_p(\vec u).
 \end{align*}
 %
 Then we have that
@@ -456,12 +456,12 @@ In the continuum case one considers the Euler--Lagrange equation for the functio
 $p$-Laplacian, see \cref{sec:pLap}. Analogously, the optimality conditions for the graph $p$-Dirichlet energy $\GE^{w_n}_p:\R^n\to\R$ for $p > 1$ yield
 %
 \begin{align*}
-\nabla_{\vec u} \GE^{w_n}_p(\vec u) = 0
+\nabla_{\vec u} \GE^{w_n}_p(\vec u) = 0,
 \end{align*}
 %
 where for $x\in\domain_n$ we have 
 \begin{align*}
-\left(\nabla_{\vec u} \GE^{w_n}_p(\vec u)\right)_x =:\Delta^{w_n}_p \vec u(x)= \sum_{y\in\domain_n} w_n(x,y)^p \abs{\vec u(y) - \vec u(x)}^{p-2} \left( \vec u(y) - \vec u(x) \right)
+\left(\nabla_{\vec u} \GE^{w_n}_p(\vec u)\right)_x =:\Delta^{w_n}_p \vec u(x)= \sum_{y\in\domain_n} w_n(x,y)^p \abs{\vec u(y) - \vec u(x)}^{p-2} \left( \vec u(y) - \vec u(x) \right),
 \end{align*}
 %
 which is referred to as the graph $p$-Laplacian operator. This yields the following problem.
@@ -482,7 +482,7 @@ via optimality conditions, one expects that the \cref{prob:vargraph} and \cref{p
 theorem.
 %
 \begin{theorem}{Existence and Uniqueness}{}
-Let $(\domain_n,w_n)$ be a graph with non-negative weights, that is connected to its boundary $\conset_n\subset\domain_n$. Then there exists a unique solution $\vec u:\domain_n\to\R$ to \cref{prob:graphLaplace}, which also is the unique minimizer of \cref{prob:vargraph}.
+Let $(\domain_n,w_n)$ be a graph with non-negative weights, that is connected to its boundary $\conset_n\subset\domain_n$. Then there exists a unique solution $\vec u:\domain_n\to\R$ to \cref{prob:graphLaplace}, which is also the unique minimizer of \cref{prob:vargraph}.
 \end{theorem}
 %
 \begin{proof}
@@ -510,7 +510,7 @@ While the graph 2-Laplacian has been successfully employed for classification ta
 %
 %
 \begin{example}{}{ex:pLapBad}
-We sample different number of points $n\in\{100,1000,10000\}$ in $(0,1)^2$ and keep a fixed constraint on $\conset_n=\{o_1, o_2\}=\{(0.2,0.5), (0.8, 0.5)\}$ with $\vec g(o_1) = -1, \vec g(o_2)=1$. In \cref{fig:pdeg} we observe that for increasing $n$ the solution $\vec u$ of \cref{eq:SSL_Laplacian} tends to be a constant equal to the average of the given constraints and spike at the given constraints.
+We sample different number of points $n\in\{100,1000,10000\}$ in $\domain=(0,1)^2$ and keep a fixed constraint on $\conset_n=\{o_1, o_2\}=\{(0.2,0.5), (0.8, 0.5)\}$ with $\vec g(o_1) = -1, \vec g(o_2)=1$. In \cref{fig:pdeg} we observe that for increasing $n$ the solution $\vec u$ of \cref{eq:SSL_Laplacian} tends to be a constant equal to the average of the given constraints and spike at the given constraints.
 \end{example}
 %
 %
@@ -519,14 +519,14 @@ This observation motivates the driving question of this chapter and the works pr
 %
 \begin{center}
 \textit{%
-Are Semi-Supervised Learning algorithms consistent in the infinite data limit?}
+Are semi-supervised learning algorithms consistent in the infinite data limit?}
 \end{center}
 %
-In our case \enquote{consistency} roughly ask the discrete solutions to converge to the continuum counterparts they are motivated by, in the data limit $n\to\infty$. Here, we distinguish between point-wise consistency as in \cite{von2008consistency, gine2006empirical, hein2005graphs}, consistency on a function space level \cite{slepcev2019analysis, GarcSlep15,calder2019consistency, roith2022continuum, bungert2021uniform} and consistency of a discretized operator \cite{calder2019consistency, bungert2022ratio}. Other related work also consider the limit of clustering methods \cite{hoffmann2022spectral, trillos2018variational} or the no-noise limit \cite{hoffmann2020consistency, dunlop2020large}. We detail the notion of consistency in the following.  
+In our case \enquote{consistency} roughly ask the discrete solutions to converge to the continuum counterparts in the data limit $n\to\infty$. Here, we distinguish between point-wise consistency as in \cite{von2008consistency, gine2006empirical, hein2005graphs}, consistency on a function space level \cite{slepcev2019analysis, GarcSlep15,calder2019consistency, roith2022continuum, bungert2021uniform} and consistency of a discretized operator \cite{calder2019consistency, bungert2021uniform}. Other related work also consider the limit of clustering methods \cite{hoffmann2022spectral, trillos2018variational} or the no-noise limit \cite{hoffmann2020consistency, dunlop2020large}. We detail the notion of consistency in the following.  
 %
 %
 \paragraph{Consistency for the $p$-Laplacian} 
-As observed in \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic, calder2020properly} the question of consistency is now connected to the relation between $p$ and $d$, where one considers the three regimes $p<d$, $p=d$ and probably the most relevant case $p>d$. The $p$-Dirichlet problem in the continuum can be formulated as a variational problem in $W^{1,p}$. However, it is important to remember that in our setting we most likely consider pointwise constraints on a discrete set $\conset$ even in the continuum. In order to impose pointwise constraints, one requires that functions in $W^{1,p}$ exhibit some continuity properties. By the Sobolev embedding theorem, this is the case when $p>d$, \cite{adams2003sobolev}. This leads to a first qualitative intuition that consistency can only be achieved in the case $p>d$. We note that $p$-harmonic functions are actually more regular also in the case $p\leq d$, beyond the implication of the Sobolev embedding theorem. However, this regularity does not help for the continuum limits \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}.
+As observed in \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic, calder2020properly} the question of consistency is connected to the relation between $p$ and $d$, where one considers the three regimes $p<d$, $p=d$ and probably the most relevant case $p>d$. The $p$-Dirichlet problem in the continuum can be formulated as a variational problem in $W^{1,p}$, however, in our setting we most likely consider pointwise constraints on a discrete set $\conset$ even in the continuum. Therefore, one requires that functions in $W^{1,p}$ exhibit some continuity properties. By the Sobolev embedding theorem, this is the case when $p>d$, \cite{adams2003sobolev}. This leads to a first qualitative intuition that consistency can only be achieved in the case $p>d$. We note that $p$-harmonic functions are actually more regular also in the case $p\leq d$, beyond the implication of the Sobolev embedding theorem. However, this regularity does not help for the continuum limits \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}.
 
 The most relevant result for our contribution in \cite{roith2022continuum} is the $\Gamma$-convergence statement of \cite{GarcSlep15}, which considers a clustering task, via the TV functional. Here, the authors show 
 %
@@ -534,7 +534,7 @@ The most relevant result for our contribution in \cite{roith2022continuum} is th
 \frac{1}{\gscale_n n^2}\, \GE^{w_n}_1 \xrightarrow{\phantom{-}\Gamma\phantom{-}} \sigma_\eta\, \pDir_{1,\rho}
 \end{align*}
 %
-where the constant $\sigma_\eta$ is defined as in \cref{eq:kernelconst}. We review details on $\Gamma$-convergence in \cref{sec:GConv}. The important insight here, is that the graph scaling $\gscale_n$ must not tend to zero too fast. We quickly provide some intuition to this fact:
+where the constant $\sigma_\eta$ is defined as in \cref{eq:kernelconst}. We review details on $\Gamma$-convergence in \cref{sec:GConv}. The important insight here, is that the graph scaling $\gscale_n$ must not tend to zero too fast, which is guided by the following intuition:
 %
 \begin{itemize}
 	\item Problems on the graph are non-local, communication between points takes place on a finite scale.
@@ -588,7 +588,7 @@ Since the assumption that $p>d$ is crucial for asymptotic consistency, a natural
 \caption[Solution to the Laplacian Learning problem for different number of data points.]{Solution to the Laplacian Learning problem ($p=\infty$) for different number of data points $n\in\{100,1000,10000\}$. The setup is otherwise copied from \cref{ex:pLapBad}.}\label{fig:pinf}
 \end{figure}
 %
-However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ problem, Lipschitz learning does not respect the density of data in any way. Namely, the method is exclusively distance based. This behavior is a drawback in many machine learning applications. However, by carefully rescaling the graph weights one obtains a data sensitive problem, see \cite{calder2019consistency} and \cref{sec:GConv}. 
+However, as already noticed in \cite{el2016asymptotic} being a pure $L^\infty$ problem, Lipschitz learning does not respect the density of data in any way. Namely, the method is exclusively distance based. This behavior is a drawback in many machine learning applications. However, by carefully rescaling the graph weights one obtains a data sensitive problem, see \cite{calder2019consistency} and \cref{sec:GConv}. Here, we also want to mention an alternative method to overcome the spiking phenomenon for the $p$-Laplacian, by re-weighting the graph accordingly \cite{calder2020properly}. 
 
 The contributions presented in this chapter are all connected to the Lipschitz learning task. Namely, we are able to show consistency and convergence rates under very mild scaling assumptions.
 %
@@ -600,7 +600,7 @@ The contributions presented in this chapter are all connected to the Lipschitz l
 %
 \section{Lipschitz Extensions and the Infinity Laplacian: Continuum and Graph}\label{sec:LipExt}
 %
-Our main point of interest in this chapter is the Lipschitz learning task and its continuum limit. In this section we first motivate the continuum problem as considered in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio}. We then given some details on the discrete problem.
+Our main point of interest in this chapter is the Lipschitz learning task and its continuum limit. In this section we first motivate the continuum problem as considered in \cite{roith2022continuum, bungert2021uniform} and then given some details on the discrete problem.
 %
 %
 \subsection{The Continuum Setting}\label{sec:LipExtCont}
@@ -613,23 +613,23 @@ $u\in W^{1,\infty}(\domain)$ we have that
 \lim_{p\to\infty} \pDir{}_{p,\rho}(u)^{1/p} = \esssup_{x\in\supp(\rho)} \abs{\nabla u(x)} =: \pDir{}_{\infty,\rho}(u),
 \end{align*}
 %
-see \cite{jensen1993uniqueness}. Again, we see that that the weighting $\rho$ only enters via its support, therefore we do not explicitly consider it in the following and instead assume $\domain=\supp(\rho)$ and then only write $\pDir{}_{\infty}$. The functional $\pDir{}_\infty$ is weak$^*$-lower semi-continuous over $W^{1,\infty}(\domain)$, (see e.g. \cite[Thm. 2.6]{barron2001lower}). In the classical theory developed by Jensen in \cite{jensen1993uniqueness} one considers the following problem, which tries to \enquote{minimize the \emph{sup-norm} of the gradient} as described by Jensen.
+see \cite{jensen1993uniqueness}. Again, we see that that the weighting $\rho$ only enters via its support, therefore we do not explicitly consider it in the following and instead assume $\domain=\supp(\rho)$ and then only write $\pDir{}_{\infty}$. The functional $\pDir{}_\infty$ is weak$^*$-lower semi-continuous over $W^{1,\infty}(\domain)$, (see e.g. \cite[Thm. 2.6]{barron2001lower}). In the classical theory developed by Jensen in \cite{jensen1993uniqueness} one considers the following problem, which tries to minimize the \emph{sup-norm} of the gradient as described by Jensen.
 %
 \begin{problem}{Gradient Sup-Norm Problem}{prob:gradsup}
-For an open domain $\domain\subset\R^d$ find a function $u\in W^{1,\infty}(\domain)$ such that
+For an open domain $\domain\subset\R^d$, find a function $u\in W^{1,\infty}(\domain)$ such that
 %
 \begin{align*}
-\norm{\nabla u}_\infty \leq \norm{\nabla v}_\infty \text{ for every } v, \text{s.t. } (u-v)\in W^{1,\infty}_0.
+\norm{\nabla u}_\infty \leq \norm{\nabla v}_\infty \qquad\text{ for every } v, \text{ with } (u-v)\in W^{1,\infty}_0(\domain).
 \end{align*}
 \end{problem}
 %
 \noindent%
 This problem can be seen as the limit problem for $p\to\infty$ of \cref{prob:VarForm}. Additionally imposing boundary conditions with $g:\partial\domain\to\R$, \cite{jensen1993uniqueness} then draws the connection to so-called \emph{Lipschitz extensions}, which are the driving concept in this section. We introduce a more general viewpoint---that does not require the notion of a gradient---later on, but first introduce the variational problem. 
 
-\paragraph{The Lipschitz Constant.}
+\paragraph{The Lipschitz Constant}
 
 As noticed in \cite{jensen1993uniqueness} working with the Lipschitz constant and the sup-norm of the gradient requires a careful 
-treatment of the distance measurement. Let $\tilde\domain$ be a set and let $d(\cdot,\cdot)$ be a semi-metric on $\tilde\Omega$, that is $d(\cdot,\cdot)$ fulfills 
+treatment of the distance employed. Let $\tilde\domain$ be a set and let $d(\cdot,\cdot)$ be a semi-metric on $\tilde\Omega$, that is $d(\cdot,\cdot)$ fulfills 
 the requirement of a metric up to triangle inequality. Then we define the Lipschitz constant of a function $u:V\to \R$ on a subset $V\subset \tilde\domain$ as
 %
 \begin{align*}
@@ -647,25 +647,24 @@ If $\domain\subset\R^d$ is sufficiently regular---e.g., it has Lipschitz boundar
 \Lip(\domain) = W^{1,\infty}(\domain),
 \end{align*}
 %
-where this identity is of course to be understood in the sense of equivalence classes in $\L^p$ spaces. We refer to \cite{evans2018measure} for a proof of this result.
+where this identity is of course to be understood in the sense of equivalence classes in $L^p$ spaces. We refer to \cite{evans2018measure} for a proof of this result.
 \end{remark}
 %
 The above remark already relates Lipschitz with $W^{1,\infty}$ functions. Often however, we need a quantitative 
 comparison between the Lipschitz constant and the sup-norm of the gradient of a function. Here, it is essential 
-which distance measure is chosen for the Lipschitz constant. For an open domain $\domain\subset\R^d$ we have the inequality
+which distance is chosen for the Lipschitz constant. For an open domain $\domain\subset\R^d$ and $u\in W^{1,\infty}$ we have the inequality
 %
 \begin{align*}
 \norm{\nabla u}_\infty \leq \sup_{x\neq y} \frac{\abs{u(x) - u(y)}}{\abs{x-y}}
 \end{align*}
 %
-which can be proven via the definition of the gradient. For the reverse inquality, one has to respect the 
-geometry of the domain, namely for $x,y\in\domain$ we have that
+which can be proven via the definition of the gradient. For the reverse inquality, one has to take the geometry of the domain into account, namely for $x,y\in\domain$ we have that
 %
 \begin{align}\label{eq:LipGrad}
 \abs{u(x) - u(y)} \leq \norm{\nabla u}_\infty\ d_\domain(x,y)
 \end{align}
 %
-see, e.g., \cite[Prop9.3, Rem. 7]{brezis2011functional}, where
+see, e.g., \cite[Prop9.3, Rem. 7]{brezis2011functional}.Here,
 %
 \begin{align*}
 d_\domain(x,y) = \inf \left\{
@@ -722,24 +721,18 @@ and in particular $z\in \overline{B_1\left((c,c)\right)}$, therefore $d_{\overli
 \end{aligned}
 \end{align}
 %
-are solutions to the gradient sup-norm problem that coincide with $g$ on $\partial\domain$, see \cite[Th. 1.8]{jensen1993uniqueness}.
-%
-\begin{remark}{}{}
-The same concept of constructing solutions is applied in the following sections in a more abstract setting. 
+are solutions to the gradient sup-norm problem that coincide with $g$ on $\partial\domain$, see \cite[Th. 1.8]{jensen1993uniqueness}. The same concept of constructing solutions is applied in the following sections in a more abstract setting. 
 These solutions are then called Whitney and McShane or respectively maximal and minimal extensions, see 
 \cref{lem:ext}.
-\end{remark}
-%
+
 One easily observes that there are cases where $\overline{g}\neq \underline{g}$ and therefore the problem does not admit a unique solution. A concrete example, to showcase this phenomena is given in \cite[p. 53]{jensen1993uniqueness}.
 %
 %
-\paragraph{Lipschitz Extensions in Metric Spaces} The problem considered in the last section was motivated by a variational problem for $\pDir_\infty(u)=\norm{\nabla u}_\infty$. However, the theory of Lipschitz extensions provides a more general framework. Namely, here we do not assume that $\domain$ is a subset of 
-$\R^d$ and rather consider a metric space $(\tilde{\domain},d)$ with $\domain\subset \tilde\domain$. 
+\paragraph{Lipschitz Extensions in Metric Spaces} The problem considered in the last section was motivated by a variational problem for the functional  $\pDir_\infty(u)=\norm{\nabla u}_\infty$. However, the theory of Lipschitz extensions provides a more general framework. Namely, it is not necessary that $\domain$ is a subset of $\R^d$ but we can rather consider a metric space $(\tilde{\domain},d)$ with $\domain\subset \tilde\domain$. 
 %
 \begin{remark}{}{}
 For applications within this thesis we have that $\domain\subset\R^d$ is an open bounded domain and then consider 
-$\tilde\domain:= \closure\domain$, i.e., the closure of $\domain$ within the topology induced by the Euclidean distance. 
-In this abstract setting however, we use any metric space $\tilde\domain$ while still being close notation wise.
+$\tilde\domain:= \closure\domain$, i.e., the closure of $\domain$ within the topology induced by the Euclidean distance.
 \end{remark}
 %
 %
@@ -753,7 +746,7 @@ u &= g \text{ on } \mathcal{O},\\
 \end{align*}
 %
 Here, the metrics for the respective Lipschitz constants are induced by the inner products of the Hilbert spaces. We refer to \cite{Kirszbraun1934} for the original proof and to \cite[Th. 1.31]{Schwartz1969} for a proof of the version as stated above.
-In this work we only consider the case $\Oup=\R$ which allows for more general assumption on the space $\Inp$. We now formulate the Lipschitz extension problem in our setting.
+In this work we only consider the case $\Oup=\R$ which allows for more general assumptions on the space $\Inp$. Below, we formulate the Lipschitz extension problem in our setting.
 %
 \begin{problem}{Lipschitz Extensions}{prob:Lipext}
 Let $(\tilde{\domain},d)$ be a metric space and $\conset\subset \tilde{\domain}$ be a bounded subset. For a given Lipschitz function $g:\conset\to\R$ find a Lipschitz function $u:\tilde\domain\to \R$ such that
@@ -767,7 +760,7 @@ $g$ to $\tilde{\domain}$.
 \end{problem}
 %
 \noindent%
-In this setting one can explicitly construct solutions of the Lipschitz extension task. They are not unique, however one has an upper and a lower bound. In fact, conceptually these solutions 
+In this setting one can again explicitly construct solutions of the Lipschitz extension task. They are not unique, however one has an upper and a lower bound. In fact, conceptually these solutions 
 are very similar to the functions in \cref{eq:JenSol} and even coincide, whenever the sup-norm of the gradient is given as the Lipschitz constant.
 %
 \begin{lemma}{}{lem:ext}
@@ -829,10 +822,10 @@ Sending $p\to\infty$ in the variational formulation of the $p$-Laplace equation
 yields the Lipschitz extension task, which however does not admit for unique solutions. So the question arises, which property is lost in the limit case. For $p<\infty$ one has the local minimization property, as explained in \cref{sec:CSSL}. This lead Aronsson to introduce the concept of \emph{absolutely minimizing Lipschitz extension} in \cite{aronsson1967extension}, by additionally enforcing the minimizing property on every subset. A function $u\in W^{1,\infty}$ is called absolutely minimal, iff
 %
 \begin{align}\label{eq:absmin}
-\esssup_{x\in V} \abs{\nabla u} \leq \esssup_{x\in V} \abs{\nabla v} \text{ for every open } V\subset \domain
+\esssup_{x\in V} \abs{\nabla u} \leq \esssup_{x\in V} \abs{\nabla v} \qquad\text{ for every open } V\subset \domain
 \end{align}
 %
-and every function $v$ such that $(u-v)\in W^{1,\infty}_0$. In fact in \cite{aronsson1967extension} it is also shown, that 
+and every function $v$ such that $(u-v)\in W^{1,\infty}_0$. In fact in \cite{aronsson1967extension} it is also shown, that for $u_p$ denoting the solution of the corresponding $p$-Dirichlet problem, we have that 
 $u_p\xrightarrow{p\to\infty} u_\infty$, which seems to validate the notion of absolute minimizers. In \cite{aronsson2004tour} it was shown, that one has an equivalent formulation involving the Lipschitz constant. For a given Lipschitz function $g:\overline{\domain}\to\R$ we have that $u_\infty$ with $(u_\infty-g)\in W^{1,\infty}_0(\domain)$ fulfills \cref{eq:absmin} iff
 %
 \begin{align*}
