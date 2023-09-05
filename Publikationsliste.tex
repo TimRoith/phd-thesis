@@ -1,0 +1,26 @@
+\documentclass{article}
+\title{Publikationsliste}
+\date{}
+\usepackage[style=alphabetic,%
+defernumbers=true,
+useprefix=true,%
+giveninits=true,%
+hyperref=true,%
+uniquename=init,%
+sorting = none,
+sortcites=false,% sort citations when multiple entries are passed to one cite command
+doi=true,%
+isbn=false,%
+url=false,%
+backend=biber,%
+maxbibnames=9
+]{biblatex}	
+\addbibresource{backmatter/thesis-bibliography.bib}
+\begin{document}
+\maketitle
+Im folgenden werden die Publikationen gelistet die Teil der Dissertation sind.
+
+\nocite{*}
+\printbibliography[keyword={papersA}, resetnumbers=true, heading=none]
+\printbibliography[keyword={papersB}, resetnumbers=true, heading=none]
+\end{document}
