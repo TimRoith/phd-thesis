@@ -44,7 +44,7 @@ node[midway] {\cref{sec:LipExt} Lipschitz Extensions and the Infinity Laplacian}
 \end{tikzpicture}
 \end{center}
 %
-In \cite{roith2022continuum} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart. This yields convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not admit for unique solutions. We refer to \cref{sec:GConv} for more details.
+In \cite{roith2022continuum} we first consider $\Gamma$-convergence of discrete $L^\infty$ functionals to their continuum counterpart. This yields convergence of minimizers and therefore consistency. The proofs allow for very sparse graphs, however they only directly apply to the Lipschitz extension task, which does not admit unique solutions. We refer to \cref{sec:GConv} for more details.
 
 The issue of non-uniqueness is addressed in \cite{bungert2021uniform}, which considers uniform convergence of graph infinity harmonic functions to their continuum counterpart. These functions are in fact special solutions of the extension task  in \cite{roith2022continuum}, namely so-called absolutely minimizing Lipschitz extensions, which are---under certain assumptions---unique. Again, we are able to work with a very mild scaling assumption that allows for sparse graphs. Furthermore, we are able to prove the first quantitative convergence rates, where we provide the key insight, that a rate for graph distance functions transfers to a rate for infinity harmonic functions. The main contributions are presented in \cref{sec:UnifConv}.
 
@@ -119,7 +119,7 @@ $E\subset \domain_n\times \domain_n$ and each edge is directed and $(x,y)\neq(y,
 \end{itemize}
 Additionally, one then considers a weight function $W:E\to\R$ assigning a weight to each edge, and then defines 
 the triple $(\domain_n,E,W)$ as a weighted graph. However, we note that all this information can be represented much more elegantly by a weight function $w:\domain_n\times \domain_n\to\R$. A directed edge set $E\subset \domain_n\times \domain_n$ can be equivalently expressed by 
-a weight function $w:\domain_n\times \domain_n\to\R$ where $w(x,y)>0$ if and only if $(x,y)\in E$, a weighting $W:E\to\R$ 
+a weight function $w:\domain_n\times \domain_n\to\R$ where $w(x,y)\neq 0$ if and only if $(x,y)\in E$, a weighting $W:E\to\R$ 
 naturally transfers to $w$. In the case of an undirected graph, one simply requires the weight function to be symmetric, i.e., 
 $w(x,y)=w(y,x)$ for all $x,y\in \domain_n$.
 %
@@ -179,7 +179,7 @@ In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ th
 %
 %
 \begin{remark}{}{}
-In order to obtain continuum limits in the case $p<\infty$ on usually employs a factor of $1/\gscale^{p+d}$ in front of the graph weights \cite{GarcSlep15, slepcev2019analysis}. In \cref{sec:GLipExt} we see that this factor degenerates to $1/\gscale$ in the case $p\to\infty$. The intuition here, is that problems in $L^\infty$ do not respect mass in a quantitative but rather a qualitative manner. Therefore, factors like $\gscale^d$ which appear because of integrals in $\R^d$ do not contribute for $p=\infty$.
+In order to obtain continuum limits in the case $p<\infty$ on usually employs a factor of $1/\gscale^{p+d}$ in front of the graph weights \cite{GarcSlep15, slepcev2019analysis}. In \cref{sec:GLipExt} we see that this factor degenerates to $1/\gscale$ in the case $p\to\infty$. The intuition here is that problems in $L^\infty$ do not treat mass in a quantitative but rather a qualitative manner. Therefore, factors like $\gscale^d$ which appear because of integrals in $\R^d$ do not contribute for $p=\infty$.
 \end{remark}
 %
 %
@@ -214,7 +214,7 @@ In many practical applications graph weights connecting all points within $\gsca
 \subsection{The $p$-Laplacian: Continuum and Graph}\label{sec:pLap}
 %
 %
-The archetype of learning methods we consider in the following is so-called \emph{Laplacian learning}, which had one of its first appearances in 
+The archetype of learning methods we consider in the following is the so-called \emph{Laplacian learning}, which had one of its first appearances in 
 \cite{zhu2003semi}. The associated problem was given as
 %
 \begin{gather}\label{eq:SSL_Laplacian}
@@ -288,13 +288,13 @@ We state the following classical result, which can for example be found in \cite
 \end{proof}
 %
 %
-\paragraph*{Local Minimization Property} Let $u$ solve \cref{prob:VarForm} for given boundary values $g\in W^{1,p}(\domain)$ and let $V\subset\subset\domain$ be a sufficiently regular subset. Then we have that
+\paragraph*{Local Minimization Property} Let $u$ solve \cref{prob:VarForm} on the whole domain $\domain$ for given boundary values $g\in W^{1,p}(\domain)$ and let $V\subset\subset\domain$ be a sufficiently regular subset. Then we have that
 %
 \begin{align*}
 \pDir_p(u) = \int_{V} \abs{\nabla u}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx.
 \end{align*}
 %
-Now consider \cref{prob:VarForm} on $V$ with boundary values given by $u$ and denote by $v$ the solution of this sub-problem. Since $u=v$ on $\partial V$ we can extend $v$ onto $\domain$ by setting $v=u$ in $\domain\setminus V$, which gives $v\in W^{1,p}(\domain)$. Therefore, we obtain
+Now consider \cref{prob:VarForm} restricted on $V$ with boundary values given by $u$ and denote by $v$ the solution of this sub-problem on $V$. Since $u=v$ on $\partial V$ we can extend $v$ onto $\domain$ by setting $v=u$ in $\domain\setminus V$, which gives $v\in W^{1,p}(\domain)$. Therefore, we obtain
 %
 \begin{align*}
 \pDir_p(v) = \int_{V} \abs{\nabla v}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx \leq 
@@ -335,7 +335,7 @@ Since every function $\vec u:\domain_n\to\R$ can be identified with a vector $\v
 is in fact an optimization problem in $\R^n$. The functional $\GE^{w_n}_p:\R^n\to\R$ is bounded from below by $0$, continuous, convex and in the case $p>1$ even differentiable. However, one can prove unique existence with techniques very similar to the continuum case in \cite{lindqvist2017notes}. We give the adapted prove below for completeness. The important property to establish uniqueness is that the graph is connected to the boundary, i.e., for every $x\in\domain_n$ there exists a path $x=\gamma_1,\ldots,\gamma_m=o\in\domain_n$ with $w(\gamma_{i+1}, \gamma_i)>0$ connecting $x$ to a point $o\in\conset_n$ in the boundary. This is very intuitive, since on any connected component that does not communicate with the boundary, an arbitrary constant minimizes the \enquote{graph gradient}.
 %
 %
-\begin{theorem}{Existence and Uniqueness}{} Let $(\domain_n,w_n)$ be a graph with non-negative weights, that is connected to its boundary $\conset_n\subset\domain_n$. Then \cref{prob:vargraph} admits a unique solution $\vec u:\domain_n\to\R$.
+\begin{theorem}{Existence and Uniqueness}{} Let $(\domain_n,w_n)$ be a graph with non-negative weights, which is connected to its boundary $\conset_n\subset\domain_n$. Then \cref{prob:vargraph} admits a unique solution $\vec u:\domain_n\to\R$.
 \end{theorem}
 %
 \begin{proof}
@@ -364,9 +364,9 @@ Assume that there exists $(\bar x,\bar y)\in E$ such that $\nabla^{w_n} \vec u_1
 \GE^{w_n}_p (\vec u_1) &\leq \GE^{w_n}_p \left(\frac{\vec u_1 + \vec u_2}{2}\right) =
 \norm{\frac{\nabla^{w_n} \vec u_1(x,y) + \nabla^{w_n} \vec u_2(x,y)}{2}}^p_p\\
 &<
-\frac{1}{2} \sum_{(x,y)\in E\setminus\{(\bar x,\bar y)\}} \abs{\nabla^{w_n} \vec u_1(x,y)}^p + \abs{\nabla^{w_n} \vec u_2(x,y)}^p
+\frac{1}{2} \sum_{(x,y)\in E\setminus\{(\bar x,\bar y)\}} \bigg(\abs{\nabla^{w_n} \vec u_1(x,y)}^p + \abs{\nabla^{w_n} \vec u_2(x,y)}^p\bigg)
 \\ 
-&\qquad+\frac{1}{2} \abs{\nabla^{w_n} \vec u_1(\bar x, \bar y)}^p + \abs{\nabla^{w_n} \vec u_2(\bar x, \bar y)}^p\\
+&\qquad+\frac{1}{2}\bigg( \abs{\nabla^{w_n} \vec u_1(\bar x, \bar y)}^p + \abs{\nabla^{w_n} \vec u_2(\bar x, \bar y)}^p\bigg)\\
 &= 
 \frac{1}{2}\left(\GE^{w_n}_p (\vec u_1) + \GE^{w_n}_p (\vec u_2)\right) 
 = \GE^{w_n}_p (\vec u_1),
@@ -390,7 +390,9 @@ which together with the boundary conditions $\vec u_1(o)=\vec u_2(o)=\vec g(o)$ 
 \vec u_1(x) = 
 \vec u_1(\gamma_1)= \vec u_1(\gamma_1) &- \vec u_1(\gamma_2) + \vec u_1(\gamma_2)\\
 %
-=\ldots=\Bigg[\sum_{i=1}^{m-1} \vec u_1(\gamma_{i}) &- \vec u_1(\gamma_{i+1})\Bigg] + 
+=\vec u_1(\gamma_1) &- \vec u_1(\gamma_2) + \vec u_1(\gamma_2) - \vec u_1(\gamma_3) + \vec u_1(\gamma_3)=\ldots\\
+%
+=\Bigg[\sum_{i=1}^{m-1} \vec u_1(\gamma_{i}) &- \vec u_1(\gamma_{i+1})\Bigg] + 
 \vec u_1(o)\\
 = \Bigg[\sum_{i=1}^{m-1} \vec u_2(\gamma_{i}) &- \vec u_2(\gamma_{i+1})\Bigg] + 
 \vec u_2(o)\\
@@ -619,7 +621,7 @@ see \cite{jensen1993uniqueness}. Again, we see that that the weighting $\rho$ on
 For an open domain $\domain\subset\R^d$, find a function $u\in W^{1,\infty}(\domain)$ such that
 %
 \begin{align*}
-\norm{\nabla u}_\infty \leq \norm{\nabla v}_\infty \qquad\text{ for every } v, \text{ with } (u-v)\in W^{1,\infty}_0(\domain).
+\norm{\nabla u}_\infty \leq \norm{\nabla v}_\infty \qquad\text{ for every } v \text{ with } (u-v)\in W^{1,\infty}_0(\domain).
 \end{align*}
 \end{problem}
 %
@@ -819,7 +821,7 @@ see \cref{fig:maxprinc} for a visualization. Analogously, we have that $\color{s
 \paragraph{Absolutely Minimizing Extension}\label{sec:AMLE}
 %
 Sending $p\to\infty$ in the variational formulation of the $p$-Laplace equation 
-yields the Lipschitz extension task, which however does not admit for unique solutions. So the question arises, which property is lost in the limit case. For $p<\infty$ one has the local minimization property, as explained in \cref{sec:CSSL}. This lead Aronsson to introduce the concept of \emph{absolutely minimizing Lipschitz extension} in \cite{aronsson1967extension}, by additionally enforcing the minimizing property on every subset. A function $u\in W^{1,\infty}$ is called absolutely minimal, iff
+yields the Lipschitz extension task, which however does not admit unique solutions. So the question arises, which property is lost in the limit case. For $p<\infty$ one has the local minimization property, as explained in \cref{sec:CSSL}. This lead Aronsson to introduce the concept of \emph{absolutely minimizing Lipschitz extension} in \cite{aronsson1967extension}, by additionally enforcing the minimizing property on every subset. A function $u\in W^{1,\infty}$ is called absolutely minimal, iff
 %
 \begin{align}\label{eq:absmin}
 \esssup_{x\in V} \abs{\nabla u} \leq \esssup_{x\in V} \abs{\nabla v} \qquad\text{ for every open } V\subset \domain
@@ -1054,7 +1056,7 @@ d_{w_n}(x,y) := \min \left\{ \abs{\gamma}: \gamma \text{ is a path in }
 %
 \begin{remark}{}{}
 We note that it is important to only consider non-negative weights, otherwise any loop with a negative \enquote{length} would decrease the 
-length of the whole path arbitrarily. However, restricting ourselves to non-negative weights we can easily see, that the minimum in \cref{eq:graphdist} is indeed attained.
+length of the whole path arbitrarily. However, restricting ourselves to non-negative weights we can easily see that the minimum in \cref{eq:graphdist} is indeed attained.
 \end{remark}
 %
 \noindent%
@@ -1085,7 +1087,7 @@ We can choose a path $\gamma\in\domain_n^{\times k}$ such that
 \Lip_{d_{w_n}}(\vec u) &= \frac{\vec u(\gamma_1) - \vec u(\gamma_k)}{\abs{\gamma}}.
 \end{align*}
 %
-The path $\gamma$ allows to compare vertices $\gamma_1, \gamma_k\in\domain_n$ that aren't necessarily neighbors in the graph. However, each consecutive vertices in the path are neighbors in the graph and therefore we have
+The path $\gamma$ allows to compare vertices $\gamma_1, \gamma_k\in\domain_n$ that are not necessarily neighbors in the graph. However, each consecutive vertices in the path are neighbors in the graph and therefore we have
 %
 \begin{align}\label{eq:gebound}
 w_n(\gamma_i, \gamma_{i+1}) \abs{\vec u(\gamma_{i+1}) - \vec u(\gamma_i)}
@@ -1175,7 +1177,7 @@ This lemma shows that the abstract Lipschitz extension task considered on the me
 \McS{\vec g}(x) &= \sup_{y\in\conset_n} \vec g (y) - d_{w_n}(x,y)
 \end{align*}
 %
-as solutions on the graph. Analogously, the problem does not admit for unique solutions.
+as solutions on the graph. Analogously, the problem does not admit unique solutions.
 %
 %
 %
@@ -1198,14 +1200,18 @@ $\stackrel{\circ}{V}^{\text{int}}:= V\setminus \partialint V$.
 %
 %
 \noindent%
-We note that it is not possible to define a topology on $\domain_n$ that would yield the above notions. Namely, the only admissible topology in our case would be the discrete topology, i.e., $2^{\domain_n}$. However, in this topology the only closed sets are $\emptyset$ and $\domain_n$ which is not useful for the applications in the following. Using the Kuratowski closure axioms \cite{kuratowski1922operation} we remark the following.
+We note that it is not possible to define a topology on $\domain_n$ that would yield the above notions. Namely, the only admissible topology in our case would be the discrete topology, i.e., $2^{\domain_n}$. However, in this topology the only closed sets are $\emptyset$ and $\domain_n$ which is not useful for the applications in the following. Using the Kuratowski closure axioms \cite{kuratowski1922operation} we remark that the exterior closure on the graph is a so called pre- or Čech closure, \cite{vcech1966topological}. For a set $\Inp$, a mapping $\text{ext}:2^\Inp\to 2^\Inp$ is called Čech closure, if the following two conditions hold,
+%
+\begin{itemize}
+	\item $\text{ext}(\emptyset) = \emptyset$
+\end{itemize}
 %
 \begin{lemma}{}{}
 The exterior closure on a weighted graph $(\domain_n, w_n)$ is a preclosure or Čech closure.
 \end{lemma}
 %
 \begin{proof}
-Here, we use the notion of a preclosure in \cite{vcech1966topological}.
+
 We first see that $\overline{\emptyset}^{\text{ext}}=\emptyset$ and that $V\subset \overline{V}^{\text{ext}}$ for every subset $V\subset\domain_n$, i.e. the above defined closure preserves the empty set and is extensive. Furthermore, for two sets $V_1,V_2\subset \domain_n$ we have that
 %
 \begin{gather*} 
@@ -1406,7 +1412,7 @@ From \cite[Prop. 3.8]{bungert2021uniform} we have that $\vec u$ is a graph AMLE.
 %
 %
 \section{Gamma Convergence: \cite{roith2022continuum}}\label{sec:GConv}
-We now present the main results of \cite{roith2022continuum}. This works considers the limit of the basic Lipschitz extension from the graph \cref{prob:lipgraph} to the continuum case \cref{prob:Lipext}. As detailed in the previous sections both of these problems do not admit for unique solutions, however it still meaningful to study the convergence in the infinite data limit. We first start by specifying the setting and recalling the concept of $\Gamma$-convergence and then state the main results.
+We now present the main results of \cite{roith2022continuum}. This works considers the limit of the basic Lipschitz extension from the graph \cref{prob:lipgraph} to the continuum case \cref{prob:Lipext}. As detailed in the previous sections both of these problems do not admit unique solutions, however it still meaningful to study the convergence in the infinite data limit. We first start by specifying the setting and recalling the concept of $\Gamma$-convergence and then state the main results.
 %
 %
 \paragraph{Main Contributions in \cite{roith2022continuum}} We first prove $\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$ to their continuum counterpart $\pDir_\infty$. This result can be seen as the extension of the results in \cite{GarcSlep15, slepcev2019analysis} to the case $p=\infty$. Here, we employ a different type of metric as we detail in the following. Furthermore, we identify the optimal graph scaling which in this case is derived in a deterministic manner. The key difference to \cite{GarcSlep15, slepcev2019analysis} is that we can work with any point-clouds and not only i.i.d. points. The inherent reason is that $L^\infty$ problems only consider mass in a qualitative not in a quantitative way. We then establish a compactness result, that allows us to infer convergence of minimizers. Finally, we apply this theory to the ground state problem.
@@ -1878,7 +1884,7 @@ and it holds
 In the previous section we consider the limit of the Lipschitz extension task. The major limitations of this work are:
 %
 \begin{itemize}
-\item The considered problem does not admit for unique solutions. The $\Gamma$-convergence framework does not directly allow to select certain minimizers, e.g. AMLEs, and consider the respective limit to continuum AMLEs.
+\item The considered problem does not admit unique solutions. The $\Gamma$-convergence framework does not directly allow to select certain minimizers, e.g. AMLEs, and consider the respective limit to continuum AMLEs.
 %
 \item We can only show qualitative convergence results. It is not directly possible to prove quantitative statements and convergence rates.
 \end{itemize}
