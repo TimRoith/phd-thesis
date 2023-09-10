@@ -90,7 +90,7 @@ In order to obtain meaningful solutions, one usually incorporates the \emph{smoo
 %
 
 \begin{remark}{Notational Remark}{}
-In \cref{ch:para} we employ the symbol $\Inp$ to denote the input set, which is now replaced by $\domain$. This due to the fact, that \cite{roith2022continuum,bungert2021uniform, bungert2022ratio} employ this notation for which we choose to use it here.
+In \cref{ch:para} we employ the symbol $\Inp$ to denote the input set, which is now replaced by $\domain$. This is due to the fact, that \cite{roith2022continuum,bungert2021uniform, bungert2022ratio} employ this notation for which we choose to use it here.
 \end{remark}
 %
 %
@@ -179,7 +179,7 @@ In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ th
 %
 %
 \begin{remark}{}{}
-In order to obtain continuum limits in the case $p<\infty$ on usually employs a factor of $1/\gscale^{p+d}$ in front of the graph weights \cite{GarcSlep15, slepcev2019analysis}. In \cref{sec:GLipExt} we see that this factor degenerates to $1/\gscale$ in the case $p\to\infty$. The intuition here is that problems in $L^\infty$ do not treat mass in a quantitative but rather a qualitative manner. Therefore, factors like $\gscale^d$ which appear because of integrals in $\R^d$ do not contribute for $p=\infty$.
+In order to obtain continuum limits in the case $p<\infty$ one usually employs a factor of $1/\gscale^{p+d}$ in front of the graph weights \cite{GarcSlep15, slepcev2019analysis}. In \cref{sec:GLipExt} we see that this factor degenerates to $1/\gscale$ in the case $p\to\infty$. The intuition here is that problems in $L^\infty$ do not treat mass in a quantitative but rather a qualitative manner. Therefore, factors like $\gscale^d$ which appear because of integrals in $\R^d$ do not contribute for $p=\infty$.
 \end{remark}
 %
 %
@@ -196,7 +196,7 @@ where we assume an ordering $\domain_n=\{x_1,\ldots, x_n\}$. In order to have a 
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{code/SSL/NNZ.pdf}
-\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n\in\N$ points uniformly in the cube $[0,1]^d$ and only connect vertices $x_i,x_j\in\domain_n$ if $\abs{x_i-x_j} < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
+\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n=10^3$ points uniformly in the cube $[0,1]^d$ and only connect vertices $x_i,x_j\in\domain_n$ if $\abs{x_i-x_j} < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
 \end{figure} 
 %
 %
@@ -205,7 +205,7 @@ Therefore, from a practical point of view $\gscale$ should be chosen relatively 
 %
 %
 \begin{remark}{}{}
-In many practical applications graph weights connecting all points within $\gscale$-ball of Euclidean distance are inferior to knn graphs \cite{calder2020poisson, flores2019algorithms, calder2022improved}. While most consistency results employ the $\gscale$-ball setting, recently, the authors in \cite{calder2022improved} were able to show convergence rates for knn graphs. In this thesis we focus on the $\gscale$-ball setting, however it is an interesting open question to transfer the results of \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} to the knn setting.
+In many practical applications graph weights connecting all points within an $\gscale$-ball of Euclidean distance are inferior to k-nearest neighbor (knn) graphs \cite{calder2020poisson, flores2019algorithms, calder2022improved}. While most consistency results employ the $\gscale$-ball setting, recently, the authors in \cite{calder2022improved} were able to show convergence rates for knn graphs. In this thesis we focus on the $\gscale$-ball setting, however it is an interesting open question to transfer the results of \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} to the knn setting.
 \end{remark}
 %
 %
@@ -227,7 +227,7 @@ The archetype of learning methods we consider in the following is the so-called 
 %
 %
 %
-Here, we always assume non-negative weights $w_n:\domain_n\times\domain_n\to[0,\infty)$. The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum counterpart. While our contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$, the case $p<\infty$ serves as a  motivation for the whole discussion. Therefore, we briefly review the situation in the following. Here, we first introduce the continuum setting and then discuss the situation on the graph.
+Here, we always assume non-negative weights $w_n:\domain_n\times\domain_n\to[0,\infty)$. The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum counterpart. While our contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$, the case $p<\infty$ serves as a  motivation for the whole discussion. Therefore, we briefly review the continuum setting and then discuss the situation on the graph.
 %
 %
 %
@@ -1200,10 +1200,12 @@ $\stackrel{\circ}{V}^{\text{int}}:= V\setminus \partialint V$.
 %
 %
 \noindent%
-We note that it is not possible to define a topology on $\domain_n$ that would yield the above notions. Namely, the only admissible topology in our case would be the discrete topology, i.e., $2^{\domain_n}$. However, in this topology the only closed sets are $\emptyset$ and $\domain_n$ which is not useful for the applications in the following. Using the Kuratowski closure axioms \cite{kuratowski1922operation} we remark that the exterior closure on the graph is a so called pre- or Čech closure, \cite{vcech1966topological}. For a set $\Inp$, a mapping $\text{ext}:2^\Inp\to 2^\Inp$ is called Čech closure, if the following two conditions hold,
+We note that it is not possible to define a topology on $\domain_n$ that would yield the above notions. Namely, the only admissible topology in our case would be the discrete topology, i.e., $2^{\domain_n}$. However, in this topology the only closed sets are $\emptyset$ and $\domain_n$ which is not useful for the applications in the following. Using the Kuratowski closure axioms \cite{kuratowski1922operation} we remark that the exterior closure on the graph is a so called pre- or Čech closure, \cite{vcech1966topological}. For a set $\Inp$, a mapping $\text{cl}:2^\Inp\to 2^\Inp$ is called Čech closure, if the following conditions hold,
 %
 \begin{itemize}
-	\item $\text{ext}(\emptyset) = \emptyset$
+\item $\text{cl}(\emptyset) = \emptyset$ ($\text{cl}$ preserves the empty set),
+\item $V\subset \text{cl}(V)$ for all $V\subset \Inp$ ($\text{cl}$ is extensive),
+\item $\text{cl}(V_1 \cup V_2) = \text{cl}(V_1)\cup \text{cl}(V_2)$ for all $V_1,V_2\subset \Inp$ ($\text{cl}$ preserves binary unions).
 \end{itemize}
 %
 \begin{lemma}{}{}
@@ -1258,7 +1260,7 @@ The missing property, that inhibits the closure to induce a topology is the so-c
 In the example visualized in \cref{fig:graphb} we see that $\overline{\overline{V}^{\text{ext}}}^{\text{ext}}=\domain_n\neq \overline{V}^{\text{ext}}$. Since the closure we employ here does not induce a topology, we have a slightly modified notion of absolutely minimizers.
 %
 \begin{problem}{Graph AMLEs}{prob:GAMLE}
-Given a connected weighted graph $(\domain_n, w_n)$, $\conset_n\subset\domain_n$ and a function $\vec g:\conset_n\to\R$ find a function $\vec u:\domain_n\to\R$ such that
+Given a connected weighted graph $(\domain_n, w_n)$, $\conset_n\subset\domain_n$ and a function $\vec g:\conset_n\to\R$, find a function $\vec u:\domain_n\to\R$ such that
 %
 \begin{align*}
 \Lip_{d_{w_n}}(\vec u; \extcl{V}) &= \Lip_{d_{w_n}}(\vec u; \partialext V)
@@ -1274,7 +1276,7 @@ This notion of absolute minimizers is employed in \cite{bungert2021uniform, bung
 %
 \paragraph{Comparison with Graph Distance functions}
 %
-Analogously to the continuum case \cref{sec:LipExtCont} we can also consider comparison with distance functions, but now on graphs. The main ingredients here, are the graph distance function $d_{w_n}$ and the notion of closure on a graph as developed in the last section.
+Analogously to the continuum case \cref{sec:LipExtCont} we can also consider comparison with distance functions, but now on graphs. The main ingredients here are the graph distance function $d_{w_n}$ and the notion of closure on a graph as developed in the last section.
 %
 %
 \begin{definition}{}{}
@@ -1360,7 +1362,7 @@ a function $\vec u:\domain_n\to\R$ such that
 %
 %
 \noindent%
-To establish existence of solutions of the problem above one can employ the Perron method \cite{perron1923neue}. Alternatively, one can establish the equivalence to so-called lex-minimizers and the show existence as in \cite[Th. 3.3]{kyng2015algorithms}. Uniqueness is a consequence of the following theorem from \cite{calder2019consistency}, which is similar to uniqueness lemma of Jensen \cref{th:jens}.
+To establish existence of solutions of the problem above one can employ the Perron method \cite{perron1923neue}. Alternatively, one can establish the equivalence to so-called lex-minimizers and the show existence as in \cite[Th. 3.3]{kyng2015algorithms}. Uniqueness is a consequence of the following theorem from \cite{calder2019consistency}, which is similar to the uniqueness result of Jensen in \cref{th:jens}.
 %
 \begin{theorem}{\cite[Th. 3.1]{calder2019consistency}}{}
 Let $(\domain_n,w_n)$ be a graph connected to the the boundary $\conset_n\subset\domain_n$ and consider $\vec u,\vec v:\domain_n\to\R$ such that
@@ -1412,7 +1414,7 @@ From \cite[Prop. 3.8]{bungert2021uniform} we have that $\vec u$ is a graph AMLE.
 %
 %
 \section{Gamma Convergence: \cite{roith2022continuum}}\label{sec:GConv}
-We now present the main results of \cite{roith2022continuum}. This works considers the limit of the basic Lipschitz extension from the graph \cref{prob:lipgraph} to the continuum case \cref{prob:Lipext}. As detailed in the previous sections both of these problems do not admit unique solutions, however it still meaningful to study the convergence in the infinite data limit. We first start by specifying the setting and recalling the concept of $\Gamma$-convergence and then state the main results.
+We now present the main results of \cite{roith2022continuum}. This works considers the limit of the basic Lipschitz extension from the graph \cref{prob:lipgraph} to the continuum case \cref{prob:Lipext}. As detailed in the previous sections both of these problems do not admit unique solutions, however it is still meaningful to study the convergence in the infinite data limit. We first start by specifying the setting and recalling the concept of $\Gamma$-convergence and then state the main results.
 %
 %
 \paragraph{Main Contributions in \cite{roith2022continuum}} We first prove $\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$ to their continuum counterpart $\pDir_\infty$. This result can be seen as the extension of the results in \cite{GarcSlep15, slepcev2019analysis} to the case $p=\infty$. Here, we employ a different type of metric as we detail in the following. Furthermore, we identify the optimal graph scaling which in this case is derived in a deterministic manner. The key difference to \cite{GarcSlep15, slepcev2019analysis} is that we can work with any point-clouds and not only i.i.d. points. The inherent reason is that $L^\infty$ problems only consider mass in a qualitative not in a quantitative way. We then establish a compactness result, that allows us to infer convergence of minimizers. Finally, we apply this theory to the ground state problem.
@@ -1587,7 +1589,7 @@ We remark on the historical correctness of the name \enquote{Hausdorff} distance
 %
 %
 \noindent%
-We also allow the constraint set $\conset_n$ to vary with each $n\in\N$, therfore we also measure the distance between $\conset_n$ and the continuum constraint set $\conset\subset\cl\domain$, via
+We also allow the constraint set $\conset_n$ to vary with each $n\in\N$, therefore we also measure the distance between $\conset_n$ and the continuum constraint set $\conset\subset\cl\domain$, via
 %
 \begin{align*}
 d_H(\conset_n, \conset) = 
@@ -1629,7 +1631,7 @@ d_\domain(x,y)=\inf\left\lbrace
 \right\rbrace,
 \end{align*}
 %
-is converges to the Euclidean distance if $x$ goes to $y$. We formulate this in the following assumption
+converges to the Euclidean distance if $x$ goes to $y$. We formulate this in the following assumption
 %
 \begin{align}\label{eq:cond_domain}
 \lim_{\delta\downarrow0}\sup
@@ -1638,7 +1640,7 @@ is converges to the Euclidean distance if $x$ goes to $y$. We formulate this in 
 x,y\in\domain,\,\abs{x-y}<\delta\right\rbrace \leq 1.
 \end{align}
 %
-The inherent reason that we need no enforces this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$. Most importantly, \cref{eq:cond_domain} prohibits sharp internal corners in the domain, see \cref{fig:sharp}. Furthermore, note that we consider the geodesic distance $d_\domain$ on the open domain $\domain$, not on its closure. Therefore, we also exclude situations of a touching boundary as in \cref{fig:tube}. In \cite{roith2022continuum} we also provide examples of domains fulfilling this condition.
+The inherent reason that we need to enforce this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$. Most importantly, \cref{eq:cond_domain} prohibits sharp internal corners in the domain, see \cref{fig:sharp}. Furthermore, note that we consider the geodesic distance $d_\domain$ on the open domain $\domain$, not on its closure. Therefore, we also exclude situations of a touching boundary as in \cref{fig:tube}. In \cite{roith2022continuum} we also provide examples of domains fulfilling this condition.
 %
 \begin{figure}
 \centering%

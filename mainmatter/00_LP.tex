@@ -1,9 +1,9 @@
 \chapter{Learning Paradigms}\label{ch:para}
 
-Throughout this thesis, we assume to be given data $\Inp_n\subset\Inp\subset \R^d$ consisting of $n$ data points. We consider the task of \emph{learning} a function $f:\tilde{\Inp}\to \Oup$ from the given data, where $\Oup$ denotes the output space. In our case the set $\tilde{\Inp}\subset\Inp$ is usually chosen either as the set of data points $\Inp_n$ or as the whole space $\Inp$. The two most important cases for us are
+Throughout this thesis, we assume to be given data $\Inp_n\subset\Inp\subset \R^d$ consisting of $n$ data points. We consider the task of \emph{learning} a function $f:\tilde{\Inp}\to \Oup$ from the given data, where $\Oup$ denotes the output space. In our case the set $\tilde{\Inp}\subset\Inp$ is usually chosen either as the set of data points $\Inp_n$ or as the whole space $\Inp$. The two most important cases for us are listed below.
 %
 \begin{itemize}
-\item \textbf{classification}: $\net$ assigns a label to each $x\in \tilde\Inp$ out of $C\in\N$ possible classes, i.e. $\Oup=\{1,\ldots,C\}$. In some architectures the last layer of the neural network is given as a vector $\oup\in\R^C$. Typically, this vector is a probability vector, i.e. 
+\item \textbf{Classification}: The function $\net$ assigns a label to each $x\in \tilde\Inp$ out of $C\in\N$ possible classes, i.e. $\Oup=\{1,\ldots,C\}$. In some architectures the last layer of the neural network is given as a vector $\oup\in\R^C$. Typically, this vector is a probability vector, i.e. 
 %
 \begin{align*}
 y\in \Delta^C := \left\{z\in[0,1]^C: \sum_{i=1}^C z_i = 1\right\}.
@@ -17,7 +17,7 @@ This can be enforced via the softmax function \cite{bridle1990probabilistic} $\o
 %
 which was actually introduced by Boltzman in \cite{boltzmann1868studien}. This allows the interpretation that the $i$th entry of $\net_\param(\inp)\in\Delta^C$ models the probability that $\inp$ belongs to class $i$. In order to obtain a label one can simply choose the maximum entry, i.e.  $\argmax_{i=1,\ldots,C} \net_\param(\inp)_i$.
 %
-\item \textbf{image denoising}: $\net$ outputs a denoised version of an input image. Here we have $\Inp = \Oup=\R^{K\times N\times M}$, where
+\item \textbf{Image denoising}: The function $\net$ outputs a denoised version of an input image. Here we have $\Inp = \Oup=\R^{K\times N\times M}$, where
 %
 \begin{itemize}
 \item $K\in\N$ is the number of color channels,
@@ -34,11 +34,11 @@ The learning paradigms we consider in this thesis, differ by their usage of labe
 \includegraphics[width=.5\textwidth]{atelier/paradigms/UL.pdf}
 \end{wrapfigure}
 
-In this case we are not given any labeled data. In our context the most important application is data clustering. Other tasks involve dimensionality reduction or density estimation, see \cite{subramanya2014graph}. The clustering task consists of grouping data based on some similarity criterion. In this sense, clustering can also be interpreted as classification, i.e., the desired function is a mapping $\net:\tilde{\Inp}\to \{1,\ldots, C\}$ where $C\in\N$ denotes the number of clusters. Typically, one wants to obtain a clustering of the given data set, i.e., $\tilde\Inp = \Inp_n$. We list some of the typical clustering methods below:
+In the case of unsupervised learning we are not given any labeled data. In our context the most important application is data clustering. Other tasks involve dimensionality reduction or density estimation, see \cite{subramanya2014graph}. The clustering task consists of grouping data based on some similarity criterion. In this sense, clustering can also be interpreted as classification, i.e., the desired function is a mapping $\net:\tilde{\Inp}\to \{1,\ldots, C\}$ where $C\in\N$ denotes the number of clusters. Typically, one wants to obtain a clustering of the given data set, i.e., $\tilde\Inp = \Inp_n$. We list some of the typical clustering methods below:
 %
 \begin{itemize}
 \item K-means algorithm \cite{steinhaus1956division},
-\item expectation Maximization  \cite{dempster1977maximum},
+\item expectation maximization  \cite{dempster1977maximum},
 \item Cheeger cuts \cite{GarcSlep15, szlam2009total, trillos2016consistency, garcia2022graph},
 \item spectral clustering \cite{trillos2018variational, trillos2021geometric, hoffmann2022spectral}.
 \end{itemize}
@@ -52,7 +52,7 @@ Unsupervised learning is not the main focus of this present work. However, we no
 \includegraphics[width=.5\textwidth]{atelier/paradigms/SL.pdf}
 \end{wrapfigure}
 %
-In this setting, each data point $x\in\Inp_n$ is labeled, via a given function $g:\Inp_n\to\Oup$ such that we have a finite training set $\mathcal{T} = \{(x,g(x)): x\in\Inp_n\}$. The task is to infer a function defined on the underlying space, $\net:\Inp \to\Oup$, i.e. we want to assign a label to unseen inputs $x\in\Inp$ that are not necessarily part of the given data. Often, one models the problem via a joint probability function $P_{\Inp,\Oup}$ and assumes that the training data are i.i.d. w.r.t. $P_{\Inp,\Oup}$. In this interpretation, a neural network aims to approximate the conditional $P_{\Inp,\Oup}(y|x)$ for an input $\inp\in\Inp$ and output $\oup\in\Oup$. 
+In this setting, each data point $x\in\Inp_n$ is labeled, via a given function $g:\Inp_n\to\Oup$ such that we have a finite training set $\mathcal{T} = \{(x,g(x)): x\in\Inp_n\}$. The task is to infer a function defined on the underlying space, $\net:\Inp \to\Oup$, i.e., we want to assign a label to unseen inputs $x\in\Inp$ that are not necessarily part of the given data. Often, one models the problem via a joint probability function $P_{\Inp,\Oup}$ and assumes that the training data are independent and identically distributed (i.i.d) with respect to $P_{\Inp,\Oup}$. In this interpretation, the aim is to approximate the conditional $P_{\Inp,\Oup}(y|x)$ for an input $\inp\in\Inp$ and output $\oup\in\Oup$. 
 
 In order to \emph{learn} the function $\net$ from the given data, one needs to choose a parameterized class of functions, where typically each element can be describe by a finite number of parameters. Among others, common methods or parametrizations include
 %
@@ -95,7 +95,7 @@ This methodology can be extended to classification tasks beyond the binary case,
 g_c:\conset_n\to\R\qquad g_c(o) = g(o)_c,
 \end{align*}
 %
-which yield functions $f_c:\Inp_n\to[0,1],c=1,\ldots,C$. The final output can then either obtained by taking the argmax, i.e. $f:\Inp_n\to\{1,\ldots, C\}$ 
+which yield functions $f_c:\Inp_n\to[0,1],c=1,\ldots,C$. The final output can then either obtained by emplyoing a Bayes classifier \cite{devroye2013probabilistic}, i.e. $f:\Inp_n\to\{1,\ldots, C\}$ 
 %
 \begin{align*}
 f(x) := \argmax_{c=1,\ldots, C} f_c(x)
@@ -107,4 +107,4 @@ or by applying a softmax to obtain a probability vector, i.e. $f:\Inp_n\to\Delta
 f(x) := \operatorname{soft max}\left(f_1(x), \ldots, f_c(x)\right).
 \end{align*}
 %
-In \cref{ch:SSL} we focus on graph-based learning algorithms, however we refer to \cite{zhu2005semi} for a overview of semi-supervised learning algorithms. 
+In \cref{ch:SSL} we focus on graph-based learning algorithms, however we refer to \cite{zhu2005semi} for an overview of semi-supervised learning algorithms. 
