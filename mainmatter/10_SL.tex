@@ -206,10 +206,10 @@ Some authors argue that these instabilities are inherent to classification probl
 %
 %
 %
-\paragraph{What are Adversarial Examples Formally?} In order to formalize this idea we omit any influence of the typically unavailable function $h$ and instead consider $\inpp$ adversarial if $\net_\param^\MAP(\inp)\neq\net^\MAP_\param(\inpp)$, i.e. we assume the output of $\net^\MAP_\param(\inp)$ to be \enquote{correct}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
+\paragraph{What are Adversarial Examples Formally?} In order to formalize this idea we omit any influence of the typically unavailable function $h$ and instead consider $\inpp$ adversarial if $\net_\param^\MAP(\inp)\neq\net^\MAP_\param(\inpp)$. This interpretation only makes sense, if we assume that $\net_\param(\inp)$ is \emph{correct}, which can only be easily checked on labeled data \cite{bungert2023begins}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
 %
 \begin{remark}{}{}
-In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparison---can be an unfavorable choice. Images that appear very different visually, (i.e. for a human classifier) can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy to evaluate, which is crucial for most applications. In the absence of a better criterion, having a small $L^p$ norm, is commonly the only way to decide if $\inpp$ is an admissible adversarial example. 
+In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparison---can be an unfavorable choice. Images that appear very different visually, (i.e. for a human classifier) can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy to evaluate, which is crucial for most applications. In the absence of a better criterion, being close to $\inp$ in the $L^p$ distance, is commonly the only way to decide if $\inpp$ is an admissible adversarial example. 
 \end{remark}
 %
 %
@@ -217,18 +217,18 @@ In most of our examples we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Emp
 Employing these simplifications we then say that $\inpp\in\Inp$ is adversarial, if
 %
 \begin{align*}
-d(\inp,\inpp) \leq \budget \qquad \text{ and } \qquad \net_\param(\inp)\neq \net_\param(\inpp),
+d(\inp,\inpp) \leq \budget \qquad \text{ and } \qquad \net_\param^\MAP(\inp)\neq \net_\param^\MAP(\inpp),
 \end{align*}
 %
-where $\budget$ is called the \emph{adversarial budget}. This parameter controls how far $\tilde{x}$ can be from the original point $x$ to be still considered adversarial. Here, we also have decide how much we trust the metric $d(\cdot,\cdot)$ as a measure of closeness. This interpretation only makes sense, if we assume that $\net_\param(\inp)$ is \emph{correct}, which can only be easily checked on the training data \cite{bungert2023begins}.
+where $\budget$ is called the \emph{adversarial budget}. This parameter controls how far $\tilde{x}$ can be from the original point $x$ to be still considered adversarial. Here, we also have to decide how much we trust the metric $d(\cdot,\cdot)$ as a measure of closeness.
 %
 %
 \paragraph{Types of Adversarial Examples} Typically, adversarial examples are created from the clean image $\inp$ via some distortion $\delta\in\R^n$. Together with an application map $T:\Inp\times\R^s\to\Inp$ one then obtains $\inpp=T(x,\delta)$ as the adversarial example. In this formulation one can the alternatively employ the criterion $\norm{\delta}\leq \budget$ to decide, whether $T(\inp,\delta)$ is an adversarial example. We only list some of the approaches below:
 %
 \begin{itemize}
-\item\textbf{Addition}: the most well-known examples are created by $T(x,\delta):=\inp+\delta$, i.e. $\inpp = \inp + \delta$. Here, it is important to note that typically images are assumed to have values between $0$ and $1$, i.e. $\Inp=[0,1]^{K\times N\times M}$ for which it is important to ensure that $\inpp\in\Inp$.
+\item\textbf{Addition}: the most well-known examples are created by $T(x,\delta):=\inp+\delta$, i.e. $\inpp = \inp + \delta$. Here, it is important to note that typically images are assumed to have values between $0$ and $1$, i.e. $\Inp=[0,1]^{K\times N\times M}$, therefore it is important to also ensure that $\inpp\in\Inp$.
 %
-\item\textbf{Translation and Rotation}: Simple geometric transformations---that would be unnoticeable for a human classifier---are quite effective to \enquote{fool} neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$ one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case $\delta\in[-\pi,\pi]$ models the angle of the rotation and would yield an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some expressivity. Consider the MNIST dataset \cite{leCun10}, where the task is to classify handwritten digits from $0$ to $9$:
+\item\textbf{Translation and Rotation}: Simple geometric transformations---that are unnoticeable for a human classifier---are quite effective to \enquote{fool} neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$ one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case $\delta\in[-\pi,\pi]$ models the angle of the rotation and would yield an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some expressivity. Consider the MNIST dataset \cite{leCun10}, where the task is to classify handwritten digits from $0$ to $9$:
 %
 \begin{itemize}
 \item We see that only $\budget<\pi/2$ makes sense, otherwise the number \enquote{6} could be always transformed to the number \enquote{9} and vice versa.
@@ -254,14 +254,14 @@ In the following we restrict ourselves to the additive case and only consider ex
 \ell(\oup, \net_\param(\inp+\delta)),
 \end{align}
 %
-where $\oup=\net_\param(\inp)$. Solving this problem is referred to as \emph{attacking} the network $\net$. More precisely, this is a so-called \emph{untargeted} attacks, since we do not prescribe $\inpp$ to realize any special output as long as it confuses the network. Opposed to this, there are so called \emph{targeted} attacks. Here we pick $c^\adv \neq \net^\MAP_\param(\inp)$ and then want to find $\inpp$ such that $\net^\MAP_\param(\inpp) = c^\adv$. Here, we then consider the problem
+where $\oup=\net_\param(\inp)$. Solving this problem is referred to as \emph{attacking} the network $\net$. More precisely, this is a so-called \emph{untargeted} attacks, since we do not prescribe $\inpp$ to realize any special output as long as it confuses the network. Opposed to this, there are so called \emph{targeted} attacks. Here, we pick $c^\adv \neq \net^\MAP_\param(\inp)$ and then want to find $\inpp$ such that $\net^\MAP_\param(\inpp) = c^\adv$, which yields the problem
 %
 \begin{align*}
 \min_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(c^\adv_{\oh}, \net_\param(\inpp)).
 \end{align*}
 %
 %
-However, we see that conceptually this problem is similar to \cref{eq:advprob} and differs only by a change of sign and a different reference label.
+Conceptually this problem is similar to \cref{eq:advprob} and differs only by a change of sign and a different reference label.
 %
 A popular method to solve \cref{eq:advprob} is the projected sign gradient ascent iteration \cite{kurakin2016adversarial},
 %
@@ -272,16 +272,16 @@ A popular method to solve \cref{eq:advprob} is the projected sign gradient ascen
 %
 %
 %
-Here, $\operatorname{Proj}_d$ denotes the projection onto the set $\Inp\cap B_{d,\budget}(\inp)$, where $B_{d,\budget}(\inp)$ is the ball with radius $\budget$ around $\inp$, w.r.t. to the distance $d$. Performing only one step of this iteration yields the fast gradient sign method \cite{goodfellow2014explaining}. There is a wide variety of these so-called gradient-based white-box attacks \cite{yuan2019adversarial}, i.e. methods that assume that the gradient of the model is available. In more realistic scenarios, this might not be the case. Attacks that do not employ the actual gradient of the model to attack are called \emph{closed box} attacks \cite{ilyas2018black}, which however not part of this thesis.
+Here, $\operatorname{Proj}_d$ denotes the projection onto the set $\Inp\cap B_{d,\budget}(\inp)$, where $B_{d,\budget}(\inp)$ is the ball with radius $\budget$ around $\inp$, w.r.t. to the distance $d$. Performing only one step of this iteration yields the fast gradient sign method \cite{goodfellow2014explaining}. There is a wide variety of these so-called gradient-based open-box attacks \cite{yuan2019adversarial}, i.e. methods that assume that the gradient of the model is available. In more realistic scenarios, this might not be the case. Attacks that do not employ the actual gradient of the model to attack are called \emph{closed box} attacks \cite{ilyas2018black}, which are not part of this thesis.
 %
 %
 \paragraph{Defending against Adversarial Attacks}
 %
 %
-We consider the question of finding parameters $\param\in\Param$ such that corresponding model $\net_\param$ is \emph{adversarially robust}, i.e. is less vulnerable to attacks. Therefore, we want the attack problem in \cref{eq:advprob} to be hard to solve. This intuition leads to the optimization problem
+We consider the question of finding parameters $\param\in\Param$ such that corresponding model $\net_\param$ is \emph{adversarially robust}, i.e., is less vulnerable to attacks. Therefore, we want the attack problem in \cref{eq:advprob} to be hard to solve. This intuition leads to the optimization problem
 %
 \begin{align*}
-\min_{\param\in\Param} \sum_{(\inp,\oup)\in \tset} \max_{\inpp\in B_{d,\budget}(\inp)} \ell(\net_\param(\inpp), \oup)
+\min_{\param\in\Param} \sum_{(\inp,\oup)\in \tset} \max_{\inpp:d(\inp,\inpp)\leq\budget} \ell(\net_\param(\inpp), \oup)
 \end{align*}
 %
 which is known as the \emph{adversarial training} formulation \cite{kurakin2016adversarial2, madry2017towards}. From a distributionally robust optimization point of view, this problem relates to 
@@ -290,7 +290,7 @@ which is known as the \emph{adversarial training} formulation \cite{kurakin2016a
 \min_{\param\in\Param} \max_{\tilde P: D(P_{\Inp,\Oup}, \tilde P)\leq\budget} \int_{\Inp\times\Oup} \ell(\net_\param(\inp), \oup)\ d\tilde{P}(\inp,\oup)
 \end{align*}
 %
-where $D$ denotes some distance on probability distributions, see \cite{bungert2023geometry}. Employing a batched gradient descent type iteration, one then has to solve a problem of the form \Cref{eq:advprob} in every step, which can be interpreted as a form of data augmentation \cite{lecun1995learning}. 
+where $D$ denotes some distance on probability distributions, see \cite{bungert2023geometry}. Employing a batched gradient descent type iteration for the variable $\param$, one then has to solve a problem of the form \Cref{eq:advprob} in every step, which can again be approximated via gradient ascent on the input variable $\inp$.
 %
 %
 %
@@ -302,7 +302,7 @@ Adversarial robustness is closely related to the Lipschitzness of a network $\ne
 \norm{\net_\param(\inp) - \net_\param(\inpp)}_\Oup \leq L\ \norm{\inp-\inpp}_\Inp,
 \end{align*}
 %
-where we typically employ an $L^p$ norm both $\norm{\cdot}_\Inp$ and $\norm{\cdot}_\Oup$.
+where we typically employ an $L^p$ norm for both $\norm{\cdot}_\Inp$ and $\norm{\cdot}_\Oup$.
 %
 The smallest constant fulfilling this inequality is the Lipschitz constant $\Lip(\net_\param)$. Having some control over this constant can therefore relate to being adversarially robust.
 %
@@ -311,20 +311,21 @@ Apart from adversarial robustness, having an upper bound on the Lipschitz consta
 \end{remark}
 %
 %
-We employ the Lipschitz constant as a regularizer and consider the problem
+\noindent%
+In our work, we employ the Lipschitz constant as a regularizer and consider the problem
 %
 \begin{align}\label{eq:LipReg}
 \min_\param \empLoss(\param) +\lambda\ \Lip(\net_\param)
 \end{align}
 %
-for a parameter $\lambda$. Unfortunately, computing the Lipschitz constant of neural networks is a NP-hard problem \cite{scaman2018lipschitz}, therefore many works employ the estimate
+for a parameter $\lambda>0$. Computing the Lipschitz constant of neural networks is a NP-hard problem \cite{scaman2018lipschitz}, therefore many works employ the estimate
 %
 \begin{align}\label{ineq:lip_weights}
 \lip(\net_\param) \ \leq \ \prod_{l=1}^L  \lip(\Phi_l) \leq 
 C_\sigma \prod_{l=1}^L \norm{W_l},
 \end{align}
 %
-where here $\norm{W_l}$ denotes some matrix norm and $C_\sigma$ depends on the Lipschitz constants of the activation functions, see \cite{Anil2019,gouk2020regularisation, Krishnan2020, Roth2020}.
+where here $\norm{W_l}$ denotes some matrix norm and $C_\sigma>0$ depends on the Lipschitz constants of the activation functions, see \cite{Anil2019,gouk2020regularisation, Krishnan2020, Roth2020}.
 %
 This inequality is not sharp and usually overestimates the Lipschitz constant, as we see in the following example taken from \cite{bungert2021clip}.
 %
@@ -345,7 +346,7 @@ For $\inp\in\R$ we have that
 \inp&\leq 0 \qquad\Rightarrow\Phi_1(\inp) = (0, -\inp)^T \qquad\Rightarrow \net_\param(\inp)=-\inp,
 \end{align*}
 %
-and therefore $\net_\param = \abs{\cdot}$, for which we know that $\Lip(\net_\param)=1$. However employing the spectral for $W_1$ and $W_2$, we see that
+and therefore $\net_\param = \abs{\cdot}$, which yields that $\Lip(\net_\param)=1$. However employing the spectral norm for the weight matrices, we see that
 %
 \begin{align*}
 \norm{W_1}\cdot\norm{W_2} = \sqrt{2}\ \sqrt{2} = 2.	
@@ -353,7 +354,8 @@ and therefore $\net_\param = \abs{\cdot}$, for which we know that $\Lip(\net_\pa
 %
 \end{example}
 %
-Plugging the estimate of \cref{ineq:lip_weights} into \cref{eq:LipReg} therefore potentially over regularizes the problem.
+\noindent%
+Plugging the estimate of \cref{ineq:lip_weights} into \cref{eq:LipReg} therefore potentially over regularizes the problem. While this increases the stability of the network, it can worsen its classification performance.
 %
 \paragraph{Contribution in \cite{bungert2021clip}} In \cite{bungert2021clip} we propose a strategy to solve \cref{eq:LipReg} approximately, without the estimate in \cref{ineq:lip_weights}. The basic idea consists of approximating the Lipschitz constant on a finite set and using this approximation as a regularizer. Furthermore, we analyse the original model in \cref{eq:LipReg} where we study existence of solutions, the influence of the parameter $\lambda$ and the limits $\lambda\to 0, \lambda\to \infty$, see \cref{sec:CLIPAna}. Finally, we demonstrate the efficiency of the methods by applying to some simple toy problems, see \cref{sec:CLIPNum}.
 
@@ -369,7 +371,7 @@ As mentioned before, we approximate the Lipschitz constant on a finite set $\Inp
 \end{align*}
 %
 %
-Disregarding the non-differentiable points of $\param\mapsto \Lip(\net_\param; \Inp_{\lip{}})$ allows us to make the above approximation in \cref{eq:LipReg} and the solve then problem via a gradient descent variant.
+Disregarding the non-differentiable points of $\param\mapsto \Lip(\net_\param; \Inp_{\lip{}})$ and emplyoinfg this approximation, allows us to solve the problem in \cref{eq:LipReg} and the via a gradient descent variant.
 %
 \begin{remark}{}{}
 Let $f,g:\Inp\to\Oup$ be two differentiable functions. If $f(\inpp)>g(\inpp)$ for some $\inpp\in\Inp$ then we know that there exists some $\epsilon>0$ such that $f(\inp)>g(\inp)\forall \inp\in B_\epsilon(\inpp)$. We have that $f\vee g = \max\{f,g\} = f$ in $B_\epsilon(\inpp)$ and therefore $\inp\mapsto f(\inp)\vee g(\inp)$ is differentiable in $\inpp$. If $f(\inpp)=g(\inpp)$ then $f\vee g$ could be non-differentiable at $\inpp$. However, in practice we employ automatic differentiation, where in this case one of the functions is chosen, say $f$, and the \emph{gradient} at $\inpp$ is computed as $\nabla f$. 
