@@ -371,7 +371,7 @@ As mentioned before, we approximate the Lipschitz constant on a finite set $\Inp
 \end{align*}
 %
 %
-Disregarding the non-differentiable points of $\param\mapsto \Lip(\net_\param; \Inp_{\lip{}})$ and emplyoinfg this approximation, allows us to solve the problem in \cref{eq:LipReg} and the via a gradient descent variant.
+Disregarding the non-differentiable points of $\param\mapsto \Lip(\net_\param; \Inp_{\lip{}})$ and emplyoinfg this approximation, allows us to solve the problem in \cref{eq:LipReg} via a gradient descent variant.
 %
 \begin{remark}{}{}
 Let $f,g:\Inp\to\Oup$ be two differentiable functions. If $f(\inpp)>g(\inpp)$ for some $\inpp\in\Inp$ then we know that there exists some $\epsilon>0$ such that $f(\inp)>g(\inp)\forall \inp\in B_\epsilon(\inpp)$. We have that $f\vee g = \max\{f,g\} = f$ in $B_\epsilon(\inpp)$ and therefore $\inp\mapsto f(\inp)\vee g(\inp)$ is differentiable in $\inpp$. If $f(\inpp)=g(\inpp)$ then $f\vee g$ could be non-differentiable at $\inpp$. However, in practice we employ automatic differentiation, where in this case one of the functions is chosen, say $f$, and the \emph{gradient} at $\inpp$ is computed as $\nabla f$. 
@@ -528,34 +528,34 @@ We briefly comment on the numerical results \cite{bungert2021clip}. All the expe
 \end{wrapfigure}
 %
 %
-Starting from the first simple neural architectures (e.g. \cite{rosenblatt1958perceptron}) the size of typical architectures has grown significantly in the last years \cite{hoefler2021sparsity}. While this development allowed to solve increasingly difficult tasks with neural networks, it also lead to immense computational requirements, both for the training and evaluation of the net. Therefore, the question arises how the evaluation and training of large neural networks can be made more efficient. Some of the approaches here include (see \cite{gholami2021survey} for a comprehensive overview):
+In this section, we now consider parameter sparsity of neural networks. Starting from the first simple architectures (e.g. \cite{rosenblatt1958perceptron}) the size of typical networks has grown significantly in the last years \cite{hoefler2021sparsity}. While this development allowed to solve increasingly difficult tasks with neural networks, it also lead to immense computational requirements, both for the training and evaluation of the net. Here, the question arises, how these computational tasks can be made more efficient. We list some of the approaches, below and refer to \cite{gholami2021survey} for a comprehensive overview.
 %
 \begin{itemize}
 \item \textbf{Architecture Optimization}: Designing an architecture that can be trained to have the same performance as a comparable one, while having less parameters, e.g. \cite{elsken2019neural, howard2017mobilenets}.
 %
-\item \textbf{Quantization}: Lowering the precision of the machine numbers of the parameters, e.g. \cite{banner2018scalable, courbariaux2014training}.
+\item \textbf{Quantization}: Lowering the precision of the machine numbers of the parameters, e.g., \cite{banner2018scalable, courbariaux2014training}.
 %
-\item \textbf{Knowledge distillation}: Employing a trained larger network to learn a smaller network in a student-teacher approach, e.g. \cite{schmidhuber1992learning, hinton2015distilling}.
+\item \textbf{Knowledge distillation}: Employing a trained larger network to learn a smaller one, in a student-teacher approach, e.g., \cite{schmidhuber1992learning, hinton2015distilling}.
 %
-\item \textbf{Pruning}: Parameters with small saliency, i.e., parameters that contribute little to the effective output of the network are removed or set to zero, in order to obtain a sparse weight matrix or a smaller architecture, see e.g. \cite{lecun1989optimal, hassibi1993optimal}.
+\item \textbf{Pruning}: Parameters with small saliency, i.e., parameters that contribute little to the effective output of the network are removed or set to zero, in order to obtain a sparse weight matrix or a smaller architecture, see, e.g., \cite{lecun1989optimal, hassibi1993optimal}.
 \end{itemize}
 %
 %
-From the above methods, the pruning approach is most influential to our work in \cite{bungert2022bregman}. Namely, the concept of compressing the neural network by sparsifying the weight matrices is similarly employed. However, there are a few deviations from the classical pruning framework, which we remark in the following.
+From the above methods, the pruning approach is most influential to our work in \cite{bungert2022bregman}. Namely, the concept of compressing the neural network by sparsifying the weight matrices is similarly employed. However, there are a few deviations from the classical pruning framework, which we note in the following.
 
-\paragraph{Sparsity via Optimization} In \cite{lecun1989optimal, hassibi1993optimal} one assumes to be given a trained neural network, which is then compressed after training based on some criterion. The authors in \cite{castellano1997iterative} employ an iterative pruning scheme, where a similar criterion is employed in order to throw away certain network weights after each step. In our work we want to employ a $L^1$ type penalty on weight matrices $W\in\R^{n\times m}$,
+\paragraph{Sparsity via Optimization} In \cite{lecun1989optimal, hassibi1993optimal} one assumes to be given a trained neural network, which is then compressed after training based on some criterion. The authors in \cite{castellano1997iterative} employ an iterative pruning scheme, where a similar criterion is employed, in order to throw away certain weights after each step. In our work we want to employ a $L^1$ type penalty (see \cite{claerbout1973robust}) on the weight matrices $W\in\R^{n\times m}$, i.e.,
 %
 \begin{align*}
-\norm{W}_1 = \sum_{i=1}^n\sum_{j=1}^m \abs{W_{ij}}
+\norm{W}_1 = \sum_{i=1}^n\sum_{j=1}^m \abs{W_{ij}}.
 \end{align*}
 %
-which has been widely employed to obtain sparse solution, e.g. \cite{claerbout1973robust}. In \cite{tibshirani1996regression} this yields to the so-called Lasso problem
+In \cite{tibshirani1996regression} this leads to the so-called Lasso problem
 %
 \begin{align*}
 \min_\param \empLoss(\param) + \lambda \norm{\param}_1,\qquad \lambda >0,
 \end{align*}
 %
-where we extend the $L^1$ norm to $\Param$ as discussed in \cref{sec:Bregnum}. This problem can for example by solved by a proximal gradient descent iteration
+where we extend the $L^1$ norm to the parameter space $\Param$ as discussed in \cref{sec:Bregnum}. This problem can for example be solved by a proximal gradient descent iteration
 %
 \begin{align}\label{eq:proxgd}
 \param^\k{k+1} = \operatorname{soft\ shrinkage}(\param - \tau \nabla\empLoss(\param^\k{k}))
@@ -564,7 +564,7 @@ where we extend the $L^1$ norm to $\Param$ as discussed in \cref{sec:Bregnum}. T
 where the shrinkage operator is defined in \cref{ex:softshrink}. This iteration was employed in \cite{nitanda2014stochastic, rosasco2014convergence, reddi2016proximal} to train sparse neural networks.
 %
 %
-\paragraph{Sparse-to-Sparse Training} All of the sparsity-based methods mentioned before start with dense weight matrices and only decrease the number of parameters during or at the end of the training process. Our approach yields an iteration, where the network is sparse throughout the iteration. In fact we start with only very few non-zero parameters and only activate necessary weights during training. This paradigm is known as sparse-to-sparse or evolutionary training \cite{mocanu2018scalable, dettmers2019sparse, Evci2020, dai2019nest, fu2019exploring, huang2016split, liu2021}.
+\paragraph{Sparse-to-Sparse Training} All of the sparsity-based methods mentioned before, start with dense weight matrices and only decrease the number of parameters during or at the end of the training process. Our approach yields an iteration, where the network is sparse throughout the iteration. In fact we start with only very few non-zero parameters and only activate necessary weights during training. This paradigm is known as sparse-to-sparse or evolutionary training \cite{mocanu2018scalable, dettmers2019sparse, Evci2020, dai2019nest, fu2019exploring, huang2016split, liu2021}.
 %
 %
 \paragraph{Contribution in \cite{bungert2022bregman}}
@@ -574,9 +574,9 @@ Our work falls into the regime of sparse-to-sparse training. However, instead of
 
 \subsection{Preliminaries on Convex Analysis and Bregman Iterations}\label{sec:convprelim}
 
-We first review some necessary concepts from convex analysis that allow us to introduce the framework in \cite{bungert2022bregman}. We refer to \cite{benning2018modern, rockafellar1997convex, bauschke2011convex} for a more exhaustive introduction to the topics.
+We first review some necessary concepts from convex analysis that allow us to introduce the framework in \cite{bungert2022bregman}. We refer to \cite{benning2018modern, rockafellar1997convex, bauschke2011convex} for a more exhaustive introduction to these topics.
 %
-The functional $\func$ is called lower semicontinuous if $\func(u)\leq\liminf_{n\to\infty}\func(u_n)$ holds for all sequences $(u_n)_{n\in\N}\subset\Param$ converging to $u$.
+In the following we focus on a lower semi-continuous regularization functional $J:\Param\to (-\infty,\infty]$. Here, $\func$ is called lower semi-continuous if $\func(u)\leq\liminf_{n\to\infty}\func(u_n)$ holds for all sequences $(u_n)_{n\in\N}\subset\Param$ converging to $u$. Furthermore, we require the functional to be convex.
 %
 \begin{definition}{}{}
 Given a Hilbert space $\Param$ and a functional $\func:\Param\to(-\infty,\infty]$.
@@ -595,10 +595,11 @@ Given a Hilbert space $\Param$ and a functional $\func:\Param\to(-\infty,\infty]
 \end{definition}
 %
 %
-In the following we want to consider functionals $J$ that are convex, but not necessarily differentiable. Therefor, we define the subdifferential.
+\noindent%
+We want to consider functionals $J$ that are convex, but not necessarily differentiable. Therefore, we define the subdifferential.
 %
 \begin{definition}{}{}
-of a convex {and proper} functional $\func:\Param\to(-\infty,\infty]$ at a point $\param\in\Param$ as
+The subdifferential of a convex {and proper} functional $\func:\Param\to(-\infty,\infty]$ at a point $\param\in\Param$ is given as
 % ---------------------------------------------------------
 \begin{align}
 \label{eq:subgrad}
@@ -606,24 +607,26 @@ of a convex {and proper} functional $\func:\Param\to(-\infty,\infty]$ at a point
 \end{align}
 \end{definition}
 % ---------------------------------------------------------
-If $\func$ is differentiable, then the subdifferntial coincides with the classical gradient (or Fr\'echet derivative). We denote $\dom(\partial\func):=\{\param\in\Param\st\partial\func(\param)\neq\emptyset\}$ and observe that $\dom(\partial\func)\subset\dom(\func)$.
+\noindent%
+If $\func$ is differentiable, then the subdifferntial coincides with the classical gradient (or Fr\'echet derivative). We denote by $\dom(\partial\func):=\{\param\in\Param\st\partial\func(\param)\neq\emptyset\}$ and observe that $\dom(\partial\func)\subset\dom(\func)$.
 
-The main algorithm in this section are so-called Bregman iterations, for which we first define the Bregman distance.
+\paragraph{The Bregman Distance} The main algorithm in this section are so-called Bregman iterations, which make use of the Bregman distance.
 %
 \begin{definition}{Bregman Distance}{}
-Let $\func:\Param\to(-\infty,\infty]$ be a proper, convex functional. Then we define for $\param\in\dom(\partial\func),\overline{\param}\in\Param$
+Let $\func:\Param\to(-\infty,\infty]$ be a proper and convex functional. Then, for $\param\in\dom(\partial\func),\overline{\param}\in\Param$ we define
 % ---------------------------------------------------------
 \begin{align}\label{eq:bregman_distance}
 D^\sg_\func(\overline{\param},\param) := \func(\overline \param)-\func({\param})-\langle\sg,\overline\param-{\param}\rangle,\quad\sg\in\partial\func(\param).
 \end{align}
 %
+\noindent%
 For $\sg\in\partial\func({\param})$ and $\overline\sg\in\partial\func(\overline{\param})$ we define the \emph{symmetric} Bregman distance as
 \begin{align}
 D^\mathrm{sym}_\func(\overline{\param},\param) := D^\sg_\func(\overline{\param},\param) + D^{\overline{\sg}}_\func(\param,\overline\param).
 \end{align}
 \end{definition}
 % ---------------------------------------------------------
-Intuitively, the Bregman distance $D^\sg_\func(\overline{\param},\param)$, measures the distance of $\func$ to its linearization around $\param$, see \cref{fig:Bregdist}. If $J$ is differentiable, then the subdifferential is single valued---we can suppress the sup script $\sg$---and we have
+Intuitively, the Bregman distance $D^\sg_\func(\overline{\param},\param)$, measures the distance of $\func$ to its linearization around $\param$, see \cref{fig:Bregdist}. If $J$ is differentiable, then the subdifferential is single valued---we can suppress the sup script $\sg$---and we obtain
 %
 \begin{align*}
 D_J(\overline\param,\param) = \func(\overline \param)-\func({\param})-\langle\,\nabla \func(\param), \overline\param-{\param}\rangle.
@@ -636,7 +639,7 @@ D_J(\overline\param,\param) = \func(\overline \param)-\func({\param})-\langle\,\
 \end{figure}
 %
 \begin{example}{}{ex:BregNorm}
-For $\Param=\R^n$ and $J=\frac{1}{2}\norm{\cdot}_2^2$ we see that $\partial J(\param) = \{\param\}$ and therefore
+For $\Param=\R^d$ and $J=\frac{1}{2}\norm{\cdot}_2^2$ we see that $\partial J(\param) = \{\param\}$ and therefore
 %
 \begin{align*}
 D_J^p(\overline{\param}, \param) &= 
@@ -651,7 +654,8 @@ D_J^p(\overline{\param}, \param) &=
 \end{align*}
 \end{example}
 %
-We can easily see that in general it is neither definite, symmetric nor fulfills the triangle inequality, hence it is not a metric. 
+\noindent%
+We can easily see, that in general this \enquote{distance} is neither definite, symmetric nor fulfills the triangle inequality, hence it is not a metric. 
 However, it fulfills the two distance axioms
 \begin{align}
 D^\sg_\func(\overline{\param},\param) \geq 0,\quad D^\sg_\func(\param,\param)=0,\quad\forall\overline{\param}\in\Param,\param\in\dom(\partial\func).
@@ -660,7 +664,7 @@ D^\sg_\func(\overline{\param},\param) \geq 0,\quad D^\sg_\func(\param,\param)=0,
 The same holds for the symmetric Bregman distance, where additionally---as the name suggests---the symmetry property is fulfilled.
 %
 %
-The last concept that is crucial in \cite{bungert2022bregman} is the so-called proximal operator.
+\paragraph{The Proximal Operator} Another crucial concept in this section, is the so-called proximal operator.
 %
 \begin{definition}{}{}
 Let $\func:\Param\to(-\infty,\infty]$  be convex, proper and lower semicontinuous functional, then we define the \emph{proximal operator} as
@@ -669,7 +673,8 @@ Let $\func:\Param\to(-\infty,\infty]$  be convex, proper and lower semicontinuou
 \end{align*}
 \end{definition}
 %
-If $\func$ is additionally a closed function, i.e., its sublevel sets
+\noindent%
+If $\func$ is a closed function, i.e., its sublevel sets
 %
 \begin{align*}
 N_\alpha = \{\param\in\dom \func: \func(\param)\leq \param\}
@@ -681,7 +686,7 @@ are closed for every $\alpha\in\R$ then we have that the function $\tilde J = \f
 The the optimality conditions for $\param=\prox{\lambda J}(\overline\param)$ yield 
 %
 \begin{align*}
-\pparam - \param \in \lambda \partial \func(\param).%
+\pparam - \param \in \lambda\, \partial \func(\param).%
 \end{align*}
 %
 For a proper, closed and convex function we obtain
@@ -699,17 +704,17 @@ where $(I + \lambda\partial\func)^{-1}$ is called the \emph{resolvent} and is a 
 %
 %
 \noindent%
-In the following we list two relevant examples for the application in \cite{bungert2022bregman, bungert2021neural}.
+In the following we list two relevant examples for the applications in \cite{bungert2022bregman, bungert2021neural}.
 %
 \begin{example}{}{ex:softshrink}
-If $\func=\norm\cdot$ is a norm and $\lambda>0$ then we have that (see e.g. \cite{parikh2014proximal})
+If $\func=\norm\cdot$ is a norm and $\lambda>0$ then we have that (see, e.g., \cite{parikh2014proximal})
 %
 \begin{align*}
 \prox{\lambda\func}(\pparam) = 
 \pparam - \operatorname{Proj}_{\norm{\cdot}^\ast}(\pparam/\lambda)
 \end{align*}
 %
-where $\operatorname{Proj}_{\norm{\cdot}^\ast}$ denotes the projection operator w.r.t. the dual norm $\norm{\param}^\ast = \sup\{\abs{\langle f , \param\rangle}: f\in\Theta^\ast\}$. In the case of $\ell^p$ norms on $\R^n$ we know that that 
+where $\operatorname{Proj}_{\norm{\cdot}^\ast}$ denotes the projection operator w.r.t. the dual norm $\norm{\param}^\ast = \sup\{\abs{\langle f , \param\rangle}: f\in\Theta^\ast\}$. In the case of $\ell^p$ norms on $\R^d$ we know that that 
 %
 \begin{align*}
 \norm{\param}_p^\ast = \norm{\param}_q
@@ -723,12 +728,12 @@ with $1/p + 1/q = 1$ with the notational convention of $1/\infty=0$. Especially 
 \pparam\,\left(1 - \min\left\{\frac{\lambda}{\norm{\pparam}_2}, 1\right\}\right)=
 %
 \begin{cases}
-\pparam\,(1 - \lambda/\norm{\pparam}_2) &\text{ if } \norm{\pparam}_2 \geq \lambda\\
+\pparam\,\left(1 - \lambda/\norm{\pparam}_2\right) &\text{ if } \norm{\pparam}_2 \geq \lambda,\\
 0 &\text{ else}
 \end{cases}
 \end{align*}
 %
-and for $i=1,\ldots,n$
+and for $i=1,\ldots,n$,
 %
 \begin{align*}
 \prox{\lambda\norm{\cdot}_1}(\pparam)_i
@@ -736,9 +741,9 @@ and for $i=1,\ldots,n$
 = \sign(\pparam_i)\, \max\left\{\abs{\pparam_i} - \lambda, 0\right\} =
 %
 \begin{cases}
-\pparam_i -\lambda &\text{ if }\pparam > \lambda\\
-0 &\text{ if } \abs{\pparam_i}\leq \lambda\\
-\pparam_i +\lambda &\text{ if }\pparam < -\lambda
+\pparam_i -\lambda &\text{ if }\pparam > \lambda,\\
+0 &\text{ if } \abs{\pparam_i}\leq \lambda,\\
+\pparam_i +\lambda &\text{ if }\pparam < -\lambda,
 \end{cases}
 \end{align*}
 %
@@ -747,20 +752,20 @@ the so called \emph{soft shrinkage operator}.
 %
 %
 \begin{example}{Group Norms}{}
-Another relevant functional $\func$ is the group norm $\ell_{1,2}$ that---in the context of sparse neural networks---was first employed by \cite{scardapane2017group}. Here, we assume that the parameters in $\Theta$ can be grouped in a collection of parameters $\mathcal{G}$, for which we the choose
+Another relevant functional $\func$ is the group norm $\ell_{1,2}$ that---in the context of sparse neural networks---was first employed by \cite{scardapane2017group}. Here, we assume that the parameters in $\param\in\Param$ can be grouped in a collection of parameters, i.e., $\param=\{\param_1,\ldots, \param_s\}$, and we choose
 %
 \begin{align*}
-\func(\param) = \sum_{g\in\mathcal{G}} \sqrt{\# \mathcal{G}} \norm{g}_2
+\func(\param) = \sum_{g\in\param} \sqrt{s}\, \norm{g}_2.
 \end{align*}
 %
 In this case the proximal operator is given as
 %
 \begin{align*}
-\prox{\lambda\func}(\pparam)_g = g \, 
+\prox{\lambda\func}(\pparam)_i = \param_i \, 
 \max\left\{1- \min\left\{
-\frac{\lambda\,\sqrt{\# \mathcal{G}}}{\norm{g}_2}
+\frac{\lambda\,\sqrt{s}}{\norm{\param}_2}
 ,1 \right\}
-,0\right\}
+,0\right\}.
 \end{align*}
 \end{example}
 %
@@ -795,20 +800,20 @@ In this case the proximal operator is given as
 %
 %
 %
-\paragraph{Bregman Iterations} Our goal is to minimize a function $\empLoss$ while simultaneously obtaining a low value w.r.t. the functional $J$. One popular approach considers the regularized problem
+\paragraph{Bregman Iterations} Our goal is to minimize a function $\empLoss$ while simultaneously obtaining a low value w.r.t. the functional $J$. A popular approach considers the regularized problem
 %
 \begin{align*}
 \min_\param \empLoss(\param) + \lambda \func(\param)\qquad \lambda>0,
 \end{align*}
 %
-see e.g. \cite{tikhonov1943stability, combettes2008proximal,daubechies2004iterative,fadili2006sparse,figueiredo2007gradient,chambolle2004algorithm,chambolle2011first}, which however influences the minimizers of the original problem $\min_\param \empLoss(\param)$. In the derivation of the Bregman iterations one can take a different viewpoint. Assume that we want to employ an iterative scheme, where in each step we want minimize $\empLoss$ while penalizing the distance to the previous iterate. For a stepping parameter $\tau$ and starting from some $\param^\k0\in\Param$ this yields the update
+see e.g. \cite{tikhonov1943stability, combettes2008proximal,daubechies2004iterative,fadili2006sparse,figueiredo2007gradient,chambolle2004algorithm,chambolle2011first}, which however influences the minimizers of the original problem $\min_\param \empLoss(\param)$. In the derivation of the Bregman iterations one can take a different viewpoint. We want to employ an iterative scheme, where in each step we minimize $\empLoss$ while penalizing the distance to the previous iterate. For a stepping parameter $\tau$ and starting from some $\param^\k0\in\Param$ this yields the update
 %
 \begin{align}\label{eq:minmom}
 \param^\k{k+1} = \argmin_\param \tau\empLoss(\param) + \frac{1}{2}\norm{\param -\param^\k{k}}^2 
 = \prox{\tau\empLoss}(\param^\k{k}).
 \end{align}
 %
-At first sight this is either known as the proximal point algorithm \cite{bregman1967relaxation} or a minimizing movement scheme \cite{de1993new}. If $\empLoss$ is differentiable, this update can be rewritten as 
+This concept is known as the proximal point algorithm \cite{bregman1967relaxation} as well as the minimizing movement scheme \cite{de1993new}. If $\empLoss$ is differentiable, this update can be rewritten as 
 %
 \begin{align*}
 \param^\k{k+1} = (I+\tau\nabla\empLoss)^{-1}\param^\k{k}
@@ -826,7 +831,7 @@ which is a implicit Euler discretization (\cite{euler1824institutionum}) of the 
 \end{align*}
 %
 %
-We see that the penalization term in \cref{eq:minmom} is in fact the Bregman distance of the functional $\frac{1}{2}\norm{\cdot}^2$. In order to incorporate an arbitrary convex functional $\func$---and therefore allow each iterate to only slightly deviate w.r.t. the Bregman distance of $\func$ to the previous iterate---we employ $D_\func^{\sg^\k{k}}(\cdot, \param^\k{k})$ as a penalization term. In order to obtain a update scheme for the subgradients, we observe
+We see that the penalization term in \cref{eq:minmom} is in fact the Bregman distance w.r.t. the functional $\frac{1}{2}\norm{\cdot}^2$, see \cref{ex:BregNorm}. In order to incorporate an arbitrary convex functional $\func$---and therefore allow each iterate to only slightly deviate w.r.t. the Bregman distance of $\func$ to the previous iterate---we employ $D_\func^{\sg^\k{k}}(\cdot, \param^\k{k})$ as a penalization term. Here, we obtain a update scheme for the subgradients $\sg^\k{k}$, as follows,
 %
 \begin{gather}
 \param = \argmin_{\param\in\Param} D^{\sg^{(k)}}_\func\left(\param,\param^{(k)}\right) + \tau^{}\empLoss(\param)
@@ -835,7 +840,7 @@ We see that the penalization term in \cref{eq:minmom} is in fact the Bregman dis
 \sg^\k{k} + \tau\nabla\empLoss(\param)\in \partial\func(\param). 
 \end{gather}
 %
-This finally yields \emph{Bregman iteration} of \cite{osher2005iterative}
+This yields the \emph{Bregman iteration} of \cite{osher2005iterative}
 %
 %
 \begin{subequations}\label{eq:bregman_iteration}
@@ -845,10 +850,10 @@ This finally yields \emph{Bregman iteration} of \cite{osher2005iterative}
 \end{align}
 \end{subequations}
 %
-The very nature of Bregman iterations means starting with a iterate $\param^{(0)}$ that has a low value in $J$---preferably $J(\param^{(0)}) = 0$---and only increase $J(\param^{(k)})$ gradually as $k$ increases.
+The nature of Bregman iterations requires starting with an iterate $\param^{(0)}$ that has a low value in $J$---preferably $J(\param^{(0)}) = 0$---and only increase $J(\param^{(k)})$ gradually in each step.
 %
 \begin{remark}{}{}
-Originally, the iterations were employed for solving inverse problems. Here, we are given a forward operator $A:\Param\to\tilde{\Param}$ and a noisy measurement $f= A\param +\delta$ where $\delta\in \tilde{\Param}$ is additive noise. The loss function is then of the form
+Originally, the iterations were employed for solving inverse problems. Here, we are given a forward operator $A:\Param\to\tilde{\Param}$ and a noisy measurement $f= A\param +\delta$ where $\delta\in \tilde{\Param}$ models additive noise. The loss function is then of the form
 %
 \begin{align*}
 \empLoss = \frac{1}{2}\norm{A\cdot - f}^2_2
@@ -860,7 +865,7 @@ for which one can show that the Bregman iterations converge to a solution of
 \min \left\{\func(\param): A\theta = f\right\},
 \end{align}
 %
-see e.g. \cite{osher2005iterative}. In comparison the concept of adding a regularizing term with parameter $\lambda>0$, i.e. considering the problem
+see, e.g., \cite{osher2005iterative}. In comparison to this, the concept of adding a regularizing term with parameter $\lambda>0$, i.e., considering the problem
 %
 \begin{align*}
 \min_\param \empLoss(\param) + \lambda J(\param) 
@@ -871,7 +876,7 @@ actually modifies the minimizers. In this sense Bregman iterations do not introd
 %
 %
 \begin{example}{}{ex:BregCat}
-In order to get an intuition about the behavior of Bregman iterations, we consider an image denoising task. I.e. we are given a noisy image $\R^{n\times m}\ni f = u + \delta$ where $\delta\in\R^{n\times m}$ is additive noise. In order to obtain $u\in\R^{n\times n}$ from $f$ we employ the TV functional \cite{rudin1992nonlinear} 
+In order to obtain an intuition of the behavior of Bregman iterations, we consider an image denoising task. I.e., we are given a noisy image $\R^{n\times m}\ni f = u + \delta$ where $\delta\in\R^{n\times m}$ models additive noise. In order to obtain $u\in\R^{n\times n}$ from $f$ we employ the TV functional \cite{rudin1992nonlinear} 
 %
 \begin{align*}
 J(u) = TV(u) := \sum_{i,j} \sqrt{\abs{u_{i+1, j} - u_{i,j}}^2 + \abs{u_{i,j+1} - u_{i,j}}^2}
@@ -879,7 +884,7 @@ J(u) = TV(u) := \sum_{i,j} \sqrt{\abs{u_{i+1, j} - u_{i,j}}^2 + \abs{u_{i,j+1} -
 %
 together with the loss function $\empLoss(u):= \frac{1}{2}\norm{u-f}^2_2$.
 %
-We start with an image $u^{(0)}$ such that $TV(u^{(0)})=0$, i.e. a constant image. In \cref{fig:BregCat} we visualize the iteration. At lower iterations $u^{(k)}$ only displays features on a larger scale, while at the end, the iteration converges back to smallest possible scale, the noisy data. In order to obtain an appropriate denoising, one needs to employ a early stopping here. This fits well to the insight from \cref{eq:Bregexact} since here the forward operator is the identity, i.e.
+We start with an image $u^{(0)}$ such that $TV(u^{(0)})=0$, i.e., a constant image. In \cref{fig:BregCat} we visualize the iterates at for different $k$. At the start, the iterates only display features on a larger scale, while at the end, they converge back to smallest possible scale, the noisy data. In order to obtain an appropriate denoising, one needs to employ a early stopping here. This fits well to the insight from \cref{eq:Bregexact} since here the forward operator is the identity, i.e.
 %
 \begin{align*}
 \left\{ u: \frac{1}{2}\norm{u-f}^2=0\right\} = \{f\}. 
@@ -927,35 +932,37 @@ It should also be noted that this example only serves a explanatory purpose. In 
 %
 %
 \noindent
-If $J=\frac{1}{2}\norm{\cdot}_2^2$ as in \cref{ex:BregNorm} then this amounts to the step
-%
-\begin{align*}
-\param^{(k+1)} &= \argmin_{\param\in\Param} \frac{1}{2}\norm{\param - \param^{(k)}}^2_2 + \tau^{}\empLoss(\param),
-\end{align*}
-%
-where the optimality conditions then yield
-%
-\begin{align*}
-\param^{(k+1)} - \param^{(k)} + \tau \nabla \empLoss(\param^{(k+1)}) = 0
-\Leftrightarrow \param^{(k+1)}= \param^{(k)} - \tau \nabla \empLoss(\param^{(k+1)})
-\end{align*}
-%
-which is a standard implicit Euler iteration. The time continuous flow for $\tau\to 0$ is known as the \emph{inverse scale space} flow \cite{burger2006nonlinear,burger2007inverse},
+%If $J=\frac{1}{2}\norm{\cdot}_2^2$ as in \cref{ex:BregNorm} then this amounts to the step
+%%
+%\begin{align*}
+%\param^{(k+1)} &= \argmin_{\param\in\Param} \frac{1}{2}\norm{\param - \param^{(k)}}^2_2 + \tau^{}\empLoss(\param),
+%\end{align*}
+%%
+%where the optimality conditions yield
+%%
+%\begin{align*}
+%\param^{(k+1)} - \param^{(k)} + \tau \nabla \empLoss(\param^{(k+1)}) = 0
+%\Leftrightarrow \param^{(k+1)}= \param^{(k)} - \tau \nabla \empLoss(\param^{(k+1)}),
+%\end{align*}
+%%
+%which is a standard implicit Euler iteration. 
+\noindent%
+The time continuous flow for $\tau\to 0$ is known as the \emph{inverse scale space} flow \cite{burger2006nonlinear,burger2007inverse},
 %
 \begin{align*}
 \begin{cases}
     \dot{\sg}_t = - \nabla\empLoss(\param_t), \\
-    \sg_t \in \partial \func(\param_t),
+    \sg_t \in \partial \func(\param_t).
 \end{cases}
 \end{align*}
 %
-where again for $J=\frac{1}{2}\norm{\cdot}_2^2$ we obtain that $\partial J(\param_t) = \param_t$ and therefore obtain the standard gradient flow. Hence we see, that the inverse scale space flow is a generalization of the standard gradient flow. 
+For $J=\frac{1}{2}\norm{\cdot}_2^2$ we see that $\partial J(\param_t) = \param_t$ and therefore, we obtain the standard gradient flow. Hence, the inverse scale space flow is a generalization of the standard gradient flow. 
 %
 %
 %
 \subsection{Linearized Bregman Iterations and Mirror Descent}
 %
-The minimization step in \cref{eq:bregman_iteration} is infeasible for large scale applications, especially in our setting of neural networks. Therefore, we employ the idea introduced in \cite{yin2008bregman, cai2009convergence}. Here, we first linearize the loss function around the previous iterate,
+The minimization step in \cref{eq:bregman_iteration} is infeasible for large scale applications, especially in our setting for neural networks. Therefore, we employ the idea introduced in \cite{yin2008bregman, cai2009convergence}. We first linearize the loss function around the previous iterate,
 %
 \begin{align*}
 \empLoss(\param) \approx \empLoss(\param^{(k)}) + 
@@ -968,30 +975,30 @@ The next step is to replace $\func$ with the strongly convex elastic net regular
 \func_\delta:= \func + \frac{1}{2\delta}\norm{\cdot}^2_2.
 \end{align}
 %
-The minimization step then transforms to
+The minimization step in \cref{eq:bregman_iteration} then transforms to
 %
 \begin{align}\label{eq:LinBregDer}
 \argmin_{\param\in\Param} &D^{\sg^{(k)}}_{\func_\delta} \left(\param,\param^{(k)}\right) + \tau^{}\left\langle \nabla\empLoss(\param^{(k)}), \param
 \right\rangle\\&= 
 \argmin_{\param\in\Param}
 J(\param) + \frac{1}{2\delta} \norm{\param}^{2}_2 - 
-\langle \sg^{k}, \param\rangle +
+\langle \sg^{\k k}, \param\rangle +
 \tau^{}\left\langle \nabla\empLoss(\param^{(k)}), \param
 \right\rangle\nonumber\\
 &=
 \argmin_{\param\in\Param}
-J(\param) + \frac{1}{2\delta} \norm{\param - \delta(\sg^{(k)} -\tau \nabla\empLoss(\param^{(k)})}^2_2 - \underbrace{\norm{\sg^{(k)} -\tau \nabla\empLoss(\param^{(k)})}^2_2}_{\text{constant in } \param}\nonumber\\
+J(\param) + \frac{1}{2\delta} \norm{\param - \delta\left(\sg^{(k)} -\tau \nabla\empLoss(\param^{(k)})\right)}^2_2 - \underbrace{\norm{\sg^{(k)} -\tau \nabla\empLoss(\param^{(k)})}^2_2}_{\text{constant in } \param}\nonumber\\
 &=
 \prox{\delta \func}\left(\delta\left(\sg^{(k)} -\tau \nabla\empLoss(\param^{(k)}\right)\right).\nonumber%
 \end{align}
 %
-Note that here $\sg^{(k)}$ is a subgradient of $J_\delta$ at $\param$ therefore we derive the subgradient update rule
+Note, that here $\sg^{(k)}$ is a subgradient of $J_\delta$ at $\param^{\k{k}}$, where we derive the subgradient update rule
 %
 \begin{align*}
 \sg^{(k+1)} := \sg^{(k)} - \tau \empLoss(\param^{(k)}).
 \end{align*}
 %
-This finally yields the linearized Bregman iterations
+This yields the linearized Bregman iterations
 %
 \begin{subequations}\label{eq:lin_bregman_iteration}
 \begin{align}
@@ -1012,7 +1019,7 @@ see \cite{burger2006nonlinear,burger2007inverse}.
 %
 %
 \paragraph{Connections To Mirror Descent}
-As already noticed by \cite{villa2023implicit} linearized Bregman iterations are equivalent to mirror descent in some situations. We show the equivalence in the following, where we employ similar arguments as in \cite{beck2003mirror}.
+As already noticed in \cite{villa2023implicit} linearized Bregman iterations are equivalent to mirror descent in some situations. We show the equivalence in the following, where we employ similar arguments as in \cite{beck2003mirror}.
 %
 One assumes to be given a differentiable and strongly convex function $h:\Param\to\R$, i.e.,
 %
@@ -1050,13 +1057,13 @@ Therefore, we see that \cref{eq:mirror} can be written as
 \argmin_\param \left\{D_h(\param, \param^{(k)})+\tau\left\langle \empLoss(\param^{(k)}), \param \right\rangle\right\}
 \end{align*}
 %
-which was our starting point to derive linearized Bregman iterations for $h=\func_{\delta}$ in \cref{eq:LinBregDer}. In fact, we can always find a convex functional $\func:\Theta\to\R$ such that $h = J + \frac{1}{2}\norm{\cdot}_2^2$ for which we see, that \cref{eq:lin_bregman_iteration} is a more general formulation of \cref{eq:mirror}.
+which was our starting point to derive linearized Bregman iterations for $h=\func_{\delta}$ in \cref{eq:LinBregDer}. In fact, we can always find a convex functional $\func:\Theta\to\R$ such that $h = J + \frac{1}{2}\norm{\cdot}_2^2$. Therefore, we see, that \cref{eq:lin_bregman_iteration} is a more general formulation of \cref{eq:mirror}.
 %
 %
 \subsection{Stochastic and Momentum Variants}\label{sec:Bregmom}
 %
 %
-We want to employ linearized Bregman iterations to train a neural network. As mentioned in \cref{sec:SGD} we therefore do not compute the full gradient of $\empLoss$ but rather a minibatched variant. This yields stochastic Bregman Iterations
+We want to employ linearized Bregman iterations to train a neural network. As mentioned in \cref{sec:SGD}, we usually do not compute the full gradient of $\empLoss$ but rather a minibatched variant. This yields stochastic Bregman iterations:
 %
 
 \begin{align}\label{eq:stochlinbreg}
@@ -1064,15 +1071,15 @@ We want to employ linearized Bregman iterations to train a neural network. As me
 \text{draw }&\omega^{(k)}\text{ from }\Omega\text{ using the law of }\P,\\
 g^{(k)} &:= {g(\param^{(k)};\omega^{(k)})},\\
 v^{(k+1)} &:= v^{(k)} - \tau^{(k)} g^{(k)},\\
-\param^{(k+1)} &:= \prox{\delta J}(\delta v^{(k+1)}),
+\param^{(k+1)} &:= \prox{\delta J}(\delta v^{(k+1)}).
 \end{split}
 \end{align}
 %
-which we also abbreviate as the \emph{LinBreg} algorithm in the following.
+We also abbreviate this scheme as the \emph{LinBreg} algorithm in the following.
 %
-The basic update scheme is given as the linearized Bregman iterations from\cite{osher2005iterative}, however the presence of a stochastic gradient estimator significantly complicates the convergence analysis, as observed in \cref{sec:ConvAna}. However, this algorithm can now be efficiently employed to train a neural network. For the analogous stochastic mirror descent algorithm we refer to \cite{nemirovski2009robust}.
+The presence of a stochastic gradient estimator significantly complicates the convergence analysis, as observed in \cref{sec:ConvAna}. However, this algorithm can now be efficiently employed to train a neural network. For the analogous stochastic mirror descent algorithm we refer to \cite{nemirovski2009robust}.
 %
-\paragraph{Momentum Variant} Typically, the learning process of a neural network can be improved by introducing a momentum term (see e.g. \cite{nesterov1983method, qian1999momentum}) in the optimizer. In our case this can be achieved, by replacing the gradient update on the subgradient variable. In \cite{bungert2022bregman} we first consider the inertia version of the gradient flow as
+\paragraph{Momentum Variant} Typically, the learning process of a neural network can be improved by introducing a momentum term (see e.g. \cite{nesterov1983method, qian1999momentum}) in the optimizer. In our case, this can be achieved by replacing the gradient update on the subgradient variable. In \cite{bungert2022bregman} we first consider the inertia version of the gradient flow as
 %
 \begin{align*}
 \begin{cases}
@@ -1081,7 +1088,7 @@ The basic update scheme is given as the linearized Bregman iterations from\cite{
 \end{cases}
 \end{align*}
 %
-for which the discretization then reads
+The discretization then reads
 %
 \begin{align}\label{eq:momBreg}
 \begin{split}
@@ -1098,7 +1105,7 @@ v^{(k+1)} &= v^{(k)} - m^{(k+1)},\\
 \subsection{Convergence of Stochastic Bregman Iterations}\label{sec:ConvAna}
 %
 %
-While various previous works prove convergence of linearized Bregman iterations (see e.g. \cite{osher2005iterative, cai2009convergence}), the stochastic setting requires special treatment. In \cite{bungert2022bregman} the first guarantees for the algorithm in \cref{eq:stochlinbreg} were proven. Other work on convergence of stochastic Bregman iterations, or mirror descent \cite{dragomir2021fast, hanzely2021fastest, zhang2018convergence, d2021stochastic, aubin2022mirror} requires a differentiable functional $\func$. However, since our main motivation is to a functional in the flavor of the $\ell^1$ norm this is not applicable. Therefore, we present the novel convergence analysis of \cite{bungert2022bregman}.
+While various previous works prove convergence of linearized Bregman iterations (see e.g. \cite{osher2005iterative, cai2009convergence}), the stochastic setting requires special treatment. In \cite{bungert2022bregman} we prove the first guarantees for the algorithm in \cref{eq:stochlinbreg}. Other work on convergence of stochastic Bregman iterations, or mirror descent requires a differentiable functional $\func$, see \cite{dragomir2021fast, hanzely2021fastest, zhang2018convergence, d2021stochastic, aubin2022mirror}. Since our main motivation is a $L^1$ type functional, this is not applicable. Therefore, we present the novel convergence analysis of \cite{bungert2022bregman}.
 %
 %
 \paragraph{Assumptions on the Gradient Estimator}
@@ -1112,7 +1119,7 @@ In order to obtain convergence guarantees, we need to assume mainly two properti
 The second assumption we need in the following is referred to as \emph{bounded variance} of the estimator.
 %
 \begin{assumption}{Bounded variance}{ass:variance}
-There exists a constant $\sigma>0$ such that for any $\param\in\Param$ it holds
+We assume that there exists a constant $\sigma>0$ such that for any $\param\in\Param$ it holds
 \begin{align}
     \E\left[\norm{g(\param;\omega)-\nabla\empLoss(\param)}^2\right] \leq \sigma^2.
 \end{align}
@@ -1120,7 +1127,7 @@ There exists a constant $\sigma>0$ such that for any $\param\in\Param$ it holds
 %
 %
 \begin{remark}{}{}
-We want to remark, that this property is weaker than the bounded gradient assumption
+We remark, that this property is weaker than the bounded gradient assumption
 %
 \begin{align*}
 \E\left[\norm{g(\param;\omega)}^2\right] \leq C
@@ -1130,7 +1137,7 @@ for some constant $C>0$. In fact this condition can not be enforced together wit
 \end{remark}
 \paragraph{Assumptions on the Regularizer and on the Loss Function}
 %
-The assumptions on the regularization functional $\func$ are mild and merely ensure the well-definedness of the proximal mapping,
+The assumptions on the regularization functional $\func$ are mild and merely ensure the well-definedness of the proximal mapping.
 %
 %
 \begin{assumption}{Regularizer}{ass:regularizer}
@@ -1138,7 +1145,8 @@ We assume that $\func:\Param\to(-\infty,\infty]$ is a convex, proper, and lower 
 \end{assumption}
 %
 %
-Our assumptions on the loss function $\empLoss$ are more restrictive. We require it to be bounded from below and differentiable, which are both standard assumptions. Additionally, we require Lipschitz continuity of the gradient, which also commonly employed in optimization literature.
+\noindent%
+Our assumptions on the loss function $\empLoss$ are more restrictive. We require it to be bounded from below and differentiable, which are both standard assumptions. Additionally, we require Lipschitz continuity of the gradient, which is commonly employed in optimization literature.
 %
 \begin{assumption}{Loss function}{ass:loss}
 We assume the following conditions on the loss function:
@@ -1153,13 +1161,14 @@ We assume the following conditions on the loss function:
 \end{assumption}
 %
 %
-If the loss function $\empLoss$ fulfills the previous assumptions we are able to prove loss decay of the iterates in \cref{thm:decreasingloss}. However, in order to show convergence of the iterates we additionally need a convexity assumption. For a differentiable functional $J$, the authors in \cite{dragomir2021fast} assumed
+\noindent%
+If the loss function $\empLoss$ fulfills the previous assumptions we are able to prove loss decay of the iterates, see \cref{thm:decreasingloss}. However, in order to show convergence of the iterates we additionally need a convexity assumption. For a differentiable functional $J$, the authors in \cite{dragomir2021fast} assumed
 %
 \begin{align*}
-\nu\ D_J(\pparam,\param) \leq D_\empLoss(\pparam,\param)
+\nu\ D_J(\pparam,\param) \leq D_\empLoss(\pparam,\param),
 \end{align*}
 %
-which for twice differentiable $\func,\empLoss$ transfers to
+which for twice differentiable $\func$ and $\empLoss$ yields
 %
 \begin{align*}
 \nu\ \nabla^2 \func \lesssim \nabla^2 \empLoss,\qquad\forall\pparam,\param\in\Param.
@@ -1172,19 +1181,19 @@ Plugging in the definition of the Bregman dist $D_\empLoss$ we obtain
 \langle \nabla\empLoss(\param), \pparam-\param\rangle.
 \end{align*}
 %
-In this form one observes that this is in fact a convexity assumption on $\empLoss$ in a $\func$ dependent distance, as employed in \cite{bungert2022bregman}.
+In this form, one observes that this is in fact a convexity assumption on $\empLoss$ in a $\func$ dependent distance, as employed in \cite{bungert2022bregman}.
 %
 %
 \begin{assumption}{Strong convexity}{ass:muconvex} 
 For a proper convex function $H:\Param\to\R$ and $\nu\in(0,\infty)$, we say that the loss function $\param\mapsto\empLoss(\param)$ is $\nu$-strongly convex w.r.t. $H$, if
 \begin{align}
-\empLoss(\pparam) \geq \empLoss(\param) + \langle\nabla\empLoss(\param), \pparam - \param\rangle + \nu D_\func^\sg(\pparam,\param),\quad\forall\param,\pparam\in\Param, \sg\in\partial H(\param).
+\empLoss(\pparam) \geq \empLoss(\param) + \langle\nabla\empLoss(\param), \pparam - \param\rangle + \nu D_H^\sg(\pparam,\param),\quad\forall\param,\pparam\in\Param, \sg\in\partial H(\param).
 \end{align}
 \end{assumption}
 %
 %
 \begin{remark}{}{}
-We have two relevant cases for the choice of $H$. For $H=\frac{1}{2}\norm{\cdot}^2$ \cref{ass:muconvex} reduces to standard strong $\nu$-convexity. The other relevant case, is $H=J_\delta$, i.e. we consider convexity w.r.t. to the functional $J_\delta$.
+We have two relevant cases for the choice of $H$. For $H=\frac{1}{2}\norm{\cdot}^2$ \cref{ass:muconvex} reduces to standard strong $\nu$-convexity. The other relevant case, is $H=J_\delta$, i.e., we consider convexity w.r.t. to the functional $J_\delta$.
 \end{remark}
 %
 %
@@ -1203,7 +1212,7 @@ The first convergence result considers the loss decay of the iterates. Here, we 
 \end{align*}
 %
 %
-In our setting, employing a stochastic gradient estimator, we are able to prove a similar estimate. Here, we obtain an additional term scaled $\sigma$ which controls the expected squared difference between the gradient estimator and the actual gradient. It should however be noted, that the proof is not only a trivial extension.
+In our setting, employing a stochastic gradient estimator, we are able to prove a similar estimate. We obtain an additional term scaled by $\sigma$, which controls the expected squared difference between the gradient estimator and the actual gradient. It should however be noted, that the proof is not only a trivial extension of the one in \cite{benning2018modern}.
 %
 %
 \begin{theorem}{\cite[Th. 2]{bungert2022bregman}: Loss decay}{thm:decreasingloss}
@@ -1212,7 +1221,7 @@ Then there exist constants $c,C>0$ such that for every $k\in\N$ the iterates of 
 \begin{align}\label{ineq:loss_decay}
     \begin{split}
     \E\left[\empLoss(\param^{(k+1)})\right] + \frac{1}{\tau^{(k)}}\E\left[ D^\mathrm{sym}_\func(\param^{(k+1)},\param^{(k)})\right] + \frac{C}{2\delta\tau^{(k)}}\E\left[\norm{\param^{(k+1)}-\param^{(k)}}^2\right] \\
-    \leq \E\left[\empLoss(\param^{(k)})\right] + \tau^{(k)}\delta\frac{\sigma^2}{2c},
+    \leq \E\left[\empLoss(\param^{(k)})\right] + \tau^{(k)}\delta\frac{\sigma^2}{2c}.
     \end{split}
 \end{align}
 \end{theorem}
@@ -1246,7 +1255,8 @@ The function $\mathcal{L}$ has a unique minimizer $\param^*$ and if $J(\param^*)
 \end{theorem}
 %
 %
-For the second result we assume convexity w.r.t. the Bregman distance, i.e. we choose $H=\func_{\delta}$ in \cref{ass:muconvex}. This induces a relation between the Bregman distance of $\func$ and the loss function $\empLoss$, which has been similarly employed in \cite{dragomir2021fast}.
+\noindent%
+For the second result we assume convexity w.r.t. the Bregman distance, i.e., we choose $H=\func_{\delta}$ in \cref{ass:muconvex}. This induces a relation between the Bregman distance of $\func$ and the loss function $\empLoss$, which has been similarly employed in \cite{dragomir2021fast}.
 %
 %
 \begin{theorem}{\cite[Th. 11]{bungert2022bregman}: Convergence in the Bregman distance}{thm:cvgc_breg_dist}
@@ -1286,7 +1296,7 @@ The function $\mathcal{L}$ has a unique {minimizer} $\param^*$ and if $\func(\pa
 The code for all the experiments is available at \href{https://github.com/TimRoith/BregmanLearning}{github.com/TimRoith/}\\
 \href{https://github.com/TimRoith/BregmanLearning}{BregmanLearning}.
 \end{wrapfigure}
-Before briefly reviewing the numerical results in \cite[Sec. 4]{bungert2022bregman}, we remark on some practical considerations. In particular we comment on the parameter initialization strategy. All the experiments were implemented in \texttt{Python} \cite{van1995python} employing---among others---the \texttt{PyTorch} \cite{paszke2019pytorch}.
+Before briefly reviewing the numerical results in \cite[Sec. 4]{bungert2022bregman}, we remark on some practical considerations. In particular we comment on the parameter initialization strategy. All the experiments were implemented in \texttt{Python} \cite{van1995python} employing---among others---the \texttt{PyTorch} package \cite{paszke2019pytorch}.
 %
 \paragraph{Parameter Initialization} As already noticed in \cite{bengio10} parameter initialization has a significant impact on the training of the neural network. Here, in contrast to standard Bregman methods, we are not able to initialize the parameters of the neural network as $\param=0$. This is due to that fact, that a zero initialization induces symmetries in the network weights, for which one cannot utilize the full expressivity of the architecture \cite[Ch. 6]{Goodfellow16}. Therefore, we rather employ the approach from \cite{liu2021,dettmers2019sparse,martens2010deep} of sparsifying weight matrices $\tilde W^l\in\R^{n_{l+1}\times n_l}$ up to a certain level, by a pointwise multiplication with a binary mask $M^l\in{0,1}^{n_{l+1}\times n_l}$
 %
@@ -1322,41 +1332,41 @@ and therefore scale the weights with the sparsity parameter $r$ at initializatio
 %
 \paragraph{Choice of Regularizers}
 %
-In all our experiments we choose a $L^1$ type sparsity promoting regularization function functional $\func$. We do not employ any coupling between weight matrices of different layers, and therefore for $\param=((W^1,b^1),\ldots, (W^L,b^L))$ we have
+In all our experiments we choose a $L^1$ type sparsity promoting regularization function functional $\func$. We do not employ any coupling between weight matrices of different layers, and therefore for $\param=((W_1,b_1),\ldots, (W_L,b_L))$ we have
 %
 \begin{align*}
-\func(\param) = \sum_{l=1}^L \func^l(W^l)
+\func(\param) = \sum_{l=1}^L \func_l(W_l)
 \end{align*}
 %
 %
 where $\func^l$ is choosen according to the layer type. In the easiest case of a fully connected layer, we can choose
 %
 \begin{align*}
-\func^l(W^l) := \norm{W^l}_1.
+\func_l(W_l) := \norm{W_l}_1.
 \end{align*}
 %
 In the case of a convolutional layer we have that $W^l$ is determined by convolutional kernels $K_{i,j}\in\R^{k\times k}$, see \cref{sec:convlayer}. Here, we typically employ a group sparsity term in the form
 %
 \begin{align*}
-\func^l(W^l) = \norm{W^l}_{2,1} = \sum_{i,j} \norm{K_{i,j}}_2.
+\func_l(W_l) = \norm{W_l}_{2,1} = \sum_{i,j} \norm{K_{i,j}}_2.
 \end{align*}
 %
 The outer sum acts as a $L^1$ regularizer on the instances $\norm{K_{i,j}}$. Sparsity in this sense, then amounts to having indices $(i,j)$ for which $\norm{K_{i,j}}_2=0 \Leftrightarrow K_{i,j}=0$, i.e., we prune away whole convolutional filters. This effect is displayed in \cite[Fig. 1]{bungert2022bregman}.
 %s
-We can also employ group sparsity on fully connected layers, by considering row sparsity of $W^l\in\R^{n_{l+1}, n_l}$s
+We can also employ group sparsity on fully connected layers, by considering row sparsity of $W_l\in\R^{n_{l+1}, n_l}$s
 %
 \begin{align*}
-\func^l(W^l) = \sum_{i=1}^{n_{l+1}} \norm{W_{i,:}}_2 = \sum_{i=1}^{n_{l+1}} \sqrt{\sum_{js=1}^{n_{l}} W_{i,j}^2}.
+\func_l(W_l) = \sum_{i=1}^{n_{l+1}} \norm{W_{i,:}}_2 = \sum_{i=1}^{n_{l+1}} \sqrt{\sum_{js=1}^{n_{l}} W_{i,j}^2}.
 \end{align*}
 %
 %
 %
-In this setting we have a $L^1$ penalty on the row norms $\norm{W_{i,:}}_2$ which therefore enforces whole rows to be zero. This is relevant, if we employ a layer architecture with $\Psi^l(0)=0$, e.g., using no bias vectors and the ReLU activation function. In this setting, if the $i$th row of $W^l$ is zero this effectively means, that the $i$th neuron in layer $l+1$ is inactive. This observation allows the neural architecture search in one of the following paragraphs.
+In this setting we have a $L^1$ penalty on the row norms $\norm{W_{i,:}}_2$ which therefore enforces whole rows to be zero. This is relevant, if we employ a layer architecture with $\Psi^l(0)=0$, e.g., using no bias vectors and the ReLU activation function. In this setting, if the $i$th row of $W_l$ is zero this effectively means, that the $i$th neuron in layer $l+1$ is inactive. This observation allows the neural architecture search in one of the following paragraphs.
 \paragraph{Comments on the Numerical Results} We briefly remark on the numerical results as displayed in \cite[Sec. 4]{bungert2022bregman}. In the experiments we employed feed-forward networks with simple linear, convolutional and residual layers and tested on the three datasets \cite{krizhevsky2009learning, Han17, leCun10}.
 
-The basic comparison between the  algorithms SGD, ProxGD and LinBreg shows the qualitative behaviour of each iterations. Infantilizing sparse does not have any effect on SGD, since it does not preserve the sparsity in any way. ProxGD rather starts with many active parameters and reduces the this number during the iteration. Only the discretization of the inverse scale space flow---via Bregman iterations---shows the desired behaviour of gradually adding active parameters. Furthermore, in \cite[Fig. 2]{bungert2022bregman} we can see, that the choice of $\lambda$ in the regularizer $\func = \lambda\, \norm{\cdot}_1$ changes the results significantly. In the light of \cref{eq:Bregexact} this is not expected for the standard Bregman iterations with a convex loss. It is therefore interesting to see, that in our non-convex and stochastic situation this effect changes.
+The basic comparison between the  algorithms SGD, ProxGD and LinBreg shows the qualitative behavior of each iterations. The sparse initialization does not have any effect on SGD, since it does not preserve the sparsity in any way. ProxGD rather starts with many active parameters and reduces this number during the iteration. Only the discretization of the inverse scale space flow---via Bregman iterations---shows the desired behaviour of gradually adding active parameters. Furthermore, in \cite[Fig. 2]{bungert2022bregman} we can see, that the choice of $\lambda$ in the regularizer $\func = \lambda\, \norm{\cdot}_1$ changes the results significantly. In the light of \cref{eq:Bregexact} this is not expected for the standard Bregman iterations with a convex loss. It is therefore interesting to see, that in our non-convex and stochastic situation this effect changes.
 
-The momentum variants, as discussed in \cref{sec:Bregmom} yield the desired effect of enhancing the validation accuracy, and respectively converging faster. However in each  of the experiments, one can also observe that adding a momentum term has the effect that more parameters are added faster. On the one hand this could mean that the network actually requires more parameters to have a higher accuracy, for which a momentum variant is more likely to increase the number of needed parameters. However, the quantitative evaluation on the CIFAR10 dataset \cite{krizhevsky2009learning} shows, that especially the Adamized version tends to increase the number of used parameters rather aggressively, while only slightly increasing the performance of the net. The performance here is very similar to the one of proximal gradient descent. However, the training of a residual network seems to be slightly better with a standard Lasso implementation. Here, one neglects the non-differentiability of the $L^1$ norm and computes a derivate via automatic differentiation \cite{rall1981automatic, maclaurin2015autograd} (we employed the \texttt{autograd} library of the \texttt{PyTorch} package \cite{paszke2019pytorch}). In order to obtain true zeros in the weight matrix one then has to employ a thresholding operation after the training. In some sense this method is not a proper sparse training approach, but rather a regularization method with an added pruning step at the end.
+The momentum variants, as discussed in \cref{sec:Bregmom} yield the desired effect of enhancing the validation accuracy, and respectively converging faster. However in each  of the experiments, one can also observe that adding a momentum term has the effect that more parameters are added faster. On the one hand this could mean that the network actually requires more parameters to have a higher accuracy, and a momentum variant is more likely to increase the number of needed parameters. However, the quantitative evaluation on the CIFAR10 dataset \cite{krizhevsky2009learning} shows, that especially the Adamized version tends to increase the number of used parameters rather aggressively, while only slightly increasing the performance of the net. The performance here is very similar to the one of proximal gradient descent. However, the training of a residual network seems to be slightly better with a standard Lasso implementation. Neglecting the non-differentiability of the $L^1$ norm one computes a derivative via automatic differentiation \cite{rall1981automatic, maclaurin2015autograd} (we employed the \texttt{autograd} library of the \texttt{PyTorch} package \cite{paszke2019pytorch}). In order to obtain true zeros in the weight matrix one then has to employ a thresholding operation after the training. In some sense this method is not a proper sparse training approach, but rather a regularization method with an added pruning step at the end.
 
 \paragraph{Comments on Efficiency} One of the major advantages of the Bregman approach, is that the network is sparse already during the training time. As with all sparse-to-sparse training approaches this yields a very small number of active parameters over all training step. This sparsity can be easily exploited in each forward pass. However, it is not directly possible to achieve performance gains during the backward pass of the network, since in general
 %
@@ -1364,9 +1374,11 @@ The momentum variants, as discussed in \cref{sec:Bregmom} yield the desired effe
 W^l_{ij} = 0 \nRightarrow \partial_{W^l_{ij}} \empLoss(\theta) = 0.
 \end{align*}
 %
-In \cite{bungert2022bregman, bungert2021neural} there are no evaluations on the training time and memory consumption of the Bregman algorithm. Since the complexity does not increase in comparison to the standard SGD, one hopes to obtain a faster training time here. This is an interesting open question for future work. It should however be remarked that the computational complexity of the LinBreg algorithm does not increase significantly, compared to SGD, since the evaluation of the proximal operator is very efficient for $L^1$ type functionals.
+In \cite{bungert2022bregman, bungert2021neural} there are no evaluations on the training time and memory consumption of the Bregman algorithm. This is an interesting open question for future work. We remark that the computational complexity of the LinBreg algorithm does not increase significantly, compared to SGD, since the evaluation of the proximal operator is very efficient for $L^1$ type functionals.
 
-\paragraph{Neural Architecture Search} An interesting aspect hinted in \cite{bungert2022bregman} is optimizing the architecture of a neural network via sparsity. In the example provided in \cite[Fig. 4]{bungert2022bregman} one defines a super-architecture as multi-layer perceptron with an equal number of neurons in each layer. Training this task with the LinBreg algorithm reveals the well-known autoencoder structure \cite{hinton1993autoencoders}. This idea was developed further in \cite{bungert2021neural}, where also skip connection of a residual architecture were learned. Here, the super-architecture was given by a dense net \cite{huang2017densely}, where each skip connection was scaled by a parameter, which was penalized with a sparsity term. The driving question here, if it is possible also learn an architecture similar to the U-Net as proposed in \cite{ronneberger2015u}.
+\paragraph{Neural Architecture Search} An interesting aspect hinted in \cite{bungert2022bregman} is optimizing the architecture of a neural network via sparsity. In the example provided in \cite[Fig. 4]{bungert2022bregman} one defines a super-architecture as multi-layer perceptron with an equal number of neurons in each layer. Training this task with the LinBreg algorithm reveals the well-known autoencoder structure \cite{hinton1993autoencoders}. This idea was developed further in \cite{bungert2021neural}, where also skip connection of a residual architecture were learned. Here, the super-architecture was given by a dense net \cite{huang2017densely}, where each skip connection was scaled by a parameter, which was penalized with a sparsity term. We refer to \cite{cipriani2023neurodes} for similar experimental result in a different setting, not directly related to sparse optimization.
+
+The driving question for future work, is how to employ the insights from \cite{bungert2021neural} to find more complex architectures. Learning an architecture similar to the U-Net as proposed in \cite{ronneberger2015u} is of particular interest here.
 %
 %
 %
