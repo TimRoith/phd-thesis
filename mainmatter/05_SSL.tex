@@ -69,7 +69,7 @@ denotes the input space. We assume that a non-empty subset $\conset_n \subset \d
 $\vec g:\conset_n\to\R$. From now on we denote functions acting on a discrete set $\domain_n$ using bold symbols to distinguish them from functions acting on the continuum $\tilde\domain$. In particular, the space of functions on $\domain_n$ can simply be identified with $\R^n$, since $\{\vec u:\domain_n\to\R\} \sim \R^n.$
 %
 \noindent%
-The semi-supervised learning problem consists in finding an extension of $\vec g$ from $\conset_n$ to the whole set $\domain_n$, i.e.
+The semi-supervised learning problem consists in finding an extension of $\vec g$ from $\conset_n$ to the whole set $\domain_n$, i.e.,
 %
 \begin{gather}\label{eq:SSL}
 \begin{gathered}\tag{SSL}
@@ -99,7 +99,7 @@ Often, one assumes that the points $x\in\domain_n$ are i.i.d. w.r.t. a distribut
 %
 %
 \subsection{Weighted Graphs}
-In order to employ the smoothness assumption we need a notion of \enquote{closeness} on the set $\domain_n$, for which we introduce weighted graphs. Namely we define a weighting function $w$ that allows to compare points in $\domain_n$ and therefore induces the desired notion. 
+In order to employ the smoothness assumption we need a notion of \enquote{closeness} on the set $\domain_n$, for which we introduce weighted graphs. Namely, we define a weighting function $w$ that allows to compare points in $\domain_n$ and therefore induces the desired notion. 
 %
 \begin{definition}{Weighted Graphs}{}
 For a finite set $\domain_n$ and a weight function $w_n:\domain_n\times \domain_n\to\R$, the tuple $(\domain_n,w_n)$ is called a \emph{weighted graph}.
@@ -173,7 +173,7 @@ which was first employed in \cite{GarcSlep15} for $p=1$ and then in \cite{slepce
 we see that $\tilde\sigma_\eta^{(p)}$ degenerates to $\sigma_\eta$ in the limit $p\to\infty$.
 \end{remark}
 \begin{remark}{}{}
-In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ then appears in the limit functional. In \cite{bungert2021uniform} we rescale the kernel, i.e., $c_\eta = \sigma_\eta$ which allows to work with unrescaled operators in the limit. 
+In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ then appears in the limit functional. In \cite{bungert2021uniform} we rescale the kernel, i.e., $c_\eta = \sigma_\eta$ which allows us to work with unrescaled operators in the limit. 
 \end{remark}
 %
 %
@@ -196,11 +196,11 @@ where we assume an ordering $\domain_n=\{x_1,\ldots, x_n\}$. In order to have a 
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{code/SSL/NNZ.pdf}
-\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n=10^3$ points uniformly in the cube $[0,1]^d$ and only connect vertices $x_i,x_j\in\domain_n$ if $\abs{x_i-x_j} < \gscale$. The plots shows the behavior for $d=2,10,20$.}\label{fig:graphscale}
+\caption[Dependence of the number of non-zero edges on the scaling parameter $\gscale$.]{Dependence of the number of non-zero edges on the scaling parameter $\gscale$. Here, we sample $n=10^3$ points uniformly in the cube $[0,1]^d$ and only connect vertices $x_i,x_j\in\domain_n$ if $\abs{x_i-x_j} < \gscale$. The plots show the behavior for $d=2,10,20$.}\label{fig:graphscale}
 \end{figure} 
 %
 %
-Therefore, from a practical point of view $\gscale$ should be chosen relatively small. However, showing consistency of graph-based SSl algorithms often requires scaling assumptions that permit the desired length scales \cite{GarcSlep15, slepcev2019analysis, calder2019consistency}. In \cref{sec:GConv} we give concrete examples of such scaling assumptions. One of the main goals of \cite{roith2022continuum, bungert2021uniform} was to show convergence and rates at the smallest possible length scale, which was indeed achieved.
+Therefore, from a practical point of view $\gscale$ should be chosen relatively small. However, showing consistency of graph-based SSL algorithms often requires scaling assumptions that permit the desired length scales \cite{GarcSlep15, slepcev2019analysis, calder2019consistency}. In \cref{sec:GConv} we give concrete examples of such scaling assumptions. One of the main goals of \cite{roith2022continuum, bungert2021uniform} was to show convergence and rates at the smallest possible length scale, which was indeed achieved.
 %
 %
 %
@@ -335,7 +335,9 @@ Since every function $\vec u:\domain_n\to\R$ can be identified with a vector $\v
 is in fact an optimization problem in $\R^n$. The functional $\GE^{w_n}_p:\R^n\to\R$ is bounded from below by $0$, continuous, convex and in the case $p>1$ even differentiable. However, one can prove unique existence with techniques very similar to the continuum case in \cite{lindqvist2017notes}. We give the adapted prove below for completeness. The important property to establish uniqueness is that the graph is connected to the boundary, i.e., for every $x\in\domain_n$ there exists a path $x=\gamma_1,\ldots,\gamma_m=o\in\domain_n$ with $w(\gamma_{i+1}, \gamma_i)>0$ connecting $x$ to a point $o\in\conset_n$ in the boundary. This is very intuitive, since on any connected component that does not communicate with the boundary, an arbitrary constant minimizes the \enquote{graph gradient}.
 %
 %
-\begin{theorem}{Existence and Uniqueness}{} Let $(\domain_n,w_n)$ be a graph with non-negative weights, which is connected to its boundary $\conset_n\subset\domain_n$. Then \cref{prob:vargraph} admits a unique solution $\vec u:\domain_n\to\R$.
+\begin{theorem}{Existence and Uniqueness}{} Let $(\domain_n,w_n)$ 
+	be a graph with non-negative weights, which is connected to its boundary $\conset_n\subset\domain_n$. 
+	Then \cref{prob:vargraph} admits a unique solution $\vec u:\domain_n\to\R$.
 \end{theorem}
 %
 \begin{proof}
@@ -355,7 +357,7 @@ the \enquote{graph gradient} on $E$, where we have that
 \end{align*}
 %
 %
-Let $\vec u_1, \vec u_2$ be two  solutions of \cref{prob:vargraph}, i.e. $\GE^{w_n}_p (\vec u_1)= \GE^{w_n}_p (\vec u_2)$. Since $\vec u_1,\vec u_2$ fulfill the boundary conditions, this also holds for $1/2\,(\vec u_1 + \vec u_2)$ and therefore $\GE^{w_n}_p(\vec u_1)\leq\GE^{w_n}_p(1/2(\vec u_1 + \vec u_2))$.
+Let $\vec u_1, \vec u_2$ be two  solutions of \cref{prob:vargraph}, i.e., $\GE^{w_n}_p (\vec u_1)= \GE^{w_n}_p (\vec u_2)$. Since $\vec u_1,\vec u_2$ fulfill the boundary conditions, this also holds for $1/2\,(\vec u_1 + \vec u_2)$ and therefore $\GE^{w_n}_p(\vec u_1)\leq\GE^{w_n}_p(1/2(\vec u_1 + \vec u_2))$.
 
 
 Assume that there exists $(\bar x,\bar y)\in E$ such that $\nabla^{w_n} \vec u_1(\bar x,\bar y)\neq \nabla^{w_n}\vec u_2(\bar x,\bar y)$, then we have that
@@ -403,7 +405,7 @@ which together with the boundary conditions $\vec u_1(o)=\vec u_2(o)=\vec g(o)$ 
 Since $x\in\domain_n$ was arbitrary, we get $\vec u_1 = \vec u_2$.\par
 %
 \noindent%
-To show existence, we do not need to assume that the graph is connected to the boundary. On every connected component $V\subset \domain_n$ that is not connected to $\conset$ we can set $\vec u(x) = c$ for all $x\in V$, where $c\in\R$ is an arbitrary constant. We can select all edges in $V$, i.e. $E_V := E \cap V^{\times 2}$ and since $V$ was a connected component---i.e. it does not have active edges to vertices outside of $V$---we can also split up the functional
+To show existence, we do not need to assume that the graph is connected to the boundary. On every connected component $V\subset \domain_n$ that is not connected to $\conset$ we can set $\vec u(x) = c$ for all $x\in V$, where $c\in\R$ is an arbitrary constant. We can select all edges in $V$, i.e., $E_V := E \cap V^{\times 2}$ and since $V$ was a connected component---i.e., it does not have active edges to vertices outside of $V$---we can also split up the functional
 %
 \begin{align*}
 \GE^{w_n}_{p}(\vec u) = \sum_{(x,y)\in E\setminus E_V} \abs{\nabla^{w_n} \vec u(x,y)}^p
@@ -420,7 +422,7 @@ C\left(\GE^{w_n}_p(\vec u) + \abs{\vec g(o^x)}^p\right)
 \end{gather*}
 %
 where $C>0$ is a generic constant---not depending on $\vec u$---that also accounts for the factor $\left(\min_{(x,y)\in E}w_n(x,y)\right)^{-1}$. Summing over all $x\in\domain_n$ yields
-
+%
 \begin{gather*}
 \norm{\vec u}^p_p = \sum_{x\in\domain_n} \abs{\vec u(x)}^p \leq 
 C\left( n\, \GE^{w_n}_p(\vec u) + \sum_{x\in\domain_n} \abs{\vec g(o^x)}^p\right)\\
@@ -445,7 +447,7 @@ Then we have that
 $j\in\N$, i.e. $\vec u_j$ is a uniformly bounded sequence of vectors in the finite dimensional space $\R^n$, and therefore there exists a subsequence---which we do not relabel---that converges to some $\vec u^\ast\in\R^n$. Since the functional $\GE^{w_n}_p:\R^n\to\R$ is continuous we obtain that
 %
 \begin{align*}
-\GE^{w_n}_p(\vec u^\ast) = \lim_{j\to\infty} \GE^{w_n}_p(\vec u_j) = I
+\GE^{w_n}_p(\vec u^\ast) = \lim_{j\to\infty} \GE^{w_n}_p(\vec u_j) = I,
 \end{align*}
 %
 which yields existence.
@@ -498,7 +500,7 @@ This statement can be proven similarly to \cite[Theorem 5.3]{elmoataz2015p}.
 \subsection{Consistency for Graph-based SSL}\label{sec:CSSL}
 %
 %
-While the graph 2-Laplacian has been successfully employed for classification tasks, see e.g. \cite{zhu2003semi, zhou2005regularization}, it has been observed that solutions tend to degenerate for large amounts of data, whenever $d\geq 2$ \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}. We illustrate this phenomenon in \cref{ex:pLapBad}.
+While the graph 2-Laplacian has been successfully employed for classification tasks, see, e.g., \cite{zhu2003semi, zhou2005regularization}, it has been observed that solutions tend to degenerate for large amounts of data, whenever $d\geq 2$ \cite{nadler2009statistical, alamgir2011phase, el2016asymptotic}. We illustrate this phenomenon in \cref{ex:pLapBad}.
 %
 \begin{figure}
 \includegraphics[width=.28\textwidth, trim={3.1cm 1cm 3.5cm 0cm},clip]{code/SSL/2Dex_100.png}%
@@ -540,7 +542,7 @@ where the constant $\sigma_\eta$ is defined as in \cref{eq:kernelconst}. We revi
 %
 \begin{itemize}
 	\item Problems on the graph are non-local, communication between points takes place on a finite scale.
-	\item In the limit we want to obtain a local problem, communication takes place at a infinitesimal small scale.
+	\item In the limit we want to obtain a local problem, communication takes place at an infinitesimal small scale.
 	\item If the graph scale $\gscale_n$ tends to zero too fast, there is not enough communication between vertices, or even worse the graph becomes disconnected.
 \end{itemize}
 %
@@ -550,7 +552,7 @@ The optimal scaling obtained in \cite{GarcSlep15} for $d\geq 3$ is given as
 \lim_{n\to\infty} \left(\frac{\log n}{n}\right)^{1/d}\, \gscale_n^{-1} = 0,
 \end{align}
 %
-i.e. $\gscale_n$ must go to zero slower than $\left(\frac{(\log n)}{n}\right)^{1/d}$. This scaling is optimal, in the sense that the graph is disconnected with high probability if $\gscale_n < \lambda \left(\frac{\log n}{n}\right)^{1/d}$, see \cite{GarcSlep15}. The main difference here, is however that the considered clustering task does not directly involve a given labeling on the set $\conset_n\subset\domain_n$. This setting was considered in \cite{slepcev2019analysis}, where first the generalization of the $\Gamma$-convergence statement in \cref{eq:garcscaling} was provided. Furthermore, the authors then consider the constrained  model by incorporating the boundary conditions into the functional
+i.e., $\gscale_n$ must go to zero slower than $\left(\frac{(\log n)}{n}\right)^{1/d}$. This scaling is optimal, in the sense that the graph is disconnected with high probability if $\gscale_n < \lambda \left(\frac{\log n}{n}\right)^{1/d}$, see \cite{GarcSlep15}. The main difference here, is however that the considered clustering task does not directly involve a given labeling on the set $\conset_n\subset\domain_n$. This setting was considered in \cite{slepcev2019analysis}, where first the generalization of the $\Gamma$-convergence statement in \cref{eq:garcscaling} was provided. Furthermore, the authors then consider the constrained  model by incorporating the boundary conditions into the functional
 %
 \begin{align*}
 \GE^{w_n, \text{cons}}_p(\vec u) :=
@@ -615,7 +617,7 @@ $u\in W^{1,\infty}(\domain)$ we have that
 \lim_{p\to\infty} \pDir{}_{p,\rho}(u)^{1/p} = \esssup_{x\in\supp(\rho)} \abs{\nabla u(x)} =: \pDir{}_{\infty,\rho}(u),
 \end{align*}
 %
-see \cite{jensen1993uniqueness}. Again, we see that that the weighting $\rho$ only enters via its support, therefore we do not explicitly consider it in the following and instead assume $\domain=\supp(\rho)$ and then only write $\pDir{}_{\infty}$. The functional $\pDir{}_\infty$ is weak$^*$-lower semi-continuous over $W^{1,\infty}(\domain)$, (see e.g. \cite[Thm. 2.6]{barron2001lower}). In the classical theory developed by Jensen in \cite{jensen1993uniqueness} one considers the following problem, which tries to minimize the \emph{sup-norm} of the gradient as described by Jensen.
+see \cite{jensen1993uniqueness}. Again, we see that that the weighting $\rho$ only enters via its support, therefore we do not explicitly consider it in the following and instead assume $\domain=\supp(\rho)$ and then only write $\pDir{}_{\infty}$. The functional $\pDir{}_\infty$ is weak$^*$-lower semi-continuous over $W^{1,\infty}(\domain)$, (see, e.g., \cite[Thm. 2.6]{barron2001lower}). In the classical theory developed by Jensen in \cite{jensen1993uniqueness} one considers the following problem, which tries to minimize the \emph{sup-norm} of the gradient as described by Jensen.
 %
 \begin{problem}{Gradient Sup-Norm Problem}{prob:gradsup}
 For an open domain $\domain\subset\R^d$, find a function $u\in W^{1,\infty}(\domain)$ such that
@@ -626,7 +628,7 @@ For an open domain $\domain\subset\R^d$, find a function $u\in W^{1,\infty}(\dom
 \end{problem}
 %
 \noindent%
-This problem can be seen as the limit problem for $p\to\infty$ of \cref{prob:VarForm}. Additionally imposing boundary conditions with $g:\partial\domain\to\R$, \cite{jensen1993uniqueness} then draws the connection to so-called \emph{Lipschitz extensions}, which are the driving concept in this section. We introduce a more general viewpoint---that does not require the notion of a gradient---later on, but first introduce the variational problem. 
+This problem can be seen as the limit problem for $p\to\infty$ of \cref{prob:VarForm}. Additionally, imposing boundary conditions with $g:\partial\domain\to\R$, \cite{jensen1993uniqueness} then draws the connection to so-called \emph{Lipschitz extensions}, which are the driving concept in this section. We introduce a more general viewpoint---that does not require the notion of a gradient---later on, but first introduce the variational problem. 
 
 \paragraph{The Lipschitz Constant}
 
@@ -638,7 +640,7 @@ the requirement of a metric up to triangle inequality. Then we define the Lipsch
 \Lip_d(u; V):= \sup_{x,y\in V, x\neq y} \frac{\abs{u(x) - u(y)}}{d(x,y)}.
 \end{align*}
 %
-If $d(\cdot,\cdot)$ denotes the Euclidean distance we omit the subscript. i.e. $\Lip_d = \Lip$. Additionally, we can 
+If $d(\cdot,\cdot)$ denotes the Euclidean distance we omit the subscript, i.e., $\Lip_d = \Lip$. Additionally, we can 
 introduce the space of Lipschitz functions $\Lip_d(V)$ on $V$ via 
 $u\in \Lip_d(V) \Leftrightarrow \Lip_d(u;V) <\infty$.
 %
@@ -660,7 +662,7 @@ which distance is chosen for the Lipschitz constant. For an open domain $\domain
 \norm{\nabla u}_\infty \leq \sup_{x\neq y} \frac{\abs{u(x) - u(y)}}{\abs{x-y}}
 \end{align*}
 %
-which can be proven via the definition of the gradient. For the reverse inquality, one has to take the geometry of the domain into account, namely for $x,y\in\domain$ we have that
+which can be proven via the definition of the gradient. For the reverse inequality, one has to take the geometry of the domain into account, namely for $x,y\in\domain$ we have that
 %
 \begin{align}\label{eq:LipGrad}
 \abs{u(x) - u(y)} \leq \norm{\nabla u}_\infty\ d_\domain(x,y)
@@ -676,7 +678,7 @@ d_\domain(x,y) = \inf \left\{
 %
 denotes the \emph{geodesic distance} on $\domain$. If $\domain$ is convex, we have that $d_\domain(x,y) = \abs{x-y}$ for every 
 $x,y\in \domain$ and therefore \cref{eq:LipGrad} yields $\Lip(u) = \norm{\nabla u}_\infty$. However, this situation changes for non-convex domains, see \cref{ex:tube}. Additionally it is often necessary to define 
-a distance measure on the closure of $\domain\subset\R^d$. In order to have a geodesic on $\overline{\domain}$ one can simply consider $d_{\overline{\domain}}$, see e.g. \cite{bungert2021uniform}, which then yields the length space $(\overline{\domain}, d_{\overline{\domain}})$. In the classical theory developed in \cite{jensen1993uniqueness} one alternatively considers
+a distance measure on the closure of $\domain\subset\R^d$. In order to have a geodesic on $\overline{\domain}$ one can simply consider $d_{\overline{\domain}}$, see, e.g., \cite{bungert2021uniform}, which then yields the length space $(\overline{\domain}, d_{\overline{\domain}})$. In the classical theory developed in \cite{jensen1993uniqueness} one alternatively considers
 %
 \begin{align*}
 \tilde{d}_{\overline{\domain}}(x,y) := \liminf_{(\tilde x,\tilde y)\to(x,y)} d_\domain(\tilde{x},\tilde{y}).
