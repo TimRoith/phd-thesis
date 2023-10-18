@@ -1,7 +1,7 @@
 \chapter{Robust and Sparse Supervised Learning}\label{ch:SL}
 %
 %
-In this chapter we present the topics discussed in the works \cite{bungert2021clip, kabri2023resolution, bungert2022bregman} which are reprinted in \cref{part:Prints}. Compared to the previous chapter we are now in the setting of supervised learning as described in \cref{sec:PSL}. As already mentioned before, we focus on neural networks $\net_\param:\Inp\to\Oup$ parameterized by $\param\in\Param$, where $\Param$ is some parameter space. Here, our two main question arise, namely:
+In this chapter we present the topics discussed in the works \cite{bungert2021clip, kabri2023resolution, bungert2022bregman} which are reprinted in \cref{part:Prints}. Compared to the previous chapter, we are now in the setting of supervised learning, as described in \cref{sec:PSL}. As already mentioned before, we focus on neural networks $\net_\param:\Inp\to\Oup$ parameterized by $\param\in\Param$, where $\Param$ is some parameter space. Here, our two main question arise, namely:
 \begin{itemize}
 \item \textbf{Input robustness}: how robust is $x\mapsto \net_\param(x)$ w.r.t. input perturbations? 
 \item \textbf{Parameter sparsity}: how can we obtain sparse parameters $\param\in\Param$?
@@ -27,19 +27,17 @@ node[midway] {\cref{sec:BREG}: \cite{bungert2022bregman}}; %
 \end{center}
 %
 %
-Therefore, conceptually we again highlight the keyword \textbf{sparsity} and additionally \textbf{robustness}. In \cite{bungert2021clip} we consider robustness under adversarial perturbations. Here, the input is \emph{attacked} on purpose to confuse a neural network classifier and therefore worsen its performance. In order to obtain a classifier that is less vulnerable against such attacks we propose an optimization strategy that selects parameters yielding a more robust network. In \cref{sec:CLIP} we comment on the topic and the contribution in more detail. 
+Therefore, conceptually we again highlight the keyword \textbf{sparsity} and additionally \textbf{robustness}. In \cite{bungert2021clip} we consider robustness under adversarial perturbations. Here, the input is \emph{attacked} on purpose to confuse a neural network classifier and therefore worsen its performance. In order to obtain a classifier that is less vulnerable against such attacks, we propose an optimization strategy that selects parameters yielding a more robust network. In \cref{sec:CLIP} we comment on the topic and the contribution in more detail. 
 
 A different kind of input robustness is considered in \cite{kabri2023resolution}. In the setting of image classification, images are modeled as functions on a continuum domain that need to be discretized in order to represent them on a machine. However, this discretization is usually arbitrary and not inherent to the object of interest. Therefore, it is natural to assume that the output of the network should be independent of this discretization, also referred to as resolution, hence we consider robustness w.r.t. resolution changes. We remark on this and the publication in \cref{sec:FNO}.
 
-Concerning computational performance and memory storage of the neural network we focus on sparsity of the parameters $\param\in\Param$. In \cite{bungert2022bregman} we propose a sparse optimization strategy based on Bregman iterations, which employs $L^1$ type penalties to promote sparsity. The conceptual difference between the existing algorithm and our proposal is the stochastic component in the gradient. Our theoretical results prove decay in loss and convergence of the iterates. Finally, we also conduct numerical experiments that demonstrate the efficiency of the method. We refer to \cref{sec:BREG} for a detailed explanation.
+Concerning computational performance and memory storage of the neural network, we focus on sparsity of the parameters $\param\in\Param$. In \cite{bungert2022bregman} we propose a sparse optimization strategy based on Bregman iterations, which employs $L^1$ type penalties to promote sparsity. The conceptual difference between the existing algorithm and our proposal is the stochastic component in the gradient. Our theoretical results prove decay in loss and convergence of the iterates. Finally, we also conduct numerical experiments that demonstrate the efficiency of the method. We refer to \cref{sec:BREG} for a detailed explanation.
 
-Before, we start with the exposition on the mentioned works, we briefly review the common supervised learning framework. Building upon the basic observations in \cref{ch:SL} we give a slightly more detailed introduction in \cref{sec:SLSet}.
-
-
-
-
-
-
+Before we start with the exposition on the mentioned works, we briefly review the common supervised learning framework. Building upon the basic observations in \cref{ch:SL} we give a slightly more detailed introduction in \cref{sec:SLSet}.
+%
+%
+%
+%
 \section{Setting}\label{sec:SLSet}
 %
 We are given a finite training set $\tset\subset\Inp\times\OutSpace$. For a family of functions $f_\param:\Inp\to\OutSpace$ parameterized by $\param\in \Param$, we consider the empirical  minimization
@@ -75,12 +73,12 @@ For image denoising problems, we often choose $\Inp=\Oup=[0,1]^{N\times M}$, ass
 \ell(\oupp,\oup) := \frac{1}{N\cdot M} \norm{\oupp-\oup}^2
 \end{align*}
 %
-is commonly employed. This loss function could however also be employed for classification problems.
+is commonly employed. This loss function is also used for classification problems.
 \end{example}
 %
 %
 \begin{example}{Cross-Entropy}{}
-For classification problems one often chooses the \emph{cross-entropy} or \emph{negative log-likelihood} loss, \cite{good1952rational}. For two discrete probability distributions, $p,q:\{1,\ldots,C\}\to\R$ one defines
+For classification problems, one often chooses the \emph{cross-entropy} or \emph{negative log-likelihood} loss, \cite{good1952rational}. For two discrete probability distributions, $p,q:\{1,\ldots,C\}\to\R$ one defines
 %
 \begin{align*}
 H(p,q) := -\sum_{c=1}^C p_c\cdot \log(q_c)
@@ -120,7 +118,7 @@ f_\param = \Phi_L\circ\ldots\circ\Phi_1
 %
 with parameters $\param =((W_1,b_1,w_1)\ldots,(W_L,b_L,w_L))\in\Param$ and layers $\Phi_i := \Phi(w_i, W_i, b_i)$. If there is no residual part, i.e., $w=0$, then we also allow dimensional changes in each layer, i.e., $z\in\R^n, W\in\R^{m\times n}, b\in\R^m$. 
 %
-\paragraph{MLP} In the easiest case we consider a perceptron \cite{rosenblatt1958perceptron}, which models a fully connected layer, i.e. every entry $W_{ij}$ of the weight matrix is a parameter that is optimized in the training process.
+\paragraph{MLP} In the easiest case we consider a perceptron \cite{rosenblatt1958perceptron}, which models a fully connected layer, i.e., every entry $W_{ij}$ of the weight matrix is a parameter that is optimized in the training process.
 
 \paragraph{Convolutions}\label{sec:convlayer} Especially important for visual tasks are convolutional layers. Here, we take a kernel $k\in \R^{M\times M}$ and define the application of $W=W(k)$ as
 %
@@ -134,19 +132,19 @@ with $\ast$ denoting the convolution. We refer to \cref{sec:FNO} for the concret
 (Wz)_{j,:,:} := \sum_{i=1}^{K_{\text{in}}} k_{ij}\ast z.
 \end{align*}
 
-\paragraph{ResNets} Often we also consider a residual component as displayed in \cref{eq:layer} with the term $w\, z$. The idea of adding this residual component was first introduced in \cite{srivastava2015highway} with a learnable parameter $w\in\R$ and later popularized in \cite{he2016deep} by fixing $w=1$, see also \cite{he2016identity}, which then yields the celebrated ResNet architecture. In the following applications we both consider the case where $w=1$ is fixed, but also the possibility of learning the parameter $w\in\R$ in \cite{bungert2021neural}.
+\paragraph{ResNets} Often we also consider a residual component as displayed in \cref{eq:layer} with the term $w\, z$. The idea of adding this residual component was first introduced in \cite{srivastava2015highway} with a learnable parameter $w\in\R$ and later popularized in \cite{he2016deep} by fixing $w=1$, see also \cite{he2016identity}, which then yields the celebrated ResNet architecture. In the following applications, we both consider the case where $w=1$ is fixed, but also the possibility of learning the parameter $w\in\R$ in \cite{bungert2021neural}.
 %
 \subsection{Gradient Computation and Stochastic Gradient Descent}\label{sec:SGD}
 %
 %
-Training a neural network requires solving an optimization problem w.r.t. to the parameters $\param\in\Param$. In this work we only focus on first order methods, however both zero \cite{riedl2022leveraging, pinnau2017consensus, carrillo2021consensus} and second order methods \cite{martens2010deep} have been successfully applied in this context. Employing first order methods, requires evaluating the gradient $\nabla_\theta \empLoss$, however in this scenario it is not common to compute the full gradient but rather to have a gradient estimator. This estimator is usually obtained by randomly dividing the train set $\trSet$ into disjoint mini-batches $B_1\cup\ldots\cup B_b = \trSet$ and then successively computing the gradient of the mini-batch loss
+Training a neural network requires solving an optimization problem w.r.t. to the parameters $\param\in\Param$. In this work we only focus on first order methods, however both zero \cite{riedl2022leveraging, pinnau2017consensus, carrillo2021consensus} and second order methods \cite{martens2010deep} have been successfully applied in this context. Employing first order methods, requires evaluating the gradient $\nabla_\theta \empLoss$, however in this scenario it is not common to compute the full gradient but rather to have a gradient estimator. This estimator is usually obtained by randomly dividing the train set $\trSet$ into disjoint mini-batches $B_1\cup\ldots\cup B_b = \trSet$ and then successively computing the gradient of the mini-batch loss,
 %
 \begin{align*}
 \empLoss(\param;B):=\frac{1}{\abs{B_i}}\sum_{(x,y)\in B_i} \ell(f_\param(x), y).
 \end{align*}
 %
 %
-Iterating over all batches $i=1,\ldots,b$ is referred to as one epoch. From a mathematical point of view, this yields stochastic optimization methods, since in each step the true gradient is replaced by an estimator. In the abstract setting we let $(\Omega,F,\P)$ be a probability space and consider a function $g:\Param\times \Omega\to \Param$ as an unbiased estimator of $\nabla\empLoss$, i.e.
+Iterating over all batches $i=1,\ldots,b$ is referred to as one epoch. From a mathematical point of view, this yields stochastic optimization methods, since in each step the true gradient is replaced by an estimator. In the abstract setting we let $(\Omega,F,\P)$ be a probability space and consider a function $g:\Param\times \Omega\to \Param$ as an unbiased estimator of $\nabla\empLoss$, i.e.,
 %
 \begin{align*}
 \Exp{g(\param;\omega)} = \nabla\empLoss(\param)\text{ for all } \param\in\Param.
@@ -184,20 +182,25 @@ In the following we consider classification problems with $C\in\N$ different cla
 \net^\MAP(\inp):=\argmax_c \net(\inp)_c
 \end{align*}%
 %
-the maximum a posteriori estimation for an input $\inp\in\Inp$. The capabilities of neural networks to perform classification tasks on unseen data---i.e. inputs $x\in\Inp$ that are not part of the training data---are impressive and the reason for their popularity. However, it has been noticed in \cite{goodfellow2014explaining} that it is relatively easy to \enquote{fool} classification networks in the following sense:
+the maximum a posteriori estimation for an input $\inp\in\Inp$. The capabilities of neural networks to perform classification tasks on unseen data---i.e., inputs $x\in\Inp$ that are not part of the training data---are impressive and the reason for their popularity. However, it has been noticed in \cite{goodfellow2014explaining} that it is relatively easy to \enquote{fool} classification networks in the following sense:
 %
-\begin{center}
-\textit{
+\vspace{.5em}%
+
+\begin{minipage}{.95\textwidth}%
+\textit{%
 Given a classification network and a human classifier $f_\param, h:\Inp\to\Delta^C$, and an input $\inp\in\Inp$ such that $f_\param^\MAP(\inp) = h^\MAP(\inp)$. An adversarial example is an input $\inpp\in \Inp$ that is close to $\inp$, but we have that
 %
 \begin{align*}
 f_\param^\MAP(\inpp)\neq h^\MAP(\inpp) = h^\MAP(\inp).
 \end{align*}
 }
-\end{center}
+%\end{center}
+\end{minipage}%
+\vspace{.5em}%
+
 %
 %
-The vague concept of a \emph{human classifier}, incorporates the intuition of the classification problem as a human would solve it. Assuming that we are given data $\tset\subset \Inp\times\Oup$ that is sampled i.i.d. from a joint distribution $P_{\Inp,\Oup}$ this function could also be chosen as $h(x)_c:=P_{\Inp,\Oup}(c|\inp)$. The term \enquote{close} describes that the difference between the two images $\inp,\inpp$ should be visually imperceptible.
+\noindent The vague concept of a \emph{human classifier}, incorporates the intuition of the classification problem as a human would solve it. Assuming that we are given data $\tset\subset \Inp\times\Oup$ that is sampled i.i.d. from a joint distribution $P_{\Inp,\Oup}$, this function could also be chosen as $h(x)_c:=P_{\Inp,\Oup}(c|\inp)$. The term \enquote{close} describes that the difference between the two images $\inp,\inpp$ should be visually imperceptible.
 
 
 \begin{remark}{}{}
@@ -209,30 +212,30 @@ Some authors argue that such instabilities are inherent to classification proble
 \paragraph{What are Adversarial Examples Formally?} In order to formalize this idea, we omit any influence of the typically unavailable function $h$ and instead consider $\inpp$ adversarial if $\net_\param^\MAP(\inp)\neq\net^\MAP_\param(\inpp)$. This interpretation only makes sense, if we assume that the output of  $\net^\MAP_\param(\inp)$ is \emph{correct}, which can only be easily checked on labeled data \cite{bungert2023begins}. Furthermore, in this work we assume that $\Inp$ models an image space $\Inp=\R^{K\times N\times M}$, with $K,N,M\in\N$ and choose a distance $d:\Inp\times\Inp\to\R^+_0$ to measure the distance between points in $\Inp$. 
 %
 \begin{remark}{}{}
-In most of our examples, we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparisons---can be an unfavorable choice. Images that appear very different visually, can have a smaller $L^p$ distance, than images that visually appear similar, see e.g. \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy to evaluate, which is crucial for most applications. In the absence of a better criterion, being close to the original input in the $L^p$ distance, is a practical way to decide if $\inpp$ is an admissible adversarial example. 
+In most of our examples, we choose $d(\cdot,\cdot) = \norm{\cdot - \cdot}_p$. Employing a $L^p$ norm in an image context---via pixel-wise comparisons---can be an unfavorable choice. Images that appear very different visually can have a smaller $L^p$ distance than images that visually appear similar, see, e.g., \cite[Fig. 16]{stanczuk2021wasserstein}. However, it is easy to evaluate, which is crucial for most applications. In the absence of a better criterion, being close to the original input in the $L^p$ distance is a practical way to decide if $\inpp$ is an admissible adversarial example. 
 \end{remark}
 %
 %
 \noindent%
-Employing these simplifications we then say that $\inpp\in\Inp$ is adversarial, if
+Employing these simplifications, we then say that $\inpp\in\Inp$ is adversarial, if
 %
 \begin{align*}
 d(\inp,\inpp) \leq \budget \qquad \text{ and } \qquad \net_\param^\MAP(\inp)\neq \net_\param^\MAP(\inpp),
 \end{align*}
 %
-where $\budget$ is called the \emph{adversarial budget}. This parameter controls how far $\tilde{x}$ can be from the original point $x$ to be still considered adversarial. Here, we also have to decide how much we trust the metric $d(\cdot,\cdot)$ as a measure of closeness.
+assuming that $\net_\param^\MAP(\inp)$ is indeed correct. The parameter $\budget$ is called the \emph{adversarial budget} and controls how far $\tilde{x}$ can be from the original point $x$ to be still considered adversarial. Here, we also have to decide how much we trust the metric $d(\cdot,\cdot)$ as a measure of closeness.
 %
 %
-\paragraph{Types of Adversarial Examples} Typically, adversarial examples are created from the clean image $\inp$ via some distortion $\delta\in\R^s$. Together with an application map $T:\Inp\times\R^s\to\Inp$ one then obtains $\inpp=T(x,\delta)$ as the adversarial example. In this formulation one can alternatively employ the criterion $\norm{\delta}\leq \budget$ to decide, whether $T(\inp,\delta)$ is an adversarial example. We only list some of the approaches below:
+\paragraph{Types of Adversarial Examples} Typically, adversarial examples are created from the clean image $\inp$ via some distortion $\delta\in\R^s$. Together with an application map $T:\Inp\times\R^s\to\Inp$ one then obtains $\inpp=T(x,\delta)$ as the adversarial example. In this formulation, one can alternatively employ the criterion $\norm{\delta}\leq \budget$ to decide, whether $T(\inp,\delta)$ is an adversarial example. We only list some approaches below:
 %
 \begin{itemize}
-\item\textbf{Addition}: The most well-known examples are created by $T(x,\delta):=\inp+\delta$, i.e. $\inpp = \inp + \delta$. Here, it is important to note that typically images are assumed to have values between $0$ and $1$, i.e. $\Inp=[0,1]^{K\times N\times M}$, therefore it is important to also ensure that $\inpp\in\Inp$.
+\item\textbf{Addition}: The most well-known examples are created by $T(x,\delta):=\inp+\delta$, i.e. $\inpp = \inp + \delta$. Here, it is important to note that typically images are assumed to have values between $0$ and $1$, i.e., $\Inp=[0,1]^{K\times N\times M}$, therefore it is important to also ensure that $\inpp\in\Inp$.
 %
-\item\textbf{Translation and Rotation}: Simple geometric transformations---that are unnoticeable for a human classifier---are quite effective to \enquote{fool} neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$ one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case $\delta\in[-\pi,\pi]$ models the angle of the rotation and yields an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some expressivity. Consider the MNIST dataset \cite{leCun10}, where the task is to classify handwritten digits from $0$ to $9$:
+\item\textbf{Translation and Rotation}: Simple geometric transformations---that are unnoticeable for a human classifier---are quite effective to \enquote{fool} neural networks. Employing translations $T_{\text{t}}:\Inp\times\Inp\to\Inp$, one has to choose the behavior on the boundary such that one obtains a valid image. The same holds true for rotations $T_{\text{r}}:\Inp\times [-\pi,\pi]\to\Inp$. In this case, $\delta\in[-\pi,\pi]$ models the angle of the rotation and yields an admissible adversarial example, if $\abs{\delta}\leq \budget$. Here, we see that this formulation looses some expressivity. Consider the MNIST dataset \cite{leCun10}, where the task is to classify handwritten digits from $0$ to $9$:
 %
 \begin{itemize}
 \item We see that only $\budget<\pi/2$ makes sense, otherwise the number \enquote{6} could be always transformed to the number \enquote{9} and vice versa.
-\item However, considering the number \enquote{0} rotations above the angle $\pi/2$ can definitely yield proper adversarial examples $\inpp$.
+\item However, considering the number \enquote{0}, rotations above the angle $\pi/2$ can definitely yield proper adversarial examples $\inpp$.
 \end{itemize}
 %
 We refer to \cite{engstrom2018rotation} for a study on these types of adversarial examples.
@@ -242,19 +245,17 @@ The map $T:\Inp\times\R^{K\times N\times M}\to\Inp$ first obtains the different 
 \end{itemize}
 %
 %
-In the following we restrict ourselves to the additive case and only consider examples $\inpp = \inp + \delta$.
+In the following, we restrict ourselves to the additive case and only consider examples $\inpp = \inp + \delta$.
 %
 %
-\paragraph{Finding Adversarial Examples} Employing a loss function $\ell:\Oup\times\Oup\to\R$ the task of finding an adversarial examples $\inpp=\inp+\delta\in\Inp$ can be relaxed via solving the problem
+\paragraph{Finding Adversarial Examples} Employing a loss function $\ell:\Oup\times\Oup\to\R$ the task of finding adversarial examples $\inpp=\inp+\delta\in\Inp$ can be relaxed via solving the problem
 %
 \begin{align}\label{eq:advprob}
 \max_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(\oup, \net_\param(\inpp))
-=
-\max_{\delta:\norm{\delta}_d\leq\delta, \inp+\delta\in\Inp}
-\ell(\oup, \net_\param(\inp+\delta)),
+%=\max_{\delta:\norm{\delta}_d\leq\delta, \inp+\delta\in\Inp} \ell(\oup, \net_\param(\inp+\delta)),
 \end{align}
 %
-where $\oup=\net_\param(\inp)$. Solving this problem is referred to as \emph{attacking} the network $\net$. More precisely, this is a so-called \emph{untargeted} attack, since we do not prescribe $\inpp$ to realize any special output as long as it confuses the network. Opposed to this, there are so called \emph{targeted} attacks. Here, we pick $c^\adv \neq \net^\MAP_\param(\inp)$ and then want to find $\inpp$ such that $\net^\MAP_\param(\inpp) = c^\adv$, which yields the problem
+where $\oup=\net_\param(\inp)$. Solving this problem is referred to as \emph{attacking} the network $\net$. More precisely, this is a so-called \emph{untargeted} attack, since we do not prescribe $\inpp$ to produce any special output as long as it confuses the network. Opposed to this, there are so called \emph{targeted} attacks. Here, we pick $c^\adv \neq \net^\MAP_\param(\inp)$ and then want to find $\inpp$ such that $\net^\MAP_\param(\inpp) = c^\adv$, which yields the problem
 %
 \begin{align*}
 \min_{\inpp\in \Inp:d(\inp,\inpp)\leq \budget} \ell(c^\adv_{\oh}, \net_\param(\inpp)).
@@ -278,10 +279,10 @@ Here, $\operatorname{Proj}_d$ denotes the projection onto the set $\Inp\cap B_{d
 \paragraph{Defending against Adversarial Attacks}
 %
 %
-We consider the question of finding parameters $\param\in\Param$ such that corresponding model $\net_\param$ is \emph{adversarially robust}, i.e., is less vulnerable to attacks. Therefore, we want the attack problem in \cref{eq:advprob} to be hard to solve. This intuition leads to the optimization problem
+We consider the question of finding parameters $\param\in\Param$ such that the corresponding model $\net_\param$ is \emph{adversarially robust}, i.e., is less vulnerable to attacks. Therefore, we want the attack problem in \cref{eq:advprob} to be hard to solve. This intuition leads to the optimization problem
 %
 \begin{align*}
-\min_{\param\in\Param} \sum_{(\inp,\oup)\in \tset} \max_{\inpp:d(\inp,\inpp)\leq\budget} \ell(\net_\param(\inpp), \oup)
+\min_{\param\in\Param} \sum_{(\inp,\oup)\in \tset} \max_{\inpp:d(\inp,\inpp)\leq\budget} \ell(\net_\param(\inpp), \oup),
 \end{align*}
 %
 which is known as the \emph{adversarial training} formulation \cite{kurakin2016adversarial2, madry2017towards}. From a distributionally robust optimization point of view, this problem relates to 
@@ -296,7 +297,7 @@ where $D$ denotes some distance on the space of probability distributions, see \
 %
 \paragraph{Lipschitz Training of Neural Networks}
 %
-Adversarial robustness is closely related to the Lipschitzness of a network $\net_\param$. Namely, for inputs $\inp,\inpp\in\Inp$ that are close, we also want the outputs of $\net_\param$ to be close. In other words we want to find a small constant $L>0$ such that
+Adversarial robustness is closely related to the Lipschitzness of a network $\net_\param$. Namely, for inputs $\inp,\inpp\in\Inp$ that are close, we also want the outputs of $\net_\param$ to be close. In other words, we want to find a small constant $L>0$ such that
 %
 \begin{align*}
 \norm{\net_\param(\inp) - \net_\param(\inpp)}_\Oup \leq L\ \norm{\inp-\inpp}_\Inp,
@@ -346,7 +347,7 @@ For $\inp\in\R$ we have that
 \inp&\leq 0 \qquad\Rightarrow\Phi_1(\inp) = (0, -\inp)^T \qquad\Rightarrow \net_\param(\inp)=-\inp,
 \end{align*}
 %
-and therefore $\net_\param = \abs{\cdot}$, which yields that $\Lip(\net_\param)=1$. However employing the spectral norm for the weight matrices, we see that
+and therefore $\net_\param = \abs{\cdot}$, which yields that $\Lip(\net_\param)=1$. However, employing the spectral norm for the weight matrices, we see that
 %
 \begin{align*}
 \norm{W_1}\cdot\norm{W_2} = \sqrt{2}\ \sqrt{2} = 2.	
@@ -357,7 +358,7 @@ and therefore $\net_\param = \abs{\cdot}$, which yields that $\Lip(\net_\param)=
 \noindent%
 Plugging the estimate of \cref{ineq:lip_weights} into \cref{eq:LipReg} therefore potentially over regularizes the problem. While this increases the stability of the network, it can worsen its classification performance.
 %
-\paragraph{Contribution in \cite{bungert2021clip}} In \cite{bungert2021clip} we propose a strategy to solve \cref{eq:LipReg} approximately, without the estimate in \cref{ineq:lip_weights}. The basic idea consists of approximating the Lipschitz constant on a finite set and using this approximation as a regularizer. Furthermore, we analyse the original model in \cref{eq:LipReg} where we study existence of solutions, the influence of the parameter $\lambda$ and the limits $\lambda\to 0, \lambda\to \infty$, see \cref{sec:CLIPAna}. Finally, we demonstrate the efficiency of the method by applying it to some simple toy problems, see \cref{sec:CLIPNum}.
+\paragraph{Contribution in \cite{bungert2021clip}} In \cite{bungert2021clip} we propose a strategy to solve \cref{eq:LipReg} approximately, without the estimate in \cref{ineq:lip_weights}. The basic idea consists of approximating the Lipschitz constant on a finite set and using this approximation as a regularizer. Furthermore, we analyze the original model in \cref{eq:LipReg} where we study existence of solutions, the influence of the parameter $\lambda$ and the limits $\lambda\to 0, \lambda\to \infty$, see \cref{sec:CLIPAna}. Finally, we demonstrate the efficiency of the method by applying it to some simple toy problems, see \cref{sec:CLIPNum}.
 
 
 \subsection{Cheap Lipschitz Training}
@@ -374,12 +375,12 @@ We approximate the Lipschitz constant on a finite set $\Inp_{\lip{}}\subset\Inp\
 Disregarding the non-differentiable points of $\param\mapsto \Lip(\net_\param; \Inp_{\lip{}})$ and employing the above approximation, allows us to solve the problem in \cref{eq:LipReg} via stochastic gradient descent on the variable $\param$.
 %
 \begin{remark}{}{}
-Let $f,g:\Inp\to\Oup$ be two differentiable functions. If $f(\inpp)>g(\inpp)$ for some $\inpp\in\Inp$ then we know that there exists some $\epsilon>0$ such that $f(\inp)>g(\inp)$ for all $\inp\in B_\epsilon(\inpp)$. We have that $f\vee g = \max\{f,g\} = f$ in $B_\epsilon(\inpp)$ and therefore $\inp\mapsto f(\inp)\vee g(\inp)$ is differentiable in $\inpp$. If $f(\inpp)=g(\inpp)$ then $f\vee g$ could be non-differentiable at $\inpp$. However, in practice we employ automatic differentiation, where in this case one of the functions is chosen, say $f$, and the \emph{gradient} at $\inpp$ is computed as $\nabla f$. 
+Let $f,g:\Inp\to\Oup$ be two differentiable functions. If $f(\inpp)>g(\inpp)$ for some $\inpp\in\Inp$, then we know that there exists some $\epsilon>0$ such that $f(\inp)>g(\inp)$ for all $\inp\in B_\epsilon(\inpp)$. We have that $f\vee g = \max\{f,g\} = f$ in $B_\epsilon(\inpp)$ and therefore $\inp\mapsto f(\inp)\vee g(\inp)$ is differentiable in $\inpp$. If $f(\inpp)=g(\inpp)$ then $f\vee g$ could be non-differentiable at $\inpp$. However, in practice we employ automatic differentiation, where in this case one of the functions is chosen, say $f$, and the \emph{gradient} at $\inpp$ is computed as $\nabla f$. 
 \end{remark}
 %
 %
 \noindent%
-The strength of this approach is dependent on the quality of the set $\Inp_{\lip}$. In \cite{bungert2021clip} we propose to iteratively update the set via a gradient ascent type scheme. Namely, we initialize $\Inp_{\lip}$ as a random perturbation of a subset of the given data. In each step we then update the points as follows:
+The strength of this approach is dependent on the quality of the set $\Inp_{\lip}$. In \cite{bungert2021clip} we propose to iteratively update the set via a gradient ascent type scheme. Namely, we initialize $\Inp_{\lip}$ as a random perturbation of a subset of the given data. In each step, we then update the points as follows:
 \begin{itemize}
 \item Consider $L(\inp,\inpp) := {\norm{\net_\param(\inp)-\net_\param(\inpp)}}\,/\,{\norm{\inp-\inpp}},\quad\inp,\inpp\in\Inp$.
 \item For each $(\inp,\inpp)\in\Inp_{\lip}$ perform the update 
@@ -403,7 +404,7 @@ which yields the algorithm presented in \cite[Alg. 2]{bungert2021clip}. Similar 
 %
 \subsection{Analysis of Lipschitz Regularization}\label{sec:CLIPAna}
 %
-In \cite{bungert2021clip} we analyse some basic properties of the original regularization problem in \cref{eq:LipReg}. We repeat the assumptions made therein.
+In \cite{bungert2021clip} we analyze some basic properties of the original regularization problem in \cref{eq:LipReg}. We repeat the assumptions made therein.
 
 \begin{enumerate}[label= \textbf{Assumption \arabic*.}, ref={\arabic*}, align=left]
 	\setlength{\itemsep}{9pt}
@@ -427,7 +428,7 @@ In \cite{bungert2021clip} we analyse some basic properties of the original regul
 \end{enumerate}
 %
 %
-Employing only \cref{ass:net} one can show that that the map $\param\mapsto \Lip(\net_\param)$ is lower semi-continuous, \cite[Lem. 1]{bungert2021clip}. 
+Employing only \cref{ass:net} one can show that the map $\param\mapsto \Lip(\net_\param)$ is lower semi-continuous, \cite[Lem. 1]{bungert2021clip}. 
 %
 \paragraph{Existence} If $\Param$ is compact or finite, one can show that there exist solutions of the problem in \cref{eq:LipReg}. In the general case, one needs to add a norm term, that ensures boundedness of a minimizing sequence. The following is the main existence result, which can be proven by the direct method in the calculus of variations \cite{dacorogna2007direct}.
 %
@@ -529,12 +530,12 @@ We briefly comment on the numerical results \cite{bungert2021clip}. All the expe
 \includegraphics[width=.4\textwidth]{atelier/FNO/trigo.pdf}
 \end{wrapfigure}
 %
-In this section, we comment on the results in \cite{kabri2023resolution}, concerning input robustness w.r.t. resolution changes. In practice we frequently employ the set $\Inp=[0,1]^{K\times N\times M}$ to represent images. However, from a modeling point of view it is more natural to assume that images are functions $\img:\domain\to[0,1]^K$ where $\domain\subset\R^2$ is some domain. In this sense, the space $\Inp$ only constitutes a discretization of the space of all functions from $\domain$ to $[0,1]^K$. The number of pixels, i.e., $N\cdot M$, relates to the \emph{resolution} of the image, where a higher number of pixels yields a higher resolution. In this sense, the resolution is merely an artifact of practical restrictions and should not be relevant for the classification. Therefore, one wants to obtain a resolution-independent classifier, which we study in the following.
+In this section, we comment on the results in \cite{kabri2023resolution}, concerning input robustness w.r.t. resolution changes. In practice, we frequently employ the set $\Inp=[0,1]^{K\times N\times M}$ to represent images. However, from a modeling point of view it is more natural to assume that images are functions $\img:\domain\to[0,1]^K$ where $\domain\subset\R^2$ is some domain. In this sense, the space $\Inp$ only constitutes a discretization of the space of all functions from $\domain$ to $[0,1]^K$. The number of pixels, i.e., $N\cdot M$, relates to the \emph{resolution} of the image, where a higher number of pixels yields a higher resolution. In this sense, the resolution is merely an artifact of practical restrictions and should not be relevant for the classification. Therefore, one wants to obtain a resolution-independent classifier, which we study in the following.
 %
-\paragraph{Images, Resolution and Scale}
+\paragraph{Images, Resolution, and Scale}
 %
 %
-In the continuum setting we consider the $d$-dimensional torus $\domain = \mathbb{R}^d / \mathbb{Z}^d$. An image is a function 
+In the continuum setting, we consider the $d$-dimensional torus $\domain = \mathbb{R}^d / \mathbb{Z}^d$. An image is a function 
 %
 \begin{align*}
 \img:\domain\to[0,1]^K
@@ -546,11 +547,11 @@ where $K\in\N$ denotes the number of color channels, see \cite{gonzales1987digit
 \mathcal{J}_N := \{0,\ldots, N-1\}^d
 \end{align*}
 %
-with grid points $x_j = j/(N-1)$, see e.g. \cite{kabri2022FNO, kovachki2021universal}. For simplicity, we assume an equal number of discretization points in each dimension. Therefore, $N^d$ is the resolution of an image discretized w.r.t. $\mathcal{J}_N$. 
+with grid points $x_j = j/(N-1)$, see, e.g., \cite{kabri2022FNO, kovachki2021universal}. For simplicity, we assume an equal number of discretization points in each dimension. Therefore, $N^d$ is the resolution of an image discretized w.r.t. $\mathcal{J}_N$.
 
 It is important to notice the differences to the concept of \emph{scale}. A change in scale would be a change in the original image domain, for example, by zooming in on a certain area. In our scenario, we usually assume that the image $\img$ contains a certain entity to be classified. The scale roughly describes how \enquote{big} the entity is, or what percentage of the image it fills. We assume that the scale is fixed. Therefore, changing $N$ directly influences the resolution of the discretization.
 
-\paragraph{How do Neural Networks react to Resolution Changes?} In many machine learning applications, one assumes a fixed input size and therefore a fixed resolution, assuming the same scale throughout the data. Formally, networks are defined as mappings $\net_\param:\R^{K\times N\times N}\to\Delta^C$, i.e. they only accept inputs of the fixed resolution $N$. In order to understand how this constraint can be weakened, we need to consider the concrete structure of our networks, which was similarly done in \cite{kovachki2021universal, kabri2022FNO}. The architectures we consider are feed-forward networks of the form
+\paragraph{How do Neural Networks react to Resolution Changes?} In many machine learning applications, one assumes a fixed input size and therefore a fixed resolution, assuming the same scale throughout the data. Formally, networks are defined as mappings $\net_\param:\R^{K\times N\times N}\to\Delta^C$, i.e., they only accept inputs of the fixed resolution $N$. In order to understand how this constraint can be weakened, we need to consider the concrete structure of our networks, which was similarly done in \cite{kovachki2021universal, kabri2022FNO}. The architectures we consider are feed-forward networks of the form
 %
 \begin{align*}
 \net_\param = \Phi^{\text{class}} \circ \mathcal{S}\circ \Phi^{\text{feature}}
@@ -559,7 +560,7 @@ It is important to notice the differences to the concept of \emph{scale}. A chan
 where 
 %
 \begin{itemize}
-\item $\Phi^{\text{feature}}$ is the so-called feature extractor, which should be applicable independently from the input dimension,
+\item $\Phi^{\text{feature}}$ is the so-called feature extractor, which should be applicable independently of the input dimension,
 \item $\mathcal{S}$ is a function that maps inputs of any size to a fixed output dimension $\R^s$,
 \item $\Phi^{\text{class}}:\R^s\to\Delta^C$ denotes the classification layer.
 \end{itemize}
@@ -647,7 +648,7 @@ By a slight abuse of notation, the activation function $\sigma:\R\to\R$ acts as 
 \sigma: v \mapsto \sigma(v(\cdot)),
 \end{align}
 %
-see, e.g., \cite{tröltzsch}. In \cref{sec:FNOAna} we analyze continuity and differentiablility of a layer in this abstract form. However, the most relevant case for us, is when $\mathcal{K}$ is a convolution operator, i.e., $\kappa(x,y)=\kappa(x-y)$ is a translation invariant kernel. In this special case $\mathcal{G}$ is then known as layer of a \emph{Fourier Neural Operator} (FNO) as introduced in \cite{li2020fourier}. We can parameterize the kernel via its Fourier coefficients $\hat{\param}_k\in\C$
+see, e.g., \cite{tröltzsch}. In \cref{sec:FNOAna} we analyze continuity and differentiability of a layer in this abstract form. However, the most relevant case for us, is when $\mathcal{K}$ is a convolution operator, i.e., $\kappa(x,y)=\kappa(x-y)$ is a translation invariant kernel. In this special case $\mathcal{G}$ is then known as layer of a \emph{Fourier Neural Operator} (FNO) as introduced in \cite{li2020fourier}. We can parameterize the kernel via its Fourier coefficients $\hat{\param}_k\in\C$,
 %
 \begin{align}\label{eq:fnokernel}
 \kappa_{\hat{\theta}}(x) = \sum_{k \in \mathcal{I}} \hat{\theta}_k\, b_k(x),
@@ -667,7 +668,7 @@ In \cite{kabri2023resolution} we consider the discrete Fourier transform and its
 \left(F^{-1}\hat{v}\right)_j &= \frac{\lambda}{|\mathcal{J}_N|}\sum_{k \in \mathcal{I}_N} \hat{v}_k\, e^{2\pi i \, \left\langle k, \frac{j}{N}\right\rangle} j \in \mathcal{J}_N,
 \end{align*}
 %
-with a normalization constant $\lambda \in \{1, \sqrt{|\mathcal{J}_N|}, |\mathcal{J}_N|\}$. We only consider parameters $\hat\param\in \Csym^{\mathcal{I}_N} := F(\R^{\mathcal{J}_N})$, where we can employ the convolution theorem (see e.g. \cite{grafakos}) to define
+with a normalization constant $\lambda \in \{1, \sqrt{|\mathcal{J}_N|}, |\mathcal{J}_N|\}$. We only consider parameters $\hat\param\in \Csym^{\mathcal{I}_N} := F(\R^{\mathcal{J}_N})$, where we can employ the convolution theorem (see, e.g., \cite{grafakos}) to define
 %
 \begin{align}\label{eq:discfno}
 K(\hat{\theta})(v) = F^{-1}\left(\hat{\theta} \cdot Fv\right) \qquad \text{for }v \in \R^{\mathcal{J}_N},
@@ -678,7 +679,7 @@ which is referred to as the FNO or spectral implementation of convolution.
 %
 \paragraph{How do FNOs React to Resolution Changes?}
 %
-The number of Fourier coefficients of $\hat\param\in\Csym^{\mathcal{I}_M}$ is independent of the input resolution. Nevertheless, the point-wise multiplication in \cref{eq:discfno} is only defined for inputs $\imgg\in\R^{\mathcal{J}_M}$, thus the question arises how FNOs can be adapted to dimension mismatch. Here, we use a conceptually similar idea, by employing zero-padding. However, the important and major difference is that this zero-padding is performed in the spectral domain. Assuming that $N>M$ is odd we define
+The number of Fourier coefficients of $\hat\param\in\Csym^{\mathcal{I}_M}$ is independent of the input resolution. Nevertheless, the point-wise multiplication in \cref{eq:discfno} is only defined for inputs $\imgg\in\R^{\mathcal{J}_M}$, thus the question arises how FNOs can be adapted to dimension mismatch. Here, we use a conceptually similar idea, by employing zero-padding. However, the important and major difference is that this zero-padding is performed in the spectral domain. Assuming that $N>M$ is odd, we define
 %
 %
 \begin{align*}
@@ -771,12 +772,12 @@ The image is taken from \cite[Fig. 1]{kabri2022FNO}---depicting a red whiskered 
 \end{figure}
 %
 %
-We are given a kernel $\param\in\R^{\mathcal{J}_M}$, its unnormalized Fourier transform $\hat\param = \lambda\, F(\param)$ and an input $\imgg_N\in \R^{\mathcal{J}_N}$. If $M=N$, i.e., all dimensions match, we observe that spectral and spatial implementation are equivalent, see the middle row of \cref{fig:bulbul}. However, if we consider a higher resolution variant of the image with $N>M$, spatial zero-padding results in the kernel being localized in space and therefore the effect of convolving it with $\imgg_N$ changes. On the other hand for the spectral implementation we observe an equivariant behaviour. The resolution of the output changes but qualitatively the effect of the filter stays the same.
+We are given a kernel $\param\in\R^{\mathcal{J}_M}$, its unnormalized Fourier transform $\hat\param = \lambda\, F(\param)$ and an input $\imgg_N\in \R^{\mathcal{J}_N}$. If $M=N$, i.e., all dimensions match, we observe that spectral and spatial implementation are equivalent, see the middle row of \cref{fig:bulbul}. However, if we consider a higher resolution variant of the image with $N>M$, spatial zero-padding results in the kernel being localized in space and therefore the effect of convolving it with $\imgg_N$ changes. On the other hand, for the spectral implementation, we observe an equivariant behavior. The resolution of the output changes, but qualitatively the effect of the filter stays the same.
 %
 %
 \paragraph{Connection to Interpolation}
 %
-As hinted in \cref{fig:bulbul}, when changing the resolution, the spectral implementation of convolution can be interpreted as a standard convolution with an interpolated kernel. In fact we observe that for $\param\in\R^{\mathcal{J}_M}, \hat\param=\lambda\, F(\param)$ and $\imgg_N\in\R^{\mathcal{J}_N}$ we have that
+As hinted in \cref{fig:bulbul}, when changing the resolution, the spectral implementation of convolution can be interpreted as a standard convolution with an interpolated kernel. In fact, we observe that for $\param\in\R^{\mathcal{J}_M}, \hat\param=\lambda\, F(\param)$ and $\imgg_N\in\R^{\mathcal{J}_N}$ we have that
 %
 \begin{align*}
 \CF(\hat\param)(\imgg_N) &= 
@@ -813,9 +814,9 @@ Zero-padding of the spectral coefficients only fulfills Hermitian symmetry in th
 In this section, we comment on the theoretical findings in \cite{kabri2023resolution}. We first consider the abstract neural layer as in \cref{eq:layerdef} for which we show continuity and Fréchet-differentiability.
 %
 %
-\paragraph{Continuity of Neural Layers} The results for neural layers in \cite{kabri2023resolution} mostly fall back to the theory of \Nem{} operators, see, e.g., \cite{tröltzsch, ambrosetti}. In order to show that the layer $\mathcal{G}$ is a well defined mapping from $L^p$ to $L^q$ one first needs to identify an exponent $r\in [1,\infty]$ such that the affine part is a mapping $\Psi:L^p\to L^r$. For example if $\kappa\in L^s$ with $1/r + 1 = 1/p + 1/s$ it follows from Young's convolution inequality that $\mathcal{K}$ maps to $L^r$, see \cite[Th. 1.2.12]{grafakos}. If then $W=0$ and $b\in L^r$ we know that $\Psi$ maps to $L^r$.
+\paragraph{Continuity of Neural Layers} The results for neural layers in \cite{kabri2023resolution} mostly fall back to the theory of \Nem{} operators, see, e.g., \cite{tröltzsch, ambrosetti}. In order to show that the layer $\mathcal{G}$ is a well-defined mapping from $L^p$ to $L^q$ one first needs to identify an exponent $r\in [1,\infty]$ such that the affine part is a mapping $\Psi:L^p\to L^r$. For example, if $\kappa\in L^s$ with $1/r + 1 = 1/p + 1/s$ it follows from Young's convolution inequality that $\mathcal{K}$ maps to $L^r$, see \cite[Thm. 1.2.12]{grafakos}. If then $W=0$ and $b\in L^r$ we know that $\Psi$ maps to $L^r$.
 
-To ensure that the \Nem{} operator defines a mapping $\sigma:L^r\to L^q$ one needs to assume a growth condition on $\sigma:\R\to\R$, see \cite[Eq. 4]{kabri2023resolution} and originally \cite{tröltzsch}. Under these assumptions, we obtain \cite[Prop. 1]{kabri2023resolution}. Concrete examples fulfilling these assumptions are given in \cite{kabri2023resolution} borrowing concepts from \cite{ambrosetti, tröltzsch}. The most important activation function that is valid in this setting is the ReLU function
+To ensure that the \Nem{} operator defines a mapping $\sigma:L^r\to L^q$, one needs to assume a growth condition on $\sigma:\R\to\R$, see \cite[Eq. 4]{kabri2023resolution} and originally \cite{tröltzsch}. Under these assumptions, we obtain \cite[Prop. 1]{kabri2023resolution}. Concrete examples fulfilling these assumptions are given in \cite{kabri2023resolution} borrowing concepts from \cite{ambrosetti, tröltzsch}. The most important activation function that is valid in this setting is the ReLU function
 %
 \begin{align*}
 \relu(x) = \max\{x, 0\}.
@@ -927,7 +928,7 @@ The code for all the experiments is available at \href{https://github.com/samira
 \end{wrapfigure}
 %
 %
-In the numerical section of \cite{kabri2023resolution} we study the convertibility of CNNs to FNOs as discussed in \cref{sec:FNOAna} and the resolution invariance of the different proposed approaches. Again we employ---among others---the \texttt{PyTorch} package \cite{paszke2019pytorch}. The experiments are conducted on the FashionMNIST \cite{Han17} and a former version of the BIRDS500 \cite{pio450} dataset. We remark that our implementation carefully treats the case of even kernel or input sizes, via Nyquist splitting. This allows us to apply all the derived results for the odd and also the even case.
+In the numerical section of \cite{kabri2023resolution} we study the convertibility of CNNs to FNOs as discussed in \cref{sec:FNOAna} and the resolution invariance of the different proposed approaches. Again, we employ---among others---the \texttt{PyTorch} package \cite{paszke2019pytorch}. The experiments are conducted on the FashionMNIST \cite{Han17} and a former version of the BIRDS500 \cite{pio450} dataset. We remark that our implementation carefully treats the case of even kernel or input sizes, via Nyquist splitting. This allows us to apply all the derived results for the odd and also the even case.
 %
 %
 \paragraph{Convertibility and Training Differences} As already described in \cref{sec:FNOAna}, the first experiment, displayed in \cite[Fig. 3]{kabri2023resolution}, studies how CNNs can be converted to FNOs. Here, we employ a network with two convolutional layers for feature extraction and a linear classification layer. We train this network---in the spatial implementation---on the FashionMNIST dataset \cite{Han17} employing varying spatial kernel sizes. Here, we see that for $M=5$ the spatial implementation already has the best performance and adding more parameters does not increase the performance. We then convert a set of spatial parameters to the Fourier formulation, employing again a varying number of spectral coefficients. It turns out that the requirement of \cite[Lem. 3]{kabri2023resolution}, that the number of coefficients must match the input dimension, is indeed relevant. We only obtain the full performance of the CNN if we use all spectral parameters. However, the example also visualizes \cite[Lem. 4]{kabri2023resolution}, namely that training a FNO conceptually leads to a different set of parameters. Optimizing over the spectral parameters yields a comparable performance already for a smaller number of coefficients.
@@ -939,7 +940,7 @@ In the second experiment we study the resolution invariance of the three discret
 
 In \cite[Fig. 4]{kabri2023resolution} we see that the simple adaption does not perform well both in the lower and the higher resolution setting. Employing input interpolation improves the performance in the lower resolution setting. In the higher resolution regime, we obtain a constant performance, which is expected. Finally, we see that the FNO---which was converted from the CNN---performs as well as input interpolation, which justifies the resolution independence of this architecture.
 
-In the second experiment, we trained a ResNet18 \cite{he2016deep} on a former version of the BIRDS500 dataset \cite{pio450}, with an input size of $112\times 112$. Concerning the naive adaption and the input interpolation, we observe the same behavior as in the previous example. However, the FNO variant performs slightly worse, which is surprising, especially in the higher resolution regime. In \cite{kabri2023resolution} we conclude that this is due the dimension changes within the ResNet architectures. These changes occur due to strided convolutions or pooling operations between the layers. In fact, in order to achieve the performance as displayed in \cite[Fig. 4 (b)]{kabri2023resolution} we replaced every striding by a trigonometric interpolation, which fits better into the FNO framework and vastly improves the performance. Therefore, we summarize that architecture intern dimension changes---which are very common in practice---can potentially hinder resolution invariance.
+In the second experiment, we trained a ResNet18 \cite{he2016deep} on a former version of the BIRDS500 dataset \cite{pio450}, with an input size of $112\times 112$. Concerning the naive adaption and the input interpolation, we observe the same behavior as in the previous example. However, the FNO variant performs slightly worse, which is surprising, especially in the higher resolution regime. In \cite{kabri2023resolution} we conclude that this is due to the dimension changes within the ResNet architectures. These changes occur due to strided convolutions or pooling operations between the layers. In fact, in order to achieve the performance as displayed in \cite[Fig. 4 (b)]{kabri2023resolution} we replaced every striding by a trigonometric interpolation, which fits better into the FNO framework and vastly improves the performance. Therefore, we summarize that architecture intern dimension changes---which are very common in practice---can potentially hinder resolution invariance.
 %
 %
 \clearpage%
@@ -953,10 +954,10 @@ In the second experiment, we trained a ResNet18 \cite{he2016deep} on a former ve
 \end{wrapfigure}
 %
 %
-In this section, we now consider parameter sparsity of neural networks. Starting from the first simple architectures (e.g. \cite{rosenblatt1958perceptron}) the size of typical networks has grown significantly in the last years \cite{hoefler2021sparsity}. While this development allowed to solve increasingly difficult tasks with neural networks, it also lead to immense computational requirements, both for the training and evaluation of the net. Here, the question arises, how these computational tasks can be made more efficient. We list some of the approaches, below and refer to \cite{gholami2021survey} for a comprehensive overview.
+In this section, we now consider parameter sparsity of neural networks. Starting from the first simple architectures (e.g., \cite{rosenblatt1958perceptron}) the size of typical networks has grown significantly in the last years \cite{hoefler2021sparsity}. While this development allowed to solve increasingly difficult tasks with neural networks, it also leads to immense computational requirements, both for the training and evaluation of the net. Here, the question arises, how these computational tasks can be made more efficient. We list some approaches below, and refer to \cite{gholami2021survey} for a comprehensive overview.
 %
 \begin{itemize}
-\item \textbf{Architecture Optimization}: Designing an architecture that can be trained to have the same performance as a comparable one, while having less parameters, e.g. \cite{elsken2019neural, howard2017mobilenets}.
+\item \textbf{Architecture Optimization}: Designing an architecture that can be trained to have the same performance as a comparable one, while having less parameters, e.g., \cite{elsken2019neural, howard2017mobilenets}.
 %
 \item \textbf{Quantization}: Lowering the precision of the machine numbers of the parameters, e.g., \cite{banner2018scalable, courbariaux2014training}.
 %
@@ -983,25 +984,25 @@ In \cite{tibshirani1996regression} this leads to the so-called Lasso problem
 where we extend the $L^1$ norm to the parameter space $\Param$ as discussed in \cref{sec:Bregnum}. This problem can for example be solved by a proximal gradient descent iteration
 %
 \begin{align}\label{eq:proxgd}
-\param^\k{k+1} = \operatorname{soft\ shrinkage}(\param - \tau \nabla\empLoss(\param^\k{k}))
+\param^\k{k+1} = \operatorname{soft\ shrinkage}(\param - \tau \nabla\empLoss(\param^\k{k})),
 \end{align}
 %
 where the shrinkage operator is defined in \cref{ex:softshrink}. This iteration was employed in \cite{nitanda2014stochastic, rosasco2014convergence, reddi2016proximal} to train sparse neural networks.
 %
 %
-\paragraph{Sparse-to-Sparse Training} All of the sparsity-based methods mentioned before, start with dense weight matrices and only decrease the number of parameters during or at the end of the training process. Our approach yields an iteration, where the network is sparse throughout the iteration. In fact we start with only very few non-zero parameters and only activate necessary weights during training. This paradigm is known as sparse-to-sparse or evolutionary training \cite{mocanu2018scalable, dettmers2019sparse, Evci2020, dai2019nest, fu2019exploring, huang2016split, liu2021}.
+\paragraph{Sparse-to-Sparse Training} All the sparsity-based methods mentioned before, start with dense weight matrices and only decrease the number of parameters during or at the end of the training process. Our approach yields an iteration, where the network is sparse throughout the iteration. In fact, we start with only very few non-zero parameters and only activate necessary weights during training. This paradigm is known as sparse-to-sparse or evolutionary training \cite{mocanu2018scalable, dettmers2019sparse, Evci2020, dai2019nest, fu2019exploring, huang2016split, liu2021}.
 %
 %
 \paragraph{Contribution in \cite{bungert2022bregman}}
 %
-Our work falls into the regime of sparse-to-sparse training. However, instead of relying on some heuristic growth strategy, we employ the concept of inverse scale flows (see \cref{sec:convprelim}) which allows us to obtain a optimization-driven framework, with a time-continuous interpretation. We propose a stochastic variant of linearized Bregman iterations (\cref{sec:Bregmom}) and employ it to train a sparse neural network. We show monotonic decrease of the loss in the stochastic setting---which is not possible in the case of proximal gradient descent \cref{eq:proxgd}---and convergence of the iterates under additional convexity assumptions, see \cref{sec:ConvAna}. Finally, we demonstrate the numerical efficiency of the method (see \cref{sec:Bregnum}) and provide an interesting applications for neural architecture search, which was further developed in \cite{bungert2021neural}.
+Our work falls into the regime of sparse-to-sparse training. However, instead of relying on some heuristic growth strategy, we employ the concept of inverse scale flows (see \cref{sec:convprelim}) which allows us to obtain a optimization-driven framework, with a time-continuous interpretation. We propose a stochastic variant of linearized Bregman iterations (\cref{sec:Bregmom}) and employ it to train a sparse neural network. We show monotonic decrease of the loss in the stochastic setting---which is not possible in the case of proximal gradient descent \cref{eq:proxgd}---and convergence of the iterates under additional convexity assumptions, see \cref{sec:ConvAna}. Finally, we demonstrate the numerical efficiency of the method (see \cref{sec:Bregnum}) and provide interesting applications for neural architecture search, which was further developed in \cite{bungert2021neural}.
 
 
 \subsection{Preliminaries on Convex Analysis and Bregman Iterations}\label{sec:convprelim}
 
 We first review some necessary concepts from convex analysis that allow us to introduce the framework in \cite{bungert2022bregman}. We refer to \cite{benning2018modern, rockafellar1997convex, bauschke2011convex} for a more exhaustive introduction to these topics.
 %
-In the following we focus on a lower semi-continuous regularization functional $J:\Param\to (-\infty,\infty]$. Here, $\func$ is called lower semi-continuous if $\func(u)\leq\liminf_{n\to\infty}\func(u_n)$ holds for all sequences $(u_n)_{n\in\N}\subset\Param$ converging to $u$. Furthermore, we require the functional to be convex.
+In the following, we focus on a lower semi-continuous regularization functional $J:\Param\to (-\infty,\infty]$. Here, $\func$ is called lower semi-continuous if $\func(u)\leq\liminf_{n\to\infty}\func(u_n)$ holds for all sequences $(u_n)_{n\in\N}\subset\Param$ converging to $u$. Furthermore, we require the functional to be convex.
 %
 \begin{definition}{}{}
 Given a Hilbert space $\Param$ and a functional $\func:\Param\to(-\infty,\infty]$.
@@ -1033,7 +1034,7 @@ The subdifferential of a convex {and proper} functional $\func:\Param\to(-\infty
 \end{definition}
 % ---------------------------------------------------------
 \noindent%
-If $\func$ is differentiable, then the subdifferntial coincides with the classical gradient (or Fr\'echet derivative). We denote by $\dom(\partial\func):=\{\param\in\Param\st\partial\func(\param)\neq\emptyset\}$ and observe that $\dom(\partial\func)\subset\dom(\func)$.
+If $\func$ is differentiable, then the subdifferential coincides with the classical gradient (or Fr\'echet derivative). We denote by $\dom(\partial\func):=\{\param\in\Param\st\partial\func(\param)\neq\emptyset\}$ and observe that $\dom(\partial\func)\subset\dom(\func)$.
 
 \paragraph{The Bregman Distance} The main algorithm in this section are so-called Bregman iterations, which make use of the Bregman distance.
 %
@@ -1108,7 +1109,7 @@ N_\alpha = \{\param\in\dom \func: \func(\param)\leq \param\}
 are closed for every $\alpha\in\R$ then we have that the function $\tilde J = \frac{1}{2}\norm{\param -\cdot}^2 + \func(\param)$ is closed, proper and \emph{strongly} convex and therefore has a unique minimizer, see \cite[Thm. 27.1]{rockafellar1997convex}. Additionally, one often considers a regularization parameter $\lambda>0$ and is then interested in $\prox{\lambda \func}$.
 %
 \begin{remark}{}{}
-The the optimality conditions for $\param=\prox{\lambda J}(\overline\param)$ yield 
+The optimality conditions for $\param=\prox{\lambda J}(\overline\param)$ yield 
 %
 \begin{align*}
 \pparam - \param \in \lambda\, \partial \func(\param).%
@@ -1129,7 +1130,7 @@ where $(I + \lambda\partial\func)^{-1}$ is called the \emph{resolvent} and is a 
 %
 %
 \noindent%
-In the following we list two relevant examples for the applications in \cite{bungert2022bregman, bungert2021neural}.
+In the following, we list two relevant examples for the applications in \cite{bungert2022bregman, bungert2021neural}.
 %
 \begin{example}{}{ex:softshrink}
 If $\func=\norm\cdot$ is a norm and $\lambda>0$ then we have that (see, e.g., \cite{parikh2014proximal})
@@ -1139,7 +1140,7 @@ If $\func=\norm\cdot$ is a norm and $\lambda>0$ then we have that (see, e.g., \c
 \pparam - \operatorname{Proj}_{\norm{\cdot}^\ast}(\pparam/\lambda)
 \end{align*}
 %
-where $\operatorname{Proj}_{\norm{\cdot}^\ast}$ denotes the projection operator w.r.t. the dual norm $\norm{\param}^\ast = \sup\{\abs{\langle f , \param\rangle}: f\in\Theta^\ast\}$. In the case of $\ell^p$ norms on $\R^d$ we know that that 
+where $\operatorname{Proj}_{\norm{\cdot}^\ast}$ denotes the projection operator w.r.t. the dual norm $\norm{\param}^\ast = \sup\{\abs{\langle f , \param\rangle}: f\in\Theta^\ast\}$. In the case of $\ell^p$ norms on $\R^d$ we know that
 %
 \begin{align*}
 \norm{\param}_p^\ast = \norm{\param}_q
@@ -1172,7 +1173,7 @@ and for $i=1,\ldots,n$,
 \end{cases}
 \end{align*}
 %
-the so called \emph{soft shrinkage operator}. 
+the so-called \emph{soft shrinkage operator}. 
 \end{example}
 %
 %
@@ -1231,7 +1232,7 @@ In this case the proximal operator is given as
 \min_\param \empLoss(\param) + \lambda \func(\param)\qquad \lambda>0,
 \end{align*}
 %
-see e.g. \cite{tikhonov1943stability, combettes2008proximal,daubechies2004iterative,fadili2006sparse,figueiredo2007gradient,chambolle2004algorithm,chambolle2011first}, which however influences the minimizers of the original problem $\min_\param \empLoss(\param)$. In the derivation of the Bregman iterations one can take a different viewpoint. We want to employ an iterative scheme, where in each step we minimize $\empLoss$ while penalizing the distance to the previous iterate. For a stepping parameter $\tau$ and starting from some $\param^\k0\in\Param$ this yields the update
+see, e.g., \cite{tikhonov1943stability, combettes2008proximal,daubechies2004iterative,fadili2006sparse,figueiredo2007gradient,chambolle2004algorithm,chambolle2011first}, which however influences the minimizers of the original problem $\min_\param \empLoss(\param)$. In the derivation of the Bregman iterations, one can take a different viewpoint. We want to employ an iterative scheme, where in each step we minimize $\empLoss$ while penalizing the distance to the previous iterate. For a stepping parameter $\tau$ and starting from some $\param^\k0\in\Param$ this yields the update
 %
 \begin{align}\label{eq:minmom}
 \param^\k{k+1} = \argmin_\param \tau\empLoss(\param) + \frac{1}{2}\norm{\param -\param^\k{k}}^2 
@@ -1249,7 +1250,7 @@ This concept is known as the proximal point algorithm \cite{bregman1967relaxatio
 = -\nabla\empLoss(\param^\k{k+1})
 \end{align*}
 %
-which is a implicit Euler discretization (\cite{euler1824institutionum}) of the time-continuos gradient flow
+which is a implicit Euler discretization (\cite{euler1824institutionum}) of the time-continuous gradient flow
 %
 \begin{align*}
 \partial_t \param_t = -\nabla\empLoss(\param_t).
@@ -1296,12 +1297,12 @@ see, e.g., \cite{osher2005iterative}. In comparison to this, the concept of addi
 \min_\param \empLoss(\param) + \lambda J(\param) 
 \end{align*}
 %
-actually modifies the minimizers. In this sense Bregman iterations do not introduce a bias.
+actually modifies the minimizers. In this sense, Bregman iterations do not introduce a bias.
 \end{remark}
 %
 %
 \begin{example}{}{ex:BregCat}
-In order to obtain an intuition of the behavior of Bregman iterations, we consider an image denoising task. I.e., we are given a noisy image $\R^{n\times m}\ni f = u + \delta$ where $\delta\in\R^{n\times m}$ models additive noise. In order to obtain $u\in\R^{n\times n}$ from $f$ we employ the TV functional \cite{rudin1992nonlinear} 
+In order to obtain an intuition of the behavior of Bregman iterations, we consider an image denoising task. I.e., we are given a noisy image $\R^{n\times m}\ni f = u + \delta$ where $\delta\in\R^{n\times m}$ models additive noise. In order to obtain $u\in\R^{n\times n}$ from $f$, we employ the TV functional \cite{rudin1992nonlinear} 
 %
 \begin{align*}
 J(u) = TV(u) := \sum_{i,j} \sqrt{\abs{u_{i+1, j} - u_{i,j}}^2 + \abs{u_{i,j+1} - u_{i,j}}^2}
@@ -1309,13 +1310,13 @@ J(u) = TV(u) := \sum_{i,j} \sqrt{\abs{u_{i+1, j} - u_{i,j}}^2 + \abs{u_{i,j+1} -
 %
 together with the loss function $\empLoss(u):= \frac{1}{2}\norm{u-f}^2_2$.
 %
-We start with an image $u^{(0)}$ such that $TV(u^{(0)})=0$, i.e., a constant image. In \cref{fig:BregCat} we visualize the iterates at for different $k$. At the start, the iterates only display features on a larger scale, while at the end, they converge back to smallest possible scale, the noisy data. In order to obtain an appropriate denoising, one needs to employ a early stopping here. This fits well to the insight from \cref{eq:Bregexact} since here the forward operator is the identity, i.e.
+We start with an image $u^{(0)}$ such that $TV(u^{(0)})=0$, i.e., a constant image. In \cref{fig:BregCat} we visualize the iterates at for different $k$. At the start, the iterates only display features on a larger scale, while at the end, they converge back to the smallest possible scale, the noisy data. In order to obtain an appropriate denoising, one needs to employ a early stopping here. This fits well to the insight from \cref{eq:Bregexact}, since here the forward operator is the identity, i.e.,
 %
 \begin{align*}
 \left\{ u: \frac{1}{2}\norm{u-f}^2=0\right\} = \{f\}. 
 \end{align*}
 %
-It should also be noted that this example only serves a explanatory purpose. In practice directly applying \cref{eq:bregman_iteration} for $J=TV$ can become infeasible since the first minimization problem is expensive.
+It should also be noted that this example only serves a explanatory purpose. In practice, directly applying \cref{eq:bregman_iteration} for $J=TV$ can become infeasible, since the first minimization problem is expensive.
 \end{example}%
 %
 %
@@ -1502,9 +1503,9 @@ v^{(k+1)} &:= v^{(k)} - \tau^{(k)} g^{(k)},\\
 %
 We also abbreviate this scheme as the \emph{LinBreg} algorithm in the following.
 %
-The presence of a stochastic gradient estimator significantly complicates the convergence analysis, as observed in \cref{sec:ConvAna}. However, this algorithm can now be efficiently employed to train a neural network. For the analogous stochastic mirror descent algorithm we refer to \cite{nemirovski2009robust}.
+The presence of a stochastic gradient estimator significantly complicates the convergence analysis, as observed in \cref{sec:ConvAna}. However, this algorithm can now be efficiently employed to train a neural network. For the analogous stochastic mirror descent algorithm, we refer to \cite{nemirovski2009robust}.
 %
-\paragraph{Momentum Variant} Typically, the learning process of a neural network can be improved by introducing a momentum term (see e.g. \cite{nesterov1983method, qian1999momentum}) in the optimizer. In our case, this can be achieved by replacing the gradient update on the subgradient variable. In \cite{bungert2022bregman} we first consider the inertia version of the gradient flow as
+\paragraph{Momentum Variant} Typically, the learning process of a neural network can be improved by introducing a momentum term (see, e.g., \cite{nesterov1983method, qian1999momentum}) in the optimizer. In our case, this can be achieved by replacing the gradient update on the subgradient variable. In \cite{bungert2022bregman} we first consider the inertia version of the gradient flow as
 %
 \begin{align*}
 \begin{cases}
@@ -1524,18 +1525,18 @@ v^{(k+1)} &= v^{(k)} - m^{(k+1)},\\
 \end{align}
 %
 %
-\paragraph{Adamized Bregman Iteration} We shortly remark that one can replace the momentum update in \cref{eq:momBreg} with an Adam update \cite{kingma2014adam}. This then yields an Adamized version of linearized Bregman iterations as employed in \cite{bungert2022bregman}.
+\paragraph{Adamized Bregman Iteration} We shortly remark that one can replace the momentum update in \cref{eq:momBreg} with an Adam update \cite{kingma2014adam}. This then yields an Adamized version of linearized Bregman iterations, as employed in \cite{bungert2022bregman}.
 
 
 \subsection{Convergence of Stochastic Bregman Iterations}\label{sec:ConvAna}
 %
 %
-While various previous works prove convergence of linearized Bregman iterations (see e.g. \cite{osher2005iterative, cai2009convergence}), the stochastic setting requires special treatment. In \cite{bungert2022bregman} we prove the first guarantees for the algorithm in \cref{eq:stochlinbreg}. Other work on convergence of stochastic Bregman iterations, or mirror descent requires a differentiable functional $\func$, see \cite{dragomir2021fast, hanzely2021fastest, zhang2018convergence, d2021stochastic, aubin2022mirror}. Since our main motivation is a $L^1$ type functional, this is not applicable. Therefore, we present the novel convergence analysis of \cite{bungert2022bregman}.
+While various previous works prove convergence of linearized Bregman iterations (see, e.g., \cite{osher2005iterative, cai2009convergence}), the stochastic setting requires special treatment. In \cite{bungert2022bregman} we prove the first guarantees for the algorithm in \cref{eq:stochlinbreg}. Other work on convergence of stochastic Bregman iterations, or mirror descent requires a differentiable functional $\func$, see \cite{dragomir2021fast, hanzely2021fastest, zhang2018convergence, d2021stochastic, aubin2022mirror}. Since our main motivation is a $L^1$ type functional, this is not applicable. Therefore, we present the novel convergence analysis of \cite{bungert2022bregman}.
 %
 %
 \paragraph{Assumptions on the Gradient Estimator}
 %
-In order to obtain convergence guarantees, we need to assume mainly two properties on the gradient estimator $g(\cdot,\cdot)$. First we assume unbiasedness, which means
+In order to obtain convergence guarantees, we need to assume mainly two properties on the gradient estimator $g(\cdot,\cdot)$. First, we assume unbiasedness, which means
 %
 \begin{align*}
 \Exp{g(\param;\omega)} = \nabla\empLoss(\param)\text{ for all }\param\in\Param.
@@ -1558,7 +1559,7 @@ We remark, that this property is weaker than the bounded gradient assumption
 \E\left[\norm{g(\param;\omega)}^2\right] \leq C
 \end{align*}
 %
-for some constant $C>0$. In fact this condition can not be enforced together with a strong convexity assumption---which we employ in \cref{thm:cvgc_norm}---as shown in \cite{pmlr-v80-nguyen18c}.
+for some constant $C>0$. In fact, this condition can not be enforced together with a strong convexity assumption---which we employ in \cref{thm:cvgc_norm}---as shown in \cite{pmlr-v80-nguyen18c}.
 \end{remark}
 \paragraph{Assumptions on the Regularizer and on the Loss Function}
 %
@@ -1587,7 +1588,7 @@ We assume the following conditions on the loss function:
 %
 %
 \noindent%
-If the loss function $\empLoss$ fulfills the previous assumptions we are able to prove loss decay of the iterates, see \cref{thm:decreasingloss}. However, in order to show convergence of the iterates we additionally need a convexity assumption. For a differentiable functional $J$, the authors in \cite{dragomir2021fast} assumed
+If the loss function $\empLoss$ fulfills the previous assumptions, we are able to prove loss decay of the iterates, see \cref{thm:decreasingloss}. However, in order to show convergence of the iterates, we additionally need a convexity assumption. For a differentiable functional $J$, the authors in \cite{dragomir2021fast} assumed
 %
 \begin{align*}
 \nu\ D_J(\pparam,\param) \leq D_\empLoss(\pparam,\param),
@@ -1627,7 +1628,7 @@ In the setting of training a neural network, where we employ the empirical loss 
 \end{remark}
 
 \paragraph{Loss Decay}
-The first convergence result considers the loss decay of the iterates. Here, we do not assume convexity of the loss function. Under this assumptions \cite{benning2018choose, benning2018modern} were able to show the inequality
+The first convergence result considers the loss decay of the iterates. Here, we do not assume convexity of the loss function. Under these assumptions the authors in \cite{benning2018choose, benning2018modern} were able to show the inequality
 %
 \begin{align*}
 \begin{split}
@@ -1640,7 +1641,7 @@ The first convergence result considers the loss decay of the iterates. Here, we 
 In our setting, employing a stochastic gradient estimator, we are able to prove a similar estimate. We obtain an additional term scaled by $\sigma$, which controls the expected squared difference between the gradient estimator and the actual gradient. It should however be noted, that the proof is not only a trivial extension of the one in \cite{benning2018modern}.
 %
 %
-\begin{theorem}{\cite[Th. 2]{bungert2022bregman}: Loss decay}{thm:decreasingloss}
+\begin{theorem}{\cite[Thm. 2]{bungert2022bregman}: Loss decay}{thm:decreasingloss}
 Assume that \cref{ass:loss,ass:variance,ass:regularizer} hold true, let $\delta>0$, and let the step sizes satisfy $\tau^{(k)} \leq \frac{2}{\delta L}$.
 Then there exist constants $c,C>0$ such that for every $k\in\N$ the iterates of \labelcref{eq:stochlinbreg} satisfy 
 \begin{align}\label{ineq:loss_decay}
@@ -1655,7 +1656,7 @@ Then there exist constants $c,C>0$ such that for every $k\in\N$ the iterates of 
 Here, we have two cases respectively proving convergence w.r.t. the $L^2$ distance and the Bregman distance of $\func_\delta$. The first assumes strong convexity with $H=\frac{1}{2}\norm{\cdot}^2$ in \cref{ass:muconvex}.
 %
 %
-\begin{theorem}{\cite[Th. 6]{bungert2022bregman}: Convergence in norm}{thm:cvgc_norm}
+\begin{theorem}{\cite[Thm. 6]{bungert2022bregman}: Convergence in norm}{thm:cvgc_norm}
 Assume that \cref{ass:loss,ass:variance,ass:regularizer} and \cref{ass:muconvex} for $H=\frac{1}{2}\norm{\cdot}^2$ hold true and let $\delta>0$.
 Furthermore, assume that the step sizes $\tau^{(k)}$ are such that for all $k\in\N$:
 \begin{align*}
@@ -1684,7 +1685,7 @@ The function $\mathcal{L}$ has a unique minimizer $\param^*$ and if $J(\param^*)
 For the second result we assume convexity w.r.t. the Bregman distance, i.e., we choose $H=\func_{\delta}$ in \cref{ass:muconvex}. This induces a relation between the Bregman distance of $\func$ and the loss function $\empLoss$, which has been similarly employed in \cite{dragomir2021fast}.
 %
 %
-\begin{theorem}{\cite[Th. 11]{bungert2022bregman}: Convergence in the Bregman distance}{thm:cvgc_breg_dist}
+\begin{theorem}{\cite[Thm. 11]{bungert2022bregman}: Convergence in the Bregman distance}{thm:cvgc_breg_dist}
 Assume that \cref{ass:loss,ass:variance,ass:regularizer} and \cref{ass:muconvex} for $H=J_\delta$ hold true and let $\delta>0$.
 The function $\mathcal{L}$ has a unique {minimizer} $\param^*$ and if $\func(\param^*)<\infty$ the stochastic linearized Bregman iterations \labelcref{eq:stochlinbreg} satisfy the following:
 \begin{itemize}
@@ -1721,7 +1722,7 @@ The function $\mathcal{L}$ has a unique {minimizer} $\param^*$ and if $\func(\pa
 The code for all the experiments is available at \href{https://github.com/TimRoith/BregmanLearning}{github.com/TimRoith/}\\
 \href{https://github.com/TimRoith/BregmanLearning}{BregmanLearning}.
 \end{wrapfigure}
-Before briefly reviewing the numerical results in \cite[Sec. 4]{bungert2022bregman}, we remark on some practical considerations. In particular we comment on the parameter initialization strategy. All the experiments were implemented in \texttt{Python} \cite{van1995python} employing---among others---the \texttt{PyTorch} package \cite{paszke2019pytorch}.
+Before briefly reviewing the numerical results in \cite[Sec. 4]{bungert2022bregman}, we remark on some practical considerations. In particular, we comment on the parameter initialization strategy. All the experiments were implemented in \texttt{Python} \cite{van1995python} employing---among others---the \texttt{PyTorch} package \cite{paszke2019pytorch}.
 %
 \paragraph{Parameter Initialization} As already noticed in \cite{bengio10} parameter initialization has a significant impact on the training of the neural network. Here, in contrast to standard Bregman methods, we are not able to initialize the parameters of the neural network as $\param=0$. This is due to that fact, that a zero initialization induces symmetries in the network weights, for which one cannot utilize the full expressivity of the architecture \cite[Ch. 6]{Goodfellow16}. Therefore, we rather employ the approach from \cite{liu2021,dettmers2019sparse,martens2010deep} of sparsifying weight matrices $\tilde W^l\in\R^{n_{l+1}\times n_l}$ up to a certain level, by a pointwise multiplication with a binary mask $M^l\in{0,1}^{n_{l+1}\times n_l}$
 %
@@ -1764,7 +1765,7 @@ In all our experiments we choose a $L^1$ type sparsity promoting regularization 
 \end{align*}
 %
 %
-where $\func^l$ is choosen according to the layer type. In the easiest case of a fully connected layer, we can choose
+where $\func^l$ is chosen according to the layer type. In the easiest case of a fully connected layer, we can choose
 %
 \begin{align*}
 \func_l(W_l) := \norm{W_l}_1.
@@ -1776,7 +1777,7 @@ In the case of a convolutional layer we have that $W^l$ is determined by convolu
 \func_l(W_l) = \norm{W_l}_{2,1} = \sum_{i,j} \norm{K_{i,j}}_2.
 \end{align*}
 %
-The outer sum acts as a $L^1$ regularizer on the instances $\norm{K_{i,j}}$. Sparsity in this sense, then amounts to having indices $(i,j)$ for which $\norm{K_{i,j}}_2=0 \Leftrightarrow K_{i,j}=0$, i.e., we prune away whole convolutional filters. This effect is displayed in \cite[Fig. 1]{bungert2022bregman}.
+The outer sum acts as a $L^1$ regularizer on the instances $\norm{K_{i,j}}$. Sparsity, in this sense, then amounts to having indices $(i,j)$ for which $\norm{K_{i,j}}_2=0 \Leftrightarrow K_{i,j}=0$, i.e., we prune away whole convolutional filters. This effect is displayed in \cite[Fig. 1]{bungert2022bregman}.
 %s
 We can also employ group sparsity on fully connected layers, by considering row sparsity of $W_l\in\R^{n_{l+1}, n_l}$s
 %
@@ -1789,11 +1790,11 @@ We can also employ group sparsity on fully connected layers, by considering row 
 In this setting we have a $L^1$ penalty on the row norms $\norm{W_{i,:}}_2$ which therefore enforces whole rows to be zero. This is relevant, if we employ a layer architecture with $\Psi^l(0)=0$, e.g., using no bias vectors and the ReLU activation function. In this setting, if the $i$th row of $W_l$ is zero this effectively means, that the $i$th neuron in layer $l+1$ is inactive. This observation allows the neural architecture search in one of the following paragraphs.
 \paragraph{Comments on the Numerical Results} We briefly remark on the numerical results as displayed in \cite[Sec. 4]{bungert2022bregman}. In the experiments we employed feed-forward networks with simple linear, convolutional and residual layers and tested on the three datasets \cite{krizhevsky2009learning, Han17, leCun10}.
 
-The basic comparison between the  algorithms SGD, ProxGD and LinBreg shows the qualitative behavior of each iterations. The sparse initialization does not have any effect on SGD, since it does not preserve the sparsity in any way. ProxGD rather starts with many active parameters and reduces this number during the iteration. Only the discretization of the inverse scale space flow---via Bregman iterations---shows the desired behaviour of gradually adding active parameters. Furthermore, in \cite[Fig. 2]{bungert2022bregman} we can see, that the choice of $\lambda$ in the regularizer $\func = \lambda\, \norm{\cdot}_1$ changes the results significantly. In the light of \cref{eq:Bregexact} this is not expected for the standard Bregman iterations with a convex loss. It is therefore interesting to see, that in our non-convex and stochastic situation this effect changes.
+The basic comparison between the  algorithms SGD, ProxGD and LinBreg shows the qualitative behavior of each iteration. The sparse initialization does not have any effect on SGD, since it does not preserve the sparsity in any way. ProxGD rather starts with many active parameters and reduces this number during the iteration. Only the discretization of the inverse scale space flow---via Bregman iterations---shows the desired behavior of gradually adding active parameters. Furthermore, in \cite[Fig. 2]{bungert2022bregman} we can see, that the choice of $\lambda$ in the regularizer $\func = \lambda\, \norm{\cdot}_1$ changes the results significantly. In the light of \cref{eq:Bregexact}, this is not expected for the standard Bregman iterations with a convex loss. It is therefore interesting to see, that in our non-convex and stochastic situation this effect changes.
 
-The momentum variants, as discussed in \cref{sec:Bregmom} yield the desired effect of enhancing the validation accuracy, and respectively converging faster. However in each  of the experiments, one can also observe that adding a momentum term has the effect that more parameters are added faster. On the one hand this could mean that the network actually requires more parameters to have a higher accuracy, and a momentum variant is more likely to increase the number of needed parameters. However, the quantitative evaluation on the CIFAR10 dataset \cite{krizhevsky2009learning} shows, that especially the Adamized version tends to increase the number of used parameters rather aggressively, while only slightly increasing the performance of the net. The performance here is very similar to the one of proximal gradient descent. However, the training of a residual network seems to be slightly better with a standard Lasso implementation. Neglecting the non-differentiability of the $L^1$ norm one computes a derivative via automatic differentiation \cite{rall1981automatic, maclaurin2015autograd} (we employed the \texttt{autograd} library of the \texttt{PyTorch} package \cite{paszke2019pytorch}). In order to obtain true zeros in the weight matrix one then has to employ a thresholding operation after the training. In some sense this method is not a proper sparse training approach, but rather a regularization method with an added pruning step at the end.
+The momentum variants, as discussed in \cref{sec:Bregmom} yield the desired effect of enhancing the validation accuracy, and respectively converging faster. However, in each  of the experiments, one can also observe that adding a momentum term has the effect that more parameters are added faster. On the one hand, this could mean that the network actually requires more parameters to have a higher accuracy, and a momentum variant is more likely to increase the number of needed parameters. However, the quantitative evaluation on the CIFAR10 dataset \cite{krizhevsky2009learning} shows, that especially the Adamized version tends to increase the number of used parameters rather aggressively, while only slightly increasing the performance of the net. The performance here is very similar to the one of proximal gradient descent. However, the training of a residual network seems to be slightly better with a standard Lasso implementation. Neglecting the non-differentiability of the $L^1$ norm, one computes a derivative via automatic differentiation \cite{rall1981automatic, maclaurin2015autograd} (we employed the \texttt{autograd} library of the \texttt{PyTorch} package \cite{paszke2019pytorch}). In order to obtain true zeros in the weight matrix one then has to employ a thresholding operation after the training. In some sense, this method is not a proper sparse training approach, but rather a regularization method with an added pruning step at the end.
 
-\paragraph{Comments on Efficiency} One of the major advantages of the Bregman approach, is that the network is sparse already during the training time. As with all sparse-to-sparse training approaches this yields a very small number of active parameters over all training step. This sparsity can be easily exploited in each forward pass. However, it is not directly possible to achieve performance gains during the backward pass of the network, since in general
+\paragraph{Comments on Efficiency} One of the major advantages of the Bregman approach, is that the network is sparse already during the training time. As with all sparse-to-sparse training approaches, this yields a very small number of active parameters over all training step. This sparsity can be easily exploited in each forward pass. However, it is not directly possible to achieve performance gains during the backward pass of the network, since in general
 %
 \begin{align*}
 W^l_{ij} = 0 \nRightarrow \partial_{W^l_{ij}} \empLoss(\theta) = 0.
@@ -1801,7 +1802,7 @@ W^l_{ij} = 0 \nRightarrow \partial_{W^l_{ij}} \empLoss(\theta) = 0.
 %
 In \cite{bungert2022bregman, bungert2021neural} there are no evaluations on the training time and memory consumption of the Bregman algorithm. This is an interesting open question for future work. We remark that the computational complexity of the LinBreg algorithm does not increase significantly, compared to SGD, since the evaluation of the proximal operator is very efficient for $L^1$ type functionals.
 
-\paragraph{Neural Architecture Search} An interesting aspect hinted in \cite{bungert2022bregman} is optimizing the architecture of a neural network via sparsity. In the example provided in \cite[Fig. 4]{bungert2022bregman} one defines a super-architecture as multi-layer perceptron with an equal number of neurons in each layer. Training this task with the LinBreg algorithm reveals the well-known autoencoder structure \cite{hinton1993autoencoders}. This idea was developed further in \cite{bungert2021neural}, where also skip connection of a residual architecture were learned. Here, the super-architecture was given by a dense net \cite{huang2017densely}, where each skip connection was scaled by a parameter, which was penalized with a sparsity term. We refer to \cite{cipriani2023neurodes} for similar experimental result in a different setting, not directly related to sparse optimization.
+\paragraph{Neural Architecture Search} An interesting aspect hinted in \cite{bungert2022bregman} is optimizing the architecture of a neural network via sparsity. In the example provided in \cite[Fig. 4]{bungert2022bregman} one defines a super-architecture as a multi-layer perceptron with an equal number of neurons in each layer. Training this task with the LinBreg algorithm reveals the well-known autoencoder structure \cite{hinton1993autoencoders}. This idea was developed further in \cite{bungert2021neural}, where also skip connection of a residual architecture were learned. Here, the super-architecture was given by a dense net \cite{huang2017densely}, where each skip connection was scaled by a parameter, which was penalized with a sparsity term. We refer to \cite{cipriani2023neurodes} for similar experimental result in a different setting, not directly related to sparse optimization.
 
 The driving question for future work, is how to employ the insights from \cite{bungert2021neural} to find more complex architectures. Learning an architecture similar to the U-Net as proposed in \cite{ronneberger2015u} is of particular interest here.
 %

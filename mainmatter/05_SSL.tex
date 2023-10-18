@@ -99,7 +99,7 @@ Often, one assumes that the points $x\in\domain_n$ are i.i.d. w.r.t. a distribut
 %
 %
 \subsection{Weighted Graphs}
-In order to employ the smoothness assumption we need a notion of \enquote{closeness} on the set $\domain_n$, for which we introduce weighted graphs. Namely, we define a weighting function $w$ that allows to compare points in $\domain_n$ and therefore induces the desired notion. 
+In order to employ the smoothness assumption, we need a notion of \enquote{closeness} on the set $\domain_n$, for which we introduce weighted graphs. Namely, we define a weighting function $w$ that allows to compare points in $\domain_n$ and therefore induces the desired notion. 
 %
 \begin{definition}{Weighted Graphs}{}
 For a finite set $\domain_n$ and a weight function $w_n:\domain_n\times \domain_n\to\R$, the tuple $(\domain_n,w_n)$ is called a \emph{weighted graph}.
@@ -174,7 +174,7 @@ which was first employed in \cite{GarcSlep15} for $p=1$ and then in \cite{slepce
 we see that $\tilde\sigma_\eta^{(p)}$ degenerates to $\sigma_\eta$ in the limit $p\to\infty$.
 \end{remark}
 \begin{remark}{}{}
-In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ then appears in the limit functional. In \cite{bungert2021uniform} we rescale the kernel, i.e., $c_\eta = \sigma_\eta$ which allows us to work with un-rescaled operators in the limit. 
+In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ then appears in the limit functional. In \cite{bungert2021uniform} we rescale the kernel, i.e., $c_\eta = \sigma_\eta$ which allows us to work with non-rescaled operators in the limit. 
 \end{remark}
 %
 %
@@ -261,7 +261,7 @@ Assume for simplicity that $\rho\equiv 1$ and that $u\in V$ is a minimizer of th
 \end{align}
 %
 A function $u\in V$ satisfying \cref{eq:weakLap} is called a \emph{weak solution} of the $p$-Laplace equation. In fact, if $u$ 
-is smooth enough one can infer that
+is smooth enough, one can infer that
 %
 \begin{align}\label{eq:strongLap}
 	\Delta_p u := \div(\abs{\nabla u}^{p-2} \nabla u) = 0
@@ -302,7 +302,7 @@ Now consider \cref{prob:VarForm} restricted on $V$ with boundary values given by
 \int_{V} \abs{\nabla u}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx = \pDir_p(u).
 \end{align*}
 %
-Since $u$ was unique this yields $u|_V = v|_V$, and therefore we know that any solution on $\domain$ solves \cref{prob:VarForm} also on any \enquote{nice} subset, with the boundary values given by itself. In \cref{sec:LipExt} we see that this \textit{local minimization property} does not hold automatically and has to enforced additionally. The underlying reason here is, that integrals are set-additive, but suprema are not, which is similarly explained in \cite{aronsson2004tour}.
+Since $u$ is unique this yields $u|_V = v|_V$, and therefore we know that any solution on $\domain$ solves \cref{prob:VarForm} also on any \enquote{nice} subset, with the boundary values given by itself. In \cref{sec:LipExt} we see that this \textit{local minimization property} does not hold automatically and has to enforced additionally. The underlying reason here is, that integrals are set-additive, but suprema are not, which is similarly explained in \cite{aronsson2004tour}.
 
 %
 %
@@ -333,7 +333,7 @@ the problem
 %
 \noindent%
 Since every function $\vec u:\domain_n\to\R$ can be identified with a vector $\vec u\in\R^n$, the above problem 
-is in fact an optimization problem in $\R^n$. The functional $\GE^{w_n}_p:\R^n\to\R$ is bounded from below by $0$, continuous, convex and in the case $p>1$ even differentiable. However, one can prove unique existence with techniques very similar to the continuum case in \cite{lindqvist2017notes}. We give the adapted prove below for completeness. The important property to establish uniqueness is that the graph is connected to the boundary, i.e., for every $x\in\domain_n$ there exists a path $x=\gamma_1,\ldots,\gamma_m=o\in\domain_n$ with $w(\gamma_{i+1}, \gamma_i)>0$ connecting $x$ to a point $o\in\conset_n$ in the boundary. This is very intuitive, since on any connected component that does not communicate with the boundary, an arbitrary constant minimizes the \enquote{graph gradient}.
+is in fact an optimization problem in $\R^n$. The functional $\GE^{w_n}_p:\R^n\to\R$ is bounded from below by $0$, continuous, convex and in the case $p>1$ even differentiable. However, one can prove unique existence with techniques very similar to the continuum case in \cite{lindqvist2017notes}. We give the adapted proof below for completeness. The important property to establish uniqueness is that the graph is connected to the boundary, i.e., for every $x\in\domain_n$ there exists a path $x=\gamma_1,\ldots,\gamma_m=o\in\domain_n$ with $w(\gamma_{i+1}, \gamma_i)>0$ connecting $x$ to a point $o\in\conset_n$ in the boundary. This is very intuitive, since on any connected component that does not communicate with the boundary, an arbitrary constant minimizes the \enquote{graph gradient}.
 %
 %
 \begin{theorem}{Existence and Uniqueness}{} Let $(\domain_n,w_n)$ 
@@ -342,8 +342,7 @@ is in fact an optimization problem in $\R^n$. The functional $\GE^{w_n}_p:\R^n\t
 \end{theorem}
 %
 \begin{proof}
-The	proof is an adaption from the continuum case in \cite[Thm. 2.16]{lindqvist2017notes}. We start by proving uniqueness, 	
-Let $E = \{(x,y): w_n(x,y)>0\}$ be the set of all active edges and denote by $\nabla^{w_n} \vec u \in \R^{\abs{E}}$
+The	proof is an adaption from the continuum case in \cite[Thm. 2.16]{lindqvist2017notes}. We start by proving uniqueness. Let $E = \{(x,y): w_n(x,y)>0\}$ be the set of all active edges and denote by $\nabla^{w_n} \vec u \in \R^{\abs{E}}$
 %
 \begin{align*}
 (\nabla^{w_n} \vec u)_{(x,y)} := w_n(x,y) \left(\vec u(y) - \vec u(x)\right)
@@ -375,7 +374,7 @@ Assume that there exists $(\bar x,\bar y)\in E$ such that $\nabla^{w_n} \vec u_1
 = \GE^{w_n}_p (\vec u_1),
 \end{align*}
 %
-which is a contradiction. Here, we employed the strict convexity of $t\mapsto \abs{t}^p$ which implies $\abs{t+\bar t}^p \leq 2^{p-1} \left(\abs{t}^p + \abs{\bar t}^{p}\right)$, where the inequality is sharp if $t\neq \bar t$. Therefore, we obtain that $\nabla^{w_n} \vec u_1 = \nabla^{w_n}\vec u_2$, which yields
+which is a contradiction. Here, we employed the strict convexity of $t\mapsto \abs{t}^p$, which implies $\abs{t+\bar t}^p \leq 2^{p-1} \left(\abs{t}^p + \abs{\bar t}^{p}\right)$, where the inequality is sharp if $t\neq \bar t$. Therefore, we obtain that $\nabla^{w_n} \vec u_1 = \nabla^{w_n}\vec u_2$, which yields
 %
 \begin{align}\label{eq:diffid}
 \vec u_1(y) - \vec u_1(x) = \vec u_2(y) - \vec u_2(x) \qquad\text{for all}\qquad (x,y)\in E.
@@ -415,7 +414,7 @@ To show existence, we do not need to assume that the graph is connected to the b
 \sum_{(x,y)\in E\setminus E_V} \abs{\nabla^{w_n} \vec u(x,y)}^p
 \end{align*}
 %
-where the contribution on the connected component is zero, since we set $\vec u$ to be constant here. Therefore, w.l.o.g. we can assume that $\domain_n$ is connected to the boundary, since any component not connected to boundary does not contribute to the problem. Let now $\vec u:\domain_n\to\R$ be a function and for $x\in\domain_n$ let $\gamma \in \domain_n^{\times m}$ be a path to a point in the boundary $o^x\in\conset_n$, then we have that
+where the contribution on the connected component is zero, since we set $\vec u$ to be constant here. Therefore, w.l.o.g. we can assume that $\domain_n$ is connected to the boundary, since any component not connected to the boundary does not contribute to the problem. Let now $\vec u:\domain_n\to\R$ be a function and for $x\in\domain_n$ let $\gamma \in \domain_n^{\times m}$ be a path to a point in the boundary $o^x\in\conset_n$, then we have that
 %
 \begin{gather*}
 \abs{\vec u(x)}^p \leq C\left(\sum_{i=1}^{m^x-1}\abs{\vec u(\gamma_{i}) - \vec u(\gamma_{i+1})}^p + \abs{\vec g(o^x)}^p\right) \leq 
@@ -445,7 +444,7 @@ Then we have that
 \leq C\ (I + 1/j + \norm{\vec g}^p_p) \leq \tilde C
 \end{align*}
 %
-$j\in\N$, i.e. $\vec u_j$ is a uniformly bounded sequence of vectors in the finite dimensional space $\R^n$, and therefore there exists a subsequence---which we do not relabel---that converges to some $\vec u^\ast\in\R^n$. Since the functional $\GE^{w_n}_p:\R^n\to\R$ is continuous we obtain that
+$j\in\N$, i.e., $\vec u_j$ is a uniformly bounded sequence of vectors in the finite dimensional space $\R^n$, and therefore there exists a subsequence---which we do not relabel---that converges to some $\vec u^\ast\in\R^n$. Since the functional $\GE^{w_n}_p:\R^n\to\R$ is continuous, we obtain that
 %
 \begin{align*}
 \GE^{w_n}_p(\vec u^\ast) = \lim_{j\to\infty} \GE^{w_n}_p(\vec u_j) = I,
@@ -483,7 +482,7 @@ which is referred to as the graph $p$-Laplacian operator. This yields the follow
 %
 \noindent%
 Since the functional $\GE^{w_n}_p$ has a unique minimizer subject to the constraints given by $\vec g$ and the graph $p$-Laplacian is derived 
-via optimality conditions, one expects that the \cref{prob:vargraph} and \cref{prob:graphLaplace} are equivalent. This is formulated in the following 
+via optimality conditions, one expects that \cref{prob:vargraph} and \cref{prob:graphLaplace} are equivalent. This is formulated in the following 
 theorem.
 %
 \begin{theorem}{Existence and Uniqueness}{}
@@ -491,7 +490,7 @@ Let $(\domain_n,w_n)$ be a graph with non-negative weights, that is connected to
 \end{theorem}
 %
 \begin{proof}
-This statement can be proven similarly to \cite[Theorem 5.3]{elmoataz2015p}.
+This statement can be proven similarly to \cite[Thm. 5.3]{elmoataz2015p}.
 \end{proof}
 %
 %
@@ -542,9 +541,9 @@ The most relevant result for our contribution in \cite{roith2022continuum} is th
 where the constant $\sigma_\eta$ is defined as in \cref{eq:kernelconst}. We review details on $\Gamma$-convergence in \cref{sec:GConv}. The important insight here, is that the graph scaling $\gscale_n$ must not tend to zero too fast, which is guided by the following intuition:
 %
 \begin{itemize}
-	\item Problems on the graph are non-local, communication between points takes place on a finite scale.
-	\item In the limit we want to obtain a local problem, communication takes place at an infinitesimal small scale.
-	\item If the graph scale $\gscale_n$ tends to zero too fast, there is not enough communication between vertices, or even worse the graph becomes disconnected.
+\item Problems on the graph are non-local, communication between points takes place on a finite scale.
+\item In the limit we want to obtain a local problem, communication takes place at an infinitesimal small scale.
+\item If the graph scale $\gscale_n$ tends to zero too fast, there is not enough communication between vertices, or even worse the graph becomes disconnected.
 \end{itemize}
 %
 The optimal scaling obtained in \cite{GarcSlep15} for $d\geq 3$ is given as 
@@ -726,7 +725,7 @@ and in particular $z\in \overline{B_1\left((c,c)\right)}$, therefore $d_{\overli
 \end{aligned}
 \end{align}
 %
-are solutions to the gradient sup-norm problem that coincide with $g$ on $\partial\domain$, see \cite[Th. 1.8]{jensen1993uniqueness}. The same concept of constructing solutions is applied in the following sections in a more abstract setting. 
+are solutions to the gradient sup-norm problem that coincide with $g$ on $\partial\domain$, see \cite[Thm. 1.8]{jensen1993uniqueness}. The same concept of constructing solutions is applied in the following sections in a more abstract setting. 
 These solutions are then called Whitney and McShane or respectively maximal and minimal extensions, see 
 \cref{lem:ext}.
 
@@ -750,8 +749,8 @@ u &= g \text{ on } \mathcal{O},\\
 \Lip(u; \Inp) &= \Lip(g; \conset).
 \end{align*}
 %
-Here, the metrics for the respective Lipschitz constants are induced by the inner products of the Hilbert spaces. We refer to \cite{Kirszbraun1934} for the original proof and to \cite[Th. 1.31]{Schwartz1969} for a proof of the version as stated above.
-In this work we only consider the case $\Oup=\R$ which allows for more general assumptions on the space $\Inp$. Below, we formulate the Lipschitz extension problem in our setting.
+Here, the metrics for the respective Lipschitz constants are induced by the inner products of the Hilbert spaces. We refer to \cite{Kirszbraun1934} for the original proof and to \cite[Thm. 1.31]{Schwartz1969} for a proof of the version as stated above.
+In this work, we only consider the case $\Oup=\R$ which allows for more general assumptions on the space $\Inp$. Below, we formulate the Lipschitz extension problem in our setting.
 %
 \begin{problem}{Lipschitz Extensions}{prob:Lipext}
 Let $(\tilde{\domain},d)$ be a metric space and $\conset\subset \tilde{\domain}$ be a bounded subset. For a given Lipschitz function $g:\conset\to\R$ find a Lipschitz function $u:\tilde\domain\to \R$ such that
@@ -765,11 +764,11 @@ $g$ to $\tilde{\domain}$.
 \end{problem}
 %
 \noindent%
-In this setting one can again explicitly construct solutions of the Lipschitz extension task. They are not unique, however one has an upper and a lower bound. In fact, conceptually these solutions 
+In this setting, one can again explicitly construct solutions of the Lipschitz extension task. They are not unique, however, one has an upper and a lower bound. In fact, conceptually these solutions 
 are very similar to the functions in \cref{eq:JenSol} and even coincide, whenever the sup-norm of the gradient is given as the Lipschitz constant.
 %
 \begin{lemma}{}{lem:ext}
-In the setting of \cref{prob:Lipext} we have that the 
+In the setting of \cref{prob:Lipext}, we have that the 
 %
 \begin{itemize}
 \item \textbf{Whitney (or maximal) extension:} $\Whit{g}(x) := \inf_{y\in \conset} g(y) + \Lip_d(g; \conset)\cdot d(x,y)$ and the
@@ -777,7 +776,7 @@ In the setting of \cref{prob:Lipext} we have that the
 \end{itemize}
 %
 defined for $x\in\tilde\domain$ are Lipschitz extensions of $g$ to $\tilde\domain$. Moreover, let $u:\tilde\domain\to\R$ be any Lipschitz extension of 
-$g$, the we have that
+$g$, then we have that
 %
 \begin{align*}
 \McS{g} \leq u \leq \Whit{g}.
@@ -944,7 +943,7 @@ Let $u,v\in C(\cl\domain)$ be two viscosity solutions of the $\infty$-Laplacian,
 %
 %
 \noindent%
-Originally proven by Jensen in \cite{jensen1993uniqueness}, there exists a very simple proof by Amstrong and Smart \cite{armstrong2010easy} employing the \emph{comparison with cones} which we detail in the following paragraph.
+Originally proven by Jensen in \cite{jensen1993uniqueness}, there exists a very simple proof by Armstrong and Smart \cite{armstrong2010easy} employing the \emph{comparison with cones} which we detail in the following paragraph.
 %
 %
 %
@@ -1002,7 +1001,7 @@ A function $u\in C(\cl\domain)$ is absolutely minimizing iff it fulfills compari
 \end{theorem}
 %
 \noindent%
-Therefore, we can rewrite \cref{prob:amles} employing the comparison with cones condition. Our metric space is given as $(\cl\domain, d_{\cl\domain})$, where $\domain\subset\R^n$ is some open set in the Euclidean sense, therefore we have a separable length space, where \cref{thm:examle} yields existence of solutions for \cref{prob:amles}. Concerning uniqueness, we refer to \cite{peres2009tug} which were the first to prove uniqueness in the length space setting. For a more general result, we refer to \cite{naor2012absolutely}. In our work we obtain uniqueness by a careful adaption of the proof in \cite{armstrong2010easy}.
+Therefore, we can rewrite \cref{prob:amles} employing the comparison with cones condition. Our metric space is given as $(\cl\domain, d_{\cl\domain})$, where $\domain\subset\R^n$ is some open set in the Euclidean sense, therefore we have a separable length space, where \cref{thm:examle} yields existence of solutions for \cref{prob:amles}. Concerning uniqueness, we refer to \cite{peres2009tug} which were the first to prove uniqueness in the length space setting. For a more general result, we refer to \cite{naor2012absolutely}. In our work, we obtain uniqueness by a careful adaption of the proof in \cite{armstrong2010easy}.
 %
 \begin{proposition}{\cite[Prop. 4.11]{bungert2021uniform}}{}
 Consider the metric space $(\cl\domain, d_{\cl\domain})$, then \cref{prob:amles} has at most one solution.
@@ -1038,7 +1037,7 @@ the problem
 \end{problem}
 %
 \noindent%
-Since the weighting function $w_n:\domain_n\times\domain_n\to\R^+_0$ does not induce a metric, \cref{prob:lipgraph} does not directly fit the framework of the abstract Lipschitz Extension in \cref{prob:Lipext}. However, we can consider paths in $(\domain_n, w_n)$, connecting arbitrary $x,y\in\domain_n$ i.e. $\gamma\in\domain_n^{\times k}, x=\gamma_1,\ldots, \gamma_k = y$ such that 
+Since the weighting function $w_n:\domain_n\times\domain_n\to\R^+_0$ does not induce a metric, \cref{prob:lipgraph} does not directly fit the framework of the abstract Lipschitz extension in \cref{prob:Lipext}. However, we can consider paths in $(\domain_n, w_n)$, connecting arbitrary $x,y\in\domain_n$, i.e., $\gamma\in\domain_n^{\times k}, x=\gamma_1,\ldots, \gamma_k = y$ such that 
 %
 \begin{align*}
 w_n(\gamma_i, \gamma_{i+1}) &> 0\quad\text{for all } i=1,\ldots, k-1,
@@ -1059,11 +1058,11 @@ d_{w_n}(x,y) := \min \left\{ \abs{\gamma}: \gamma \text{ is a path in }
 %
 \begin{remark}{}{}
 We note that it is important to only consider non-negative weights, otherwise any loop with a negative \enquote{length} would decrease the 
-length of the whole path arbitrarily. However, restricting ourselves to non-negative weights we can easily see that the minimum in \cref{eq:graphdist} is indeed attained.
+length of the whole path arbitrarily. Restricting ourselves to non-negative weights, we can easily see that the minimum in \cref{eq:graphdist} is indeed attained.
 \end{remark}
 %
 \noindent%
-With this definition we can consider the Lipschitz extension task of $g:\conset_n\to\R$ to $\domain_n$ within the metric space $(\domain_n,d_{w_n})$, i.e. within the setting of \cref{prob:Lipext}. Therefore the question arises, whether the minimization problem in \cref{prob:lipgraph} is equivalent to the metric Lipschitz extension problem for which we have the following lemma.
+With this definition, we can consider the Lipschitz extension task of $g:\conset_n\to\R$ to $\domain_n$ within the metric space $(\domain_n,d_{w_n})$, i.e., within the setting of \cref{prob:Lipext}. Therefore, the question arises, whether the minimization problem in \cref{prob:lipgraph} is equivalent to the metric Lipschitz extension problem, for which we have the following lemma.
 %
 %
 \begin{lemma}{}{}
@@ -1173,21 +1172,21 @@ If $\vec g = \vec u$ on $\conset$ this simply follows since the maximum for the 
 %
 %
 \noindent%
-This lemma shows that the abstract Lipschitz extension task considered on the metric space $(\domain_n, d_{w_n})$ and the Graph $\infty$-Dirichlet minimization task are indeed equivalent. Therefore, we also have the Whitney and McShane extensions
+This lemma shows that the abstract Lipschitz extension task considered on the metric space $(\domain_n, d_{w_n})$ and the Graph $\infty$-Dirichlet minimization task are indeed equivalent. Therefore, we also have that the Whitney and McShane extensions
 %
 \begin{align*}
 \Whit{\vec g}(x) &= \inf_{y\in\conset_n} \vec g (y) + d_{w_n}(x,y)\\
 \McS{\vec g}(x) &= \sup_{y\in\conset_n} \vec g (y) - d_{w_n}(x,y)
 \end{align*}
 %
-as solutions on the graph. Analogously, the problem does not admit unique solutions.
+are solutions on the graph. Analogously, the problem does not admit unique solutions.
 %
 %
 %
 \paragraph{Absolutely Minimizing Graph Extensions}
 %
 Similarly to \cref{sec:AMLE} we can now consider absolutely minimizing extensions. However, the problem in 
-\cref{prob:amles} uses a notion of a boundary and it is not directly clear how to infer this concept to the discrete set $\domain_n$. Therefore, we define the following what we mean by \enquote{boundary} on a graph.
+\cref{prob:amles} uses a notion of a boundary and it is not directly clear how to infer this concept to the discrete set $\domain_n$. Therefore, we define what we mean by \enquote{boundary} on a graph.
 %
 \begin{definition}{}{}
 Let $(\domain_n, w_n)$ be a weight graph and let $V\subset\domain_n$ be a subset, then we define
@@ -1203,7 +1202,7 @@ $\stackrel{\circ}{V}^{\text{int}}:= V\setminus \partialint V$.
 %
 %
 \noindent%
-We note that it is not possible to define a topology on $\domain_n$ that would yield the above notions. Namely, the only admissible topology in our case would be the discrete topology, i.e., $2^{\domain_n}$. However, in this topology the only closed sets are $\emptyset$ and $\domain_n$ which is not useful for the applications in the following. Using the Kuratowski closure axioms \cite{kuratowski1922operation} we remark that the exterior closure on the graph is a so called pre- or Čech closure, \cite{vcech1966topological}. For a set $\Inp$, a mapping $\text{cl}:2^\Inp\to 2^\Inp$ is called Čech closure, if the following conditions hold,
+We note that it is not possible to define a topology on $\domain_n$ that would yield the above notions. Namely, the only admissible topology in our case would be the discrete topology, i.e., $2^{\domain_n}$. In this topology the only closed sets are $\emptyset$ and $\domain_n$ which is not useful for the applications in the following. Using the Kuratowski closure axioms \cite{kuratowski1922operation} we remark that the exterior closure on the graph is a so-called pre- or Čech closure, \cite{vcech1966topological}. For a set $\Inp$, a mapping $\text{cl}:2^\Inp\to 2^\Inp$ is called Čech closure, if the following conditions hold,
 %
 \begin{itemize}
 \item $\text{cl}(\emptyset) = \emptyset$ ($\text{cl}$ preserves the empty set),
@@ -1216,8 +1215,7 @@ The exterior closure on a weighted graph $(\domain_n, w_n)$ is a preclosure or �
 \end{lemma}
 %
 \begin{proof}
-
-We first see that $\overline{\emptyset}^{\text{ext}}=\emptyset$ and that $V\subset \overline{V}^{\text{ext}}$ for every subset $V\subset\domain_n$, i.e. the above defined closure preserves the empty set and is extensive. Furthermore, for two sets $V_1,V_2\subset \domain_n$ we have that
+We first see that $\overline{\emptyset}^{\text{ext}}=\emptyset$ and that $V\subset \overline{V}^{\text{ext}}$ for every subset $V\subset\domain_n$, i.e., the above defined closure preserves the empty set and is extensive. Furthermore, for two sets $V_1,V_2\subset \domain_n$ we have that
 %
 \begin{gather*} 
 x\in \partialext (V_1\cup V_2)\\
@@ -1247,20 +1245,19 @@ This shows that the closure preserves binary unions and therefore we have shown,
 %
 %
 \noindent%
-The missing property, that inhibits the closure to induce a topology is the so-called idempotence. Namely, there are sets $V\subset \domain_n$ such that
+The missing property, that inhibits the closure to induce a topology, is the so-called idempotence. Namely, there are sets $V\subset \domain_n$ such that
 %
 \begin{align*}
 \overline{V}^{\text{ext}} \neq \extcl{\extcl{V}}.
-\end{align*}
+\end{align*}%
 %
 \begin{figure}
 \centering
 \includegraphics{atelier/SSL/boundary.pdf}
 \caption{Visualization of exterior and interior boundary on a graph.}\label{fig:graphb}
-\end{figure}
+\end{figure}%
 %
-\noindent%
-In the example visualized in \cref{fig:graphb} we see that $\overline{\overline{V}^{\text{ext}}}^{\text{ext}}=\domain_n\neq \overline{V}^{\text{ext}}$. Since the closure we employ here does not induce a topology, we have a slightly modified notion of absolutely minimizers.
+\noindent In the example visualized in \cref{fig:graphb} we see that $\overline{\overline{V}^{\text{ext}}}^{\text{ext}}=\domain_n\neq \overline{V}^{\text{ext}}$. Since the closure we employ here does not induce a topology, we have a slightly modified notion of absolutely minimizers.
 %
 \begin{problem}{Graph AMLEs}{prob:GAMLE}
 Given a connected weighted graph $(\domain_n, w_n)$, $\conset_n\subset\domain_n$ and a function $\vec g:\conset_n\to\R$, find a function $\vec u:\domain_n\to\R$ such that
@@ -1277,9 +1274,9 @@ This notion of absolute minimizers is employed in \cite{bungert2021uniform, bung
 %
 %
 %
-\paragraph{Comparison with Graph Distance functions}
+\paragraph{Comparison with Graph Distance Functions}
 %
-Analogously to the continuum case \cref{sec:LipExtCont} we can also consider comparison with distance functions, but now on graphs. The main ingredients here are the graph distance function $d_{w_n}$ and the notion of closure on a graph as developed in the last section.
+Analogously to the continuum case \cref{sec:LipExtCont}, we can also consider comparison with distance functions, but now on graphs. The main ingredients here are the graph distance function $d_{w_n}$ and the notion of closure on a graph, as developed in the last section.
 %
 %
 \begin{definition}{}{}
@@ -1325,15 +1322,10 @@ We can also obtain the limit of the Graph $p$-Laplace operator via the following
 %
 \Leftrightarrow 
 \sum_{y: \vec u(x)\leq \vec u(y)} w_n(x,y)^{p}(\vec u(y)-\vec u(x))^{p-1}
-&= \sum_{y: \vec u(x)> \vec u(y)} w_n(x,y)^{p}(\vec u(x)-\vec u(y))^{p-1}.
-%\\
-%\Leftrightarrow
-%\left(\sum_{y: \vec u(x)\leq \vec u(y)} w_n(x,y)^{p}(\vec u(y)-\vec u(x))^{p-1}\right)^{1/p}
-%&=\\
-%\left(\sum_{y: \vec u(x)> \vec u(y)} w_n(x,y)^{p}(\vec u(x)-\vec u(y))^{p-1}\right)^{1/p}
+&= \\ \sum_{y: \vec u(x)> \vec u(y)} w_n(x,y)^{p}(\vec u(x)-\vec u(y))^{p-1}.&\phantom{=}
 \end{align*}
 %
-Taking the terms on the left and right hand side to the power of $1/p$ and then formally sending $p\to\infty$ then yields
+Taking the terms on the left and right-hand side to the power of $1/p$ and then formally sending $p\to\infty$ yields
 %
 \begin{align*}
 \max_{y: \vec u(x)\leq \vec u(y)} w_n(x,y)(\vec u(y)-\vec u(x)) &= 
@@ -1365,10 +1357,10 @@ a function $\vec u:\domain_n\to\R$ such that
 %
 %
 \noindent%
-To establish existence of solutions of the problem above one can employ the Perron method \cite{perron1923neue}. Alternatively, one can establish the equivalence to so-called lex-minimizers and the show existence as in \cite[Th. 3.3]{kyng2015algorithms}. Uniqueness is a consequence of the following theorem from \cite{calder2019consistency}, which is similar to the uniqueness result of Jensen in \cref{th:jens}.
+To establish existence of solutions of the problem above, one can employ the Perron method \cite{perron1923neue}. Alternatively, one can establish the equivalence to so-called lex-minimizers and show existence as in \cite[Thm. 3.3]{kyng2015algorithms}. Uniqueness is a consequence of the following theorem from \cite{calder2019consistency}, which is similar to the uniqueness result of Jensen in \cref{th:jens}.
 %
-\begin{theorem}{\cite[Th. 3.1]{calder2019consistency}}{}
-Let $(\domain_n,w_n)$ be a graph connected to the the boundary $\conset_n\subset\domain_n$ and consider $\vec u,\vec v:\domain_n\to\R$ such that
+\begin{theorem}{\cite[Thm. 3.1]{calder2019consistency}}{}
+Let $(\domain_n,w_n)$ be a graph connected to the boundary $\conset_n\subset\domain_n$ and consider $\vec u,\vec v:\domain_n\to\R$ such that
 %
 \begin{align*}
 \Delta^{w_n}_\infty \vec u \leq 0 \leq \Delta^{w_n}_\infty \vec v
@@ -1383,10 +1375,10 @@ Then we know that
 \end{theorem}
 %
 %
-\paragraph{Relations Between the Graph Lipschitz Extensions} We now establish the connection between the different notions of Lipschitz extensions on the graph. Compared to the continuum case we do not establish the full equivalences but only the necessary implications required for the convergence proofs in \cite{bungert2021uniform}. Namely, in \cite{bungert2021uniform} we show that if $\vec u$ solves the graph $\infty$-Laplace, then it is a graph AMLE and fulfills comparison with graph distance functions. 
+\paragraph{Relations Between the Graph Lipschitz Extensions} We now establish the connection between the different notions of Lipschitz extensions on the graph. Compared to the continuum case, we do not establish the full equivalences, but only the necessary implications required for the convergence proofs in \cite{bungert2021uniform}. Namely, in \cite{bungert2021uniform} we show that if $\vec u$ solves the graph $\infty$-Laplace, then it is a graph AMLE and fulfills comparison with graph distance functions. 
 %
 %
-\begin{lemma}{\cite[Th. 3.2, Prop. 3.8]{bungert2021uniform}}{}
+\begin{lemma}{\cite[Thm. 3.2, Prop. 3.8]{bungert2021uniform}}{}
 Let $(\domain_n,w_n)$ be a weighted connected graph and $\vec g:\conset_n\to\R$ be a given function for $\conset_n\subset\domain_n$. Furthermore, let $\vec u:\domain_n\to\R$ be graph infinity harmonic on $\domain_n\setminus\conset_n$ with boundary conditions given by $\vec g$, i.e., $\vec u$ solves \cref{prob:graphinfLaplace} then we have that
 %
 \begin{itemize}
@@ -1404,25 +1396,25 @@ Both of the statements are proven in \cite{bungert2021uniform}. Let $\vec u$ be 
 \vec u &= \vec g \text{ on } \conset_n.
 \end{align*}
 %
-From \cite[Prop. 3.8]{bungert2021uniform} we have that $\vec u$ is a graph AMLE. Furthermore, form \cite[Th. 3.2]{bungert2021uniform} we have that $\vec u$ fulfills comparison with cones. In fact, \cite[Th. 3.2]{bungert2021uniform}, shows a more refined statement, namely that
+From \cite[Prop. 3.8]{bungert2021uniform} we have that $\vec u$ is a graph AMLE. Furthermore, form \cite[Thm. 3.2]{bungert2021uniform} we have that $\vec u$ fulfills comparison with cones. In fact, \cite[Thm. 3.2]{bungert2021uniform}, shows a more refined statement, namely that
 %
 \begin{align*}
 -\Delta^{w_n}_\infty \vec u &\leq 0 \Rightarrow \vec u \text{ fulfills \labelcref{eq:CDFA}},\\
 -\Delta^{w_n}_\infty \vec u &\geq 0 \Rightarrow \vec u \text{ fulfills \labelcref{eq:CDFB}}.
 \end{align*}
-%
 \end{proof}
 %
 %
 %
 %
+\clearpage%
 \section{Gamma Convergence: \cite{roith2022continuum}}\label{sec:GConv}
-We now present the main results of \cite{roith2022continuum}. This works considers the limit of the basic Lipschitz extension from the graph \cref{prob:lipgraph} to the continuum case \cref{prob:Lipext}. As detailed in the previous sections both of these problems do not admit unique solutions, however it is still meaningful to study the convergence in the infinite data limit. We first start by specifying the setting and recalling the concept of $\Gamma$-convergence and then state the main results.
+In this section, we present the main results of \cite{roith2022continuum}. This work considers the limit of the basic Lipschitz extension from the graph \cref{prob:lipgraph} to the continuum case \cref{prob:Lipext}. As detailed in the previous sections, both of these problems do not admit unique solutions, but it is still meaningful to study the convergence in the infinite data limit. We start by specifying the setting and recalling the concept of $\Gamma$-convergence and then state the main results.
 %
 %
-\paragraph{Main Contributions in \cite{roith2022continuum}} We first prove $\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$ to their continuum counterpart $\pDir_\infty$. This result can be seen as the extension of the results in \cite{GarcSlep15, slepcev2019analysis} to the case $p=\infty$. Here, we employ a different type of metric as we detail in the following. Furthermore, we identify the optimal graph scaling which in this case is derived in a deterministic manner. The key difference to \cite{GarcSlep15, slepcev2019analysis} is that we can work with any point-clouds and not only i.i.d. points. The inherent reason is that $L^\infty$ problems only consider mass in a qualitative not in a quantitative way. We then establish a compactness result, that allows us to infer convergence of minimizers. Finally, we apply this theory to the ground state problem.
+\paragraph{Main Contributions in \cite{roith2022continuum}} We first prove $\Gamma$-convergence of the functionals $\GE^{w_n}_\infty$ to their continuum counterpart $\pDir_\infty$. This result can be seen as the extension of the results in \cite{GarcSlep15, slepcev2019analysis} to the case $p=\infty$. Here, we employ a different type of metric as we detail in the following. Furthermore, we identify the optimal graph scaling, which in this case is derived in a deterministic manner. The key difference to \cite{GarcSlep15, slepcev2019analysis} is that we can work with any point clouds and not only i.i.d. points. The inherent reason is that $L^\infty$ problems only consider mass in a qualitative not in a quantitative way. We then establish a compactness result, that allows us to infer convergence of minimizers. Finally, we apply this theory to the ground state problem.
 
-Parts of this work was motivated by the findings in TR's master thesis \cite{roith2022msc}. The convergence result in the latter, was however not fully established and therefore \cite{roith2022continuum} constitutes a non-trivial expansion and also correction. We want to highlight two major differences:
+Parts of this work were motivated by the findings in TR's master thesis \cite{roith2022msc}. The convergence result in the latter, was however not fully established and therefore \cite{roith2022continuum} constitutes a non-trivial expansion and also correction. We want to highlight two major differences:
 %
 \begin{itemize}
 \item The domain $\domain$ in \cite{roith2022msc} was assumed to be convex. This restriction was omitted in \cite{roith2022continuum} by identifying a class of locally convex domains, that prevent internal sharp corners.
@@ -1434,28 +1426,27 @@ Parts of this work was motivated by the findings in TR's master thesis \cite{roi
 %
 \subsection{Setting and Preliminaries}
 %
-Here, we detail the concrete setting of \cite{roith2022continuum} and provide some background on the employed notions.
+We detail the concrete setting of \cite{roith2022continuum} and provide some background on the employed notions.
 %
 %
-\paragraph{$\Gamma$-Convergence} Originally, the concept of $\Gamma$-convergence dates back to De Giorgi \cite{de1975tipo} as a type of variational convergence. We refer to \cite{Brad02, dal2012introduction} for a detailed overview on this notion and related topics. While $\Gamma$-convergence was successfully employed in a pure continuum setting for a longer time (see e.g. \cite{modica1977esempio}), it was more recently used to prove convergence form a discrete to a continuum functional \cite{chambolle2010continuous, braides2012quantitative, van2012gamma}. 
+\paragraph{$\Gamma$-Convergence} Originally, the concept of $\Gamma$-convergence dates back to De Giorgi \cite{de1975tipo} as a type of variational convergence. We refer to \cite{Brad02, dal2012introduction} for a detailed overview on this notion and related topics. While $\Gamma$-convergence was successfully employed in a pure continuum setting for a longer time (see, e.g., \cite{modica1977esempio}), it was more recently used to prove convergence from a discrete to a continuum functional \cite{chambolle2010continuous, braides2012quantitative, van2012gamma}. 
 %
 %
 %
 \begin{definition}{\cite{de1975tipo}: $\Gamma$-convergence}{}
-Let $X$ be a metric space and let $F_n:X\rightarrow [-\infty,\infty]$ be a sequence of 
-functionals. We say that $F_n$ $\Gamma$-converges to the functional 
+Let $X$ be a metric space and let $F_n:X\rightarrow [-\infty,\infty]$ be a sequence of functionals. We say that $F_n$ $\Gamma$-converges to the functional 
 $F:X\rightarrow [-\infty,\infty]$ if
 \begin{enumerate}[label=(\roman*)]
-	\item \textbf{(liminf inequality)} for every sequence $(x)_{n\in\N}\subset X$ converging to 
-	$x\in X$ we have that
-	\begin{align*}
-		\liminf_{n\rightarrow\infty} F_n(x_n) \geq F(x);
-	\end{align*}
-	\item\textbf{(limsup inequality)} for every $x\in X$ there exists a sequence 
-	$(x)_{n\in\N}\subset X$ converging to $x$ and 
-	\begin{align*}
-		\limsup_{n\rightarrow\infty} F_n(x_n)\leq F(x).
-	\end{align*}
+\item \textbf{(liminf inequality)} for every sequence $(x)_{n\in\N}\subset X$ converging to 
+$x\in X$ we have that
+\begin{align*}
+\liminf_{n\rightarrow\infty} F_n(x_n) \geq F(x);
+\end{align*}
+\item\textbf{(limsup inequality)} for every $x\in X$ there exists a sequence 
+$(x)_{n\in\N}\subset X$ converging to $x$ and 
+\begin{align*}
+\limsup_{n\rightarrow\infty} F_n(x_n)\leq F(x).
+\end{align*}
 \end{enumerate}
 \end{definition}
 %
@@ -1468,21 +1459,21 @@ The most relevant reference for \cite{roith2022continuum} was the disruptive wor
 \end{itemize}
 %
 %
-Employing $\Gamma$-convergence the authors in \cite{slepcev2019analysis} were able to prove convergence of minimizers of the graph $p$-Dirichlet problem. Here, one can employ the convenient result that $\Gamma$-convergence implies converrgence of minimizers.
+Employing $\Gamma$-convergence the authors in \cite{slepcev2019analysis} were able to prove convergence of minimizers of the graph $p$-Dirichlet problem. Here, one can employ the convenient result that $\Gamma$-convergence implies convergence of minimizers.
 %
 \begin{lemma}{\cite[Thm. 1.21]{Brad02} Convergence of Minimizers}{lem:ConvMin}
-	Let $X$ be a metric space and $F_n:X\rightarrow [0,\infty]$ a sequence of 
-	functionals $\Gamma$-converging to $F\rightarrow X:[0,\infty]$ which is not 
-	identically $+\infty$. 
-	If there exists a relatively compact sequence $(x_n)_{n\in\N}$ such that 
-	\begin{align*}
-		\lim_{n\rightarrow\infty} \left(F_n(x_n) - \inf_{x\in X} F_n(x)\right) = 0, 
-	\end{align*}
-	then we have that 
-	\begin{align*}
-		\lim_{n\rightarrow\infty} \inf_{x\in X} F_n(x) = \min_{x\in X} F(x)
-	\end{align*}
-	and any cluster point of $(x_n)_{n\in\N}$ is a minimizer of $F$.
+Let $X$ be a metric space and $F_n:X\rightarrow [0,\infty]$ a sequence of 
+functionals $\Gamma$-converging to $F\rightarrow X:[0,\infty]$ which is not 
+identically $+\infty$. 
+If there exists a relatively compact sequence $(x_n)_{n\in\N}$ such that 
+\begin{align*}
+\lim_{n\rightarrow\infty} \left(F_n(x_n) - \inf_{x\in X} F_n(x)\right) = 0, 
+\end{align*}
+then we have that 
+\begin{align*}
+\lim_{n\rightarrow\infty} \inf_{x\in X} F_n(x) = \min_{x\in X} F(x)
+\end{align*}
+and any cluster point of $(x_n)_{n\in\N}$ is a minimizer of $F$.
 \end{lemma}
 %
 %
@@ -1565,7 +1556,7 @@ As seen in \cite{GarcSlep15, slepcev2019analysis} and \cref{eq:kernelconst} we a
 \end{align*}
 %
 %
-A main difference to the results for $p<\infty$ is that we can work with point clouds $\domain_n$, that do not necessarily need be constructed by an i.i.d. sampling process. However, this rises the question how we can ensure that $\domain_n\subset\cl\domain$ fills out the continuum domain $\cl\domain$ sufficiently fast. In \cite{roith2022continuum} we consider the maximum distance of any continuum point to its next vertex
+A main difference to the results for $p<\infty$ is that we can work with point clouds $\domain_n$, that do not necessarily need to be constructed by an i.i.d. sampling process. However, this rises the question of how we can ensure that $\domain_n\subset\cl\domain$ fills out the continuum domain $\cl\domain$ sufficiently fast. In \cite{roith2022continuum} we consider the maximum distance of any continuum point to its next vertex
 %
 \begin{align}\label{eq:resolution}
 \sup_{x\in\cl\domain} \min_{y\in\domain_n} \abs{x-y},
@@ -1603,19 +1594,19 @@ d_H(\conset_n, \conset) =
 \right\}
 \end{align*}
 %
-where the second term does not vanish, because in general $\conset_n\nsubseteq\conset$. We assume that we have a Lipschitz continuous function $g:\cl\domain\to\R$ such that for each $n$ the boundary conditions are given by the function $\vec g_n = g\rvert_{\conset_n}$. In total we then need to control the graph resolution 
+where the second term does not vanish, because in general $\conset_n\nsubseteq\conset$. We assume that we have a Lipschitz continuous function $g:\cl\domain\to\R$ such that for each $n$ the boundary conditions are given by the function $\vec g_n = g\rvert_{\conset_n}$. In total, we then need to control the graph resolution 
 %
 \begin{align*}
 \gres_n := \max\{d_H(\domain_n, \cl\domain), d_H(\conset_n, \conset)\}.
 \end{align*}
 %
-This then allows us to formulating our scaling assumption, namely we require that the graph resolution tends to zero faster than the graph scaling
+This then allows us to formulate our scaling assumption, namely we require that the graph resolution tends to zero faster than the graph scaling
 %
 \begin{align}\label{eq:scaling}
 \frac{\gres_n}{\gscale_n}\longrightarrow 0, \quad n \to \infty,
 \end{align}
 %
-which has similarly employed in \cite{penrose1999strong,penrose1999strong2}. This is the weakest possible assumption that ensures connectivity of the graph in the limit $n\to\infty$. However, compared to \cref{eq:garcscaling} it is more of deterministic nature, since we do not assume anything on how $\domain_n$ is created. In case of a i.i.d. point cloud one can show that
+which has similarly employed in \cite{penrose1999strong,penrose1999strong2}. This is the weakest possible assumption that ensures connectivity of the graph in the limit $n\to\infty$. However, compared to \cref{eq:garcscaling} it is more of deterministic nature, since we do not assume anything on how $\domain_n$ is created. In case of a i.i.d. point cloud, one can show that
 %
 \begin{align*}
 \gres_n \sim \left(\frac{\log n}{n}\right)^{1/d}
@@ -1643,7 +1634,7 @@ converges to the Euclidean distance if $x$ goes to $y$. We formulate this in the
 x,y\in\domain,\,\abs{x-y}<\delta\right\rbrace \leq 1.
 \end{align}
 %
-The inherent reason that we need to enforce this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$. Most importantly, \cref{eq:cond_domain} prohibits sharp internal corners in the domain, see \cref{fig:sharp}. Furthermore, note that we consider the geodesic distance $d_\domain$ on the open domain $\domain$, not on its closure. Therefore, we also exclude situations of a touching boundary as in \cref{fig:tube}. In \cite{roith2022continuum} we also provide examples of domains fulfilling this condition.
+The inherent reason that we need to enforce this, is that edges in the graph are allowed to communicate via their direct Euclidean distance, even if this line does not lie in $\domain$. While it would be easier to also consider the geodesic distance on the graph, this is unrealistic in many applications since we do not have access to the concrete shape of $\domain$. Most importantly, \cref{eq:cond_domain} prohibits sharp internal corners in the domain, see \cref{fig:sharp}. Furthermore, note that we consider the geodesic distance $d_\domain$ on the open domain $\domain$, not on its closure. Therefore, we also exclude situations of a touching boundary, as in \cref{fig:tube}. In \cite{roith2022continuum} we also provide examples of domains fulfilling this condition.
 %
 \begin{figure}
 \centering%
@@ -1690,7 +1681,7 @@ The inherent reason that we need to enforce this, is that edges in the graph are
 %
 
 %
-\subsection{$\Gamma$-Convergence of the Discrete Functionals} In order to show convergence of discrete functionals defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. Employing results form \cite{trillos2015rate} in \cite{GarcSlep15} the authors introduced the space $TL^p$
+\subsection{$\Gamma$-Convergence of the Discrete Functionals} In order to show convergence of discrete functionals defined on $\domain_n$ to continuum functions acting on $\overline\domain$, one needs to define a common metric space. Employing results from \cite{trillos2015rate} in \cite{GarcSlep15} the authors introduced the space $TL^p$
 %
 \begin{align*}
 TL^p :=\left\{(\mu, u): \mu\in \mathcal{P}(\domain), u\in L^p(\mu)\right\}
@@ -1709,7 +1700,7 @@ where $\Gamma(\mu,\nu)$ is the set of coupling between $\mu$ and $\nu$. A sequen
 \int_{\domain} \abs{x- T_n(x)} d\mu(x)\rightarrow 0
 \end{align*}
 %
-such that $u_n\circ T_n \xrightarrow{L^p} u$, \cite[Prop. 3.12]{GarcSlep15}. Therefore, the maps $T_n$ allow to employ standard convergence in $L^p$. In order to transfer this situation to $L^\infty$ one could try to employ a $\infty$-Wasserstein distance. However, as argued in \cite{roith2022msc} the strategy does not transfer directly, since convergence in $W^\infty$ does not metrize weak convergence of measures \cite[Thm. 5.10]{santambrogio2015optimal}. However, as seen in \cite{roith2022continuum} one can employ a more direct argument. For problems in $L^p$ the conservation of mass was important for the maps $T_n$ (i.e. $T_n\#\mu = \mu_n$) such that the integrals could be transformed. This condition is irrelevant in $L^\infty$, namely we have the following analogous transformation rule in $L^\infty$.
+such that $u_n\circ T_n \xrightarrow{L^p} u$, \cite[Prop. 3.12]{GarcSlep15}. Therefore, the maps $T_n$ allow us to employ standard convergence in $L^p$. In order to transfer this situation to $L^\infty$ one could try to employ a $\infty$-Wasserstein distance. However, as argued in \cite{roith2022msc} the strategy does not transfer directly, since convergence in $W^\infty$ does not metrize weak convergence of measures \cite[Thm. 5.10]{santambrogio2015optimal}. However, as seen in \cite{roith2022continuum} one can employ a more direct argument. For problems in $L^p$ the conservation of mass was important for the maps $T_n$ (i.e., $T_n\#\mu = \mu_n$) such that the integrals could be transformed. This condition is irrelevant in $L^\infty$, namely, we have the following analogous transformation rule in $L^\infty$.
 %
 \begin{lemma}{\cite[Lem. 2]{roith2022continuum}}{lem:suptrafo}
 For two probability measures $\mu,\nu \in \mathcal{P}(\overline{\domain})$, a measurable map 
@@ -1726,7 +1717,7 @@ and for a measurable function $u:\domain\rightarrow\R$ we have that
 %
 %
 \noindent%
-We want to compare the discrete measure $\mu_n = \frac{1}{n}\sum_{x\in\domain_n} \delta_x$ to the target measure $\mu$. In this setting a closest point projection $p_n:\domain\to\domain_n$
+We want to compare the discrete measure $\mu_n = \frac{1}{n}\sum_{x\in\domain_n} \delta_x$ to the target measure $\mu$. In this setting, a closest point projection $p_n:\domain\to\domain_n$
 %
 \begin{align*}
 p_n(x) \in \argmin_{y\in\domain_n} \abs{x- y}
@@ -1765,7 +1756,7 @@ we have
 \end{theorem}
 %
 \noindent%
-The main proof strategy here is similar to the one in \cite{GarcSlep15, slepcev2019analysis}. Namely one defines the non-local functional
+The main proof strategy here is similar to the one in \cite{GarcSlep15, slepcev2019analysis}. Namely, one defines the non-local functional
 %
 \begin{align*}
 \pDir^{\gscale}_\infty(u) := \frac{1}{\gscale}~\esssup_{x,y\in\domain}
@@ -1793,7 +1784,7 @@ As shown in \cite{roith2022continuum} the choice $\tilde\gscale= \gscale - 2 \gr
 \lim_{n\to\infty} \frac{\gres_n}{\gscale_n} = 0\Rightarrow \lim_{n\to\infty} \frac{\gscale_n - 2 \gres_n/t}{\gscale_n} = 1 - \frac{2}{t} \lim_{n\to\infty} \frac{\gres_n}{\gscale_n} = 1.
 \end{align*}
 %
-This then allows to prove the liminf inequality since $\GE^{w_n}_\infty(u_n)\geq \frac{\tilde{\gscale}_n}{\gscale_n} \pDir^{\tilde{\gscale}_n}_\infty(u_n)$ holds. The limsup inequality can then be shown by choosing the constant sequence, with some additional care for the changing constraint set $\conset_n$.
+This then allows us to prove the liminf inequality since $\GE^{w_n}_\infty(u_n)\geq \frac{\tilde{\gscale}_n}{\gscale_n} \pDir^{\tilde{\gscale}_n}_\infty(u_n)$ holds. The limsup inequality can then be shown by choosing the constant sequence, with some additional care for the changing constraint set $\conset_n$.
 %
 %
 \subsection{Convergence of Minimizers}
@@ -1822,7 +1813,7 @@ $\pDir_{\mathrm{cons}}$.
 %
 %
 \noindent%
-In order to show the compactness in the above theorem one employs the following lemma.
+In order to show the compactness in the above theorem, one employs the following lemma.
 %
 %
 \begin{lemma}{\cite[Lem. 4]{roith2022continuum}}{lem:compfirst}
@@ -1841,20 +1832,20 @@ The proof of this statement employs ideas from \cite[Lem. IV.5.4]{dunford1988lin
 \noindent%
 This lemma is the used to show that if a sequence $u_n$ fulfills
 \begin{align*}
-\sup_{n\in\N}\GE^{w_n,\text{cons}}_\infty(u_n)<\infty
+\sup_{n\in\N}\GE^{w_n,\text{cons}}_\infty(u_n)<\infty,
 \end{align*}
 %
 then it is relatively compact.
 %
 \subsection{Application to Ground States}
 %
-The convergence results of the previous paragraphs can be applied to the ground states problem. Namely, for a $p$-homogeneous functional $\pDir$---i.e. $\pDir{}(cu) = \abs{c}^p \pDir{}(u)$ for $c\in\R$---we consider the following problem
+The convergence results of the previous paragraphs can be applied to the ground states problem. Namely, for a $p$-homogeneous functional $\pDir$---i.e., $\pDir{}(cu) = \abs{c}^p \pDir{}(u)$ for $c\in\R$---we consider the following problem
 %
 \begin{align*}
 \min\left\lbrace \pDir(u) \,:\, \inf_{v\in\argmin \pDir{}}\norm{u-v} = 1 \right\rbrace,
 \end{align*}
 %
-as studied in \cite{bung20}. In our setting, if $g\equiv 0$ then the functionals $\GE^{w_n,\text{cons}}_\infty$ and $\pDir^{\text{cons}}_\infty$ are $1$-homogeneous. In \cite[Th. 5]{roith2022continuum} we first show that the up to a global sign unique ground state of $\pDir^{\text{cons}}_\infty$ is a multiple of the distance function
+as studied in \cite{bung20}. In our setting, if $g\equiv 0$ then the functionals $\GE^{w_n,\text{cons}}_\infty$ and $\pDir^{\text{cons}}_\infty$ are $1$-homogeneous. In \cite[Thm. 5]{roith2022continuum} we first show that the up to a global sign unique ground state of $\pDir^{\text{cons}}_\infty$ is a multiple of the distance function
 %
 \begin{align*}
 d_{\conset}(x)=
@@ -1883,20 +1874,20 @@ and it holds
 
 
 %
-\section{Uniform Convergence of AMLES: \cite{bungert2021uniform}}\label{sec:UnifConv}
+\section{Uniform Convergence of AMLEs: \cite{bungert2021uniform}}\label{sec:UnifConv}
 %
 %
-In the previous section we consider the limit of the Lipschitz extension task. The major limitations of this work are:
+In the previous section, we consider the limit of the Lipschitz extension task. The major limitations of this work are:
 %
 \begin{itemize}
-\item The considered problem does not admit unique solutions. The $\Gamma$-convergence framework does not directly allow to select certain minimizers, e.g. AMLEs, and consider the respective limit to continuum AMLEs.
+\item The considered problem does not admit unique solutions. The $\Gamma$-convergence framework does not directly allow us to select certain minimizers, e.g., AMLEs, and consider the respective limit to continuum AMLEs.
 %
 \item We can only show qualitative convergence results. It is not directly possible to prove quantitative statements and convergence rates.
 \end{itemize}
 %
 These drawbacks are the main motivation for the work presented in this section. We first state the main contributions and then provide details below.
 %
-\paragraph{Main Contributions in \cite{bungert2021uniform}} We prove a quantitative convergence results for discrete AMLEs to their continuum counterpart. Convergence was already established in \cite{calder2019consistency}, however employing a more restrictive scaling assumption and only allowing for smooth kernels $\eta$, which was due to the viscosity techniques employed. By using the AMLE characterization of infinity harmonic functions, we are able to show convergence rates under the weakest scaling assumption and allowing for very general kernels. This is done via a using a comparison principle on a homogenized length scale. The key insight we obtain in this work, is that convergence rates for graph distance functions imply rates for AMLEs. Finally, we examine some numerical convergence rates.
+\paragraph{Main Contributions in \cite{bungert2021uniform}} We prove a quantitative convergence results for discrete AMLEs to their continuum counterpart. Convergence was already established in \cite{calder2019consistency}, however employing a more restrictive scaling assumption and only allowing for smooth kernels $\eta$, which was due to the viscosity techniques employed. By using the AMLE characterization of infinity harmonic functions, we are able to show convergence rates under the weakest scaling assumption and allowing for very general kernels. This is done via a using a comparison principle on a homogenized length scale. The key insight, we obtain in this work, is that convergence rates for graph distance functions imply rates for AMLEs. Finally, we examine some numerical convergence rates.
 %
 %
 %
@@ -1907,7 +1898,7 @@ Conceptually, the basic setting is very similar to the previous one in \cref{sec
 %
 \paragraph{Assumptions on the Kernel}
 %
-We employ \labelcref{en:K2,en:K4} from \cite{roith2022continuum} and set $t_\eta =1$ for simplicity. However we do not need to assume continuity in $0$, i.e. \labelcref{en:K1}. Instead we additionally require the following.
+We employ \labelcref{en:K2,en:K4} from \cite{roith2022continuum} and set $t_\eta =1$ for simplicity. However, we do not need to assume continuity in $0$, i.e. \labelcref{en:K1}. Instead, we additionally require the following assumption:
 %
 \begin{enumerate}[label=(K\upshape\arabic*)]
 \setcounter{enumi}{3}
@@ -1934,10 +1925,10 @@ violates \labelcref{ass:kernel}, while fulfilling \labelcref{en:K2,en:K4}.
 d_{\cl\domain}(x,y) \leq |x-y| + \phi(\abs{x-y}), \quad \text{for all }x,y\in\domain\st |x-y|\leq r_\domain.
 \end{equation}
 %
-Furthermore, for $\gscale>0$ we define $\sigma_\phi(\gscale) = \sup_{0 < s \leq \gscale}\frac{\phi(s)}{s}$. Note that we now employ the geodesic distance $d_{\cl\domain}$, i.e. path can also lie on the boundary of $\domain$.
+Furthermore, for $\gscale>0$ we define $\sigma_\phi(\gscale) = \sup_{0 < s \leq \gscale}\frac{\phi(s)}{s}$. Note that we now employ the geodesic distance $d_{\cl\domain}$, i.e., paths can also lie on the boundary of $\domain$.
 %
 %
-\paragraph{Assumptions on the Labeling Function} The assumption on the labeling for each sub-problem is weakened even further. Namely, we do not assume the labels for each discrete problem to be given by the continuum constraint $g:\conset\to\R$. Instead we require 
+\paragraph{Assumptions on the Labeling Function} The assumption on the labeling for each sub-problem is weakened even further. Namely, we do not assume the labels for each discrete problem to be given by the continuum constraint $g:\conset\to\R$. Instead, we require 
 
 \begin{enumerate}[label=(C\arabic*)]
 \item\label{ass:dataA} $\sup_{n\in\N}\Lip_n(\vec g_n;\conset_n)<\infty$ and $\Lip_\domain(g;\conset)<\infty$,
@@ -1945,7 +1936,7 @@ Furthermore, for $\gscale>0$ we define $\sigma_\phi(\gscale) = \sup_{0 < s \leq 
 \end{enumerate}
 %
 %
-This assumption on the labeling function, is also connected to the no-noise and infinite data limit, see e.g. \cite{hoffmann2020consistency}.
+This assumption on the labeling function, is also connected to the no-noise and infinite data limit, see, e.g., \cite{hoffmann2020consistency}.
 %
 %
 \subsection{Convergence Results}
@@ -1960,7 +1951,7 @@ In \cite{roith2022continuum} the proof strategy relied on $\Gamma$-convergence. 
 \end{align}
 %
 %
-on the length scale $\nlscale>0$ which is typically larger than the graph scale $\gscale$. The results in the following are non-asymptotic, for which also our scaling assumption reads as follows
+on the length scale $\nlscale>0$, which is typically larger than the graph scale $\gscale$. The results in the following are non-asymptotic, for which also our scaling assumption reads as follows,
 %
 \begin{align}\label{ass:scaling}
 \begin{aligned}
@@ -1969,13 +1960,13 @@ on the length scale $\nlscale>0$ which is typically larger than the graph scale 
 \sigma_\phi(\gscale) + \frac{\res_n}{\gscale} 
 &\leq
 \frac{t_0}{4+2\sigma_\phi(\gscale)}
-\left(1-2\frac{\gscale}{\nlscale}\right).
+\left(1-2\frac{\gscale}{\nlscale}\right),
 \end{aligned}
 \end{align}
 %
-for some $n\in\N$. We detail the concrete appearance of the operator $\Delta^\tau_\infty$ in the following paragraphs and first state the main general result. We employ the notation $a\lesssim b$ which means that $a\leq C\,b$ for some constant $C>0$ depending only on $g$ and $\eta$, but not on $n, \gscale$ or $\gres$.
+for some $n\in\N$. We detail the concrete appearance of the operator $\Delta^\tau_\infty$ in the following paragraphs, and first state the main general result. We employ the notation $a\lesssim b$, which means that $a\leq C\,b$ for some constant $C>0$ depending only on $g$ and $\eta$, but not on $n, \gscale$ or $\gres$.
 %
-\begin{theorem}{\cite[Th. 2.2]{bungert2021uniform}}{thm:general_convergence_result}
+\begin{theorem}{\cite[Thm. 2.2]{bungert2021uniform}}{thm:general_convergence_result}
 Let $\nlscale>0$, let the kernel and data fulfill \labelcref{en:K2,en:K4,ass:kernel}, \labelcref{ass:dataA,ass:dataB} and let \labelcref{eq:geodesic_euclidean,ass:scaling} hold. Let $\vec u_n:\domain_n\to\R$ solve \cref{prob:GAMLE}, and $u:\closure\domain\to\R$ solve \cref{prob:amles}.
 \begin{enumerate}
 \item It holds 
@@ -1993,13 +1984,13 @@ Here, $u_n:\closure\domain\to\R$ denotes the piecewise constant extension of $\v
 %
 %
 \noindent%
-We observe that in the case where $\abs{\nabla u}$ is bounded away from zero the rate improves, which is due to a perturbation we briefly mention in the following. The parameter $\nlscale$ appears due to our proof strategy and does not have a concrete meaning for the final problem. An immediate consequence is that for an arbitrary $\nlscale>0$ we obtain
+We observe that in the case where $\abs{\nabla u}$ is bounded away from zero, the rate improves, which is due to a perturbation we briefly mention in the following. The parameter $\nlscale$ appears due to our proof strategy and does not have a concrete meaning for the final problem. An immediate consequence is that for an arbitrary $\nlscale>0$, we obtain
 %
 \begin{align*}
 \sup_{\domain_n}\abs{u-\vec u_n} < \nlscale
 \end{align*}
 %
-by sending $\gres_n,\gscale_n$ to zero as $n\to\infty$ employing the weakest scaling assumption $\gres_n\ll \gscale_n$. Since $\nlscale >0$ was arbitrary this already yields convergence of discrete AMLEs under the weakest scaling assumption \cite[Cor. 2.3]{bungert2021uniform}. In order to obtain the convergence rates involving only $\gres$ and $\gscale$ we can \enquote{optimize} over $\nlscale$. We first consider the small length scale regime, which in our case includes any graph scaling such that $\gscale\lesssim \gres_n^{5/9}$. In that case we can choose $\nlscale = ((\delta_n + \phi(\gscale))/\gscale)^{1/4}$ to obtain
+by sending $\gres_n,\gscale_n$ to zero as $n\to\infty$ employing the weakest scaling assumption $\gres_n\ll \gscale_n$. Since $\nlscale >0$ was arbitrary, this already yields convergence of discrete AMLEs under the weakest scaling assumption \cite[Cor. 2.3]{bungert2021uniform}. In order to obtain the convergence rates involving only $\gres$ and $\gscale$ we can \enquote{optimize} over $\nlscale$. We first consider the small length scale regime, which in our case includes any graph scaling such that $\gscale\lesssim \gres_n^{5/9}$. In that case we can choose $\nlscale = ((\delta_n + \phi(\gscale))/\gscale)^{1/4}$ to obtain
 %
 %
 \begin{align*}
@@ -2010,7 +2001,7 @@ by sending $\gres_n,\gscale_n$ to zero as $n\to\infty$ employing the weakest sca
 \end{align*}
 %
 %
-If $\abs{\nabla u}$ is bounded away from zero this can be improved to 
+If $\abs{\nabla u}$ is bounded away from zero, this can be improved to 
 %
 \begin{align*}
 \sup_{\domain_n}\abs{u-\vec u_n} 
@@ -2019,7 +2010,7 @@ If $\abs{\nabla u}$ is bounded away from zero this can be improved to
 \lesssim \left(\frac{\res_n + \phi(\gscale)}{\gscale}\right)^\frac{1}{2}.
 \end{align*}
 %
-where we consider the regime $\gscale\lesssim\gres^{3/5}$. In the convex case, i.e. $\phi\equiv 0$ we therefore directly obtain the rates
+where we consider the regime $\gscale\lesssim\gres^{3/5}$. In the convex case, i.e., $\phi\equiv 0$ we therefore directly obtain the rates
 %
 \begin{align*}
 \inf_{\cl\domain}\abs{\nabla u} = 0 &:
@@ -2028,10 +2019,10 @@ where we consider the regime $\gscale\lesssim\gres^{3/5}$. In the convex case, i
 \left(\frac{\gres_n}{\gres_n^{3/5}}\right)^{\frac{1}{2}} = \gres_n^{\frac{1}{5}},
 \end{align*}
 %
-see \cite[Cor. 2.4]{bungert2021uniform}. In fact the convexity assumption is too strict, instead we just have to require that $\phi(\gscale)\lesssim \gscale^p$ for some power of $p\in\R^+$ that does not deteriorate the rate. This is done in \cite[Cor. 2.5, 2.6]{bungert2021uniform}, where also a better rate is obtained by allowing for larger length scales. In the following we sketch the main ingredients of the proof. While in the $\Gamma$-convergence case we employ the hierarchy
+see \cite[Cor. 2.4]{bungert2021uniform}. In fact the convexity assumption is too strict, instead we just have to require that $\phi(\gscale)\lesssim \gscale^p$ for some power of $p\in\R^+$ that does not deteriorate the rate. This is done in \cite[Cor. 2.5, 2.6]{bungert2021uniform}, where also a better rate is obtained by allowing for larger length scales. In the following, we sketch the main ingredients of the proof. While in the $\Gamma$-convergence case we employ the hierarchy
 %
 \begin{center}
-\enquote{discrete $\to$ non-local $\to$ continuum}
+\enquote{discrete $\to$ non-local $\to$ continuum},
 \end{center} 
 %
 %
@@ -2045,7 +2036,7 @@ We discuss the two directions below and then discuss how to \enquote{meet in the
 %
 \paragraph{Non-Local to Continuum}
 %
-In this paragraph we comment on how to relate continuum AMLEs to the homogenized operator in \cref{eq:homop}. Here, it is convenient to copy the following definitions from \cite{bungert2021uniform},
+In this paragraph, we comment on how to relate continuum AMLEs to the homogenized operator in \cref{eq:homop}. Here, it is convenient to copy the following definitions from \cite{bungert2021uniform},
 %
 \begin{alignat}{2}
 \label{eq:T-operators}
@@ -2080,7 +2071,7 @@ Here, we denote by $\domain_\conset = \cl\domain\setminus\conset$ and additional
 \domain^{\nlscale}_\constr:=\{x\in\closure{\domain}\st \operatorname{dist}_\domain(x,\constr)>\nlscale\}.
 \end{align}
 %
-Both, \cref{eq:maxballa,eq:maxballb} are shown in \cite[Lem. 4.6]{bungert2021uniform}, again borrowing concepts from \cite{armstrong2010easy}. In fact the proof is a simple consequence of the comparison with cones characterization. The strategy works as follows:
+Both, \cref{eq:maxballa,eq:maxballb} are shown in \cite[Lem. 4.6]{bungert2021uniform}, again borrowing concepts from \cite{armstrong2010easy}. In fact, the proof is a simple consequence of the comparison with cones characterization. The strategy works as follows:
 %
 \begin{itemize}
 \item Consider the ball $B(x,2\nlscale)$.
@@ -2090,7 +2081,7 @@ Both, \cref{eq:maxballa,eq:maxballb} are shown in \cite[Lem. 4.6]{bungert2021uni
 u(y) &= u(x) + u(y) - u(x) = 
 u(x) + \frac{u(y) - u(x)}{d_{\cl\domain}(x,y)}d_{\cl\domain}(x,y)\\
 &\leq 
-u(x) + \frac{T^{2\nlscale} u(x) - u(x)}{d_{\cl\domain}(x,y)}d_{\cl\domain}(x,y)
+u(x) + \frac{T^{2\nlscale} u(x) - u(x)}{d_{\cl\domain}(x,y)}d_{\cl\domain}(x,y).
 \end{align*}
 %
 \item Consider the set $V:=B(x,2\nlscale)\setminus\{x\}$ where on its boundary we can substitute the denominator by $2\nlscale$ to obtain
@@ -2103,7 +2094,7 @@ u(x) + \frac{T^{2\nlscale} u(x) - u(x)}{2\nlscale}d_{\cl\domain}(x,y) \quad \tex
 \item Employing comparison with distance functions, this inequality holds on the whole domain $V$, therefor we can take the maximum over $B(x,\nlscale)$ and see
 %
 \begin{align*}
-T^\nlscale u(x) \leq \frac{T^{2\nlscale} u(x) - u(x)}{2\nlscale} \nlscale = \frac{1}{2}(T^{2\nlscale} u(x) + u(x))
+T^\nlscale u(x) \leq \frac{T^{2\nlscale} u(x) - u(x)}{2\nlscale} \nlscale = \frac{1}{2}(T^{2\nlscale} u(x) + u(x)).
 \end{align*}
 %
 \item Rearranging the terms yields
@@ -2118,7 +2109,7 @@ T^\nlscale u(x) \leq \frac{T^{2\nlscale} u(x) - u(x)}{2\nlscale} \nlscale = \fra
 It is interesting that the inequality is exact, i.e., we do not need to introduce an error term of order $\nlscale$. This observation allows us to pass from the continuum setting to the non-local one.
 %
 %
-\paragraph{Discrete to Non-Local} Compared to the previous paragraph passing from the discrete problem to the non-local one is more challenging. Analogously to the continuum case, where we considered the operators $T^\nlscale,T_\nlscale$ we now define the functions
+\paragraph{Discrete to Non-Local} Compared to the previous paragraph, passing from the discrete problem to the non-local one is more challenging. Analogously to the continuum case, where we considered the operators $T^\nlscale,T_\nlscale$ we now define the functions
 %
 \begin{align}\label{eq:discr_extension}
     u_n^\nlscale(x):=\sup_{\closure B_\domain(x,\nlscale)\cap\domain_n}\vec u_n,\quad
@@ -2129,7 +2120,7 @@ It is interesting that the inequality is exact, i.e., we do not need to introduc
 %
 Concerning the connection between the discrete problem and the non-local operator, we state the following main result from \cite{bungert2021uniform}.
 %
-\begin{theorem}{\cite[Th. 5.13]{bungert2021uniform}}{thm:discrete_NL}
+\begin{theorem}{\cite[Thm. 5.13]{bungert2021uniform}}{thm:discrete_NL}
 Assume that \labelcref{en:K2,en:K4,ass:kernel} and \labelcref{eq:geodesic_euclidean,ass:scaling} hold.
 Let $\vec u_n:\domain_n\to\R$ solve the graph infinity Laplacian equation \cref{prob:GAMLE}.
 Then there exists a constant $C>0$ such that for all $x_0\in\domain_\constr^{2\nlscale+3\res_n}$ it holds
@@ -2182,7 +2173,7 @@ Plugging in the definition of $\Delta^\tau_\infty$ we then obtain the inequality
 \end{align*}
 %
 %
-Here, we would now like to employ comparison with graph distance functions for a similar strategy as in the continuum case. However, the choice of the set such that we have a desirable inequality on its boundary is not trivial. This is due the fact, that for $u^\nlscale_n$ we take the supremum over a Euclidean ball, but we want to apply comparison with graph distance function. As in \cite{roith2022continuum} we observe that our arguments need more care, whenever the Euclidean and the graph distance meet. We remark how the situation changes from the comparison with cones application in the continuum, where we assume that $\phi\equiv 0$ for simplicity, the concrete details are given in \cite[Sec. 5.2]{bungert2021uniform}:
+Here, we would now like to employ comparison with graph distance functions for a similar strategy as in the continuum case. However, the choice of the set such that we have a desirable inequality on its boundary is not trivial. This is due to the fact, that for $u^\nlscale_n$ we take the supremum over a Euclidean ball, but we want to apply comparison with graph distance function. As in \cite{roith2022continuum} we observe that our arguments need more care, whenever the Euclidean and the graph distance meet. We remark how the situation changes from the comparison with cones application in the continuum, where we assume that $\phi\equiv 0$ for simplicity, the concrete details are given in \cite[Sec. 5.2]{bungert2021uniform}:
 %
 \begin{itemize}
 \item We know that $u_n^{2\nlscale}$ maximizes on $\cl B(2\nlscale, \vec x_0)$.
@@ -2192,9 +2183,9 @@ Here, we would now like to employ comparison with graph distance functions for a
 B =\{\vec w \in\domain_n: d_{w_n}(\vec x_0,\vec w)\leq 2\nlscale-\gscale\}
 \end{align*}
 %
-and the we have that $\cl B \subset B(2\nlscale, \vec x_0)$.
+and we have that $\cl B \subset B(2\nlscale, \vec x_0)$.
 %
-\item In the continuum case we knew that every point $y\in \partial B(2\nlscale, \vec x_0)$ had exactly distance $2\nlscale$ from $x_0$. This value is not as simple in the graph case, we need to consider the value
+\item In the continuum case, we knew that every point $y\in \partial B(2\nlscale, \vec x_0)$ had exactly distance $2\nlscale$ from $x_0$. This value is not as simple in the graph case, we need to consider the value
 %
 \begin{align*}
 D = \inf_{\vec y\in \domain_n\setminus \cl B(\vec x_0, 2\nlscale - \gscale)} d_{w_n}(\vec x_0, \vec y)\geq 2\nlscale -\gscale.
@@ -2264,7 +2255,7 @@ Plugging in this concrete error term, we then obtain the estimate
 \right).
 \end{align*}
 %
-Rearranging this inequality then gives the first statement in \cite[Th. 5.13]{bungert2021uniform}. The second one can be proven analogously. Quantitatively, we remark that the term
+Rearranging this inequality then gives the first statement in \cite[Thm. 5.13]{bungert2021uniform}. The second one can be proven analogously. Quantitatively, we remark that the term
 %
 \begin{align}\label{eq:leadingrate}
 \frac{N}{D} - \frac{1}{2} = 
@@ -2278,7 +2269,7 @@ determines the leading term in the estimate and therefore the rate. This coined 
 \end{center}
 %
 %
-\paragraph{Meeting in the Middle} The previous paragraphs allow us to relate the continuum and the discrete solution to the non-local operator. The question is now, how we can put these estimates together. Here, we employ the maximum principle for the operator $\Delta_\infty^\nlscale$, from \cite[Thm. 2.6.5]{smart2010infinity}. Namely if for a constant $C\geq 0$ two functions $w,v:\domain_\conset^\nlscale\to\R$ satisfy
+\paragraph{Meeting in the Middle} The previous paragraphs allow us to relate the continuum and the discrete solution to the non-local operator. The question is now, how we can put these estimates together. Here, we employ the maximum principle for the operator $\Delta_\infty^\nlscale$, from \cite[Thm. 2.6.5]{smart2010infinity}. Namely, if for a constant $C\geq 0$ two functions $w,v:\domain_\conset^\nlscale\to\R$ satisfy
 \begin{align}\label{eq:maxprincnonl}
 -\Delta_\infty^\nlscale w \leq \revision{C} \leq -\Delta_\infty^\nlscale v\qquad\text{ in } V\subset \domain_\conset^\nlscale,
 \end{align}
@@ -2300,7 +2291,7 @@ In our case the function $w$ is chosen as $u^\nlscale_n$, $V=\domain_\constr^{2\
 \right| =: C_{n,\nlscale},
 \end{align*}
 %
-in which case the left inequality in \labelcref{eq:maxprincnonl} holds true. We now would like to chose $v = T_\nlscale u$ however, we now that $-\Delta^\nlscale_\infty T_\nlscale u\geq 0$. In order to obtain the desired inequality, we employ a perturbation trick. First we see that \cite[Lem. 2.6.4]{smart2010infinity} tells us that for a bounded function $v:\domain_\constr^\nlscale\to\R$ with $-\Delta_\infty^\nlscale v \geq 0$ on $\domain_\constr^{2\nlscale}$, there exists $\delta_0>0$ such that for any $0\leq\delta\leq\delta_0$ the function $w:=v-\delta v^2$ satisfies
+and therefore the left inequality in \labelcref{eq:maxprincnonl} holds true. We now would like to chose $v = T_\nlscale u$ however, we know that $-\Delta^\nlscale_\infty T_\nlscale u\geq 0$. In order to obtain the desired inequality, we employ a perturbation trick. First we see that \cite[Lem. 2.6.4]{smart2010infinity} tells us that for a bounded function $v:\domain_\constr^\nlscale\to\R$ with $-\Delta_\infty^\nlscale v \geq 0$ on $\domain_\constr^{2\nlscale}$, there exists $\delta_0>0$ such that for any $0\leq\delta\leq\delta_0$ the function $w:=v-\delta v^2$ satisfies
 \begin{align*}
 -\Delta_\infty^\nlscale w \geq -\Delta_\infty^\nlscale v + \delta(S^-_\nlscale v)^2\quad\text{on }\domain_\constr^{2\nlscale}.
 \end{align*}
@@ -2319,7 +2310,7 @@ S^-_\nlscale T_\nlscale u(x) &= \frac{1}{\tau} \left(u(y_0) - T_\nlscale T_\nlsc
 \frac{1}{\tau} \left( u(y_0) - (u(y_0) - \tau \inf_{\cl\domain} \abs{\nabla u})\right)\\ &= \alpha,
 \end{align*}
 %
-and therefore we have $-\Delta_\infty^\nlscale w \geq C_{n,\nlscale}$. Furthermore, we see that $\norm{w- T_\nlscale u}_\infty \leq \frac{c}{\alpha^2} C_{n,\nlscale}$ for some $c>0$, which allows to make the following estimate
+and therefore we have $-\Delta_\infty^\nlscale w \geq C_{n,\nlscale}$. Furthermore, we see that $\norm{w- T_\nlscale u}_\infty \leq \frac{c}{\alpha^2} C_{n,\nlscale}$ for some $c>0$, which allows us to make the following estimate
 %
 \begin{align*}
 \sup_{\domain_\constr^{\tilde\nlscale_n}}(u_n^\nlscale-T_\nlscale u) 
@@ -2332,7 +2323,7 @@ and therefore we have $-\Delta_\infty^\nlscale w \geq C_{n,\nlscale}$. Furthermo
 \end{align*}
 %
 %
-In the case that $\alpha=0$ we need to apply the additional perturbation trick from \cite[Lem. 2.6.3]{smart2010infinity}, which traditionally introduces a root of order $3$. In total we then have the following result. Here we only include the results for the sub-solutions, the respective other inequality holds analogously and can be found in \cite[Prop. 5.16]{bungert2021uniform}.
+In the case that $\alpha=0$ we need to apply the additional perturbation trick from \cite[Lem. 2.6.3]{smart2010infinity}, which traditionally introduces a root of order $3$. In total, we then have the following result. Here we only include the results for the sub-solutions, the respective other inequality holds analogously and can be found in \cite[Prop. 5.16]{bungert2021uniform}.
 %
 \begin{proposition}{\cite[Prop. 5.16]{bungert2021uniform}}{}
 Under the previous assumptions there exists a constant $C>0$ such that
@@ -2384,7 +2375,7 @@ Here, we briefly comment on the numerical examples conducted in \cite{bungert202
 u(x_1,x_2) = \abs{x_1}^{4/3} - \abs{x_2}^{4/3}.
 \end{align*}
 %
-We choose the constraint set $\conset = \{(\pm 1,0),(0,\pm 1),\}$ with the boundary values given by $u$. In order to ensure that $u$ is the AMLE of its boundary values we choose the domain $\domain$ such that the Neumann boundary condition on $\partial\domain$ is fulfilled. In \cite{bungert2021uniform} we therefore introduce the Aronsson star
+We choose the constraint set $\conset = \{(\pm 1,0),(0,\pm 1),\}$ with the boundary values given by $u$. In order to ensure that $u$ is the AMLE of its boundary values, we choose the domain $\domain$ such that the Neumann boundary condition on $\partial\domain$ is fulfilled. In \cite{bungert2021uniform} we therefore introduce the Aronsson star
 %
 \begin{align*}
 \domain:=\left\{x\in[0,1]^2 \st \abs{x_1}^{2/3}+\abs{x_2}^{2/3}\leq 1\right\},
@@ -2408,12 +2399,12 @@ The results are displayed in \cite[Fig. 1--Fig. 4]{bungert2021uniform}, where we
 \end{enumerate}
 %
 %
-Concerning (i) we note that this does not directly imply that our analysis is not sharp. Typically, rates for the Aronsson function are better than the ones one can proof in general, see e.g. \cite{smart2010infinity}. Regarding point (iii) we want to mention the follow-up work \cite{bungert2022ratio}, which deals with the case $\gscale_n\sim\gres_n$. Working in the setting of first passage percolation we are able to show a rate for the quantity
+Concerning (i) we note that this does not directly imply that our analysis is not sharp. Typically, rates for the Aronsson function are better than the ones one can proof in general, see, e.g., \cite{smart2010infinity}. Regarding point (iii) we want to mention the follow-up work \cite{bungert2022ratio}, which deals with the case $\gscale_n\sim\gres_n$. Working in the setting of first passage percolation, we are able to show a rate for the quantity,
 %
 \begin{align*}
 \abs{\frac{\mathbb{E}[d_{\gscale_s,\mathcal{X}_s}(0,se_1)]}{\mathbb{E}[d_{\gscale_s,\mathcal{X}_s}(0,2se_1)]}
--\frac{1}{2}}
+-\frac{1}{2}},
 \end{align*}
 %
-is shown, \cite[Thm. 2.1]{bungert2022ratio}. Here, $\mathcal{X}_s$ denote modified Poisson point processes, over which the expectation is taken. The distance $d_{\gscale_s,\mathcal{X}_s}(0,se_1)$ is basically a graph distance with unit weights, connecting $0$ and the point $se_1$. We observe that this term is reminiscent of the dominating term \cref{eq:leadingrate} we have in \cite{bungert2022ratio}. In fact, employing the same strategy as displayed in the previous paragraphs, in \cite{bungert2022ratio} we are able to show a rate
+see \cite[Thm. 2.1]{bungert2022ratio}. Here, $\mathcal{X}_s$ denote modified Poisson point processes, over which the expectation is taken. The distance $d_{\gscale_s,\mathcal{X}_s}(0,se_1)$ is basically a graph distance with unit weights, connecting $0$ and the point $se_1$. We observe that this term is reminiscent of the dominating term \cref{eq:leadingrate} we have in \cite{bungert2022ratio}. In fact, employing the same strategy as displayed in the previous paragraphs, in \cite{bungert2022ratio} we are able to show a rate
 in the case $\gscale_n\sim \gres_n$.
