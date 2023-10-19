@@ -1,0 +1,121 @@
+% ======================================
+\chapter{Inhalt und Struktur}
+%
+
+Diese Arbeit ist in zwei Hauptteile strukturiert, \cref{part:Intro}, welche die Themen und Resultate der Publikation präsentiert und erklärt, welche in \cref{part:Prints} erneut abgedruckt sind.
+
+%
+%
+\begin{center}%
+\begin{tikzpicture}
+\hypersetup{linkcolor=black}%
+\filldraw[fill=sky!20, draw=none] (0,11) rectangle (7.,10); %
+\node[draw=none, align=center] at (3.5,10.5) {\cref{part:Intro}: \nameref{part:Intro}};
+%
+\filldraw[fill=sky!10, draw=none] (0,10) rectangle (7,9); %
+\node[draw=none, align=center] at (3.5,9.5) {%
+\parbox{.45\textwidth}{\small\cref{ch:para}: \nameref{ch:para}}};
+%
+\draw[draw=sky!30, thick] (0,9) -- (7, 9); %
+%
+\filldraw[fill=sky!10, draw=none] (0,9) rectangle (7,8); %
+\node[draw=none, align=center] at (3.5,8.5) {%
+\parbox{.45\textwidth}{\small\cref{ch:SSL}: \nameref{ch:SSL}}};
+%
+\draw[draw=sky!30, thick] (0,8) -- (7, 8); %
+%
+\filldraw[fill=sky!10, draw=none] (0,8) rectangle (7,7); %
+\node[draw=none, align=center] at (3.5,7.5) {%
+\parbox{.45\textwidth}{\small\cref{ch:SL}: \nameref{ch:SL}}};
+%
+%
+%
+\filldraw[fill=apple!20, draw=none] (7.5,11) rectangle (14.5,10);%
+\node[draw=none, align=center] at (11.,10.5) {\cref{part:Prints}: \nameref{part:Prints}};
+%
+\filldraw[fill=apple!10, draw=none] (7.5,10) rectangle (14.5,9); %
+\node[draw=none, align=center] at (11.,9.5) {---% 
+};
+%
+\draw[draw=apple!30, thick] (7.5,9) -- (14.5, 9); %
+%
+\filldraw[fill=apple!10, draw=none] (7.5,9) rectangle (14.5,8); %
+\node[draw=none, align=center] at (11.,8.5) {%
+{\small\cref{paper:roith2022continuum,paper:bungert2021uniform}}};
+%
+\draw[draw=apple!30, thick] (7.5,8) -- (14.5, 8); %
+%
+\filldraw[fill=apple!10, draw=none] (7.5,8) rectangle (14.5,7); %
+\node[draw=none, align=center] at (11.,7.5) {%
+{\small\cref{paper:bungert2022bregman,paper:bungert2021clip,paper:kabri2023resolution}}};
+\end{tikzpicture}
+\end{center}
+%
+%
+%
+%
+\section*{Einleitung und Motivation}
+%
+%
+Das Gebiet des maschinellen Lernens entstand in den 1950er Jahren, motiviert durch die Idee, einen Computer Algorithmen und Muster entdecken zu lassen, ohne sie explizit von Hand anordnen zu müssen. Nach der Anfangsphase und mehreren \enquote{AI-winters} \cite{steele1996evolution} haben zahlreiche wichtige Entwicklungen -- z.~B. die Wiederentdeckung der \enquote{Backpropagation}, welche ursprünglich auf \cite{kelley1960gradient,rosenblatt1962principles} zurückgeht und dann in \cite{rumelhart1986learning} popularisiert wurde, siehe z.~B. \cite{schmidhuber2022annotated} -- zur Relevanz der Lernmethoden beigetragen. Die Fortschritte im Bereich von Computer-Hardware, zusammen mit der Verfügbarkeit großer Datenmengen, haben schließlich den Enthusiasmus für maschinelles Lernen der letzten Jahre entfacht. Während \enquote{deep} Learning Methoden, d.~h. Techniken, die mehrere neuronale Layer verwenden, wie sie ursprünglich in \cite{rosenblatt1958perceptron} vorgeschlagen wurden, die prominentesten Beispiele sind, gibt es eine ganze Familie von lernbasierten Strategien, welche aktiv in Bereichen wie Computer Vision \cite{chai2021deep}, Sprachverarbeitung \cite{khurana2023natural} oder für medizinische Zwecke \cite{shehab2022machine} angewendet werden. In dieser Arbeit konzentrieren wir uns hauptsächlich auf datenbasierte Ansätze, angewendet auf Klassifizierungsaufgaben, wobei die konkrete Modalität der gegebenen Daten unsere Strategie bestimmt. Wir konzentrieren uns auf überwachtes Lernen -- der Datensatz besteht nur aus Eingabe-Ausgabe-Paaren, d.~h., er ist vollständig gelabelt -- und halb-überwachtes Lernen -- die Daten sind nur teilweise gelabelt.
+
+Beide datenbasierten Methoden waren vor allem in den letzten 20 Jahren sehr erfolgreich. Allerdings weisen die manchmal rein heuristischen Lernstrategien auch gravierende Nachteile auf. Beim überwachten Lernen ist man oft an der Generalisierung eines Klassifizierers interessiert, d.~h. wie akkurat ist das Ergebnis auf ungesehenen Eingaben, die nicht Teil der Trainingsdaten sind. In \cite{goodfellow2014explaining} wurde entdeckt, dass die Ausgaben des Klassifizierers durch kleine, scheinbar unsichtbare Störungen, die als \textit{adversarial attacks} bekannt sind, vollständig verfälscht werden können. Allgemeiner führt uns dieses Phänomen zum Thema \textit{Robustheit} unter Eingabestörungen. Nehmen wir an, dass ein Mensch und eine Maschine eine Eingabe $\inp$ als vom Typ $c$ einstufen würden. In einer eher vagen, aber anschaulichen Formulierung lautet die wichtigste Implikation, die wir für eine Eingabe $\inpp$ erhalten wollen
+%
+\begin{align*}
+\left.
+\begin{gathered}
+\inpp\text{ liegt nahe an }\inp,\\
+\inpp\text{ wird von einem Menschen noch als }c\text{ eingestuft}
+\end{gathered}
+\right\}
+\Rightarrow
+\text{die Maschine stuft }\inpp\text{ als }c  \text{ ein.} 
+\end{align*}
+%
+Neben adversarial Examples gehört dazu auch das Ändern der Auflösung von Bildern, welche die Klassifizierung durch einen Menschen nicht verändern, sofern sie hinreichend klein sind. In jedem Fall zeigt das Vorhandensein dieser Störungen kritische Schwächen der Lernmethoden auf und erfordert ein besseres theoretisches Verständnis der verwendeten Modelle. An dieser Stelle wird die mathematische Grundlage des Fachgebiets relevanter und es kommen Eigenschaften ins Spiel, die über die Klassifizierungsleistung hinausgehen und die in dieser Arbeit diskutiert werden.
+
+Im halb-überwachten Setting betrachten wir Graphbasierte Algorithmen, wie sie ursprünglich in \cite{zhu2003semi} mit dem Graph Laplace vorgeschlagen wurden. Das Hauptproblem, das wir in dieser Arbeit hervorheben, wurde zuerst in \cite{nadler2009statistical} beobachtet, nämlich dass die Klassifizierungsleistung mit steigender Dimension der Daten deutlich abnimmt. Es stellte sich heraus, dass die mit dem Graph-Laplace erhaltenen Lösungen über den gesamten Datensatz hinweg konstant sind, wenn die Dimension größer als zwei ist, was mit dem Sobolev Einbettungssatz \cite{adams2003sobolev} in Verbindung gebracht werden kann. Dieses Problem zeigt sich vor allem, wenn die Zahl der unbeschrifteten Datenpunkte gegen unendlich geht, was uns zu der Frage der \textit{Konsistenz} für halb-überwachte Algorithmen führt.
+
+Ein Problem, das für überwachte und halb-überwachte Algorithmen gleichermaßen gilt, ist der hohe Bedarf an Rechenressourcen. Das Training eines neuronalen Netzes erfordert in der Regel den Einsatz von GPUs über einen langen Zeitraum. Dies macht den Prozess einerseits für weniger leistungsfähige Maschinen oder sogar mobile Geräte undurchführbar und erzeugt andererseits große Mengen an CO$_2$-Emissionen \cite{hoefler2021sparsity}. Für graphbasiertes, halb-überwachtes Lernen müssen zunächst Entfernungen zwischen vielen Datenpunkten berechnet werden, um Kantengewichte zu erhalten, was eine kostspielige Aufgabe ist. Außerdem skaliert die Rechenkomplexität verschiedener Probleme auf einem gegebenen Graphen mit der Anzahl der Kanten. Beispielsweise skaliert die Laufzeit von Dijkstras Algorithmus zur Berechnung kürzester Pfade in einem Graphen bereits linear mit der Anzahl der Kanten. In dieser Arbeit ist das Schlüsselwort zur Reduzierung der Rechenlast in beiden Fällen \textit{Dünnbesetztheit}. Das Konzept von dünnbesetzten Matrizen ist tief in der numerischen linearen Algebra verwurzelt \cite{lanczos1952solution,golub2013matrix} und besteht im Wesentlichen darin, Nullen in einer Matrix auszunutzen, um die Berechnungszeit zu beschleunigen. Bei neuronalen Netzen kann dies dadurch erreicht werden, dass die Gewichtsmatrizen der Layer dünnbesetzt sein müssen. Bei Graphen bedeutet eine dünnbesetzte Konnektivitätsmatrix einfach, dass nur eine kleine Anzahl an Kanten aktiv ist, was ebenfalls die Rechenkosten reduziert.
+%
+%
+\paragraph{Beiträge in dieser Arbeit}
+%
+Anknüpfend an die zuvor genannten Themen befasst sich diese Arbeit mit \textit{Konsistenz, Robustheit} und \textit{Dünnbesetztheit} von überwachten und halb-überwachten Lernalgorithmen. 
+
+
+Für letztere betrachten wir hauptsächlich das sogenannte Lipschitz-Learning \cite{nadler2009statistical}, für die wir Konvergenz und Konvergenzraten für diskrete Lösungen zu Lösungen im Kontinuum zeigen, wenn die Anzahl der Datenpunkte gegen unendlich geht. Dabei arbeiten wir mit Annahmen, welche sehr dünnbesetzte und daher rechnerisch attraktive Graphen zulässt.
+
+
+Bei überwachtem Lernen befassen wir uns mit der Robustheit gegen adversarial Attacks und Auflösungsänderungen. Im ersten Fall schlagen wir einen effizienten Algorithmus vor, der die Lipschitz-Konstante \cite{lipschitz1877lehrbuch} eines neuronalen Netzes bestraft und ein damit robustes Netz trainiert. Im Multiresolution-Setting analysieren wir die Rolle von neuronalen Fourier-Operatoren, wie sie in \cite{li2020fourier} vorgeschlagen wurden, und ihre Verbindung zu normalen Faltungsoperatoren \cite{fukushima1980neocognitron}. Im Hinblick auf die Rechenkomplexität des Trainings neuronaler Netze schlagen wir einen auf Bregman Iterationen basierenden Algorithmus \cite{osher2005iterative} vor, der dünnbesetzte Gewichtsmatrizen während des gesamten Trainings ermöglicht. Zusätzliche analysieren wir die Konvergenz der stochastische Adaption der ursprünglichen Bregman Iterationen.
+
+
+\paragraph{Struktur der Exposition} In \cref{ch:para} stellen wir die Lernparadigmen und Grundbegriffe vor, die in dieser Arbeit verwendet werden. Anschließend stellen wir in \cref{ch:SSL} die Themen zur Konsistenz beim halb-überwachten Lernen auf Graphen vor. Nach einer erläuternden Einführung heben wir die Hauptbeiträge von \cite{roith2022continuum,bungert2021uniform} hervor. Dabei versuchen wir Redundanz zu den Publikationen in \cref{part:Prints} zu vermeiden und dennoch einen verständlichen Kontext zu ermöglichen. In \cref{ch:SL} kommentieren wir die Themen zum überwachten Lernen. Nach einer zusätzlichen Einleitung enthält das Kapitel drei Abschnitte, in denen die Arbeiten \cite{kabri2023resolution,bungert2021clip,bungert2022bregman} einzeln vorgestellt werden. Schließlich werden in \cref{ch:C} die Inhalte der gesamten Arbeit zusammengefasst und mögliche zukünftige Richtungen aufgezeigt.
+%
+%
+%
+%
+%
+\section*{Publikationen und Beitragsauflistung}
+Die folgenden Arbeiten sind Teil dieser Dissertation und werden in \cref{part:Prints} erneut abgedruckt.
+
+\printbibliography[keyword={papersA}, resetnumbers=true, heading=none]
+\printbibliography[keyword={papersB}, resetnumbers=true, heading=none]
+
+\noindent%
+Die folgenden Preprints sind kein Teil dieser Arbeit, geben aber zusätzliche Einsichten in die behandelten Themen.
+
+\printbibliography[keyword={papersC}, resetnumbers=true, heading=none]
+
+Im Folgenden führen wir TRs Beiträge zu den oben genannten Publikationen auf. 
+
+\paragraph{\cite{roith2022continuum}:} Diese Arbeit baut auf den Erkenntnissen von TRs Masterarbeit auf. Es ist allerdings wichtig anzumerken, dass die Resultate signifikant erweitert wurden und konzeptionell stärker als die der Masterarbeit sind, siehe dazu Abschnitt 3.3 in der Dissertation. TR adaptierte die Kontinuum-Limit-Theorie für den $L^\infty$-Fall, erarbeitet die meisten Beweise und schrieb einen großen Teil des Papers. In Zusammenarbeit mit LB, identifizierte er entscheidende Gebiets-Annahmen, welche es erlauben auch mit nicht-konvexen Gebieten zu arbeiten und bewies Konvergenz für angenäherte Randbedingungen.
+
+\paragraph{\cite{bungert2021uniform}:} In Zusammenarbeit mit LB, arbeitete TR an den Konvergenzbeweisen, basierenden auf den Ideen von JC. Zusammen mit LB und JC bewies er das Hauptresultat und die verschiedenen Lemmata, die darauf hinführen. Hierbei beschäftigte er sich vor allem mit der Adaption der Theorie für AMLEs auf den Graph-Fall, was das entscheidende Element für die ganze Arbeit ist. Weiterhin, trug er zur Gestaltung und Implementierung der numerischen Experimente, die im Paper durchgeführt wurden bei. 
+
+\paragraph{\cite{bungert2021clip}:} TR erarbeitete den Algorithmus, der im Paper vorgeschlagen wird, zusammen mit LB, basierend auf dessen Idee. Zusammen mit LS, RR und DT führte er die numerischen Beispiele durch und schrieb große Teile des Quellcodes. Weiterhin schrieb er entscheidende Teile des Papers, wobei DT das Dokument Korrektur lies und klarer formulierte.
+
+\paragraph{\cite{bungert2022bregman}:} TR erweiterte LBs Idee, Bregman Iterationen für dünnbesetztes Training einzusetzen, konzipiert durch DT. Zusammen mit MB und LB erarbeitete er die Konvergenzbeweise der stochastischen Bregman Iteration. Hier schlug er auch eine fundierte Initialisierungsstrategie vor. Weiterhin führte er die numerischen Beispiele durch und schrieb den größten Teil des Quellcodes.
+
+\paragraph{\cite{kabri2023resolution}:} Diese Arbeit beruht auf SKs Masterarbeit und verwendet die ursprünglichen Ideen MBs, zu Auflösungsinvarianz mithilfe von FNOs. Im Paper erarbeitete TR die Beweise zur Wohldefiniertheit und Fréchet-Differenzierbarkeit, zusammen mit SK. Er schrieb große Teile des Papers und des Source-Codes, wobei DT bei der Korrektur der publizierten Version mitgeholfen hat. Hierbei führte er die numerischen Studien zusammen mit SK durch.
+
