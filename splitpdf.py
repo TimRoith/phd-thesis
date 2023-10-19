@@ -3,7 +3,7 @@ from PyPDF2 import PdfWriter, PdfReader
 inputpdf = PdfReader(open("thesis.pdf", "rb"))
 output = PdfWriter()
 
-splits = {15:'Intro', 61:'SSL', 101:'SL', 116:'Outro'}
+splits = {16:'Intro', 67:'SSL', 107:'SL', 122:'Outro'}
 
 for i in range(len(inputpdf.pages)):
     output.add_page(inputpdf.pages[i])

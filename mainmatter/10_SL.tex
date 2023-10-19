@@ -1457,7 +1457,7 @@ h(\overline\param) - h(\param) - \langle\nabla h(\param), \overline\param - \par
 for all $\param,\overline\param\in\Param$. The mirror descent update then reads (\cite{nemirovskij1983problem, beck2003mirror})
 %
 \begin{align}\label{eq:mirror}
-\theta^{(k+1)} = \nabla h^\ast\left(\nabla h\left(\theta^{(k)}\right) - \tau \empLoss(\param^{(k)})\right)
+\theta^{(k+1)} = \nabla h^\ast\left(\nabla h\left(\theta^{(k)}\right) - \tau \nabla\empLoss(\param^{(k)})\right)
 \end{align}
 %
 where $h^\ast$ denotes the Fenchel conjugate
@@ -1476,11 +1476,11 @@ Therefore, we see that \cref{eq:mirror} can be written as
 %
 \begin{align*}
 \param^{(k+1)} &= \argmax_\param
-\left\{\left\langle\nabla h\left(\theta^{(k)}\right) - \tau \empLoss(\param^{(k)}), \param \right\rangle - h(\param)\right\}\\
+\left\{\left\langle\nabla h\left(\theta^{(k)}\right) - \tau \nabla\empLoss(\param^{(k)}), \param \right\rangle - h(\param)\right\}\\
 &=
-\argmax_\param \left\{-D_h(\param, \param^{(k)})-\tau\left\langle \empLoss(\param^{(k)}), \param \right\rangle\right\}\\
+\argmax_\param \left\{-D_h(\param, \param^{(k)})-\tau\left\langle \nabla\empLoss(\param^{(k)}), \param \right\rangle\right\}\\
 &=
-\argmin_\param \left\{D_h(\param, \param^{(k)})+\tau\left\langle \empLoss(\param^{(k)}), \param \right\rangle\right\}
+\argmin_\param \left\{D_h(\param, \param^{(k)})+\tau\left\langle \nabla\empLoss(\param^{(k)}), \param \right\rangle\right\}
 \end{align*}
 %
 which was our starting point to derive linearized Bregman iterations for $h=\func_{\delta}$ in \cref{eq:LinBregDer}. In fact, we can always find a convex functional $\func:\Theta\to\R$ such that $h = J + \frac{1}{2}\norm{\cdot}_2^2$. Therefore, we see, that \cref{eq:lin_bregman_iteration} is a more general formulation of \cref{eq:mirror}.
