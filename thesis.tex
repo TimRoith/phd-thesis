@@ -57,18 +57,22 @@ tocnumwidth=4em
 \input{mainmatter/10_SL.tex}
 \input{mainmatter/15_C.tex}
 \input{backmatter/thesis-printbib.tex}
-%%-------------------------------------------------
-\part{Prints}\label{part:Prints}
-\renewcommand{\expprefix}{P}
-\setcounter{chapter}{0}
-\renewcommand{\chapapp}{Print}
-\paperchapter{roith2022continuum}{}{}{1}{1}
-\paperchapter{bungert2021uniform}{}{}{1}{1}
-%% %
-\paperchapter{bungert2021clip}{}{}{1}{0}
-\paperchapter{bungert2022bregman}{}{}{1}{1}
-\paperchapter{kabri2023resolution}{}{}{1}{0}
-%-------------------------------------------------
+% ---------------------------------------
+\newif\ifprintpaper%
+%
+\ifprintpaper%
+    \part{Prints}\label{part:Prints}
+    \renewcommand{\expprefix}{P}
+    \setcounter{chapter}{0}
+    \renewcommand{\chapapp}{Print}
+    \paperchapter{roith2022continuum}{}{}{1}{1}
+    \paperchapter{bungert2021uniform}{}{}{1}{1}
+    %% %
+    \paperchapter{bungert2021clip}{}{}{1}{0}
+    \paperchapter{bungert2022bregman}{}{}{1}{1}
+    \paperchapter{kabri2023resolution}{}{}{1}{0}
+\fi%
+%-------------------------------------------
 %\declarationGer
 %-------------------------------------------------
 \end{document}

@@ -321,7 +321,7 @@ von \textbf{\@author}
 		giveninits=true,%
 		hyperref=true,%
 		uniquename=init,%
-		sorting = none,
+		sorting = nty,
 		sortcites=false,% sort citations when multiple entries are passed to one cite command
 		doi=true,%
 		isbn=false,%
