@@ -1,13 +1,23 @@
+\bibsetup{
+  \setcounter{abbrvpenalty}{0}
+  \setcounter{highnamepenalty}{0}
+  \setcounter{lownamepenalty}{0}
+  \setcounter{biburlnumpenalty}{0}
+}
+\appto{\bibsetup}{\sloppy}
 \printbibheading
 \printbibliography[type = book,
                    title = Books,
                    heading = subbibliography]
-\printbibliography[type = article,
-                   title = Articles,
+\defbibfilter{papers}{
+  type=article or
+  type=online or
+  type=inproceedings or
+  type=incollection
+}
+\printbibliography[filter = papers,
+                   title = Articles and Online,
                    heading = subbibliography]
 \printbibliography[type = thesis,
 				   title = Theses,
 				   heading = subbibliography]
-\printbibliography[type = online,
-                   title = Online,
-                   heading = subbibliography]

@@ -54,10 +54,10 @@ where for a function $\ell:\OutSpace\times\OutSpace\to\R$ we define
 %
 \begin{remark}{}{}
 %
-Assuming that $\tset$ is sampled from a joint distribution $P_{\Inp,\Oup}$ on $\Inp\times\Oup$ this approximates the computational infeasible population risk minimization problem
+Assuming that $\tset$ is sampled from a joint distribution $P_{\Inp,\Oup}$ on $\Inp\times\Oup$ this approximates the computationally infeasible population risk minimization problem
 %
 \begin{align*}
-\inf_{\param\in\Param}\int_{\Inp\times\OutSpace} \ell(f_\param(x), y) d\pi(x,y).
+\inf_{\param\in\Param}\int_{\Inp\times\OutSpace} \ell(f_\param(x), y) d P_{\Inp,\Oup}(x,y).
 \end{align*}
 \end{remark}
 %
@@ -303,7 +303,7 @@ Adversarial robustness is closely related to the Lipschitzness of a network $\ne
 \norm{\net_\param(\inp) - \net_\param(\inpp)}_\Oup \leq L\ \norm{\inp-\inpp}_\Inp,
 \end{align*}
 %
-where we typically employ an $L^p$ norm for both $\norm{\cdot}_\Inp$ and $\norm{\cdot}_\Oup$.
+where we typically use an $L^p$ norm for both $\norm{\cdot}_\Inp$ and $\norm{\cdot}_\Oup$.
 %
 The smallest constant fulfilling this inequality is the Lipschitz constant $\Lip(\net_\param)$. If this constant is small, one can expect that small input perturbations do not affect the classification output significantly.
 %
@@ -319,7 +319,7 @@ In our work, we employ the Lipschitz constant as a regularizer and consider the 
 \min_\param \empLoss(\param) +\lambda\ \Lip(\net_\param)
 \end{align}
 %
-for a parameter $\lambda>0$. Computing the Lipschitz constant of neural networks is an NP-hard problem \cite{scaman2018lipschitz}, therefore many works employ the estimate
+for a parameter $\lambda>0$. Computing the Lipschitz constant of neural networks is an NP-hard problem \cite{scaman2018lipschitz}, therefore many works rely on the estimate
 %
 \begin{align}\label{ineq:lip_weights}
 \lip(\net_\param) \ \leq \ \prod_{l=1}^L  \lip(\Phi_l) \leq 
@@ -430,7 +430,7 @@ In \cite{bungert2021clip} we analyze some basic properties of the original regul
 %
 Employing only \cref{ass:net} one can show that the map $\param\mapsto \Lip(\net_\param)$ is lower semi-continuous, \cite[Lem. 1]{bungert2021clip}. 
 %
-\paragraph{Existence} If $\Param$ is compact or finite, one can show that there exist solutions of the problem in \cref{eq:LipReg}. In the general case, one needs to add a norm term, that ensures boundedness of a minimizing sequence. The following is the main existence result, which can be proven by the direct method in the calculus of variations \cite{dacorogna2007direct}.
+\paragraph{Existence} If $\Param$ is a compact subset of a reflexive Banach space or finite, one can show that there exist solutions of the problem in \cref{eq:LipReg}. In the general case, one needs to add a norm term, that ensures boundedness of a minimizing sequence. The following is the main existence result, which can be proven by the direct method in the calculus of variations \cite{dacorogna2007direct}.
 %
 \begin{proposition}{\cite[Prop. 1]{bungert2021clip}}{}
 Under \cref{ass:closs,ass:net,ass:exist} the problem
@@ -814,7 +814,7 @@ Zero-padding of the spectral coefficients only fulfills Hermitian symmetry in th
 In this section, we comment on the theoretical findings in \cite{kabri2023resolution}. We first consider the abstract neural layer as in \cref{eq:layerdef} for which we show continuity and Fréchet-differentiability.
 %
 %
-\paragraph{Continuity of Neural Layers} The results for neural layers in \cite{kabri2023resolution} mostly fall back to the theory of \Nem{} operators, see, e.g., \cite{tröltzsch, ambrosetti}. In order to show that the layer $\mathcal{G}$ is a well-defined mapping from $L^p$ to $L^q$ one first needs to identify an exponent $r\in [1,\infty]$ such that the affine part is a mapping $\Psi:L^p\to L^r$. For example, if $\kappa\in L^s$ with $1/r + 1 = 1/p + 1/s$ it follows from Young's convolution inequality that $\mathcal{K}$ maps to $L^r$, see \cite[Thm. 1.2.12]{grafakos}. If then $W=0$ and $b\in L^r$ we know that $\Psi$ maps to $L^r$.
+\paragraph{Continuity of Neural Layers} The results for neural layers in \cite{kabri2023resolution} mostly rely on the theory of \Nem{} operators, see, e.g., \cite{tröltzsch, ambrosetti}. In order to show that the layer $\mathcal{G}$ is a well-defined mapping from $L^p$ to $L^q$ one first needs to identify an exponent $r\in [1,\infty]$ such that the affine part is a mapping $\Psi:L^p\to L^r$. For example, if $\kappa\in L^s$ with $1/r + 1 = 1/p + 1/s$ it follows from Young's convolution inequality that $\mathcal{K}$ maps to $L^r$, see \cite[Thm. 1.2.12]{grafakos}. If then $W=0$ and $b\in L^r$ we know that $\Psi$ maps to $L^r$.
 
 To ensure that the \Nem{} operator defines a mapping $\sigma:L^r\to L^q$, one needs to assume a growth condition on $\sigma:\R\to\R$, see \cite[Eq. 4]{kabri2023resolution} and originally \cite{tröltzsch}. Under these assumptions, we obtain \cite[Prop. 1]{kabri2023resolution}. Concrete examples fulfilling these assumptions are given in \cite{kabri2023resolution} borrowing concepts from \cite{ambrosetti, tröltzsch}. The most important activation function that is valid in this setting is the ReLU function
 %
@@ -873,7 +873,7 @@ where $\Phi$ is the CDF of the standard normal distribution, can be employed.
 \paragraph{Convertibility Between FNOs and CNNs}
 %
 %
-The following lemma formalizes the intuition that FNOs and CNNs are equivalent in certain settings. Given inputs of a fixed discretization $\mathcal{J}_N$ and parameters $\param\in\R^{\mathcal{J}_M}$, the standard convolution implementation is equivalent to the spectral one w.r.t. the parameters $\hat\param = \lambda\, F(\param^{M\to N})$. The subtle but important point here, is that the number of spectral parameters needs to be equal to the input size in order to achieve equivalence. In \cite[Fig.3]{kabri2023resolution} we observe numerically that the number of used spectral coefficients actually needs to match the input size in order to achieve equivalence.
+The following lemma formalizes the intuition that FNOs and CNNs are equivalent in certain settings. Given inputs of a fixed discretization $\mathcal{J}_N$ and parameters $\param\in\R^{\mathcal{J}_M}$, the standard convolution implementation is equivalent to the spectral one w.r.t. the parameters $\hat\param = \lambda\, F(\param^{M\to N})$. The subtle but important point here, is that the number of spectral parameters needs to be equal to the input size in order to achieve equivalence. In \cite[Fig. 3]{kabri2023resolution} we observe numerically that the number of used spectral coefficients actually needs to match the input size in order to achieve equivalence.
 %
 %
 \begin{lemma}{\cite[Lem. 3]{kabri2023resolution}}{lem:FNOconv}
@@ -1002,7 +1002,7 @@ Our work falls into the regime of sparse-to-sparse training. However, instead of
 
 We first review some necessary concepts from convex analysis that allow us to introduce the framework in \cite{bungert2022bregman}. We refer to \cite{benning2018modern, rockafellar1997convex, bauschke2011convex} for a more exhaustive introduction to these topics.
 %
-In the following, we focus on a lower semi-continuous regularization functional $J:\Param\to (-\infty,\infty]$. Here, $\func$ is called lower semi-continuous if $\func(u)\leq\liminf_{n\to\infty}\func(u_n)$ holds for all sequences $(u_n)_{n\in\N}\subset\Param$ converging to $u$. Furthermore, we require the functional to be convex.
+In the following $\Param$ denotes a Hilbert space and we focus on a lower semi-continuous regularization functional $J:\Param\to (-\infty,\infty]$. Here, $\func$ is called lower semi-continuous if $\func(u)\leq\liminf_{n\to\infty}\func(u_n)$ holds for all sequences $(u_n)_{n\in\N}\subset\Param$ converging to $u$. Furthermore, we require the functional to be convex.
 %
 \begin{definition}{}{}
 Given a Hilbert space $\Param$ and a functional $\func:\Param\to(-\infty,\infty]$.
@@ -1051,8 +1051,9 @@ For $\sg\in\partial\func({\param})$ and $\overline\sg\in\partial\func(\overline{
 D^\mathrm{sym}_\func(\overline{\param},\param) := D^\sg_\func(\overline{\param},\param) + D^{\overline{\sg}}_\func(\param,\overline\param).
 \end{align}
 \end{definition}
-% ---------------------------------------------------------
-Intuitively, the Bregman distance $D^\sg_\func(\overline{\param},\param)$, measures the distance of $\func$ to its linearization around $\param$, see \cref{fig:Bregdist}. If $J$ is differentiable, then the subdifferential is single valued---we can suppress the sup script $\sg$---and we obtain
+% -------------------------------
+\noindent%
+Intuitively, the Bregman distance $D^\sg_\func(\overline{\param},\param)$, measures the distance of $\func$ to its linearization around $\param$, see \cref{fig:Bregdist}. If $J$ is differentiable, then the subdifferential is single valued---we can suppress the super script $\sg$---and we obtain
 %
 \begin{align*}
 D_J(\overline\param,\param) = \func(\overline \param)-\func({\param})-\langle\,\nabla \func(\param), \overline\param-{\param}\rangle.
@@ -1278,7 +1279,7 @@ This yields the \emph{Bregman iteration} of \cite{osher2005iterative}
 %
 The nature of Bregman iterations requires starting with an iterate $\param^{(0)}$ that has a low value in $J$---preferably $J(\param^{(0)}) = 0$---and only increase $J(\param^{(k)})$ gradually in each step.
 %
-\begin{remark}{}{}
+\begin{remark}{}{rem:early}
 Originally, the iterations were employed for solving inverse problems. Here, we are given a forward operator $A:\Param\to\tilde{\Param}$ and a noisy measurement $f= A\param +\delta$ where $\delta\in \tilde{\Param}$ models additive noise. The loss function is then of the form
 %
 \begin{align*}
@@ -1297,7 +1298,7 @@ see, e.g., \cite{osher2005iterative}. In comparison to this, the concept of addi
 \min_\param \empLoss(\param) + \lambda J(\param) 
 \end{align*}
 %
-actually modifies the minimizers. In this sense, Bregman iterations do not introduce a bias.
+actually modifies the minimizers. In this sense, Bregman iterations do not introduce a bias. However, for applications like image denoising, where $A$ is the identity, this also implies that the iterations converge back to the noisy image. Therefore, one often has to employ an early stopping criterion.
 \end{remark}
 %
 %
@@ -1325,35 +1326,50 @@ It should also be noted that this example only serves a explanatory purpose. In 
 \begin{figure}
 \begin{minipage}{\textwidth}%
 \begin{subfigure}{.3\textwidth}%
-\includegraphics[width=\textwidth]{atelier/breg_cat/cat-0.png}
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-0.png}
 \subcaption{Iteration $k=0$}
 \end{subfigure}\hfill%
 \begin{subfigure}{.3\textwidth}%
-\includegraphics[width=\textwidth]{atelier/breg_cat/cat-10.png}
-\subcaption{Iteration $k=10$}
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-5.png}
+\subcaption{Iteration $k=5$}
 \end{subfigure}\hfill%
 \begin{subfigure}{.3\textwidth}%
-\includegraphics[width=\textwidth]{atelier/breg_cat/cat-20.png}
-\subcaption{Iteration $k=20$}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-10.png}
+\subcaption{Iteration $k=10$}%
 \end{subfigure}
 \end{minipage}\\%
 
 \begin{minipage}{\textwidth}%
 \begin{subfigure}{.3\textwidth}%
-\includegraphics[width=\textwidth]{atelier/breg_cat/cat-50.png}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-20.png}%
+\subcaption{Iteration $k=20$}%
+\end{subfigure}\hfill%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-50.png}%
 \subcaption{Iteration $k=50$}%
 \end{subfigure}\hfill%
 \begin{subfigure}{.3\textwidth}%
-\includegraphics[width=\textwidth]{atelier/breg_cat/cat-95.png}%
-\subcaption{Iteration $k=100$}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-100.png}
+\subcaption{Iteration $k=100$}
+\end{subfigure}%
+\end{minipage}\\%
+
+%
+\begin{minipage}{\textwidth}%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-150.png}%
+\subcaption{Iteration $k=150$}%
 \end{subfigure}\hfill%
 \begin{subfigure}{.3\textwidth}%
-\includegraphics[width=\textwidth]{atelier/breg_cat/data.png}
-\subcaption{Iteration $k=500$}
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-200.png}%
+\subcaption{Iteration $k=200$}%
+\end{subfigure}\hfill%
+\begin{subfigure}{.3\textwidth}%
+\includegraphics[width=\textwidth]{atelier/breg_cat/it-295.png}
+\subcaption{Iteration $k=300$}
 \end{subfigure}%
 \end{minipage}%
-%
-\caption{Bregman iterations for image denoising in \cref{ex:BregCat}.}\label{fig:BregCat}
+\caption[Bregman iterations for image denoising.]{Bregman iterations for the image denoising in \cref{ex:BregCat}. We observe the inverse scale space character of the method. Furthermore, we see that the iterations converge back to the noisy data as described in \cref{rem:early}. In order to solve the inner problem we employed the split Bregman method of \cite{goldstein2009split}.}\label{fig:BregCat}
 \end{figure}%
 %
 %
@@ -1483,7 +1499,7 @@ Therefore, we see that \cref{eq:mirror} can be written as
 \argmin_\param \left\{D_h(\param, \param^{(k)})+\tau\left\langle \nabla\empLoss(\param^{(k)}), \param \right\rangle\right\}
 \end{align*}
 %
-which was our starting point to derive linearized Bregman iterations for $h=\func_{\delta}$ in \cref{eq:LinBregDer}. In fact, we can always find a convex functional $\func:\Theta\to\R$ such that $h = J + \frac{1}{2}\norm{\cdot}_2^2$. Therefore, we see, that \cref{eq:lin_bregman_iteration} is a more general formulation of \cref{eq:mirror}.
+which was our starting point to derive linearized Bregman iterations for $h=\func_{\delta}$ in \cref{eq:LinBregDer}. In fact, since it is strongly convex, we can always find a convex functional $\func:\Theta\to\R$ such that $h = J + \frac{1}{2}\norm{\cdot}_2^2$. Therefore, we see, that \cref{eq:lin_bregman_iteration} is a more general formulation of \cref{eq:mirror}.
 %
 %
 \subsection{Stochastic and Momentum Variants}\label{sec:Bregmom}
@@ -1559,7 +1575,14 @@ We remark, that this property is weaker than the bounded gradient assumption
 \E\left[\norm{g(\param;\omega)}^2\right] \leq C
 \end{align*}
 %
-for some constant $C>0$. In fact, this condition can not be enforced together with a strong convexity assumption---which we employ in \cref{thm:cvgc_norm}---as shown in \cite{pmlr-v80-nguyen18c}.
+for some constant $C>0$. This condition would contradict a strong convexity assumption---which we employ in \cref{thm:cvgc_norm}---as shown in \cite{pmlr-v80-nguyen18c}. A weaker and more realistic assumption is the affine variance condition, as used in \cite{faw2022power}%
+%
+\begin{align*}
+\E\left[\norm{g(\param;\omega)-\nabla\empLoss(\param)}^2\right] \leq \sigma_0^2 + 
+\sigma_1^2\ \norm{\nabla\empLoss(\param)}^2,
+\end{align*}
+%
+for constants $\sigma_0,\sigma_1$. Proving convergence of the stochastic linearized Bregman iterations under the previous assumption is an interesting open problem.
 \end{remark}
 \paragraph{Assumptions on the Regularizer and on the Loss Function}
 %
@@ -1607,7 +1630,7 @@ Plugging in the definition of the Bregman dist $D_\empLoss$ we obtain
 \langle \nabla\empLoss(\param), \pparam-\param\rangle.
 \end{align*}
 %
-In this form, one observes that this is in fact a convexity assumption on $\empLoss$ in a $\func$ dependent distance, as employed in \cite{bungert2022bregman}.
+In this form, one observes that this is in fact a convexity assumption on $\empLoss$ w.r.t. a $\func$ dependent distance, as employed in \cite{bungert2022bregman}.
 %
 %
 \begin{assumption}{Strong convexity}{ass:muconvex} 
@@ -1638,7 +1661,7 @@ The first convergence result considers the loss decay of the iterates. Here, we 
 \end{align*}
 %
 %
-In our setting, employing a stochastic gradient estimator, we are able to prove a similar estimate. We obtain an additional term scaled by $\sigma$, which controls the expected squared difference between the gradient estimator and the actual gradient. It should however be noted, that the proof is not only a trivial extension of the one in \cite{benning2018modern}.
+In our setting, employing a stochastic gradient estimator, we are able to prove a similar estimate. We obtain an additional term scaled by $\sigma$, which controls the expected squared difference between the gradient estimator and the actual gradient.
 %
 %
 \begin{theorem}{\cite[Thm. 2]{bungert2022bregman}: Loss decay}{thm:decreasingloss}

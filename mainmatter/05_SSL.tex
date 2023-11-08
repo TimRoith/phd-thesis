@@ -1,10 +1,10 @@
-\chapter{Consistent Semi-Supervised\phantom{-----} Learning on Sparse Graphs}\label{ch:SSL}
+\chapter{\raggedright Consistent Semi-Supervised Learning on Sparse Graphs}\label{ch:SSL}
 
 This chapter considers the consistency of graph-based semi-supervised learning methods and contextualizes the topics provided in the prints \cite{roith2022continuum, bungert2021uniform}. We are given partially labeled data, where the task is to obtain a labeling on the  whole graph. Considering learning algorithms, we are especially interested in the following aspects:
 %
 \begin{itemize}
-\item \textbf{Consistency:} what is the behavior in the infinite data limit?
-\item \textbf{Sparsity:} how does sparsity of the graph weights affect this behavior?
+\item \textbf{Consistency:} What is the behavior in the infinite data limit?
+\item \textbf{Sparsity:} How does sparsity of the graph weights affect this behavior?
 \end{itemize}
 %
 %
@@ -66,7 +66,7 @@ Before we present these works, we first introduce the setting of consistency for
 
 In the semi-supervised learning setting of \cref{sec:PSSL}, we are given a finite set $\domain_n\subset \tilde{\domain}$ consisting of $n$ points, where $\tilde{\domain}$ 
 denotes the input space. We assume that a non-empty subset $\conset_n \subset \domain_n$ is labeled, i.e., we are given a labeling function
-$\vec g:\conset_n\to\R$. From now on, we denote functions acting on a discrete set $\domain_n$ using bold symbols to distinguish them from functions acting on the continuum $\tilde\domain$. In particular, the space of functions on $\domain_n$ can simply be identified with $\R^n$, since $\{\vec u:\domain_n\to\R\} \sim \R^n.$
+$\vec g:\conset_n\to\R$. From now on, we denote functions acting on a discrete set $\domain_n$ using bold symbols to distinguish them from functions acting on the continuum $\tilde\domain$. In particular, the space of functions on $\domain_n$ can simply be identified with $\R^n$, i.e., $\{\vec u:\domain_n\to\R\} \sim \R^n.$
 %
 \noindent%
 The semi-supervised learning problem consists in finding an extension of $\vec g$ from $\conset_n$ to the whole set $\domain_n$, i.e.,
@@ -114,7 +114,7 @@ one has two cases:
 $E\subset 2^{\domain_n}$ and each edge is undirected, since $\{x,y\}=\{y,x\}$.
 %
 \item \emph{Directed graph:} $E=\{ (x,y): \text{there is an edge from } x \text{ to } y\}$, i.e.,
-$E\subset \domain_n\times \domain_n$ and each edge is directed and $(x,y)\neq(y,x)$.
+$E\subset \domain_n\times \domain_n$ and each edge is directed, i.e., in general  $(x,y)\in E\nRightarrow(y,x)\in E$.
 %
 \end{itemize}
 Additionally, one then considers a weight function $W:E\to\R$ assigning a weight to each edge, and defines 
@@ -144,7 +144,7 @@ where $\eta$ is a non-increasing kernel and $c_\eta$ is a constant depending on 
 \begin{itemize}
 \item (constant weights) $\eta(t)=1_{[0,1]}(t)$,
 \item (exponential weights) $\eta(t)=\exp(-t^2/(2\sigma^2))1_{[0,1]}(t)$,
-\item (non-integrable weights) $\eta(t)=\frac{1}{t^p}1_{[0,1]}(t)$ with $p\in(0,1]$.
+\item (singular) $\eta(t)=\frac{1}{t^p}1_{[0,1]}(t)$ with $p>0$.
 \end{itemize}
 %
 In the above examples, we ensured that each weight function has a compact support, by multiplying it with $1_{[0,1]}$. This allows us to directly connect the sparsity of the graph with the scale $\gscale$.
@@ -171,7 +171,7 @@ which was first employed in \cite{GarcSlep15} for $p=1$ and then in \cite{slepce
 \int_{\R^+} \eta(t)^p\, t^{d+p} dt,
 \end{align*}
 %
-we see that $\tilde\sigma_\eta^{(p)}$ degenerates to $\sigma_\eta$ in the limit $p\to\infty$.
+we see that $\sqrt[p]{\tilde\sigma_\eta^{(p)}}$ degenerates to $\sigma_\eta$ in the limit $p\to\infty$.
 \end{remark}
 \begin{remark}{}{}
 In \cite{roith2022continuum} we choose $c_\eta=1$ and therefore $\sigma_\eta$ then appears in the limit functional. In \cite{bungert2021uniform} we rescale the kernel, i.e., $c_\eta = \sigma_\eta$ which allows us to work with non-rescaled operators in the limit. 
@@ -228,7 +228,7 @@ The archetype of learning methods we consider in the following is the so-called 
 %
 %
 %
-Here, we always assume non-negative weights $w_n:\domain_n\times\domain_n\to[0,\infty)$. The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$ motivated by the continuum counterpart. While our contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$, the case $p<\infty$ serves as a  motivation for the whole discussion. Therefore, we briefly review the continuum setting and then discuss the situation on the graph.
+Here, we always assume non-negative weights $w_n:\domain_n\times\domain_n\to[0,\infty)$. The intuitive idea behind this method is that it minimizes a discrete approximation of the Dirichlet energy and should therefore enforce a certain kind of \enquote{smoothness} of the solution $\vec u$. In \cite{zhou2005regularization} it was proposed to generalize the idea of the graph Dirichlet energy in \cref{eq:SSL_Laplacian} to arbitrary $1\leq p < \infty$, which lead to the $p$-Laplacian on the graph. While our contributions in \cite{roith2022continuum, bungert2021uniform, bungert2022ratio} mainly consider the case of $p=\infty$, the case $p<\infty$ serves as a  motivation for the whole discussion. Therefore, we briefly review the $p$-Laplacian in the continuum setting and then discuss the situation on the graph.
 %
 %
 %
@@ -244,38 +244,38 @@ We follow the exposition in \cite{lindqvist2017notes}. Let $\domain\subset\R^d$ 
 where $\rho:\domain\to\R$ is some given function. In the setting of \cite{GarcSlep15, slepcev2019analysis} $\rho$ denotes the density of data distribution as in \cref{sec:GSSL}. For $\rho\equiv1$ we simply write $\pDir{}_{p,1}=\pDir{}_{p}$. The associated variational problem is given in the following.
 %
 \begin{problem}{Variational Formulation}{prob:VarForm}
-	For $p\in [1,\infty)$ and $V\subset W^{1,p}(\domain)$ find $u\in W^{1,p}(\domain)$ such that
-	%
-	\begin{align*}
-		\pDir{}_{p,\rho}(u) \leq \pDir{}_{p,\rho}(v)
-	\end{align*}
-	%
-	for all $v$, such that $(u-v)\in W^{1,p}_0$.
+For $p\in [1,\infty)$ find $u\in W^{1,p}(\domain)$ such that
+%
+\begin{align*}
+\pDir{}_{p,\rho}(u) \leq \pDir{}_{p,\rho}(v)
+\end{align*}
+%
+for all $v$, such that $(u-v)\in W^{1,p}_0(\domain)$.
 \end{problem}
 %
 \noindent%
-Assume for simplicity that $\rho\equiv 1$ and that $u\in V$ is a minimizer of the above problem, then its first variation must vanish, i.e., for all $\phi\in C^\infty_0(\domain)$ one has
+Assume for simplicity that $\rho\equiv 1$ and that $u\in W^{1,p}(\domain)$ is a minimizer of the above problem, then its first variation must vanish, i.e., for all $\phi\in C^\infty_0(\domain)$ one has
 %
 \begin{align}\label{eq:weakLap}
 	\int_\domain \langle \abs{\nabla u}^p \nabla u, \nabla \phi \rangle \, dx = 0.
 \end{align}
 %
-A function $u\in V$ satisfying \cref{eq:weakLap} is called a \emph{weak solution} of the $p$-Laplace equation. In fact, if $u$ 
+A function $u\in W^{1,p}(\domain)$ satisfying \cref{eq:weakLap} is called a \emph{weak solution} of the $p$-Laplace equation. In fact, if $u$ 
 is smooth enough, one can infer that
 %
 \begin{align}\label{eq:strongLap}
-	\Delta_p u := \div(\abs{\nabla u}^{p-2} \nabla u) = 0
+\Delta_p u := \div(\abs{\nabla u}^{p-2} \nabla u) = 0
 \end{align}
 %
 where $\Delta_p$ is called the $p$-Laplacian. Boundary conditions on $\partial \domain$ given by a function $g\in W^{1,p}(\domain)$  can be incorporated by considering the set
-$V_g := \{u\in W^{1,p}(\domain): u-g \in W^{1,p}_0(\domain)\}$. 
+$U_g := \{u\in W^{1,p}(\domain): u-g \in W^{1,p}_0(\domain)\}$. 
 We state the following classical result, which can for example be found in \cite{lindqvist2017notes}.
 %
 \begin{theorem}{Existence and Uniqueness}{}
-	For $p\in (1,\infty)$ and $g\in W^{1,p}(\domain)$ there exists a unique minimizer $u\in V_g$ of the $p$-Dirichlet energy, i.e.,
+	For $p\in (1,\infty)$ and $g\in W^{1,p}(\domain)$ there exists a unique minimizer $u\in U_g$ of the $p$-Dirichlet energy, i.e.,
 	%
 	\begin{align*}
-		\argmin_{u\in V_g} \pDir{}_p(u) = u.
+		\argmin_{u\in U_g} \pDir{}_p(u) = u.
 	\end{align*}
 	%
 	Moreover, $u$ is a weak solution of the $p$-Laplace equation and there exists a function $\tilde{u}\in C(\domain)$ such that
@@ -302,7 +302,7 @@ Now consider \cref{prob:VarForm} restricted on $V$ with boundary values given by
 \int_{V} \abs{\nabla u}^p dx + \int_{\domain\setminus V} \abs{\nabla u}^p dx = \pDir_p(u).
 \end{align*}
 %
-Since $u$ is unique this yields $u|_V = v|_V$, and therefore we know that any solution on $\domain$ solves \cref{prob:VarForm} also on any \enquote{nice} subset, with the boundary values given by itself. In \cref{sec:LipExt} we see that this \textit{local minimization property} does not hold automatically and has to enforced additionally. The underlying reason here is, that integrals are set-additive, but suprema are not, which is similarly explained in \cite{aronsson2004tour}.
+Since $u$ is unique this yields $u|_V = v|_V$, and therefore we know that any solution on $\domain$ solves \cref{prob:VarForm} also on any \enquote{nice} subset, with the boundary values given by itself. In \cref{sec:LipExt} we see that for $p=\infty$ this \textit{local minimization property} does not hold automatically and has to enforced additionally. The underlying reason here is, that integrals are set-additive, but suprema are not, which is similarly explained in \cite{aronsson2004tour}.
 
 %
 %
@@ -668,7 +668,7 @@ which can be proven via the definition of the gradient. For the reverse inequali
 \abs{u(x) - u(y)} \leq \norm{\nabla u}_\infty\ d_\domain(x,y)
 \end{align}
 %
-see, e.g., \cite[Prop9.3, Rem. 7]{brezis2011functional}.Here,
+see, e.g., \cite[Prop9.3, Rem. 7]{brezis2011functional}. Here,
 %
 \begin{align*}
 d_\domain(x,y) = \inf \left\{
@@ -677,14 +677,14 @@ d_\domain(x,y) = \inf \left\{
 \end{align*}
 %
 denotes the \emph{geodesic distance} on $\domain$. If $\domain$ is convex, we have that $d_\domain(x,y) = \abs{x-y}$ for every 
-$x,y\in \domain$ and therefore \cref{eq:LipGrad} yields $\Lip(u) = \norm{\nabla u}_\infty$. However, this situation changes for non-convex domains, see \cref{ex:tube}. Additionally, it is often necessary to define 
+$x,y\in \domain$ and therefore \cref{eq:LipGrad} yields $\Lip(u) = \norm{\nabla u}_\infty$. This identity generalizes to non-convex domains, namely $\Lip_{d_\domain}(u) = \norm{\nabla u}_\infty$, see \cite[Eq. 2.12]{bungert2023inhomogeneous} or \cite[P. 23]{bhattacharya1989limits}. Additionally, it is often necessary to define 
 a distance measure on the closure of $\domain\subset\R^d$. In order to have a geodesic on $\overline{\domain}$ one can simply consider $d_{\overline{\domain}}$, see, e.g., \cite{bungert2021uniform}, which then yields the length space $(\overline{\domain}, d_{\overline{\domain}})$. In the classical theory developed in \cite{jensen1993uniqueness} one alternatively considers
 %
 \begin{align*}
 \tilde{d}_{\overline{\domain}}(x,y) := \liminf_{(\tilde x,\tilde y)\to(x,y)} d_\domain(\tilde{x},\tilde{y}).
 \end{align*}
 %
-The differences between these notions are demonstrated in the following example. Also note, that $\tilde{d}_{\overline{\domain}}$ is only a semi-metric on $\overline{\domain}$ since it is lacking a triangle inequality.
+The differences between these notions are demonstrated in the following example. Also note, that in general $\tilde{d}_{\overline{\domain}}$ is only a semi-metric on $\overline{\domain}$ since it is lacking a triangle inequality.
 %
 \begin{example}{}{ex:tube}
 For $I = [-\pi, c]\cup [c, \pi]$ with $c=\pi/6$ we consider the domain
@@ -764,8 +764,8 @@ $g$ to $\tilde{\domain}$.
 \end{problem}
 %
 \noindent%
-In this setting, one can again explicitly construct solutions of the Lipschitz extension task. They are not unique, however, one has an upper and a lower bound. In fact, conceptually these solutions 
-are very similar to the functions in \cref{eq:JenSol} and even coincide, whenever the sup-norm of the gradient is given as the Lipschitz constant.
+In this setting, one can again explicitly construct solutions of the Lipschitz extension task. They are not unique, however, one has an upper and a lower bound. In fact, these solutions 
+are a generalization of the concept in \cref{eq:JenSol}.
 %
 \begin{lemma}{}{lem:ext}
 In the setting of \cref{prob:Lipext}, we have that the 
@@ -830,7 +830,7 @@ yields the Lipschitz extension task, which however does not admit unique solutio
 \end{align}
 %
 and every function $v$ such that $(u-v)\in W^{1,\infty}_0$. In fact in \cite{aronsson1967extension} it is also shown, that for $u_p$ denoting the solution of the corresponding $p$-Dirichlet problem, we have that 
-$u_p\xrightarrow{p\to\infty} u_\infty$, which validates the notion of absolute minimizers. In \cite{aronsson2004tour} it was shown, that one has an equivalent formulation involving the Lipschitz constant. For a given Lipschitz function $g:\overline{\domain}\to\R$ we have that $u_\infty$ with $(u_\infty-g)\in W^{1,\infty}_0(\domain)$ fulfills \cref{eq:absmin} iff
+$u_p\xrightarrow{p\to\infty} u_\infty$, which is absolutely minimal. In \cite{aronsson2004tour} it was shown, that one has an equivalent formulation involving the Lipschitz constant. For a given Lipschitz function $g:\overline{\domain}\to\R$ we have that $u_\infty$ with $(u_\infty-g)\in W^{1,\infty}_0(\domain)$ fulfills \cref{eq:absmin} iff
 %
 \begin{align*}
 \Lip(u_\infty; V) \leq \Lip(v; V) \text{ for every } V\subset \domain
@@ -872,7 +872,7 @@ Let $(\tilde\domain, d)$ be a separable length space, and suppose $g: \conset\to
 We address the question of existence and uniqueness of solutions to \cref{prob:amles} in the following paragraphs.
 %
 %
-\paragraph{The Infinity Laplacian} In the Euclidean case, one can derive an operator equation by considering the limit of the $p$-Laplacian operator. This yields the $\infty$-Laplacian, which is defined as
+\paragraph{The Infinity Laplacian} In the Euclidean case, one can derive an operator equation by considering the limit of the $p$-Laplacian operator as $p\to\infty$. This yields the $\infty$-Laplacian, which is defined as
 %
 \begin{align*}
 \Delta_\infty u = \langle \nabla u, D^2 u\, \nabla u\rangle = 
@@ -965,10 +965,10 @@ where $z\in\domain$ denotes the origin or cone tip, $a\geq 0$ its opening angle 
 One can omit the explicit use of the offset $c\in\R$ and equivalently consider the property
 %
 \begin{align}\label{eq:conecont}
-\max_{\partial V}\left(u - a\, d(\cdot,z)\right) = \max_{V}\left(u - a\, d(\cdot,z)\right)
+\max_{\partial V}\left(u - a\, d(\cdot,z)\right) = \max_{\closure V}\left(u - a\, d(\cdot,z)\right).
 \end{align}
 %
-which is reminiscent of the comparison principle in \cref{th:compprinc}. In the Euclidean case, cone functions are infinity harmonic away from their cone tip, since they are constant in the direction of their gradient. We make the explicit computation below
+In the Euclidean case, cone functions are infinity harmonic away from their cone tip, since they are constant in the direction of their gradient. We make the explicit computation below
 %
 \begin{align*}
 \partial_{x_i} \abs{x-z} &= \frac{x_i - z_i}{\abs{x-z}}\\
@@ -1314,7 +1314,7 @@ Analogously to the continuum case, we say that a function fulfills comparison wi
 %
 \paragraph{The Graph $\infty$-Laplacian}
 %
-We can also obtain the limit of the Graph $p$-Laplace operator via the following formal calculation,
+We can also obtain the limit of the Graph $p$-Laplace operator via the following calculation,
 %
 \begin{align*}
 \Delta^{w_n}_p \vec u(x) &= 0\\
@@ -1325,7 +1325,7 @@ We can also obtain the limit of the Graph $p$-Laplace operator via the following
 &= \\ \sum_{y: \vec u(x)> \vec u(y)} w_n(x,y)^{p}(\vec u(x)-\vec u(y))^{p-1}.&\phantom{=}
 \end{align*}
 %
-Taking the terms on the left and right-hand side to the power of $1/p$ and then formally sending $p\to\infty$ yields
+Taking the terms on the left and right-hand side to the power of $1/p$ and then sending $p\to\infty$ yields
 %
 \begin{align*}
 \max_{y: \vec u(x)\leq \vec u(y)} w_n(x,y)(\vec u(y)-\vec u(x)) &= 
@@ -1609,10 +1609,10 @@ This then allows us to formulate our scaling assumption, namely we require that 
 which has similarly employed in \cite{penrose1999strong,penrose1999strong2}. This is the weakest possible assumption that ensures connectivity of the graph in the limit $n\to\infty$. However, compared to \cref{eq:garcscaling} it is more of deterministic nature, since we do not assume anything on how $\domain_n$ is created. In case of a i.i.d. point cloud, one can show that
 %
 \begin{align*}
-\gres_n \sim \left(\frac{\log n}{n}\right)^{1/d}
+\gres_n \sim \left(\frac{\log n}{n}\right)^{1/d},
 \end{align*}
 %
-see \cite{penrose1999strong2}, which is the setting in \cite{GarcSlep15}.
+almost surely as $n\to\infty$, see \cite{penrose1999strong2}, which is the setting in \cite{GarcSlep15}.
 %
 %
 \paragraph{Assumptions on the Domain} As we mention in the introduction, we do not need to restrict ourselves to convex domains. However, for our convergence results, it is important that the geodesic distance 
@@ -2091,7 +2091,7 @@ u(y) \leq
 u(x) + \frac{T^{2\nlscale} u(x) - u(x)}{2\nlscale}d_{\cl\domain}(x,y) \quad \text{ for } y\in\partial V.
 \end{align*}
 %
-\item Employing comparison with distance functions, this inequality holds on the whole domain $V$, therefor we can take the maximum over $B(x,\nlscale)$ and see
+\item Employing comparison with distance functions, this inequality holds on the whole set $\closure V$, therefor we can take the maximum over $B(x,\nlscale)$ and see
 %
 \begin{align*}
 T^\nlscale u(x) \leq \frac{T^{2\nlscale} u(x) - u(x)}{2\nlscale} \nlscale = \frac{1}{2}(T^{2\nlscale} u(x) + u(x)).
@@ -2229,7 +2229,7 @@ and obtain
 2 \vec u_n(\vec p_n^\nlscale(\vec x_0)) &\leq 
 \vec{u}_n(\vec{x}_0) + \vec{u}_n(\vec p_n^{2\nlscale}(\vec x_0) 
 + 
-C \Lip_n(\vec g_n)\left(\frac{N}{D} - \frac{1}{2}\right).
+C \Lip_n\tau (\vec g_n)\left(\frac{N}{D} - \frac{1}{2}\right).
 \end{align*} 
 \end{itemize}
 %

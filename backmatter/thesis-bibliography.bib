@@ -10,11 +10,22 @@
   keywords={papersA},
   shorthand={LIP-I}
 }
-@article{arndt2023invertible,
-	title={Invertible residual networks in the context of regularization theory for linear inverse problems},
-	author={Arndt, Clemens and Denker, Alexander and Dittmer, S{\"o}ren and Heilenk{\"o}tter, Nick and Iske, Meira and Kluth, Tobias and Maass, Peter and Nickel, Judith},
-	journal={arXiv preprint arXiv:2306.01335},
-	year={2023}
+@article{goldstein2009split,
+  title={The split Bregman method for L1-regularized problems},
+  author={Goldstein, Tom and Osher, Stanley},
+  journal={SIAM journal on imaging sciences},
+  volume={2},
+  number={2},
+  pages={323--343},
+  year={2009},
+  publisher={SIAM}
+}
+@online{arndt2023invertible,
+title={Invertible residual networks in the context of regularization theory for linear inverse problems},
+author={Arndt, Clemens and Denker, Alexander and Dittmer, S{\"o}ren and Heilenk{\"o}tter, Nick and Iske, Meira and Kluth, Tobias and Maass, Peter and Nickel, Judith},
+eprint={2306.01335},
+eprinttype   = {arxiv},
+year={2023}
 }
 @book{evans2018measure,
 	title={Measure theory and fine properties of functions},
@@ -54,10 +65,11 @@
 	year={1999},
 	publisher={Cambridge University Press}
 }
-@article{cipriani2023neurodes,
+@online{cipriani2023neurodes,
   title={From NeurODEs to AutoencODEs: a mean-field control framework for width-varying Neural Networks},
   author={Cipriani, Cristina and Fornasier, Massimo and Scagliotti, Alessandro},
-  journal={arXiv preprint arXiv:2307.02279},
+  eprintttype={arXiv},
+  eprint={2307.02279},
   year={2023}
 }
 @article{yu2006remark,
@@ -78,7 +90,7 @@
 }
 
 @article{bhattacharya1989limits,
-	title={Limits as $p\to\infty$ of $Delta_p u_p= f$ and related extremal problems},
+	title={Limits as $p\to\infty$ of $\Delta_p u_p= f$ and related extremal problems},
 	author={Bhattacharya, Tilak and DiBenedetto, Emmanuele and Manfredi, Juan},
 	journal={Rend. Sem. Mat. Univ. Politec. Torino},
 	volume={47},
@@ -197,18 +209,19 @@
 	publisher={Oxford University Press}
 }
 
-@article{madry2017towards,
-	title={Towards deep learning models resistant to adversarial attacks},
-	author={Madry, Aleksander and Makelov, Aleksandar and Schmidt, Ludwig and Tsipras, Dimitris and Vladu, Adrian},
-	journal={arXiv preprint arXiv:1706.06083},
-	year={2017}
+
+@inproceedings{madry2017towards,
+title={Towards Deep Learning Models Resistant to Adversarial Attacks},
+author={Aleksander Madry and Aleksandar Makelov and Ludwig Schmidt and Dimitris Tsipras and Adrian Vladu},
+booktitle={International Conference on Learning Representations},
+year={2018},
 }
 
-@article{kurakin2016adversarial2,
-	title={Adversarial machine learning at scale},
-	author={Kurakin, Alexey and Goodfellow, Ian and Bengio, Samy},
-	journal={arXiv preprint arXiv:1611.01236},
-	year={2016}
+@inproceedings{kurakin2016adversarial2,
+title={Adversarial Machine Learning at Scale},
+author={Alexey Kurakin and Ian J. Goodfellow and Samy Bengio},
+booktitle={International Conference on Learning Representations},
+year={2017},
 }
 
 @inproceedings{ilyas2018black,
@@ -228,13 +241,14 @@
 }
 
 @article{bungert2021uniform,
-	author = {Bungert, Leon and Calder, Jeff and Roith, Tim},
-	title = {Uniform convergence rates for Lipschitz learning on graphs},
-	journal = {IMA Journal of Numerical Analysis},
-	year = {2022},
-	month = {09},
-	issn = {0272-4979},
-	%doi = {10.1093/imanum/drac048},
+    author = {Bungert, Leon and Calder, Jeff and Roith, Tim},
+    title = "{Uniform convergence rates for Lipschitz learning on graphs}",
+    journal = {IMA Journal of Numerical Analysis},
+    volume = {43},
+    number = {4},
+    pages = {2445-2495},
+    year = {2022},
+    issn = {0272-4979},
     shorthand={LIP-II},
     keywords={papersA},
 }
@@ -250,13 +264,12 @@
 	publisher={World Scientific}
 }
 
-@misc{bungert2022ratio,
+@online{bungert2022ratio,
       title={Ratio convergence rates for Euclidean first-passage percolation: Applications to the graph infinity Laplacian}, 
       author={Leon Bungert and Jeff Calder and Tim Roith},
       year={2022},
       eprint={2210.09023},
-      archivePrefix={arXiv},
-      primaryClass={math.PR},
+      eprinttype={arXiv},
       shorthand={LIP-III},
       keywords={papersC},
 }
@@ -310,32 +323,35 @@
   keywords={papersB},
 }
 
+
 @article{kovachki2021neural,
-	title = {Neural Operator: Learning Maps Between Function Spaces},
-	author = {Kovachki, Nikola B and Li, Zongyi and Liu, Burigede and Azizzadenesheli, Kamyar and Bhattacharya, Kaushik and Stuart, Andrew M and Anandkumar, Anima},
-	year = {2021},
-	journal = {arXiv:2108.08481}
+  author  = {Nikola Kovachki and Zongyi Li and Burigede Liu and Kamyar Azizzadenesheli and Kaushik Bhattacharya and Andrew Stuart and Anima Anandkumar},
+  title   = {Neural Operator: Learning Maps Between Function Spaces With Applications to PDEs},
+  journal = {Journal of Machine Learning Research},
+  year    = {2023},
+  volume  = {24},
+  number  = {89},
+  pages   = {1--97},
 }
 
-@article{li2020fourier,
-	title={Fourier neural operator for parametric partial differential equations},
-	author={Li, Zongyi and Kovachki, Nikola and Azizzadenesheli, Kamyar and Liu, Burigede and Bhattacharya, Kaushik and Stuart, Andrew and Anandkumar, Anima},
-	journal={arXiv preprint arXiv:2010.08895},
-	year={2020}
+@inproceedings{li2020fourier,
+title={Fourier Neural Operator for Parametric Partial Differential Equations},
+author={Zongyi Li and Nikola Borislavov Kovachki and Kamyar Azizzadenesheli and Burigede liu and Kaushik Bhattacharya and Andrew Stuart and Anima Anandkumar},
+booktitle={International Conference on Learning Representations},
+year={2021},
 }
 
-@article{hen16,
-  author    = {Dan Hendrycks and
-               Kevin Gimpel},
-  title     = {Gaussian Error Linear Units ({GELU}s)},
-  year      = {2016},
- journal = {arXiv:1606.08415}
+@online{hen16,
+  author     = {Dan Hendrycks and Kevin Gimpel},
+  title      = {Gaussian Error Linear Units ({GELU}s)},
+  year       = {2016},
+  eprinttype = {arXiv},
+  eprint     = {1606.08415}
 }
 
 @article{trigo19,
 author = {Briand, Thibaud},
 year = {2019},
-month = {10},
 pages = {291-316},
 title = {Trigonometric Polynomial Interpolation of Images},
 volume = {9},
@@ -365,7 +381,8 @@ journal = {Image Processing On Line},
     author    = "Loukas Grafakos",
     title     = "Classical Fourier Analysis",
     publisher = "Springer, New York, NY",
-    series   = "Graduate Texts in Mathematics",edition  = "3",
+    series   = "Graduate Texts in Mathematics",
+    edition  = "3",
     year      = "2014"
 }
 
@@ -373,7 +390,7 @@ journal = {Image Processing On Line},
   author = {G. Piosenka},
   title = {BIRDS 500 - SPECIES IMAGE CLASSIFICATION},
   year = {2021},
-  url = {{https://www.kaggle.com/datasets/gpiosenka/100-bird-species}}
+  url = {https://www.kaggle.com/datasets/gpiosenka/100-bird-species}
 }
 
 @book{ambrosetti,
@@ -394,18 +411,21 @@ journal = {Image Processing On Line},
 	publisher={Wiley-Blackwell}
 }
 
-@article{srivastava2015highway,
+@online{srivastava2015highway,
   title={Highway networks},
   author={Srivastava, Rupesh Kumar and Greff, Klaus and Schmidhuber, J{\"u}rgen},
-  journal={arXiv preprint arXiv:1505.00387},
+  eprint={1505.00387},
+  eprinttype={arXiv},
   year={2015}
 }
-@article{schmidhuber2022annotated,
+@online{schmidhuber2022annotated,
   title={Annotated history of modern AI and Deep learning},
   author={Schmidhuber, J{\"u}rgen},
-  journal={arXiv preprint arXiv:2212.11279},
+  eprint={2212.11279},
+  eprinttype={arXiv},
   year={2022}
 }
+
 @article{kelley1960gradient,
   title={Gradient theory of optimal flight paths},
   author={Kelley, Henry J},
@@ -418,7 +438,7 @@ journal = {Image Processing On Line},
 
 @book{rosenblatt1962principles,
   title={Principles of neurodynamics: Perceptrons and the theory of brain mechanisms},
-  author={Rosenblatt, Frank and others},
+  author={Rosenblatt, Frank},
   volume={55},
   year={1962},
   publisher={Spartan books Washington, DC}
@@ -455,15 +475,14 @@ journal = {Image Processing On Line},
   publisher={Elsevier}
 }
 
-@article{bungert2021neural,
-      title={Neural Architecture Search via {B}regman Iterations}, 
-      author={Leon Bungert and Tim Roith and Daniel Tenbrinck and Martin Burger},
-      year={2021},
-      eprint={2106.02479},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      shorthand={BREG-II},
-      keywords={papersC},
+@online{bungert2021neural,
+title={Neural Architecture Search via {B}regman Iterations}, 
+author={Leon Bungert and Tim Roith and Daniel Tenbrinck and Martin Burger},
+year={2021},
+eprint={2106.02479},
+eprinttype={arXiv},
+shorthand={BREG-II},
+keywords={papersC},
 }
 
 @inproceedings{bungert2021clip,
@@ -516,7 +535,7 @@ journal = {Image Processing On Line},
 
 @article{slepcev2019analysis,
   title={Analysis of p-Laplacian regularization in semisupervised learning},
-  author={Slepcev, Dejan and Thorpe, Matthew},
+  author={Slep{\v{c}}ev, Dejan and Thorpe, Matthew},
   journal={SIAM Journal on Mathematical Analysis},
   volume={51},
   number={3},
@@ -571,14 +590,14 @@ journal = {Image Processing On Line},
   editor = 	 {Dy, Jennifer and Krause, Andreas},
   volume = 	 {80},
   series = 	 {Proceedings of Machine Learning Research},
-  month = 	 {10--15 Jul},
   publisher =    {PMLR}
 }
 
-@article{kingma2014adam,
+@online{kingma2014adam,
   title={Adam: A Method for Stochastic Optimization},
   author={Kingma, Diederik and Ba, Jimmy},
-  journal={arXiv preprint arXiv:1412.6980},
+  eprint={1412.6980},
+  eprinttype={arXiv},
   year={2014}
 }
 
@@ -610,24 +629,26 @@ journal = {Image Processing On Line},
     year={2016}
 }
 
-@article{dettmers2019sparse,
+@online{dettmers2019sparse,
   title={Sparse networks from scratch: Faster training without losing performance},
   author={Dettmers, Tim and Zettlemoyer, Luke},
-  journal={arXiv preprint arXiv:1907.04840},
+  eprint={1907.04840},
+  eprinttype={arXiv},
   year={2019}
 }
 
 @article{engstrom2018rotation,
-  title={A rotation and a translation suffice: Fooling cnns with simple transformations},
+  title={A rotation and a translation suffice: Fooling CNNs with simple transformations},
   author={Engstrom, Logan and Tran, Brandon and Tsipras, Dimitris and Schmidt, Ludwig and Madry, Aleksander},
   year={2018}
 }
 
-@article{guo2017countering,
-  title={Countering adversarial images using input transformations},
-  author={Guo, Chuan and Rana, Mayank and Cisse, Moustapha and Van Der Maaten, Laurens},
-  journal={arXiv preprint arXiv:1711.00117},
-  year={2017}
+
+@inproceedings{guo2017countering,
+title={Countering Adversarial Images using Input Transformations},
+author={Chuan Guo and Mayank Rana and Moustapha Cisse and Laurens van der Maaten},
+booktitle={International Conference on Learning Representations},
+year={2018},
 }
 
 @article{ahmed1974discrete,
@@ -667,6 +688,24 @@ journal = {Image Processing On Line},
   pages={1083--1098},
   year={2006},
   publisher={Wiley Online Library}
+}
+@inproceedings{faw2022power,
+  title={The power of adaptivity in sgd: Self-tuning step sizes with unbounded gradients and affine variance},
+  author={Faw, Matthew and Tziotis, Isidoros and Caramanis, Constantine and Mokhtari, Aryan and Shakkottai, Sanjay and Ward, Rachel},
+  booktitle={Conference on Learning Theory},
+  pages={313--355},
+  year={2022},
+  organization={PMLR}
+}
+@article{bungert2023inhomogeneous,
+  title={The inhomogeneous p-Laplacian equation with Neumann boundary conditions in the limit $p\to\infty$},
+  author={Bungert, Leon},
+  journal={Advances in Continuous and Discrete Models},
+  volume={2023},
+  number={1},
+  pages={1--17},
+  year={2023},
+  publisher={SpringerOpen}
 }
 
 @article{peres2009tug,
@@ -746,15 +785,18 @@ journal = {Image Processing On Line},
 }
 
 @article{flores2019algorithms,
-  title={Algorithms for Lp-based semi-supervised learning on graphs},
-  author={Flores, Mauricio and Calder, Jeff and Lerman, Gilad},
-  journal={arXiv preprint arXiv:1901.05031},
-  year={2019}
+title = {Analysis and algorithms for $\ell_p$-based semi-supervised learning on graphs},
+journal = {Applied and Computational Harmonic Analysis},
+volume = {60},
+pages = {77-122},
+year = {2022},
+issn = {1063-5203},
+author = {Mauricio Flores and Jeff Calder and Gilad Lerman},
 }
 
 @inproceedings{calder2020poisson,
   title={Poisson learning: Graph based semi-supervised learning at very low label rates},
-  author={Calder, Jeff and Cook, Brendan and Thorpe, Matthew and Slepcev, Dejan},
+  author={Calder, Jeff and Cook, Brendan and Thorpe, Matthew and Slep{\v{c}}ev, Dejan},
   booktitle={International Conference on Machine Learning},
   pages={1306--1316},
   year={2020},
@@ -951,7 +993,7 @@ journal = {Image Processing On Line},
 }
 
 @inproceedings{barron2001lower,
-  title={Lower semicontinuity of L∞ functionals},
+  title={Lower semicontinuity of $L^\infty$ functionals},
   author={Barron, Emmanuel N and Jensen, Robert R and Wang, Chang You},
   booktitle={Annales de l'Institut Henri Poincar{\'e} C, Analyse non lin{\'e}aire},
   volume={18},
@@ -962,8 +1004,6 @@ journal = {Image Processing On Line},
 }
 
 @article{Kirszbraun1934,
-  doi = {10.4064/fm-22-1-77-108},
-  url = {https://doi.org/10.4064/fm-22-1-77-108},
   year = {1934},
   publisher = {Institute of Mathematics,  Polish Academy of Sciences},
   volume = {22},
@@ -987,7 +1027,7 @@ journal = {Image Processing On Line},
 @book{Schwartz1969,
 	AUTHOR = {Schwartz, Jacob T.},
 	YEAR = {1969},
-	TITLE = {Nonlinear Functional Analysis - },
+	TITLE = {Nonlinear Functional Analysis},
 	EDITION = {},
 	ISBN = {978-0-677-01500-2},
 	PUBLISHER = {CRC Press},
@@ -1103,8 +1143,6 @@ journal = {Image Processing On Line},
 	title={Continuum Limit of Total Variation on Point Clouds},
 	volume={220},
 	ISSN={1432-0673},
-	url={http://dx.doi.org/10.1007/s00205-015-0929-z},
-	DOI={10.1007/s00205-015-0929-z},
 	number={1},
 	journal={Archive for Rational Mechanics and Analysis},
 	publisher={Springer Science and Business Media LLC},
@@ -1127,7 +1165,7 @@ journal = {Image Processing On Line},
 @article{santambrogio2015optimal,
   title={Optimal transport for applied mathematicians},
   author={Santambrogio, Filippo},
-  journal={Birk{\"a}user, NY},
+  journal={Birkäuser, NY},
   volume={55},
   number={58-63},
   pages={94},
@@ -1240,17 +1278,12 @@ journal = {Image Processing On Line},
 	year = {2010}
 }
 
-@article{Han17,
-	author = {Han Xiao and
-	Kashif Rasul and
-	Roland Vollgraf},
-	title = {Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning
-	Algorithms},
-	journal = {CoRR},
-	volume = {abs/1708.07747},
-	year = {2017},
-	url = {http://arxiv.org/abs/1708.07747},
-	archivePrefix = {arXiv},
+@online{Han17,
+  author       = {Han Xiao and Kashif Rasul and Roland Vollgraf},
+  title        = {Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms},
+  year         = {2017},
+  eprinttype   = {arXiv},
+  eprint       = {1708.07747},
 }
 
 @techreport{krizhevsky2009learning,
@@ -1371,17 +1404,19 @@ journal = {Image Processing On Line},
   publisher={Springer}
 }
 
-@article{zhang2018convergence,
+@online{zhang2018convergence,
   title={On the convergence rate of stochastic mirror descent for nonsmooth nonconvex optimization},
   author={Zhang, Siqi and He, Niao},
-  journal={arXiv preprint arXiv:1806.04781},
+  eprinttype={arXiv},
+  eprint={1806.04781},
   year={2018}
 }
 
-@article{d2021stochastic,
+@online{d2021stochastic,
   title={Stochastic mirror descent: Convergence analysis and adaptive variants via the mirror stochastic Polyak stepsize},
   author={D'Orazio, Ryan and Loizou, Nicolas and Laradji, Issam and Mitliagkas, Ioannis},
-  journal={arXiv preprint arXiv:2110.15412},
+  eprint={2110.15412},
+  eprinttype={arXiv},
   year={2021}
 }
 
@@ -1418,7 +1453,7 @@ journal = {Image Processing On Line},
 }
 
 @article{aubin2022mirror,
-	title={Mirror descent with relative smoothness in measure spaces, with application to sinkhorn and em},
+	title={Mirror descent with relative smoothness in measure spaces, with application to {S}inkhorn and {EM}},
 	author={Aubin-Frankowski, Pierre-Cyril and Korba, Anna and L{\'e}ger, Flavien},
 	journal={Advances in Neural Information Processing Systems},
 	volume={35},
@@ -1511,7 +1546,6 @@ journal = {Image Processing On Line},
   pages={703--738},
   year={2020},
   publisher={Mathematical Sciences Publishers},
-  doi={10.2140/paa.2020.2.703}
 }
 
 @article{trillos2018variational,
@@ -1584,12 +1618,13 @@ journal = {Image Processing On Line},
   publisher={EDP Sciences}
 }
 
-@article{riedl2022leveraging,
-  title={Leveraging memory effects and gradient information in consensus-based optimization: On global convergence in mean-field law},
-  author={Riedl, Konstantin},
-  journal={arXiv preprint arXiv:2211.12184},
-  year={2022}
-}
+@article{riedl2022leveraging, 
+title={Leveraging memory effects and gradient information in consensus-based optimisation: {O}n global convergence in mean-field law}, 
+journal={European Journal of Applied Mathematics}, 
+publisher={Cambridge University Press}, 
+author={Riedl, Konstantin}, 
+year={2023}, 
+pages={1–32}}
 
 @article{morgan1963problems,
   title={Problems in the analysis of survey data, and a proposal},
@@ -1603,7 +1638,7 @@ journal = {Image Processing On Line},
 }
 
 @book{Brei,
-  title={Clasificaion and regression trees},
+  title={Classificaion and regression trees},
   author={Breiman, L and Friedman,JH and Olshen,RA and Stone, CJ},
   year={1984},
   publisher={CRC Press, New York}
@@ -1734,13 +1769,6 @@ journal = {Image Processing On Line},
 	publisher = {PMLR}
 }
 
-@article{dettmers2019sparse,
-	title={Sparse networks from scratch: Faster training without losing performance},
-	author={Dettmers, Tim and Zettlemoyer, Luke},
-	journal={arXiv preprint arXiv:1907.04840},
-	year={2019}
-}
-
 
 @inproceedings{reddi2016proximal,
 	title={Proximal stochastic methods for nonsmooth nonconvex finite-sum optimization},
@@ -1792,10 +1820,11 @@ journal = {Image Processing On Line},
 	organization={IEEE}
 }
 
-@article{hinton2015distilling,
+@online{hinton2015distilling,
 	title={Distilling the knowledge in a neural network},
 	author={Hinton, Geoffrey and Vinyals, Oriol and Dean, Jeff},
-	journal={arXiv preprint arXiv:1503.02531},
+	eprint={1503.02531},
+    eprinttype={arXiv},
 	year={2015}
 }
 
@@ -1813,8 +1842,10 @@ journal = {Image Processing On Line},
 @article{courbariaux2014training,
 	title={Training deep neural networks with low precision multiplications},
 	author={Courbariaux, Matthieu and Bengio, Yoshua and David, Jean-Pierre},
-	journal={arXiv preprint arXiv:1412.7024},
-	year={2014}
+	journal={Journal of Machine Learning Research},
+    volume={18},
+    pages={1--30},
+    year={2018},
 }
 
 @article{banner2018scalable,
@@ -1825,17 +1856,21 @@ journal = {Image Processing On Line},
 	year={2018}
 }
 
-@article{gholami2021survey,
-	title={A survey of quantization methods for efficient neural network inference},
-	author={Gholami, Amir and Kim, Sehoon and Dong, Zhen and Yao, Zhewei and Mahoney, Michael W and Keutzer, Kurt},
-	journal={arXiv preprint arXiv:2103.13630},
-	year={2021}
+
+@incollection{gholami2021survey,
+  title={A survey of quantization methods for efficient neural network inference},
+  author={Gholami, Amir and Kim, Sehoon and Dong, Zhen and Yao, Zhewei and Mahoney, Michael W and Keutzer, Kurt},
+  booktitle={Low-Power Computer Vision},
+  pages={291--326},
+  year={2022},
+  publisher={Chapman and Hall/CRC}
 }
 
-@article{howard2017mobilenets,
+@online{howard2017mobilenets,
 	title={Mobilenets: Efficient convolutional neural networks for mobile vision applications},
 	author={Howard, Andrew G and Zhu, Menglong and Chen, Bo and Kalenichenko, Dmitry and Wang, Weijun and Weyand, Tobias and Andreetto, Marco and Adam, Hartwig},
-	journal={arXiv preprint arXiv:1704.04861},
+	eprint={1704.04861},
+    eprinttype={arXiv},
 	year={2017}
 }
 
@@ -1885,9 +1920,6 @@ journal = {Image Processing On Line},
     booktitle = {The Essential Turing},
     publisher = {Oxford University Press},
     year = {2004},
-    month = {09},
-    doi = {10.1093/oso/9780198250791.003.0016},
-    url = {https://doi.org/10.1093/oso/9780198250791.003.0016},
 }
 
 
@@ -1916,8 +1948,6 @@ volume = {61},
 pages = {85-117},
 year = {2015},
 issn = {0893-6080},
-doi = {https://doi.org/10.1016/j.neunet.2014.09.003},
-url = {https://www.sciencedirect.com/science/article/pii/S0893608014002135},
 author = {Jürgen Schmidhuber},
 keywords = {Deep learning, Supervised learning, Unsupervised learning, Reinforcement learning, Evolutionary computation},
 }
@@ -2098,30 +2128,35 @@ keywords = {Deep learning, Supervised learning, Unsupervised learning, Reinforce
 	year={2013},
 	publisher={JHU press}
 }
-@article{shafahi2018adversarial,
-  title={Are adversarial examples inevitable?},
-  author={Shafahi, Ali and Huang, W Ronny and Studer, Christoph and Feizi, Soheil and Goldstein, Tom},
-  journal={arXiv preprint arXiv:1809.02104},
-  year={2018}
+
+@inproceedings{shafahi2018adversarial,
+title={Are adversarial examples inevitable?},
+author={Ali Shafahi and W. Ronny Huang and Christoph Studer and Soheil Feizi and Tom Goldstein},
+booktitle={International Conference on Learning Representations},
+year={2019},
 }
-@article{goodfellow2014explaining,
+
+@online{goodfellow2014explaining,
 	title={Explaining and harnessing adversarial examples},
 	author={Goodfellow, Ian J and Shlens, Jonathon and Szegedy, Christian},
-	journal={arXiv preprint arXiv:1412.6572},
+    eprint={1412.6572},
+    eprinttype={arXiv},
 	year={2014}
 }
 
-@article{bungert2023begins,
+@online{bungert2023begins,
 	title={It begins with a boundary: A geometric view on probabilistically robust learning},
 	author={Bungert, Leon and Trillos, Nicol{\'a}s Garc{\'{i}}a and Jacobs, Matt and McKenzie, Daniel and Nikoli{\'c}, {\DJ}or{\dj}e and Wang, Qingsong},
-	journal={arXiv preprint arXiv:2305.18779},
+	eprint={2305.18779},
+    eprinttype={arXiv},
 	year={2023}
 }
 
-@article{stanczuk2021wasserstein,
-	title={Wasserstein GANs work because they fail (to approximate the Wasserstein distance)},
+@online{stanczuk2021wasserstein,
+	title={Wasserstein {GAN}s work because they fail (to approximate the Wasserstein distance)},
 	author={Stanczuk, Jan and Etmann, Christian and Kreusser, Lisa Maria and Sch{\"o}nlieb, Carola-Bibiane},
-	journal={arXiv preprint arXiv:2103.01678},
+	eprint={2103.01678},
+    eprinttype={arxiv},
 	year={2021}
 }
 
@@ -2177,11 +2212,13 @@ keywords = {Deep learning, Supervised learning, Unsupervised learning, Reinforce
 	author = {Roth, Kevin and Kilcher, Yannic and Hofmann, Thomas}
 }
 
-@article{Krishnan2020,
-	title={{Lipschitz Bounds and Provably Robust Training by Laplacian Smoothing}},
-	author={Krishnan, Vishaal and Makdah, Abed AlRahman Al and Pasqualetti, Fabio},
-	journal={arXiv preprint arXiv:2006.03712},
-	year={2020}
+@article{krishnan2020lipschitz,
+  title={Lipschitz bounds and provably robust training by laplacian smoothing},
+  author={Krishnan, Vishaal and Makdah, Al and AlRahman, Abed and Pasqualetti, Fabio},
+  journal={Advances in Neural Information Processing Systems},
+  volume={33},
+  pages={10924--10935},
+  year={2020}
 }
 
 @article{gouk2020regularisation,
